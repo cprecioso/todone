@@ -1,6 +1,6 @@
-import type { Printer } from "@todone/types";
+import type { Reporter } from "@todone/types";
 
-const printer: Printer = async function* (results) {
+const reporter: Reporter = async function (results) {
   let hasExpiredItems = false;
   for await (const { match, result } of results) {
     console.log(
@@ -14,4 +14,4 @@ const printer: Printer = async function* (results) {
   process.exitCode = hasExpiredItems ? 1 : 0;
 };
 
-export default printer;
+export default reporter;

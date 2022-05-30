@@ -1,11 +1,11 @@
 import runTodone from "@todone/core";
 import GitHubIssuePlugin from "@todone/plugin-github";
-import printer from "@todone/printer-cli";
+import reporter from "@todone/reporter-cli";
 import type { File } from "@todone/types";
 import { src } from "vinyl-fs";
 
 const todone = async (globs: string[]) => {
-  await runTodone(() => src(globs) as AsyncIterable<File>, printer, [
+  await runTodone(() => src(globs) as AsyncIterable<File>, reporter, [
     GitHubIssuePlugin(),
   ]);
 };

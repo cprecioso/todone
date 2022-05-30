@@ -1,5 +1,5 @@
 {
-  "name": "@todone/printer-cli",
+  "name": "@todone/reporter-cli",
   "version": "0.1.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",

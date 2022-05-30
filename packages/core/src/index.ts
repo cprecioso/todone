@@ -1,11 +1,11 @@
 import analyze from "@todone/analyzer";
-import type { FileSource, PluginInstance, Printer } from "@todone/types";
+import type { FileSource, PluginInstance, Reporter } from "@todone/types";
 import { pipeline } from "node:stream/promises";
 import { runPlugins } from "./runner";
 
 const runTodone = async (
   source: FileSource,
-  printer: Printer,
+  reporter: Reporter,
   plugins: readonly PluginInstance[]
 ) => {
   const pluginRunner = runPlugins(plugins);
@@ -23,7 +23,7 @@ const runTodone = async (
         if (result) yield result;
       }
     },
-    printer
+    reporter
   );
 };
 
