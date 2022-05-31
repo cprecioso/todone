@@ -1,5 +1,5 @@
 import URLPattern from "@todone/internal-urlpattern";
-import type { Plugin } from "@todone/types";
+import type { PluginInstance } from "@todone/types";
 import got from "got";
 
 const issuePattern = new URLPattern({
@@ -7,7 +7,7 @@ const issuePattern = new URLPattern({
   pathname: "/:owner/:repo/:issueKind(issues|pull)/:issueID",
 });
 
-const GitHubIssuePlugin: Plugin = () => ({
+const GitHubIssuePlugin = (): PluginInstance => ({
   name: "GitHub Issues",
 
   async checkExpiration(url) {

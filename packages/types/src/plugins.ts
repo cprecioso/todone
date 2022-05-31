@@ -1,10 +1,12 @@
 import type { Match } from "./objects";
 
-export type Plugin = () => PluginInstance;
+export interface PluginContext {
+  match: Match;
+}
 
 export interface PluginInstance {
   readonly name: string;
-  checkExpiration(url: URL, match: Match): Promise<PluginResult | null>;
+  checkExpiration(url: URL, ctx: PluginContext): Promise<PluginResult | null>;
 }
 
 export interface PluginResult {
