@@ -10,6 +10,10 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "build:all": "yarn build",
+    "dev:all": "yarn run build:all && yarn workspaces foreach --parallel --interlaced --verbose --jobs unlimited run dev"
+  },
   "devDependencies": {
     "prettier": "^2.6.2",
     "prettier-plugin-organize-imports": "^2.3.4",
