@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "build:all": "yarn build",
-    "dev:all": "yarn run build:all && yarn workspaces foreach --parallel --interlaced --verbose --jobs unlimited run dev"
+    "dev:all": "yarn run build:all && yarn workspaces foreach --parallel --interlaced --verbose --jobs unlimited run dev",
+    "publish:all": "yarn run build:all && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
     "prettier": "^2.6.2",
