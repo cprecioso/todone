@@ -1085,6 +1085,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@todone/plugin-caniuse@workspace:^, @todone/plugin-caniuse@workspace:packages/plugin-caniuse":
+  version: 0.0.0-use.local
+  resolution: "@todone/plugin-caniuse@workspace:packages/plugin-caniuse"
+  dependencies:
+    "@parcel/packager-ts": 2.6.0
+    "@parcel/transformer-typescript-types": 2.6.0
+    "@todone/internal-urlpattern": "workspace:^"
+    "@todone/types": "workspace:^"
+    "@types/caniuse-lite": ^1
+    "@types/node": ^16
+    browserslist: ^4.20.3
+    caniuse-lite: ^1.0.30001344
+    parcel: ^2.6.0
+    typescript: ^4.7.0
+  languageName: unknown
+  linkType: soft
+
 "@todone/plugin-github@workspace:^, @todone/plugin-github@workspace:packages/plugin-github":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
@@ -1161,6 +1178,13 @@ __metadata:
     "@types/node": "*"
     "@types/responselike": "*"
   checksum: 667d25808dbf46fe104d6f029e0281ff56058d50c7c1b9182774b3e38bb9c1124f56e4c367ba54f92dbde2d1cc573f26eb0e9748710b2822bc0fd1e5498859c6
+  languageName: node
+  linkType: hard
+
+"@types/caniuse-lite@npm:^1":
+  version: 1.0.1
+  resolution: "@types/caniuse-lite@npm:1.0.1"
+  checksum: a74b02e254cf0c17da98a0fc7f8f3fb6e23d83a86bf683117a645aa9ecc02f8040e437df968cafcaf91dd438f09581e41c6835018cbcecef3c089a132a8b725b
   languageName: node
   linkType: hard
 
@@ -1427,7 +1451,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.6.6":
+"browserslist@npm:^4.20.3, browserslist@npm:^4.6.6":
   version: 4.20.3
   resolution: "browserslist@npm:4.20.3"
   dependencies:
@@ -1521,7 +1545,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001332":
+"caniuse-lite@npm:^1.0.30001332, caniuse-lite@npm:^1.0.30001344":
   version: 1.0.30001344
   resolution: "caniuse-lite@npm:1.0.30001344"
   checksum: 9dba66f796dc98632dced4c5d487d0fad219e137a27c634eec68520f2e598a613e3371b9207e15a078689a629128eca898793e37fc98841821ab481bddad51b9
@@ -3688,6 +3712,7 @@ __metadata:
     "@parcel/packager-ts": 2.6.0
     "@parcel/transformer-typescript-types": 2.6.0
     "@todone/core": "workspace:^"
+    "@todone/plugin-caniuse": "workspace:^"
     "@todone/plugin-github": "workspace:^"
     "@todone/reporter-cli": "workspace:^"
     "@todone/types": "workspace:^"
