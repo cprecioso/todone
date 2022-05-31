@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "parcel build",
-    "dev": "parcel watch"
+    "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
     "escape-string-regexp": "^5.0.0",
