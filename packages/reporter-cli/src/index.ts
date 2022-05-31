@@ -6,7 +6,7 @@ const reporter: Reporter = async function (results) {
     console.log(
       `${match.file}${
         match.start ? `:${match.start?.line}:${match.start?.column}` : ""
-      }\n\t${match.url}\n\t${result.isExpired ? "Still waiting" : "Expired!"}`
+      }\n\t${match.url}\n\t${result.isExpired ? "Expired!" : "Still waiting"}`
     );
     hasExpiredItems ||= result.isExpired;
   }
