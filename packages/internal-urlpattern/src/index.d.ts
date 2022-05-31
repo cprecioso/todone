@@ -1,6 +1,6 @@
 export type URLPatternInput = URLPatternInit | string;
 
-class URLPattern {
+declare class URLPattern {
   constructor(init?: URLPatternInput, baseURL?: string);
 
   test(input?: URLPatternInput, baseURL?: string): boolean;
