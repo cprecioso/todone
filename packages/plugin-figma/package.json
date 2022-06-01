@@ -1,6 +1,6 @@
 {
-  "name": "todone",
-  "version": "0.2.0",
+  "name": "@todone/plugin-figma",
+  "version": "0.1.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {
@@ -16,20 +16,14 @@
     "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
-    "@todone/core": "workspace:^",
-    "@todone/plugin-caniuse": "workspace:^",
-    "@todone/plugin-date": "workspace:^",
-    "@todone/plugin-figma": "workspace:^",
-    "@todone/plugin-github": "workspace:^",
-    "@todone/reporter-cli": "workspace:^",
-    "vinyl-fs": "^3.0.3"
+    "@todone/internal-urlpattern": "workspace:^",
+    "got": "^12.0.4"
   },
   "devDependencies": {
     "@parcel/packager-ts": "2.6.0",
     "@parcel/transformer-typescript-types": "2.6.0",
     "@todone/types": "workspace:^",
     "@types/node": "^16",
-    "@types/vinyl-fs": "^2",
     "parcel": "^2.6.0",
     "typescript": "^4.7.0"
   },

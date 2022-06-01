@@ -1,6 +1,7 @@
 import runTodone from "@todone/core";
 import CaniusePlugin from "@todone/plugin-caniuse";
 import DatePlugin from "@todone/plugin-date";
+import FigmaCommentPlugin from "@todone/plugin-figma";
 import GitHubIssuePlugin from "@todone/plugin-github";
 import reporter from "@todone/reporter-cli";
 import type { File } from "@todone/types";
@@ -11,6 +12,7 @@ const todone = async (globs: string[]) => {
     DatePlugin(),
     CaniusePlugin(),
     GitHubIssuePlugin(),
+    FigmaCommentPlugin(),
   ]);
 };
 

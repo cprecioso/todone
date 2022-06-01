@@ -1116,6 +1116,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@todone/plugin-figma@workspace:^, @todone/plugin-figma@workspace:packages/plugin-figma":
+  version: 0.0.0-use.local
+  resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
+  dependencies:
+    "@parcel/packager-ts": 2.6.0
+    "@parcel/transformer-typescript-types": 2.6.0
+    "@todone/internal-urlpattern": "workspace:^"
+    "@todone/types": "workspace:^"
+    "@types/node": ^16
+    got: ^12.0.4
+    parcel: ^2.6.0
+    typescript: ^4.7.0
+  languageName: unknown
+  linkType: soft
+
 "@todone/plugin-github@workspace:^, @todone/plugin-github@workspace:packages/plugin-github":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
@@ -3728,6 +3743,7 @@ __metadata:
     "@todone/core": "workspace:^"
     "@todone/plugin-caniuse": "workspace:^"
     "@todone/plugin-date": "workspace:^"
+    "@todone/plugin-figma": "workspace:^"
     "@todone/plugin-github": "workspace:^"
     "@todone/reporter-cli": "workspace:^"
     "@todone/types": "workspace:^"
