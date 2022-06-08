@@ -17,10 +17,7 @@
   },
   "dependencies": {
     "@todone/core": "workspace:^",
-    "@todone/plugin-caniuse": "workspace:^",
-    "@todone/plugin-date": "workspace:^",
-    "@todone/plugin-figma": "workspace:^",
-    "@todone/plugin-github": "workspace:^",
+    "@todone/default-plugins": "workspace:^",
     "@todone/reporter-cli": "workspace:^",
     "vinyl-fs": "^3.0.3"
   },
