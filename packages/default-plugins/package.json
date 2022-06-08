@@ -1,0 +1,32 @@
+{
+  "name": "@todone/default-plugins",
+  "version": "0.1.0",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "engines": {
+    "node": ">=16"
+  },
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build/index.mjs"
+  },
+  "dependencies": {
+    "@todone/plugin-caniuse": "workspace:^",
+    "@todone/plugin-date": "workspace:^",
+    "@todone/plugin-figma": "workspace:^",
+    "@todone/plugin-github": "workspace:^"
+  },
+  "devDependencies": {
+    "@sindresorhus/slugify": "^2.1.0",
+    "@todone/types": "workspace:^",
+    "@types/node": "^16",
+    "fs-extra": "^10.1.0",
+    "prettier": "^2.6.2",
+    "ts-morph": "^15.1.0"
+  },
+  "packageManager": "yarn@3.2.1"
+}
