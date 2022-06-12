@@ -8,7 +8,7 @@ import { format } from "./format.mjs";
 import { makeCode } from "./make-code.mjs";
 
 const pkgURL = new URL("../../package.json", import.meta.url);
-const pkg = fse.readJSONSync(fileURLToPath(pkgURL));
+const pkg = await fse.readJSON(fileURLToPath(pkgURL));
 const allDeps = Object.keys(pkg.dependencies);
 
 const code = makeCode(allDeps);
@@ -18,6 +18,8 @@ const typesFilePath = fileURLToPath(new URL(pkg.types, pkgURL));
 
 const { js, dts } = compile(code);
 
-fse.ensureDirSync(dirname(mainFilePath));
-fse.writeFileSync(mainFilePath, format(js));
-fse.writeFileSync(typesFilePath, format(dts));
+await fse.ensureDir(dirname(mainFilePath));
+await Promise.all([
+  fse.writeFile(mainFilePath, format(js)),
+  fse.writeFile(typesFilePath, format(dts)),
+]);

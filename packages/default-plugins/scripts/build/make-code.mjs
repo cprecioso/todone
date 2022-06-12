@@ -1,7 +1,7 @@
 // @ts-check
 
 import slugify from "@sindresorhus/slugify";
-
+import assert from "node:assert";
 import { format } from "./format.mjs";
 
 const PLUGIN_RE = /^@todone\/plugin-(.+)$/;
@@ -10,7 +10,9 @@ export const makeCode = (/** @type {string[]} */ allDeps) => {
   const deps = allDeps
     .filter((name) => PLUGIN_RE.test(name))
     .map((name) => {
-      const key = name.match(PLUGIN_RE)[1];
+      const match = name.match(PLUGIN_RE);
+      assert(match); // To make TypeScript happy
+      const key = match[1];
       const id = slugify(key, { separator: "_" });
       return { name, key, id };
     });
