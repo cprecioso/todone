@@ -25,7 +25,7 @@ const analyze: FileAnalyzer = async function* (file) {
       if (url) {
         const indices = (match as any).indices[0] as [number, number];
         yield {
-          file: file.path,
+          file: file.relative,
           url,
           start: { line, column: indices[0] + 1 },
           end: { line, column: indices[1] + 1 },
