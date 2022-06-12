@@ -6,6 +6,7 @@
   "engines": {
     "node": ">=16"
   },
+  "bin": "dist/bin.mjs",
   "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
@@ -19,6 +20,7 @@
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
     "@todone/reporter-cli": "workspace:^",
+    "clipanion": "^3.2.0-rc.11",
     "vinyl-fs": "^3.0.3"
   },
   "devDependencies": {
@@ -28,5 +30,14 @@
     "parcel": "^2.6.0"
   },
   "packageManager": "yarn@3.2.1",
-  "source": "src/index.ts"
+  "targets": {
+    "main": {
+      "source": "src/index.ts"
+    },
+    "bin": {
+      "source": "src/bin.ts",
+      "optimize": false,
+      "isLibrary": true
+    }
+  }
 }
