@@ -1097,8 +1097,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/analyzer@workspace:packages/analyzer"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/types": "workspace:^"
     "@types/node": ^16
     "@types/split2": ^3
@@ -1106,7 +1104,6 @@ __metadata:
     escape-string-regexp: ^5.0.0
     parcel: ^2.6.0
     split2: ^4.1.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -1114,13 +1111,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/core@workspace:packages/core"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/analyzer": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/node": ^16
     parcel: ^2.6.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -1153,8 +1147,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-caniuse@workspace:packages/plugin-caniuse"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/caniuse-lite": ^1
@@ -1162,7 +1154,6 @@ __metadata:
     browserslist: ^4.20.3
     caniuse-lite: ^1.0.30001344
     parcel: ^2.6.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -1170,13 +1161,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-date@workspace:packages/plugin-date"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/node": ^16
     parcel: ^2.6.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -1184,14 +1172,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/node": ^16
     got: ^12.0.4
     parcel: ^2.6.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -1199,14 +1184,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/node": ^16
     got: ^12.0.4
     parcel: ^2.6.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -1214,11 +1196,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/repo@workspace:."
   dependencies:
+    "@parcel/packager-ts": 2.6.0
+    "@parcel/transformer-typescript-types": 2.6.0
     prettier: ^2.6.2
     prettier-plugin-organize-imports: ^2.3.4
     prettier-plugin-pkg: ^0.13.1
     prettier-plugin-sh: ^0.11.0
-    typescript: ^4.7.0
+    typescript: ^4.7.3
   languageName: unknown
   linkType: soft
 
@@ -1226,12 +1210,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/reporter-cli@workspace:packages/reporter-cli"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/types": "workspace:^"
     "@types/node": ^16
     parcel: ^2.6.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -1239,12 +1220,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/types@workspace:packages/types"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@types/node": ^16
     "@types/vinyl": ^2
     parcel: ^2.6.0
-    typescript: ^4.7.0
   languageName: unknown
   linkType: soft
 
@@ -3982,8 +3960,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "todone@workspace:packages/todone"
   dependencies:
-    "@parcel/packager-ts": 2.6.0
-    "@parcel/transformer-typescript-types": 2.6.0
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
     "@todone/reporter-cli": "workspace:^"
@@ -3991,7 +3967,6 @@ __metadata:
     "@types/node": ^16
     "@types/vinyl-fs": ^2
     parcel: ^2.6.0
-    typescript: ^4.7.0
     vinyl-fs: ^3.0.3
   languageName: unknown
   linkType: soft
@@ -4027,23 +4002,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.7.0":
-  version: 4.7.2
-  resolution: "typescript@npm:4.7.2"
+"typescript@npm:^4.7.3":
+  version: 4.7.3
+  resolution: "typescript@npm:4.7.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5163585e6b56410f77d5483b698d9489bbee8902c99029eb70cf6d21525a186530ce19a00951af84eefd4a131cc51d0959f5118e25e70ab61f45ac4057dbd1ef
+  checksum: fd13a1ce53790a36bb8350e1f5e5e384b5f6cb9b0635114a6d01d49cb99916abdcfbc13c7521cdae2f2d3f6d8bc4a8ae7625edf645a04ee940588cd5e7597b2f
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.7.0#~builtin<compat/typescript>":
-  version: 4.7.2
-  resolution: "typescript@patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"
+"typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>":
+  version: 4.7.3
+  resolution: "typescript@patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 7e2b9a9f4a70fb7616f1b0d986977f8e34a74f046202fa7f24fdee79589598277810fa216b3776c20c0683a9235872c73be34fdb93f67f98c1efaca40999422f
+  checksum: 137d18a77f52254a284960b16ab53d0619f57b69b5d585804b8413f798a1175ce3e774fb95e6a101868577aafe357d8fcfc9171f0dc9fc0c210e9ae59d107cc0
   languageName: node
   linkType: hard
 
