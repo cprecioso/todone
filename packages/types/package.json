@@ -16,10 +16,12 @@
     "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
-    "@types/vinyl": "^2"
+    "@types/vinyl": "^2",
+    "semver": "^7.3.7"
   },
   "devDependencies": {
     "@types/node": "^16",
+    "@types/semver": "^7",
     "parcel": "^2.6.0"
   },
   "packageManager": "yarn@3.2.1",
