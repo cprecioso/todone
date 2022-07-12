@@ -1,6 +1,6 @@
+import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
 import type { PluginInstance } from "@todone/types";
-import got from "got";
 
 const issuePattern = new URLPattern({
   protocol: "http{s}?",
@@ -24,9 +24,11 @@ const GitHubIssuePlugin = (): PluginInstance => ({
       return null;
     }
 
-    const data: any = await got(
-      `https://api.github.com/repos/${owner}/${repo}/issues/${issueID}`,
-      { headers: { Accept: "application/vnd.github.v3+json" } }
+    const data: any = await (
+      await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/issues/${issueID}`,
+        { headers: { Accept: "application/vnd.github.v3+json" } }
+      )
     ).json();
 
     const isExpired = data.state === "closed";

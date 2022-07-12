@@ -16,8 +16,8 @@
     "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
-    "@todone/internal-urlpattern": "workspace:^",
-    "got": "^12.0.4"
+    "@todone/internal-fetch": "workspace:^",
+    "@todone/internal-urlpattern": "workspace:^"
   },
   "devDependencies": {
     "@todone/types": "workspace:^",

@@ -1,6 +1,6 @@
+import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
 import type { PluginInstance } from "@todone/types";
-import got from "got";
 import assert from "node:assert/strict";
 
 const issuePattern = new URLPattern({
@@ -30,9 +30,10 @@ const FigmaCommentPlugin = (): PluginInstance => {
         },
       } = result;
 
-      const data: any = await got(
-        `https://api.figma.com/v1/files/${fileID}/comments`,
-        { headers: { "X-FIGMA-TOKEN": FIGMA_TOKEN } }
+      const data: any = await (
+        await fetch(`https://api.figma.com/v1/files/${fileID}/comments`, {
+          headers: { "X-FIGMA-TOKEN": FIGMA_TOKEN },
+        })
       ).json();
 
       const comment = data.comments.find(
