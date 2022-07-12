@@ -12,7 +12,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "node scripts/build/index.mjs"
+    "build": "parcel build",
+    "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
     "@todone/plugin-caniuse": "workspace:^",
@@ -21,12 +22,10 @@
     "@todone/plugin-github": "workspace:^"
   },
   "devDependencies": {
-    "@sindresorhus/slugify": "^2.1.0",
     "@todone/types": "workspace:^",
     "@types/node": "^16",
-    "fs-extra": "^10.1.0",
-    "prettier": "^2.6.2",
-    "ts-morph": "^15.1.0"
+    "parcel": "^2.6.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "source": "src/index.ts"
 }
