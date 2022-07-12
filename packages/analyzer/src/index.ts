@@ -1,4 +1,4 @@
-import type { FileAnalyzer } from "@todone/types";
+import type { File, Match } from "@todone/types";
 import { pipeline as innerPipeline } from "node:stream";
 import split from "split2";
 import { re } from "./util/regex";
@@ -8,7 +8,7 @@ import { assertStreamFile } from "./util/vinyl";
 const KEYWORD = "@TODO";
 const MATCHER = re`${KEYWORD}\s+?(\S+)`("dgu");
 
-const analyze: FileAnalyzer = async function* (file) {
+const analyze = async function* (file: File): AsyncIterable<Match> {
   if (!(file.isBuffer() || file.isStream())) return;
   assertStreamFile(file, "Vinyl files should be streams");
 

@@ -1,8 +1,7 @@
-import { PluginInstance, PluginRunner } from "@todone/types";
+import { Match, PluginInstance } from "@todone/types";
 
 export const runPlugins =
-  (plugins: readonly PluginInstance[]): PluginRunner =>
-  async (match) => {
+  (plugins: readonly PluginInstance[]) => async (match: Match) => {
     for (const plugin of plugins) {
       const result = await plugin.checkExpiration(match.url, { match });
       if (result) return { match, result };

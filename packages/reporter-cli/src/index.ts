@@ -1,6 +1,6 @@
-import type { Reporter } from "@todone/types";
+import type { Result } from "@todone/types";
 
-const reporter: Reporter = async function (results) {
+const reporter = async function (results: AsyncIterable<Result>) {
   let hasExpiredItems = false;
   for await (const { match, result } of results) {
     console.log(

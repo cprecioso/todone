@@ -1,11 +1,11 @@
 import analyze from "@todone/analyzer";
-import type { FileSource, PluginInstance, Reporter } from "@todone/types";
+import type { File, PluginInstance, Result } from "@todone/types";
 import { pipeline } from "node:stream/promises";
 import { runPlugins } from "./runner";
 
 const runTodone = async (
-  source: FileSource,
-  reporter: Reporter,
+  source: () => AsyncIterable<File>,
+  reporter: (results: AsyncIterable<Result>) => Promise<void>,
   plugins: readonly PluginInstance[]
 ) => {
   const pluginRunner = runPlugins(plugins);
