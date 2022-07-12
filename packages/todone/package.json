@@ -27,7 +27,7 @@
     "@todone/types": "workspace:^",
     "@types/node": "^16",
     "@types/vinyl-fs": "^2",
-    "parcel": "^2.6.0"
+    "parcel": "^2.6.2"
   },
   "packageManager": "yarn@3.2.1",
   "targets": {
