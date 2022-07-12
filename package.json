@@ -21,8 +21,8 @@
     "@parcel/transformer-typescript-types": "^2.6.2",
     "prettier": "^2.6.2",
     "prettier-plugin-organize-imports": "^3.0.0",
-    "prettier-plugin-pkg": "^0.13.1",
-    "prettier-plugin-sh": "^0.11.0",
+    "prettier-plugin-pkg": "^0.16.0",
+    "prettier-plugin-sh": "^0.12.6",
     "typescript": "^4.7.3"
   },
   "packageManager": "yarn@3.2.1"
