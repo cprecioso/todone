@@ -1,0 +1,65 @@
+{
+  "folders": [
+    {
+      "name": "✨ @todone/repo",
+      "path": "."
+    },
+    {
+      "name": "📦 @todone/analyzer",
+      "path": "packages/analyzer"
+    },
+    {
+      "name": "📦 @todone/core",
+      "path": "packages/core"
+    },
+    {
+      "name": "📦 @todone/default-plugins",
+      "path": "packages/default-plugins"
+    },
+    {
+      "name": "📦 @todone/internal-fetch",
+      "path": "packages/internal-fetch"
+    },
+    {
+      "name": "📦 @todone/internal-urlpattern",
+      "path": "packages/internal-urlpattern"
+    },
+    {
+      "name": "📦 @todone/plugin-caniuse",
+      "path": "packages/plugin-caniuse"
+    },
+    {
+      "name": "📦 @todone/plugin-date",
+      "path": "packages/plugin-date"
+    },
+    {
+      "name": "📦 @todone/plugin-figma",
+      "path": "packages/plugin-figma"
+    },
+    {
+      "name": "📦 @todone/plugin-github",
+      "path": "packages/plugin-github"
+    },
+    {
+      "name": "📦 @todone/reporter-cli",
+      "path": "packages/reporter-cli"
+    },
+    {
+      "name": "📦 todone",
+      "path": "packages/todone"
+    },
+    {
+      "name": "📦 @todone/types",
+      "path": "packages/types"
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib"
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "folke.vscode-monorepo-workspace"
+    ]
+  }
+}
