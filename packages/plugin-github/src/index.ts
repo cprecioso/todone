@@ -1,13 +1,13 @@
 import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
-import type { PluginInstance } from "@todone/types";
+import type { PluginFactory } from "@todone/types";
 
 const issuePattern = new URLPattern({
   protocol: "http{s}?",
   pathname: "/:owner/:repo/:issueKind(issues|pull)/:issueID",
 });
 
-const GitHubIssuePlugin = (): PluginInstance => ({
+const GitHubIssuePlugin: PluginFactory = async () => ({
   name: "GitHub Issues",
 
   async checkExpiration(url) {

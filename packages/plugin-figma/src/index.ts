@@ -1,6 +1,6 @@
 import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
-import type { PluginInstance } from "@todone/types";
+import type { PluginFactory } from "@todone/types";
 import assert from "node:assert/strict";
 
 const issuePattern = new URLPattern({
@@ -10,7 +10,7 @@ const issuePattern = new URLPattern({
   hash: "#:commentID",
 });
 
-const FigmaCommentPlugin = (): PluginInstance => {
+const FigmaCommentPlugin: PluginFactory = async () => {
   const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
   assert(FIGMA_TOKEN, "Please provide a FIGMA_TOKEN environment variable");
 
