@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
+  "packageManager": "yarn@3.2.1",
   "engines": {
     "node": ">=16"
   },
@@ -20,6 +21,5 @@
     "@types/node": "^16",
     "parcel": "^2.6.2"
   },
-  "packageManager": "yarn@3.2.1",
   "source": "src/index.ts"
 }
