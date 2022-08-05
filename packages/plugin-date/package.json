@@ -17,10 +17,10 @@
     "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
-    "@todone/internal-urlpattern": "workspace:^"
+    "@todone/internal-urlpattern": "workspace:^",
+    "@todone/types": "workspace:^"
   },
   "devDependencies": {
-    "@todone/types": "workspace:^",
     "@types/node": "^16",
     "parcel": "^2.6.2"
   },

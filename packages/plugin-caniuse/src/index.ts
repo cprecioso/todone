@@ -1,5 +1,5 @@
 import URLPattern from "@todone/internal-urlpattern";
-import type { PluginFactory } from "@todone/types";
+import { definePlugin } from "@todone/types";
 import browserslist from "browserslist";
 import * as db from "caniuse-lite";
 import { CaniuseFlags, UrlFlags } from "./flags";
@@ -10,9 +10,7 @@ const issuePattern = new URLPattern({
   pathname: "/:feature",
 });
 
-const CaniusePlugin: PluginFactory = async () => ({
-  name: "Can I use",
-
+export default definePlugin("CaniusePlugin", async () => ({
   async checkExpiration(match) {
     const { url } = match;
 
@@ -81,6 +79,4 @@ const CaniusePlugin: PluginFactory = async () => ({
 
     return { isExpired };
   },
-});
-
-export default CaniusePlugin;
+}));

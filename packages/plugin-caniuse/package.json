@@ -18,11 +18,11 @@
   },
   "dependencies": {
     "@todone/internal-urlpattern": "workspace:^",
+    "@todone/types": "workspace:^",
     "browserslist": "^4.20.3",
     "caniuse-lite": "^1.0.30001344"
   },
   "devDependencies": {
-    "@todone/types": "workspace:^",
     "@types/caniuse-lite": "^1",
     "@types/node": "^16",
     "parcel": "^2.6.2"

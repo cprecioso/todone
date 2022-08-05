@@ -1,5 +1,5 @@
 import URLPattern from "@todone/internal-urlpattern";
-import type { PluginFactory } from "@todone/types";
+import { definePlugin } from "@todone/types";
 
 const issuePattern = new URLPattern({
   protocol: "date",
@@ -7,9 +7,7 @@ const issuePattern = new URLPattern({
   pathname: ":date",
 });
 
-const DatePlugin: PluginFactory = async () => ({
-  name: "Date",
-
+export default definePlugin("DatePlugin", async () => ({
   async checkExpiration({ url }) {
     const result = issuePattern.exec(url);
     if (!result) return null;
@@ -25,6 +23,4 @@ const DatePlugin: PluginFactory = async () => ({
       expiration: { date: expirationDate, isApproximation: false },
     };
   },
-});
-
-export default DatePlugin;
+}));

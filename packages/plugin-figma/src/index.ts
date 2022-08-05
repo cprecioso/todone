@@ -1,6 +1,6 @@
 import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
-import type { PluginFactory } from "@todone/types";
+import { definePlugin } from "@todone/types";
 import assert from "node:assert/strict";
 
 const issuePattern = new URLPattern({
@@ -10,13 +10,11 @@ const issuePattern = new URLPattern({
   hash: "#:commentID",
 });
 
-const FigmaCommentPlugin: PluginFactory = async () => {
+export default definePlugin("FigmaCommentPlugin", async () => {
   const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
   assert(FIGMA_TOKEN, "Please provide a FIGMA_TOKEN environment variable");
 
   return {
-    name: "Figma comment",
-
     async checkExpiration({ url }) {
       const result = issuePattern.exec(url);
       if (!result) return null;
@@ -52,6 +50,4 @@ const FigmaCommentPlugin: PluginFactory = async () => {
       };
     },
   };
-};
-
-export default FigmaCommentPlugin;
+});
