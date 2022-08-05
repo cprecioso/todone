@@ -1,12 +1,8 @@
-import runTodone from "@todone/core";
-import { pluginsByName } from "@todone/default-plugins";
-import reporter from "@todone/reporter-cli";
+import { runTodone } from "@todone/core";
+import { allPlugins } from "@todone/default-plugins";
+import type { File } from "@todone/types";
 import { Command, Option } from "clipanion";
-import { instantiatePlugins } from "../plugins";
-import { makeSource } from "../source";
-
-// @TODO date:2020-03-03
-// @TODO date:2023-03-03
+import vfs from "vinyl-fs";
 
 export class RunCommand extends Command {
   static paths = [Command.Default, ["run"]];
@@ -14,8 +10,17 @@ export class RunCommand extends Command {
   globs = Option.Rest({ name: "globs", required: 1 });
 
   async execute() {
-    await runTodone(makeSource(this.globs), reporter, [
-      ...instantiatePlugins(pluginsByName, this.context.stderr),
-    ]);
+    const results = runTodone(
+      vfs.src(this.globs, {
+        buffer: false,
+        cwd: process.cwd(),
+        cwdbase: true,
+      }) as AsyncIterable<File>,
+      { plugins: allPlugins }
+    );
+
+    for await (const result of results) {
+      console.log(result);
+    }
   }
 }

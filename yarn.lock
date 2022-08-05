@@ -1059,9 +1059,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@todone/analyzer@workspace:^, @todone/analyzer@workspace:packages/analyzer":
+"@todone/core@workspace:^, @todone/core@workspace:packages/core":
   version: 0.0.0-use.local
-  resolution: "@todone/analyzer@workspace:packages/analyzer"
+  resolution: "@todone/core@workspace:packages/core"
   dependencies:
     "@todone/types": "workspace:^"
     "@types/node": ^16
@@ -1070,17 +1070,6 @@ __metadata:
     escape-string-regexp: ^5.0.0
     parcel: ^2.6.2
     split2: ^4.1.0
-  languageName: unknown
-  linkType: soft
-
-"@todone/core@workspace:^, @todone/core@workspace:packages/core":
-  version: 0.0.0-use.local
-  resolution: "@todone/core@workspace:packages/core"
-  dependencies:
-    "@todone/analyzer": "workspace:^"
-    "@todone/types": "workspace:^"
-    "@types/node": ^16
-    parcel: ^2.6.2
   languageName: unknown
   linkType: soft
 

@@ -9,9 +9,9 @@ export interface Offset {
 }
 
 export interface Match {
-  file: string;
-  start?: Offset;
-  end?: Offset;
+  file: File;
+  start: Offset;
+  end: Offset;
   url: URL;
 }
 
@@ -19,3 +19,7 @@ export interface Result {
   match: Match;
   result: PluginResult;
 }
+
+export const getFileId = (file: File) => file.relative;
+export const getMatchId = (match: Match) =>
+  `${getFileId(match.file)}:${match.start.line}:${match.start.column}`;

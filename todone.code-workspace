@@ -5,10 +5,6 @@
       "path": "."
     },
     {
-      "name": "📦 @todone/analyzer",
-      "path": "packages/analyzer"
-    },
-    {
       "name": "📦 @todone/core",
       "path": "packages/core"
     },

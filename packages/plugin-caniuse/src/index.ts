@@ -13,7 +13,9 @@ const issuePattern = new URLPattern({
 const CaniusePlugin: PluginFactory = async () => ({
   name: "Can I use",
 
-  async checkExpiration(url, { match }) {
+  async checkExpiration(match) {
+    const { url } = match;
+
     const result = issuePattern.exec(url);
     if (!result) return null;
 

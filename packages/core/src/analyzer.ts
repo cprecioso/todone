@@ -8,7 +8,7 @@ import { assertStreamFile } from "./util/vinyl";
 const KEYWORD = "@TODO";
 const MATCHER = re`${KEYWORD}\s+?(\S+)`("dgu");
 
-const analyze = async function* (file: File): AsyncIterable<Match> {
+export const analyze = async function* (file: File): AsyncIterable<Match> {
   if (!(file.isBuffer() || file.isStream())) return;
   assertStreamFile(file, "Vinyl files should be streams");
 
@@ -25,7 +25,7 @@ const analyze = async function* (file: File): AsyncIterable<Match> {
       if (url) {
         const indices = (match as any).indices[0] as [number, number];
         yield {
-          file: file.relative,
+          file,
           url,
           start: { line, column: indices[0] + 1 },
           end: { line, column: indices[1] + 1 },
@@ -36,5 +36,3 @@ const analyze = async function* (file: File): AsyncIterable<Match> {
     line++;
   }
 };
-
-export default analyze;

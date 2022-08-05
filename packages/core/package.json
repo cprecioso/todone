@@ -17,11 +17,14 @@
     "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
-    "@todone/analyzer": "workspace:^"
+    "escape-string-regexp": "^5.0.0",
+    "split2": "^4.1.0"
   },
   "devDependencies": {
     "@todone/types": "workspace:^",
     "@types/node": "^16",
+    "@types/split2": "^3",
+    "@types/vinyl": "^2",
     "parcel": "^2.6.2"
   },
   "source": "src/index.ts"

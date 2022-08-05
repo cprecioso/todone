@@ -10,7 +10,7 @@ const issuePattern = new URLPattern({
 const GitHubIssuePlugin: PluginFactory = async () => ({
   name: "GitHub Issues",
 
-  async checkExpiration(url) {
+  async checkExpiration({ url }) {
     const result = issuePattern.exec(url);
     if (!result) return null;
 

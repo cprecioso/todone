@@ -10,7 +10,7 @@ const issuePattern = new URLPattern({
 const DatePlugin: PluginFactory = async () => ({
   name: "Date",
 
-  async checkExpiration(url) {
+  async checkExpiration({ url }) {
     const result = issuePattern.exec(url);
     if (!result) return null;
 

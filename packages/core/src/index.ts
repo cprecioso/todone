@@ -1,30 +1,26 @@
-import analyze from "@todone/analyzer";
-import type { File, PluginInstance, Result } from "@todone/types";
-import { pipeline } from "node:stream/promises";
-import { runPlugins } from "./runner";
+import type { File, PluginFactory } from "@todone/types";
+import { analyze } from "./analyzer";
+import { tryPlugins } from "./plugins";
+import { asyncMap } from "./util/async";
 
-const runTodone = async (
-  source: () => AsyncIterable<File>,
-  reporter: (results: AsyncIterable<Result>) => Promise<void>,
-  plugins: readonly PluginInstance[]
-) => {
-  const pluginRunner = runPlugins(plugins);
+export interface TodoneOptions {
+  plugins?: readonly PluginFactory[];
+}
 
-  await pipeline(
-    source(),
-    async function* (files) {
-      for await (const file of files) {
-        yield* analyze(file);
-      }
-    },
-    async function* (matches) {
-      for await (const match of matches) {
-        const result = await pluginRunner(match);
-        if (result) yield result;
-      }
-    },
-    reporter
+export const runTodone = async function* (
+  files: AsyncIterable<File>,
+  { plugins: pluginFactories = [] }: TodoneOptions = {}
+) {
+  const plugins = await asyncMap(
+    pluginFactories,
+    async (factory) => await factory()
   );
-};
 
-export default runTodone;
+  for await (const file of files) {
+    const matches = analyze(file);
+    for await (const match of matches) {
+      const result = await tryPlugins(match, plugins);
+      yield { match, result };
+    }
+  }
+};

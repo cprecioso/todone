@@ -17,7 +17,7 @@ const FigmaCommentPlugin: PluginFactory = async () => {
   return {
     name: "Figma comment",
 
-    async checkExpiration(url) {
+    async checkExpiration({ url }) {
       const result = issuePattern.exec(url);
       if (!result) return null;
 
