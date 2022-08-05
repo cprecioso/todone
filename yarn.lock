@@ -1179,16 +1179,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/reporter-cli@workspace:^, @todone/reporter-cli@workspace:packages/reporter-cli":
-  version: 0.0.0-use.local
-  resolution: "@todone/reporter-cli@workspace:packages/reporter-cli"
-  dependencies:
-    "@todone/types": "workspace:^"
-    "@types/node": ^16
-    parcel: ^2.6.2
-  languageName: unknown
-  linkType: soft
-
 "@todone/types@workspace:^, @todone/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@todone/types@workspace:packages/types"
@@ -4177,7 +4167,6 @@ __metadata:
   dependencies:
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
-    "@todone/reporter-cli": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/node": ^16
     "@types/vinyl-fs": ^2

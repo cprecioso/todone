@@ -41,10 +41,6 @@
       "path": "packages/plugin-github"
     },
     {
-      "name": "📦 @todone/reporter-cli",
-      "path": "packages/reporter-cli"
-    },
-    {
       "name": "📦 todone",
       "path": "packages/todone"
     },
