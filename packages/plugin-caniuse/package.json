@@ -1,6 +1,6 @@
 {
   "name": "@todone/plugin-caniuse",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "packageManager": "yarn@3.2.1",
