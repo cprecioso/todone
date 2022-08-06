@@ -7,36 +7,47 @@ const issuePattern = new URLPattern({
   pathname: "/:owner/:repo/:issueKind(issues|pull)/:issueID",
 });
 
-export default definePlugin("GitHubIssuePlugin", async () => ({
-  async checkExpiration({ url }) {
-    const result = issuePattern.exec(url);
-    if (!result) return null;
+export default definePlugin("GitHubIssuePlugin", async () => {
+  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-    const { hostname } = url;
-    const { owner, repo, issueID } = result.pathname.groups;
+  return {
+    async checkExpiration({ url }) {
+      const result = issuePattern.exec(url);
+      if (!result) return null;
 
-    if (!(hostname === "github.com" || hostname === "www.github.com")) {
-      console.error(
-        `GitHub Enterprise servers are not supported yet (possibly ${hostname})`
-      );
-      return null;
-    }
+      const { hostname } = url;
+      const { owner, repo, issueID } = result.pathname.groups;
 
-    const data: any = await (
-      await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/issues/${issueID}`,
-        { headers: { Accept: "application/vnd.github.v3+json" } }
-      )
-    ).json();
+      if (!(hostname === "github.com" || hostname === "www.github.com")) {
+        console.error(
+          `GitHub Enterprise servers are not supported yet (possibly ${hostname})`
+        );
+        return null;
+      }
 
-    const isExpired = data.state === "closed";
-    const closeDate = data.closed_at && new Date(data.closed_at);
+      const data: any = await (
+        await fetch(
+          `https://api.github.com/repos/${owner}/${repo}/issues/${issueID}`,
+          {
+            headers: {
+              Accept: "application/vnd.github.v3+json",
+              ...(GITHUB_TOKEN
+                ? { Authorization: `token ${GITHUB_TOKEN}` }
+                : {}),
+            },
+          }
+        )
+      ).json();
 
-    return {
-      isExpired,
-      expiration: closeDate
-        ? { date: closeDate, isApproximation: false }
-        : null,
-    };
-  },
-}));
+      const isExpired = data.state === "closed";
+      const closeDate = data.closed_at && new Date(data.closed_at);
+
+      return {
+        isExpired,
+        expiration: closeDate
+          ? { date: closeDate, isApproximation: false }
+          : null,
+      };
+    },
+  };
+});
