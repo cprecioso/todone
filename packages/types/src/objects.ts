@@ -19,7 +19,3 @@ export interface Result {
   match: Match;
   result: PluginResult | null;
 }
-
-export const getFileId = (file: File) => file.relative;
-export const getMatchId = (match: Match) =>
-  `${getFileId(match.file)}:${match.start.line}:${match.start.column}`;
