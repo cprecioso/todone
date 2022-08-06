@@ -4,7 +4,7 @@ import type { Writable } from "node:stream";
 
 const dateFormatter = new Intl.DateTimeFormat();
 
-export const logResults = async (
+export const logCLIResults = async (
   stdout: Writable,
   results: AsyncIterable<Result>
 ) => {

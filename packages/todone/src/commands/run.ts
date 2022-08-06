@@ -3,10 +3,15 @@ import { allPlugins } from "@todone/default-plugins";
 import { Command, Option } from "clipanion";
 import { PassThrough, pipeline } from "node:stream";
 import vfs from "vinyl-fs";
-import { logResults } from "../logger";
+import { logCLIResults } from "../logger/cli";
+import { logJSONResults } from "../logger/json";
 
 export class RunCommand extends Command {
   static paths = [Command.Default, ["run"]];
+
+  json = Option.Boolean("--json", false, {
+    description: "Output results as newline-delimited JSON",
+  });
 
   globs = Option.Rest({ name: "globs", required: 1 });
 
@@ -30,8 +35,11 @@ export class RunCommand extends Command {
       }
     );
 
-    const expiredResults = await logResults(this.context.stdout, results);
-
-    return expiredResults > 0 ? 1 : 0;
+    if (this.json) {
+      await logJSONResults(this.context.stdout, results);
+    } else {
+      const expiredResults = await logCLIResults(this.context.stdout, results);
+      return expiredResults > 0 ? 1 : 0;
+    }
   }
 }
