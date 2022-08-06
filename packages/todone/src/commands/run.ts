@@ -1,11 +1,9 @@
 import { runTodone } from "@todone/core";
 import { allPlugins } from "@todone/default-plugins";
-import { getMatchId } from "@todone/types";
 import { Command, Option } from "clipanion";
 import { PassThrough, pipeline } from "node:stream";
 import vfs from "vinyl-fs";
-
-const dateFormatter = new Intl.DateTimeFormat();
+import { logResults } from "../logger";
 
 export class RunCommand extends Command {
   static paths = [Command.Default, ["run"]];
@@ -13,9 +11,6 @@ export class RunCommand extends Command {
   globs = Option.Rest({ name: "globs", required: 1 });
 
   async execute() {
-    let exitCode = 0;
-
-    const log = this.context.stdout.write.bind(this.context.stdout);
     const err = (err: string) => this.context.stderr.write(`${err}\n`);
 
     const results = runTodone(
@@ -35,30 +30,8 @@ export class RunCommand extends Command {
       }
     );
 
-    for await (const { match, result } of results) {
-      log(`${getMatchId(match)}\n`);
-      log(`${match.url.href}\n`);
+    const expiredResults = await logResults(this.context.stdout, results);
 
-      if (!result) {
-        log(`\tCouldn't find a match\n`);
-        exitCode &= 0b1;
-      } else if (result.isExpired) {
-        log(`\tEXPIRED\n`);
-        exitCode &= 0b10;
-      } else {
-        log(`\tNot yet expired\n`);
-      }
-
-      if (result?.expiration) {
-        log(`\ton ${dateFormatter.format(result.expiration.date)}\n`);
-        if (result.expiration.isApproximation) {
-          log(`\t(approximately)\n`);
-        }
-      }
-
-      log(`\n`);
-
-      return exitCode;
-    }
+    return expiredResults > 0 ? 1 : 0;
   }
 }

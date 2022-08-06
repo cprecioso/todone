@@ -12,7 +12,9 @@ export const instantiatePlugins = async function* ({
       yield instance;
     } catch (err) {
       if (!toleratePluginInstantiationErrors) throw err;
-      warnLogger(`${factory.displayName || factory.name}: ${err}`);
+      warnLogger(`${factory.displayName} will be disabled due to:`);
+      warnLogger("" + err);
+      warnLogger("");
     }
   }
 };

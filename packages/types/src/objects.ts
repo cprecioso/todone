@@ -17,7 +17,7 @@ export interface Match {
 
 export interface Result {
   match: Match;
-  result: PluginResult;
+  result: PluginResult | null;
 }
 
 export const getFileId = (file: File) => file.relative;
