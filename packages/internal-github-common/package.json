@@ -17,8 +17,7 @@
     "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
-    "@todone/internal-fetch": "workspace:^",
-    "@todone/types": "workspace:^"
+    "@todone/internal-fetch": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "^16",

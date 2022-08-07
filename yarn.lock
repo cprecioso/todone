@@ -1115,7 +1115,6 @@ __metadata:
   resolution: "@todone/internal-github-common@workspace:packages/internal-github-common"
   dependencies:
     "@todone/internal-fetch": "workspace:^"
-    "@todone/types": "workspace:^"
     "@types/node": ^16
     parcel: ^2.6.2
   languageName: unknown

@@ -1,5 +1,4 @@
 import { Request } from "@todone/internal-fetch";
-
 import { GITHUB_API_BASE_URL, normalizeHostname } from "./baseUrl";
 
 export class TokenMap {
