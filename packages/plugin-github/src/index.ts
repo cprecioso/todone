@@ -45,6 +45,11 @@ export default definePlugin("GitHubIssuePlugin", async () => {
         throw new Error("Error accessing issue or PR: " + data.message);
       }
 
+      if (!data.state)
+        throw new Error(
+          "Not an issue or pull request: " + (await response.text())
+        );
+
       const isExpired = data.state === "closed";
       const closeDate = data.closed_at && new Date(data.closed_at);
 
