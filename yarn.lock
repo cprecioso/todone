@@ -1095,6 +1095,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@todone/internal-github-common@workspace:^, @todone/internal-github-common@workspace:packages/internal-github-common":
+  version: 0.0.0-use.local
+  resolution: "@todone/internal-github-common@workspace:packages/internal-github-common"
+  dependencies:
+    "@todone/internal-fetch": "workspace:^"
+    "@todone/types": "workspace:^"
+    "@types/node": ^16
+    parcel: ^2.6.2
+  languageName: unknown
+  linkType: soft
+
 "@todone/internal-urlpattern@workspace:^, @todone/internal-urlpattern@workspace:packages/internal-urlpattern":
   version: 0.0.0-use.local
   resolution: "@todone/internal-urlpattern@workspace:packages/internal-urlpattern"
@@ -1145,6 +1156,7 @@ __metadata:
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
     "@todone/internal-fetch": "workspace:^"
+    "@todone/internal-github-common": "workspace:^"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/node": ^16

@@ -1,0 +1,28 @@
+{
+  "name": "@todone/internal-github-common",
+  "version": "0.1.0",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": ">=16"
+  },
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "parcel build",
+    "dev": "parcel watch --no-hmr"
+  },
+  "dependencies": {
+    "@todone/internal-fetch": "workspace:^",
+    "@todone/types": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "^16",
+    "parcel": "^2.6.2"
+  },
+  "source": "src/index.ts"
+}
