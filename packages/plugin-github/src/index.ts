@@ -1,6 +1,7 @@
 import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/types";
+import { parseTokens } from "./parseTokens";
 
 const issuePattern = new URLPattern({
   protocol: "http{s}?",
@@ -8,7 +9,7 @@ const issuePattern = new URLPattern({
 });
 
 export default definePlugin("GitHubIssuePlugin", async () => {
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+  const tokens = parseTokens(process.env.GITHUB_TOKEN);
 
   return {
     async checkExpiration({ url }) {
@@ -23,17 +24,21 @@ export default definePlugin("GitHubIssuePlugin", async () => {
           ? new URL("https://api.github.com/")
           : new URL(`${protocol}//${hostname}/api/v3/`);
 
-      const reqURL = new URL(
-        `repos/${owner}/${repo}/issues/${issueID}`,
-        apiBaseUrl
-      );
+      if (!tokens.has(apiBaseUrl.hostname)) {
+        return null;
+      }
 
-      const response = await fetch(reqURL, {
-        headers: {
-          Accept: "application/vnd.github.v3+json",
-          ...(GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {}),
-        },
-      });
+      const token = tokens.get(apiBaseUrl.hostname);
+
+      const response = await fetch(
+        new URL(`repos/${owner}/${repo}/issues/${issueID}`, apiBaseUrl),
+        {
+          headers: {
+            Accept: "application/vnd.github.v3+json",
+            ...(token ? { Authorization: `token ${token}` } : {}),
+          },
+        }
+      );
       const data: any = await response.json();
 
       if (response.status >= 400 && response.status < 500) {
