@@ -15,29 +15,30 @@ export default definePlugin("GitHubIssuePlugin", async () => {
       const result = issuePattern.exec(url);
       if (!result) return null;
 
-      const { hostname } = url;
+      const { protocol, hostname } = url;
       const { owner, repo, issueID } = result.pathname.groups;
 
-      if (!(hostname === "github.com" || hostname === "www.github.com")) {
-        console.error(
-          `GitHub Enterprise servers are not supported yet (possibly ${hostname})`
-        );
-        return null;
-      }
+      const apiBaseUrl =
+        hostname === "github.com" || hostname === "www.github.com"
+          ? new URL("https://api.github.com/")
+          : new URL(`${protocol}//${hostname}/api/v3/`);
 
-      const data: any = await (
-        await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/issues/${issueID}`,
-          {
-            headers: {
-              Accept: "application/vnd.github.v3+json",
-              ...(GITHUB_TOKEN
-                ? { Authorization: `token ${GITHUB_TOKEN}` }
-                : {}),
-            },
-          }
-        )
-      ).json();
+      const reqURL = new URL(
+        `repos/${owner}/${repo}/issues/${issueID}`,
+        apiBaseUrl
+      );
+
+      const response = await fetch(reqURL, {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          ...(GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {}),
+        },
+      });
+      const data: any = await response.json();
+
+      if (response.status >= 400 && response.status < 500) {
+        throw new Error("Error accessing issue or PR: " + data.message);
+      }
 
       const isExpired = data.state === "closed";
       const closeDate = data.closed_at && new Date(data.closed_at);
