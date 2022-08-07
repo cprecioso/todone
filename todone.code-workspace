@@ -54,8 +54,11 @@
   },
   "extensions": {
     "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig",
       "esbenp.prettier-vscode",
-      "folke.vscode-monorepo-workspace"
+      "folke.vscode-monorepo-workspace",
+      "timonwong.shellcheck"
     ]
   }
 }
