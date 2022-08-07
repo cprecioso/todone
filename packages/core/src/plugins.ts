@@ -21,11 +21,21 @@ export const instantiatePlugins = async function* ({
 
 export const tryPlugins = async (
   match: Match,
-  plugins: readonly PluginInstance[]
+  plugins: readonly PluginInstance[],
+  { warnLogger }: TodoneOptions
 ) => {
   for (const plugin of plugins) {
-    const result = await plugin.checkExpiration(match);
-    if (result) return result;
+    try {
+      const result = await plugin.checkExpiration(match);
+      if (result) return result;
+    } catch (err) {
+      warnLogger(
+        `${plugin.displayName} errored while processing ${match.url.href}:`
+      );
+      warnLogger("" + err);
+      warnLogger("");
+    }
   }
+
   return null;
 };

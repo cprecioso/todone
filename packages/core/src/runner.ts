@@ -15,7 +15,7 @@ export const runTodone = async function* (
   for await (const file of files) {
     const matches = analyze(file);
     for await (const match of matches) {
-      const result = await tryPlugins(match, plugins);
+      const result = await tryPlugins(match, plugins, options);
       yield { match, result } as Result;
     }
   }
