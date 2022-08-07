@@ -1,2 +1,3 @@
 releases:
   "@todone/core": patch
+  "@todone/repo": patch
