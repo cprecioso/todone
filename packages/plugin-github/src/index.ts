@@ -1,7 +1,7 @@
 import fetch from "@todone/internal-fetch";
+import { getApiBaseUrl, TokenMap } from "@todone/internal-github-common";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/types";
-import { parseTokens } from "./parseTokens";
 
 const issuePattern = new URLPattern({
   protocol: "http{s}?",
@@ -9,35 +9,25 @@ const issuePattern = new URLPattern({
 });
 
 export default definePlugin("GitHubIssuePlugin", async () => {
-  const tokens = parseTokens(process.env.GITHUB_TOKEN);
+  const tokens = new TokenMap(process.env.GITHUB_TOKEN);
 
   return {
     async checkExpiration({ url }) {
       const result = issuePattern.exec(url);
       if (!result) return null;
 
-      const { protocol, hostname } = url;
       const { owner, repo, issueID } = result.pathname.groups;
 
-      const apiBaseUrl =
-        hostname === "github.com" || hostname === "www.github.com"
-          ? new URL("https://api.github.com/")
-          : new URL(`${protocol}//${hostname}/api/v3/`);
-
+      const apiBaseUrl = getApiBaseUrl(url);
       if (!tokens.has(apiBaseUrl.hostname)) {
         return null;
       }
 
-      const token = tokens.get(apiBaseUrl.hostname);
-
       const response = await fetch(
-        new URL(`repos/${owner}/${repo}/issues/${issueID}`, apiBaseUrl),
-        {
-          headers: {
-            Accept: "application/vnd.github.v3+json",
-            ...(token ? { Authorization: `token ${token}` } : {}),
-          },
-        }
+        tokens.makeRequest(
+          new URL(`repos/${owner}/${repo}/issues/${issueID}`, apiBaseUrl),
+          { headers: { Accept: "application/vnd.github.v3+json" } }
+        )
       );
       const data: any = await response.json();
 

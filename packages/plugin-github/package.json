@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@todone/internal-fetch": "workspace:^",
+    "@todone/internal-github-common": "workspace:^",
     "@todone/internal-urlpattern": "workspace:^",
     "@todone/types": "workspace:^"
   },
