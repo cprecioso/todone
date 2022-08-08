@@ -1,6 +1,6 @@
 {
   "name": "todone",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "packageManager": "yarn@3.2.1",
