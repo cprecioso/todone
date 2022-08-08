@@ -17,6 +17,7 @@
     "check:all": "./scripts/check-all.sh",
     "clean:all": "yarn workspaces foreach --parallel exec del-cli dist .parcel-cache",
     "dev:all": "yarn run build:all && yarn workspaces foreach --parallel --interlaced --verbose --jobs unlimited run dev",
+    "postinstall": "husky install",
     "publish:all": "yarn run build:all && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
@@ -24,6 +25,8 @@
     "@parcel/transformer-typescript-types": "^2.6.2",
     "del-cli": "^4.0.1",
     "execa": "^6.1.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.6.2",
     "prettier-plugin-organize-imports": "^3.0.0",
     "prettier-plugin-pkg": "^0.16.0",
