@@ -1,4 +1,4 @@
-import type { File, Result } from "@todone/types";
+import { File, Result } from "@todone/types";
 import { analyze } from "./analyzer";
 import { defaultTodoneOptions, TodoneOptions } from "./options";
 import { instantiatePlugins, tryPlugins } from "./plugins";
@@ -15,8 +15,9 @@ export const runTodone = async function* (
   for await (const file of files) {
     const matches = analyze(file);
     for await (const match of matches) {
-      const result = await tryPlugins(match, plugins, options);
-      yield { match, result } as Result;
+      const pluginResult = await tryPlugins(match, plugins, options);
+      const result: Result = { match, result: pluginResult };
+      yield result;
     }
   }
 };
