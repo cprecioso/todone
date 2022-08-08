@@ -1,4 +1,4 @@
-import { PluginFactory } from "@todone/types";
+import type { PluginFactory } from "@todone/types";
 
 export interface TodoneOptions {
   /**

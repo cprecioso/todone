@@ -1,5 +1,5 @@
 import type { Match, PluginInstance } from "@todone/types";
-import { TodoneOptions } from "./options";
+import type { TodoneOptions } from "./options";
 
 export const instantiatePlugins = async function* ({
   plugins: factories,
