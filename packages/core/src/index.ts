@@ -1,2 +1,3 @@
 export type { TodoneOptions } from "./options";
-export { runTodone } from "./runner";
+export { runTodoneAsync, runTodoneIterable } from "./runner";
+export type { InflightReports } from "./runner";

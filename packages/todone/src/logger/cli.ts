@@ -1,28 +1,32 @@
-import type { Result } from "@todone/types";
+import { InflightReports } from "@todone/core";
 import chalk from "chalk";
 import type { Writable } from "node:stream";
 
 const dateFormatter = new Intl.DateTimeFormat();
 
-export const logCLIResults = async (
+export const logCLIReports = async (
   stdout: Writable,
-  results: AsyncIterable<Result>
+  reports: AsyncIterable<InflightReports>
 ) => {
   const headerLn = (str = "") => stdout.write(`${str}\n`);
   const infoLn = (str = "") => stdout.write(`\t${str}\n`);
 
-  let expiredResults = 0;
+  let expiredReports = 0;
 
-  resultLoop: for await (const {
-    result,
-    match: {
-      file: { relative: filePath },
-      url: { href },
-      start: { line, column },
-    },
-  } of results) {
+  for await (const report of reports) {
+    if (report.type !== "result") continue;
+
+    const {
+      result,
+      match: {
+        file,
+        url: { href },
+        start: { line, column },
+      },
+    } = report.item;
+
     headerLn(
-      chalk.blueBright(filePath) +
+      chalk.blueBright(file) +
         ":" +
         chalk.yellowBright(line) +
         ":" +
@@ -51,11 +55,11 @@ export const logCLIResults = async (
         );
       }
 
-      if (isExpired) expiredResults++;
+      if (isExpired) expiredReports++;
     }
 
     headerLn();
   }
 
-  return expiredResults;
+  return expiredReports;
 };

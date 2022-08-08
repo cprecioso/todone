@@ -1,10 +1,9 @@
-import { runTodone } from "@todone/core";
+import { runTodoneAsync, runTodoneIterable, TodoneOptions } from "@todone/core";
 import { allPlugins } from "@todone/default-plugins";
 import { Command, Option } from "clipanion";
 import { PassThrough, pipeline } from "node:stream";
 import vfs from "vinyl-fs";
-import { logCLIResults } from "../logger/cli";
-import { logJSONResults } from "../logger/json";
+import { logCLIReports } from "../logger/cli";
 
 export class RunCommand extends Command {
   static paths = [Command.Default, ["run"]];
@@ -18,27 +17,28 @@ export class RunCommand extends Command {
   async execute() {
     const err = (err: string) => this.context.stderr.write(`${err}\n`);
 
-    const results = runTodone(
-      pipeline(
-        vfs.src(this.globs, {
-          buffer: false,
-          cwd: process.cwd(),
-          cwdbase: true,
-        }),
-        new PassThrough({ objectMode: true }),
-        () => {}
-      ),
-      {
-        plugins: allPlugins,
-        toleratePluginInstantiationErrors: true,
-        warnLogger: err,
-      }
+    const files = pipeline(
+      vfs.src(this.globs, {
+        buffer: false,
+        cwd: process.cwd(),
+        cwdbase: true,
+      }),
+      new PassThrough({ objectMode: true }),
+      () => {}
     );
 
+    const options: TodoneOptions = {
+      plugins: allPlugins,
+      toleratePluginInstantiationErrors: true,
+      warnLogger: err,
+    };
+
     if (this.json) {
-      await logJSONResults(this.context.stdout, results);
+      const report = await runTodoneAsync(files, options);
+      this.context.stdout.write(`${JSON.stringify(report)}\n`);
     } else {
-      const expiredResults = await logCLIResults(this.context.stdout, results);
+      const reports = runTodoneIterable(files, options);
+      const expiredResults = await logCLIReports(this.context.stdout, reports);
       return expiredResults > 0 ? 1 : 0;
     }
   }

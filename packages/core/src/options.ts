@@ -25,3 +25,7 @@ export const defaultTodoneOptions: TodoneOptions = {
   toleratePluginInstantiationErrors: false,
   warnLogger: defaultWarnLogger,
 };
+
+export const normalizeOptions = (
+  partialOptions: Partial<TodoneOptions>
+): TodoneOptions => ({ ...defaultTodoneOptions, ...partialOptions });
