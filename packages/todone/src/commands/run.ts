@@ -12,6 +12,10 @@ export class RunCommand extends Command {
     description: "Output results as newline-delimited JSON",
   });
 
+  includeNodeModules = Option.Boolean("--include-node-modules", false, {
+    description: "Include files in node_modules folders",
+  });
+
   globs = Option.Rest({ name: "globs", required: 1 });
 
   async execute() {
@@ -22,6 +26,7 @@ export class RunCommand extends Command {
         buffer: false,
         cwd: process.cwd(),
         cwdbase: true,
+        ignore: !this.includeNodeModules ? "/**/node_modules/**/*" : undefined,
       }),
       new PassThrough({ objectMode: true }),
       () => {}
