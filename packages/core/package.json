@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.3.1",
   "engines": {
     "node": ">=16"
   },
@@ -19,14 +19,13 @@
   "dependencies": {
     "@todone/types": "workspace:^",
     "escape-string-regexp": "^5.0.0",
-    "immer": "^9.0.15",
     "split2": "^4.1.0"
   },
   "devDependencies": {
-    "@types/node": "^16",
+    "@types/node": "^18",
     "@types/split2": "^3",
     "@types/vinyl": "^2",
-    "parcel": "^2.6.2"
+    "parcel": "^2.8.2"
   },
   "source": "src/index.ts"
 }

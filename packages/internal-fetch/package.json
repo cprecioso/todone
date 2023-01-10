@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.3.1",
   "engines": {
     "node": ">=16"
   },

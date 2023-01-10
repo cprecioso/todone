@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.3.1",
   "engines": {
     "node": ">=16"
   },
@@ -23,8 +23,8 @@
     "@todone/types": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^16",
-    "parcel": "^2.6.2"
+    "@types/node": "^18",
+    "parcel": "^2.8.2"
   },
   "source": "src/index.ts"
 }

@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.3.1",
   "engines": {
     "node": ">=16"
   },
@@ -19,13 +19,13 @@
   "dependencies": {
     "@todone/internal-urlpattern": "workspace:^",
     "@todone/types": "workspace:^",
-    "browserslist": "^4.20.3",
-    "caniuse-lite": "^1.0.30001344"
+    "browserslist": "^4.21.4",
+    "caniuse-lite": "^1.0.30001442"
   },
   "devDependencies": {
     "@types/caniuse-lite": "^1",
-    "@types/node": "^16",
-    "parcel": "^2.6.2"
+    "@types/node": "^18",
+    "parcel": "^2.8.2"
   },
   "source": "src/index.ts"
 }
