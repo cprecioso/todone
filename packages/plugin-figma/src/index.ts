@@ -2,6 +2,7 @@ import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/types";
 import assert from "node:assert/strict";
+import { CommentsResponse } from "./api";
 
 const issuePattern = new URLPattern({
   protocol: "http{s}?",
@@ -28,14 +29,14 @@ export default definePlugin("FigmaCommentPlugin", async () => {
         },
       } = result;
 
-      const data: any = await (
+      const data = (await (
         await fetch(`https://api.figma.com/v1/files/${fileID}/comments`, {
           headers: { "X-FIGMA-TOKEN": FIGMA_TOKEN },
         })
-      ).json();
+      ).json()) as CommentsResponse;
 
-      const comment = data.comments.find(
-        (comment: any) => comment.id === commentID
+      const comment = data.comments?.find(
+        (comment) => comment.id === commentID
       );
       assert(comment, "No such comment");
 
