@@ -1,5 +1,4 @@
 import { Builtins, Cli } from "clipanion";
-// @ts-expect-error No JSON configured for TypeScript
 import pkg from "../../package.json" assert { type: "json" };
 
 export const cli = new Cli({

@@ -1,6 +1,10 @@
-import type File from "vinyl";
+/// <reference types="node" />
 import type { BaseMatch, BaseResult } from "./base";
 
-export type { File };
+export interface File {
+  url: URL;
+  getContent: () => Promise<NodeJS.ReadableStream>;
+  isPresent: boolean;
+}
 export interface Match extends BaseMatch<File> {}
 export interface Result extends BaseResult<Match> {}

@@ -1,8 +1,20 @@
 import { InflightReports } from "@todone/core";
+import { ReportFile } from "@todone/types";
 import chalk from "chalk";
+import nodePath from "node:path";
 import type { Writable } from "node:stream";
+import { fileURLToPath } from "node:url";
 
 const dateFormatter = new Intl.DateTimeFormat();
+
+const cwd = process.cwd();
+const humanFilename = (file: ReportFile) => {
+  if (!file.isPresent) return file.url;
+  const url = new URL(file.url);
+  if (url.protocol !== "file:") return file.url;
+  const path = fileURLToPath(url);
+  return path.startsWith(cwd) ? nodePath.relative(cwd, path) : path;
+};
 
 export const logCLIReports = async (
   stdout: Writable,
@@ -25,8 +37,10 @@ export const logCLIReports = async (
       },
     } = report.item;
 
+    const fileName = humanFilename(file);
+
     headerLn(
-      chalk.blueBright(file) +
+      chalk.blueBright(fileName) +
         ":" +
         chalk.yellowBright(line) +
         ":" +
@@ -37,7 +51,7 @@ export const logCLIReports = async (
     if (!result) {
       infoLn(chalk.gray("No plugin responded"));
     } else {
-      const { isExpired, expiration } = result;
+      const { isExpired, expirationDate } = result;
 
       infoLn(
         isExpired
@@ -45,12 +59,12 @@ export const logCLIReports = async (
           : chalk.blue("Not expired yet")
       );
 
-      if (expiration) {
+      if (expirationDate) {
         infoLn(
           [
             isExpired ? "expired" : "will expire",
-            expiration.isApproximation ? "around" : "on",
-            dateFormatter.format(expiration.date),
+            "on",
+            dateFormatter.format(expirationDate),
           ].join(" ")
         );
       }

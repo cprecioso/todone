@@ -1,4 +1,3 @@
-import { Request } from "@todone/internal-fetch";
 import { GITHUB_API_BASE_URL, normalizeHostname } from "./baseUrl";
 
 export class TokenMap {
@@ -36,6 +35,10 @@ export class TokenMap {
 
   get(hostname: string) {
     return this._data.get(normalizeHostname(hostname));
+  }
+
+  getHosts() {
+    return [...this._data.keys()];
   }
 
   makeRequest(...requestArgs: ConstructorParameters<typeof Request>) {

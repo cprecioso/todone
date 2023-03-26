@@ -1,35 +1,48 @@
 import URLPattern from "@todone/internal-urlpattern";
-import { definePlugin } from "@todone/types";
+import { File, Match, definePlugin } from "@todone/types";
 import browserslist from "browserslist";
 import * as db from "caniuse-lite";
+import assert from "node:assert/strict";
+import { fileURLToPath } from "node:url";
 import { CaniuseFlags, UrlFlags } from "./flags";
 
-const issuePattern = new URLPattern({
-  protocol: "http{s}?",
-  hostname: "{www.}?caniuse.com",
-  pathname: "/:feature",
-});
+class CaniusePlugin {
+  static readonly pattern = new URLPattern({
+    protocol: "http{s}?",
+    hostname: "{www.}?caniuse.com",
+    pathname: "/:feature",
+  });
 
-export default definePlugin("CaniusePlugin", async () => ({
-  async checkExpiration(match) {
-    const { url } = match;
+  static async make() {
+    return new this();
+  }
 
-    const result = issuePattern.exec(url);
-    if (!result) return null;
+  #getBrowsers(file: File) {
+    assert(file.isPresent);
+    const path = fileURLToPath(file.url);
+    const browsers = browserslist(undefined, { path }).map((browserString) => {
+      const [browser, version] = browserString.split(" ", 2);
+      return { browser, version };
+    });
+
+    if (browsers.length === 0) throw new Error("No browsers found");
+
+    return browsers;
+  }
+
+  #getFeatureInfo(feature: string) {
+    return db.feature(db.features[feature]);
+  }
+
+  async check({ url, file }: Match) {
+    const result = CaniusePlugin.pattern.exec(url);
+    assert(result);
 
     const { feature } = result.pathname.groups;
     if (!feature) return null;
 
-    const browsers = browserslist(undefined, { path: match.file.path }).map(
-      (browserString) => {
-        const [browser, version] = browserString.split(" ", 2);
-        return { browser, version };
-      }
-    );
-
-    if (browsers.length === 0) throw new Error("No browsers found");
-
-    const featureInfo = db.feature(db.features[feature]);
+    const browsers = this.#getBrowsers(file);
+    const featureInfo = this.#getFeatureInfo(feature);
 
     const enabledFlags = new Set((url.hash.slice(1) || null)?.split(","));
 
@@ -78,5 +91,7 @@ export default definePlugin("CaniusePlugin", async () => ({
     const isExpired = browserSupport.every((v) => Boolean(v));
 
     return { isExpired };
-  },
-}));
+  }
+}
+
+export default definePlugin(CaniusePlugin);

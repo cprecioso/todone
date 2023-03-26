@@ -13,8 +13,8 @@
       "path": "packages/default-plugins"
     },
     {
-      "name": "📦 @todone/internal-fetch",
-      "path": "packages/internal-fetch"
+      "name": "📦 @todone/github-action",
+      "path": "packages/github-action"
     },
     {
       "name": "📦 @todone/internal-github-common",
@@ -50,7 +50,7 @@
     }
   ],
   "settings": {
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "✨ @todone/repo/node_modules/typescript/lib"
   },
   "extensions": {
     "recommendations": [

@@ -3,9 +3,9 @@
   "version": "1.0.1",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.3.1",
+  "packageManager": "yarn@3.5.0",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "main": "src/index.mjs",
   "types": "src/index.d.ts",
@@ -14,5 +14,8 @@
   ],
   "dependencies": {
     "urlpattern-polyfill": "^6.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18"
   }
 }

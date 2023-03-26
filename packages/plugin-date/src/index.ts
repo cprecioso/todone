@@ -1,16 +1,21 @@
 import URLPattern from "@todone/internal-urlpattern";
-import { definePlugin } from "@todone/types";
+import { definePlugin, Match } from "@todone/types";
+import assert from "node:assert/strict";
 
-const issuePattern = new URLPattern({
-  protocol: "date",
-  hostname: "",
-  pathname: ":date",
-});
+class DatePlugin {
+  static readonly pattern = new URLPattern({
+    protocol: "date",
+    hostname: "",
+    pathname: ":date",
+  });
 
-export default definePlugin("DatePlugin", async () => ({
-  async checkExpiration({ url }) {
-    const result = issuePattern.exec(url);
-    if (!result) return null;
+  static async make() {
+    return new this();
+  }
+
+  async check({ url }: Match) {
+    const result = DatePlugin.pattern.exec(url);
+    assert(result);
 
     const { date } = result.pathname.groups;
     if (!date) return null;
@@ -18,9 +23,8 @@ export default definePlugin("DatePlugin", async () => ({
     const expirationDate = new Date(date);
     const isExpired = new Date() >= expirationDate;
 
-    return {
-      isExpired,
-      expiration: { date: expirationDate, isApproximation: false },
-    };
-  },
-}));
+    return { isExpired, expirationDate };
+  }
+}
+
+export default definePlugin(DatePlugin);

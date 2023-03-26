@@ -1,57 +1,84 @@
-import {
-  File,
-  Report,
-  Result,
-  transformFile,
-  transformMatch,
-  transformResult,
-} from "@todone/types";
+import * as types from "@todone/types";
+import { PassThrough, pipeline } from "node:stream";
 import { analyze } from "./analyzer";
-import { normalizeOptions, TodoneOptions } from "./options";
-import { instantiatePlugins, tryPlugins } from "./plugins";
-import { collectAsyncIterable } from "./util/async";
+import { TodoneOptions, normalizeOptions } from "./options";
+import { makePluginContainer } from "./plugins";
 
-export const runTodoneIterable = async function* (
-  files: AsyncIterable<File>,
+export type InflightReport =
+  | { type: "file"; item: types.ReportFile }
+  | { type: "match"; item: types.ReportMatch }
+  | { type: "result"; item: types.ReportResult };
+
+export const runIterable = async function* (
+  files: AsyncIterable<types.File>,
   partialOptions: Partial<TodoneOptions> = {}
-) {
+): AsyncIterable<InflightReport> {
   const options = normalizeOptions(partialOptions);
-  const plugins = await collectAsyncIterable(instantiatePlugins(options));
+  const pluginContainer = await makePluginContainer(options.plugins, options);
 
-  for await (const file of files) {
-    yield { type: "file", item: transformFile(file) } as const;
+  const stream = new PassThrough({ objectMode: true });
+  const report = (report: InflightReport) => stream.write(report);
 
-    const matches = analyze(file);
-    for await (const match of matches) {
-      yield { type: "match", item: transformMatch(match) } as const;
-
-      const pluginResult = await tryPlugins(match, plugins, options);
-      const result: Result = { match, result: pluginResult };
-
-      yield { type: "result", item: transformResult(result) } as const;
+  pipeline(
+    files,
+    async function* (files) {
+      for await (const file of files) {
+        report({ type: "file", item: types.transformFile(file) });
+        yield file;
+      }
+    },
+    async function* (files) {
+      for await (const file of files) {
+        yield* analyze(file, options);
+      }
+    },
+    async function* (matches) {
+      for await (const match of matches) {
+        report({ type: "match", item: types.transformMatch(match) });
+        yield match;
+      }
+    },
+    async function* (matches) {
+      for await (const match of matches) {
+        const pluginResult = await pluginContainer.check(match);
+        const result: types.Result = { match, result: pluginResult };
+        yield result;
+      }
+    },
+    async function (results) {
+      for await (const result of results) {
+        report({ type: "result", item: types.transformResult(result) });
+      }
+    },
+    (err) => {
+      if (err) {
+        stream.destroy(err);
+      } else {
+        stream.end();
+      }
     }
-  }
+  );
+
+  yield* stream;
 };
 
-export type InflightReports = ReturnType<
-  typeof runTodoneIterable
-> extends AsyncIterable<infer U>
-  ? U
-  : never;
+export const runAsync = async (
+  ...args: Parameters<typeof runIterable>
+): Promise<types.Report> => {
+  const reports: {
+    [T in InflightReport["type"]]: Extract<
+      InflightReport,
+      { type: T }
+    >["item"][];
+  } = { file: [], match: [], result: [] };
 
-export const runTodoneAsync = async (
-  ...args: Parameters<typeof runTodoneIterable>
-): Promise<Report> => {
-  const innerReport = { file: [], match: [], result: [] };
-
-  for await (const { type, item } of runTodoneIterable(...args)) {
-    innerReport[type].push(
+  for await (const { type, item } of runIterable(...args)) {
+    reports[type].push(
       // @ts-expect-error
       item
     );
   }
 
-  const { file: files, match: matches, result: results } = innerReport;
-
+  const { file: files, match: matches, result: results } = reports;
   return { files, matches, results };
 };

@@ -1,28 +1,24 @@
 import type { Match } from "./objects";
 
+export type Searchable = RegExp | { test(string: string): boolean };
+export type PatternProp = Searchable | Searchable[];
+
 export interface PluginFactory {
-  readonly displayName: string;
-  (): Promise<PluginInstance>;
+  readonly name: string;
+  readonly displayName?: string;
+  readonly pattern?: PatternProp;
+  make(): Promise<PluginInstance>;
 }
 
 export interface PluginInstance {
-  readonly displayName: string;
-  checkExpiration(match: Match): Promise<PluginResult | null>;
+  readonly pattern?: PatternProp;
+  check(match: Match): Promise<PluginResult | null>;
 }
 
 export interface PluginResult {
   isExpired: boolean;
-  expiration?: {
-    date: Date;
-    isApproximation: boolean;
-  } | null;
+  expirationDate?: Date;
 }
 
-export const definePlugin = (
-  displayName: string,
-  definition: () => Promise<Omit<PluginInstance, "displayName">>
-): PluginFactory =>
-  Object.assign(
-    async () => Object.assign(await definition(), { displayName }),
-    { displayName }
-  );
+export const definePlugin = (factory: PluginFactory | PluginFactory[]) =>
+  Array.isArray(factory) ? factory : [factory];

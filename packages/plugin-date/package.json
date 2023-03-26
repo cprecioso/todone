@@ -3,9 +3,9 @@
   "version": "0.2.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.3.1",
+  "packageManager": "yarn@3.5.0",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "build": "parcel build",
-    "dev": "parcel watch --no-hmr"
+    "dev": "parcel watch --no-hmr",
+    "prepack": "$npm_execpath run build"
   },
   "dependencies": {
     "@todone/internal-urlpattern": "workspace:^",
@@ -22,7 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^18",
-    "parcel": "^2.8.2"
+    "parcel": "^2.8.3"
   },
   "source": "src/index.ts"
 }

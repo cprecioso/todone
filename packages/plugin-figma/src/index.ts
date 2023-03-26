@@ -1,54 +1,54 @@
-import fetch from "@todone/internal-fetch";
 import URLPattern from "@todone/internal-urlpattern";
-import { definePlugin } from "@todone/types";
+import { definePlugin, Match } from "@todone/types";
 import assert from "node:assert/strict";
 import { CommentsResponse } from "./api";
 
-const issuePattern = new URLPattern({
-  protocol: "http{s}?",
-  hostname: "{www.}?figma.com",
-  pathname: "/file/:fileID",
-  hash: "#:commentID",
-});
+class FigmaCommentPlugin {
+  static readonly pattern = new URLPattern({
+    protocol: "http{s}?",
+    hostname: "{www.}?figma.com",
+    pathname: "/file/:fileID",
+    hash: "#:commentID",
+  });
 
-export default definePlugin("FigmaCommentPlugin", async () => {
-  const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
-  assert(FIGMA_TOKEN, "Please provide a FIGMA_TOKEN environment variable");
+  static async make() {
+    const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
+    assert(FIGMA_TOKEN, "Please provide a FIGMA_TOKEN environment variable");
+    return new this(FIGMA_TOKEN);
+  }
 
-  return {
-    async checkExpiration({ url }) {
-      const result = issuePattern.exec(url);
-      if (!result) return null;
+  readonly #token: string;
+  constructor(token: string) {
+    this.#token = token;
+  }
 
-      const {
-        pathname: {
-          groups: { fileID },
-        },
-        hash: {
-          groups: { commentID },
-        },
-      } = result;
+  async check({ url }: Match) {
+    const result = FigmaCommentPlugin.pattern.exec(url);
+    assert(result);
 
-      const data = (await (
-        await fetch(`https://api.figma.com/v1/files/${fileID}/comments`, {
-          headers: { "X-FIGMA-TOKEN": FIGMA_TOKEN },
-        })
-      ).json()) as CommentsResponse;
+    const {
+      pathname: {
+        groups: { fileID },
+      },
+      hash: {
+        groups: { commentID },
+      },
+    } = result;
 
-      const comment = data.comments?.find(
-        (comment) => comment.id === commentID
-      );
-      assert(comment, "No such comment");
+    const data = (await (
+      await fetch(`https://api.figma.com/v1/files/${fileID}/comments`, {
+        headers: { "X-FIGMA-TOKEN": this.#token },
+      })
+    ).json()) as CommentsResponse;
 
-      const closeDate = comment.resolved_at && new Date(comment.resolved_at);
-      const isExpired = Boolean(closeDate);
+    const comment = data.comments?.find((comment) => comment.id === commentID);
+    assert(comment, "No such comment");
 
-      return {
-        isExpired,
-        expiration: closeDate
-          ? { date: closeDate, isApproximation: false }
-          : null,
-      };
-    },
-  };
-});
+    const closeDate = comment.resolved_at && new Date(comment.resolved_at);
+    const isExpired = Boolean(closeDate);
+
+    return { isExpired, expirationDate: closeDate || undefined };
+  }
+}
+
+export default definePlugin(FigmaCommentPlugin);
