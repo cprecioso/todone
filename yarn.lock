@@ -1880,6 +1880,7 @@ __metadata:
     escape-string-regexp: "npm:^5.0.0"
     parcel: "npm:^2.15.1"
     split2: "npm:^4.2.0"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1893,6 +1894,7 @@ __metadata:
     "@todone/plugin-github": "workspace:^"
     "@types/node": "npm:^22.15.18"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1902,6 +1904,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:^22.15.18"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1910,6 +1913,7 @@ __metadata:
   resolution: "@todone/internal-urlpattern@workspace:packages/internal-urlpattern"
   dependencies:
     "@types/node": "npm:^22.15.18"
+    typescript: "npm:~5.8.3"
     urlpattern-polyfill: "npm:^10.1.0"
   languageName: unknown
   linkType: soft
@@ -1925,6 +1929,7 @@ __metadata:
     browserslist: "npm:^4.24.5"
     caniuse-lite: "npm:^1.0.30001718"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1936,6 +1941,7 @@ __metadata:
     "@todone/types": "workspace:^"
     "@types/node": "npm:^22.15.18"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1947,6 +1953,7 @@ __metadata:
     "@todone/types": "workspace:^"
     "@types/node": "npm:^22.15.18"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1959,6 +1966,7 @@ __metadata:
     "@todone/types": "workspace:^"
     "@types/node": "npm:^22.15.18"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1978,7 +1986,7 @@ __metadata:
     prettier-plugin-organize-imports: "npm:4.1.0"
     prettier-plugin-pkg: "npm:0.19.1"
     prettier-plugin-sh: "npm:0.17.4"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1988,6 +1996,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:^22.15.18"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -7322,6 +7331,7 @@ __metadata:
     dotenv: "npm:^16.5.0"
     globby: "npm:^14.1.0"
     parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
   bin:
     todone: bin.mjs
   languageName: unknown
@@ -7433,7 +7443,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=3 < 6, typescript@npm:^5.8.3":
+"typescript@npm:>=3 < 6, typescript@npm:~5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
   bin:
@@ -7443,7 +7453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A~5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
   bin:

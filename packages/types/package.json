@@ -17,12 +17,10 @@
     "dev": "parcel watch --no-hmr",
     "prepack": "$npm_execpath run build"
   },
-  "dependencies": {
-    "@types/node": "^22.15.18"
-  },
   "devDependencies": {
     "@types/node": "^22.15.18",
-    "parcel": "^2.15.1"
+    "parcel": "^2.15.1",
+    "typescript": "~5.8.3"
   },
   "source": "src/index.ts"
 }

@@ -35,6 +35,6 @@
     "prettier-plugin-organize-imports": "4.1.0",
     "prettier-plugin-pkg": "0.19.1",
     "prettier-plugin-sh": "0.17.4",
-    "typescript": "^5.8.3"
+    "typescript": "~5.8.3"
   }
 }

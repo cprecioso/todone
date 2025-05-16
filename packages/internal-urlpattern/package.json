@@ -16,6 +16,7 @@
     "urlpattern-polyfill": "^10.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.18"
+    "@types/node": "^22.15.18",
+    "typescript": "~5.8.3"
   }
 }
