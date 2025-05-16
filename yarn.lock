@@ -1609,17 +1609,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pkgr/utils@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "@pkgr/utils@npm:2.3.1"
-  dependencies:
-    cross-spawn: "npm:^7.0.3"
-    is-glob: "npm:^4.0.3"
-    open: "npm:^8.4.0"
-    picocolors: "npm:^1.0.0"
-    tiny-glob: "npm:^0.2.9"
-    tslib: "npm:^2.4.0"
-  checksum: 10/0a86fcdf4760abe20719a85f882a1532253cdff3537b91179bd8f4e1e8f003cf72878211fd4afbe00705463a739f516a74cc5b7daa3fd01f0318fc4829d10f48
+"@reteps/dockerfmt@npm:^0.3.5":
+  version: 0.3.6
+  resolution: "@reteps/dockerfmt@npm:0.3.6"
+  checksum: 10/2664c830f0c0c577ef37f9fe6f722d4e0086bf065f51dd4cd992d6df96aba859c0e6cf46e1ddb9853d6969e8cc03eafa4265d4e3bfe44338b7266843c7da41b7
   languageName: node
   linkType: hard
 
@@ -1751,10 +1744,10 @@ __metadata:
     husky: "npm:^8.0.3"
     lerna: "npm:^6.6.1"
     lint-staged: "npm:^13.2.0"
-    prettier: "npm:^2.8.7"
-    prettier-plugin-organize-imports: "npm:^3.2.2"
-    prettier-plugin-pkg: "npm:^0.17.1"
-    prettier-plugin-sh: "npm:^0.12.8"
+    prettier: "npm:3.5.3"
+    prettier-plugin-organize-imports: "npm:4.1.0"
+    prettier-plugin-pkg: "npm:0.19.1"
+    prettier-plugin-sh: "npm:0.17.4"
     typescript: "npm:^5.0.2"
   languageName: unknown
   linkType: soft
@@ -3890,13 +3883,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globalyzer@npm:0.1.0":
-  version: 0.1.0
-  resolution: "globalyzer@npm:0.1.0"
-  checksum: 10/419a0f95ba542534fac0842964d31b3dc2936a479b2b1a8a62bad7e8b61054faa9b0a06ad9f2e12593396b9b2621cac93358d9b3071d33723fb1778608d358a1
-  languageName: node
-  linkType: hard
-
 "globby@npm:11.1.0, globby@npm:^11.0.1":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
@@ -3921,13 +3907,6 @@ __metadata:
     merge2: "npm:^1.4.1"
     slash: "npm:^4.0.0"
   checksum: 10/c5eee00704455c283b3e466b63d906bcd32a64bbe2d00792016cf518cc1a247433ba8cae4ebe6076075a4b14d6fd07f8a9587083d59bfa85e3c4fab9fffa4d91
-  languageName: node
-  linkType: hard
-
-"globrex@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "globrex@npm:0.1.2"
-  checksum: 10/81ce62ee6f800d823d6b7da7687f841676d60ee8f51f934ddd862e4057316d26665c4edc0358d4340a923ac00a514f8b67c787e28fe693aae16350f4e60d55e9
   languageName: node
   linkType: hard
 
@@ -5597,13 +5576,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mvdan-sh@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "mvdan-sh@npm:0.10.1"
-  checksum: 10/bbb6e83ea20f1ab785aa97cadc793d3715768f5ff1d919204bc602d2f1cb3b21efe4034e194db168b1d3867f61274b22d0cd23486c0f3735ad4fb431335dc8fa
-  languageName: node
-  linkType: hard
-
 "negotiator@npm:^0.6.3":
   version: 0.6.3
   resolution: "negotiator@npm:0.6.3"
@@ -6650,51 +6622,47 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-organize-imports@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "prettier-plugin-organize-imports@npm:3.2.2"
+"prettier-plugin-organize-imports@npm:4.1.0":
+  version: 4.1.0
+  resolution: "prettier-plugin-organize-imports@npm:4.1.0"
   peerDependencies:
-    "@volar/vue-language-plugin-pug": ^1.0.4
-    "@volar/vue-typescript": ^1.0.4
     prettier: ">=2.0"
     typescript: ">=2.9"
+    vue-tsc: ^2.1.0
   peerDependenciesMeta:
-    "@volar/vue-language-plugin-pug":
+    vue-tsc:
       optional: true
-    "@volar/vue-typescript":
-      optional: true
-  checksum: 10/6f9d208d69df3e7abc5fd383a72ebb83e63d8c618463c9b375947a7ee6933bc3864e853a5e3bca6a14a11ba1a64d9229f73270af330b3e14f9193922816a7bf0
+  checksum: 10/8223af6d42d06f6a5140a2724a6c6c2cef4a2e149721ceb25b945af71f4de7499bc63e47ea003b9eee84e6b94728b59d91b4275d3c53b718a747e273fb30cee2
   languageName: node
   linkType: hard
 
-"prettier-plugin-pkg@npm:^0.17.1":
-  version: 0.17.1
-  resolution: "prettier-plugin-pkg@npm:0.17.1"
+"prettier-plugin-pkg@npm:0.19.1":
+  version: 0.19.1
+  resolution: "prettier-plugin-pkg@npm:0.19.1"
   peerDependencies:
-    prettier: ^2.0.0
-  checksum: 10/5e998ee5047e76d86ca40a92505c018936b89f71f50d0e0d8cc1f64d626363a625e32dfc8a48a54c70cc919a5019dc0e6f60afa06d657cc2ffe8187aec7dc1d6
+    prettier: ^3.0.3
+  checksum: 10/aad50e6db1a90545ca9dafff60f92b6486f46bfaac53628565316f7e6ac4ac230c338643683c4e60f146d895d5678d4fbbeb67f004377c06d681bda6ec99fdf9
   languageName: node
   linkType: hard
 
-"prettier-plugin-sh@npm:^0.12.8":
-  version: 0.12.8
-  resolution: "prettier-plugin-sh@npm:0.12.8"
+"prettier-plugin-sh@npm:0.17.4":
+  version: 0.17.4
+  resolution: "prettier-plugin-sh@npm:0.17.4"
   dependencies:
-    mvdan-sh: "npm:^0.10.1"
-    sh-syntax: "npm:^0.3.6"
-    synckit: "npm:^0.8.1"
+    "@reteps/dockerfmt": "npm:^0.3.5"
+    sh-syntax: "npm:^0.5.6"
   peerDependencies:
-    prettier: ^2.0.0
-  checksum: 10/a2585419cacccbd0520b6083dca66eb22c80d541375d74ff003f918150b776f03c1180de1136e4af1805697f3092947013ceaccf24a5d8a9f6f4a139d102f2f4
+    prettier: ^3.0.3
+  checksum: 10/cc2790544241837b1665b29c0a59c15d3615b2509b6afe9d6f692138da8af6910972bd762c1399a4f493501454486887f40a1c27e21ec1e5a0c20a5672eafb7a
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.7":
-  version: 2.8.7
-  resolution: "prettier@npm:2.8.7"
+"prettier@npm:3.5.3":
+  version: 3.5.3
+  resolution: "prettier@npm:3.5.3"
   bin:
-    prettier: bin-prettier.js
-  checksum: 10/5d5acc2015dcd9ae4033c0ea3189820920149137100750c897d384bc9058c79c78af94ca892f3bc7c5b6da0661a50357e8eb9eb455c4c1da156b1d0757f54a8a
+    prettier: bin/prettier.cjs
+  checksum: 10/7050c08f674d9e49fbd9a4c008291d0715471f64e94cc5e4b01729affce221dfc6875c8de7e66b728c64abc9352eefb7eaae071b5f79d30081be207b53774b78
   languageName: node
   linkType: hard
 
@@ -7271,12 +7239,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sh-syntax@npm:^0.3.6":
-  version: 0.3.7
-  resolution: "sh-syntax@npm:0.3.7"
+"sh-syntax@npm:^0.5.6":
+  version: 0.5.7
+  resolution: "sh-syntax@npm:0.5.7"
   dependencies:
-    tslib: "npm:^2.4.0"
-  checksum: 10/9dff08cab5b8d13a3acd4ccc1e42805275f2debdac60d649ffe96e2dc55c494003999510f868a4c40763a4bbc198656027d4d9e36c2216ab08fddad1792ca11a
+    tslib: "npm:^2.8.1"
+  checksum: 10/063a1844e77adeab3df16f913ae90db282d1e4fddfb44c0d34c2421f97ec666253d00522072493d4dad9d024bd3d09fa1255e1e9da6554338fa396b8594f92ee
   languageName: node
   linkType: hard
 
@@ -7689,16 +7657,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"synckit@npm:^0.8.1":
-  version: 0.8.4
-  resolution: "synckit@npm:0.8.4"
-  dependencies:
-    "@pkgr/utils": "npm:^2.3.1"
-    tslib: "npm:^2.4.0"
-  checksum: 10/2b9ede22ab6a75ccbea352de3dc0ee985c16e67d8adefa86c2f1e7069561496bda4368aa7e05cf3b43f68835f03c139e503bea779875661464eb8601c720d833
-  languageName: node
-  linkType: hard
-
 "tar-stream@npm:~2.2.0":
   version: 2.2.0
   resolution: "tar-stream@npm:2.2.0"
@@ -7828,16 +7786,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-glob@npm:^0.2.9":
-  version: 0.2.9
-  resolution: "tiny-glob@npm:0.2.9"
-  dependencies:
-    globalyzer: "npm:0.1.0"
-    globrex: "npm:^0.1.2"
-  checksum: 10/5fb773747f6a8fcae4b8884642901fa7b884879695186c422eb24b2213dfe90645f34225ced586329b3080d850472ea938646ab1c8b3a2989f9fa038fef8eee3
-  languageName: node
-  linkType: hard
-
 "tmp@npm:^0.0.33":
   version: 0.0.33
   resolution: "tmp@npm:0.0.33"
@@ -7933,6 +7881,13 @@ __metadata:
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: 10/ea556fbdf396fe15dbd45e242754e86e7c36e0dce8644404a7c8a81ae1e940744dc639569aeca1ae370a7f804d82872f3fd8564eb23be9adb7618201d0314dac
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.8.1":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
   languageName: node
   linkType: hard
 
