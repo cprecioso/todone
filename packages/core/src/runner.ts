@@ -11,7 +11,7 @@ export type InflightReport =
 
 export const runIterable = async function* (
   files: AsyncIterable<types.File>,
-  partialOptions: Partial<TodoneOptions> = {}
+  partialOptions: Partial<TodoneOptions> = {},
 ): AsyncIterable<InflightReport> {
   const options = normalizeOptions(partialOptions);
   const pluginContainer = await makePluginContainer(options.plugins, options);
@@ -56,7 +56,7 @@ export const runIterable = async function* (
       } else {
         stream.end();
       }
-    }
+    },
   );
 
   yield* stream;
@@ -75,7 +75,7 @@ export const runAsync = async (
   for await (const { type, item } of runIterable(...args)) {
     reports[type].push(
       // @ts-expect-error
-      item
+      item,
     );
   }
 

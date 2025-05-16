@@ -7,7 +7,7 @@ const getPluginName = (plugin: PluginFactory) =>
 
 const makePlugin = async (
   plugin: PluginFactory,
-  { toleratePluginInstantiationErrors, warnLogger }: TodoneOptions
+  { toleratePluginInstantiationErrors, warnLogger }: TodoneOptions,
 ) => {
   try {
     return [plugin, await plugin.make()] as const;
@@ -20,14 +20,14 @@ const makePlugin = async (
 };
 
 const isTruthy = (<T>(
-  v: T
+  v: T,
 ): v is Exclude<T, null | undefined | false | "" | 0> =>
   Boolean(v)) satisfies Parameters<typeof Array.prototype.filter>[0];
 
 class PluginContainer {
   static async make(plugins: readonly PluginFactory[], options: TodoneOptions) {
     const entries = await Promise.all(
-      plugins.map((plugin) => makePlugin(plugin, options))
+      plugins.map((plugin) => makePlugin(plugin, options)),
     );
     const instances = new Map(entries.filter(isTruthy));
     return new this(instances, options);
@@ -35,7 +35,7 @@ class PluginContainer {
 
   private constructor(
     public readonly instances: ReadonlyMap<PluginFactory, PluginInstance>,
-    public readonly options: TodoneOptions
+    public readonly options: TodoneOptions,
   ) {}
 
   #checkPattern(url: string, { pattern }: PluginFactory | PluginInstance) {
@@ -65,7 +65,7 @@ class PluginContainer {
         if (result) return result;
       } catch (err) {
         this.options.warnLogger(
-          `${getPluginName(plugin)} errored while processing ${urlString}:`
+          `${getPluginName(plugin)} errored while processing ${urlString}:`,
         );
         this.options.warnLogger("" + err);
         this.options.warnLogger("");

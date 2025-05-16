@@ -18,7 +18,7 @@ const humanFilename = (file: ReportFile) => {
 
 export const logCLIReports = async (
   stdout: Writable,
-  reports: AsyncIterable<InflightReports>
+  reports: AsyncIterable<InflightReports>,
 ) => {
   const headerLn = (str = "") => stdout.write(`${str}\n`);
   const infoLn = (str = "") => stdout.write(`\t${str}\n`);
@@ -44,7 +44,7 @@ export const logCLIReports = async (
         ":" +
         chalk.yellowBright(line) +
         ":" +
-        chalk.yellowBright(column)
+        chalk.yellowBright(column),
     );
     infoLn(chalk.bold(href));
 
@@ -56,7 +56,7 @@ export const logCLIReports = async (
       infoLn(
         isExpired
           ? chalk.bgYellow.redBright("EXPIRED")
-          : chalk.blue("Not expired yet")
+          : chalk.blue("Not expired yet"),
       );
 
       if (expirationDate) {
@@ -65,7 +65,7 @@ export const logCLIReports = async (
             isExpired ? "expired" : "will expire",
             "on",
             dateFormatter.format(expirationDate),
-          ].join(" ")
+          ].join(" "),
         );
       }
 

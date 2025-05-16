@@ -35,5 +35,5 @@ export const defaultTodoneOptions: TodoneOptions = {
 };
 
 export const normalizeOptions = (
-  partialOptions: Partial<TodoneOptions>
+  partialOptions: Partial<TodoneOptions>,
 ): TodoneOptions => ({ ...defaultTodoneOptions, ...partialOptions });

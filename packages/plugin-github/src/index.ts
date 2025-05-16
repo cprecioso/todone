@@ -35,8 +35,8 @@ class GitHubIssuePlugin {
     const response = await fetch(
       this.#tokens.makeRequest(
         new URL(`repos/${owner}/${repo}/issues/${issueID}`, apiBaseUrl),
-        { headers: { Accept: "application/vnd.github.v3+json" } }
-      )
+        { headers: { Accept: "application/vnd.github.v3+json" } },
+      ),
     );
     const data: any = await response.json();
 
@@ -46,7 +46,7 @@ class GitHubIssuePlugin {
 
     if (!data.state)
       throw new Error(
-        "Not an issue or pull request: " + (await response.text())
+        "Not an issue or pull request: " + (await response.text()),
       );
 
     const isExpired = data.state === "closed";

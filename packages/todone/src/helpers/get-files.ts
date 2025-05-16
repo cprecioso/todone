@@ -19,7 +19,7 @@ class RealFile implements File {
 
 export const getFiles = async function* (
   globs: string[],
-  { cwd, gitignore }: GetFilesOptions
+  { cwd, gitignore }: GetFilesOptions,
 ): AsyncIterable<File> {
   for await (const path of globbyStream(globs, {
     cwd,

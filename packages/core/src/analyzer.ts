@@ -7,14 +7,14 @@ import { tryURL } from "./util/url";
 
 export const analyze = async function* (
   file: File,
-  options: TodoneOptions
+  options: TodoneOptions,
 ): AsyncIterable<Match> {
   const matcher = re`${options.keyword}\s+?(\S+)`("dgu");
 
   const lines: AsyncIterable<string> = pipeline(
     await file.getContent(),
     split(),
-    () => {}
+    () => {},
   );
 
   let line = 1;

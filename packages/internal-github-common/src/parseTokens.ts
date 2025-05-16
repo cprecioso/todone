@@ -54,7 +54,7 @@ const parseInput = (input = "") =>
   new Map(
     ("," + input.trim().replace(/^,|,$/g, ""))
       .split(",")
-      .map((pair) => parsePair(pair))
+      .map((pair) => parsePair(pair)),
   );
 
 const parsePair = (pair: string): [host: string, token: string | null] => {
