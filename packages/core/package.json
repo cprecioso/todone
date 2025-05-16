@@ -23,7 +23,7 @@
     "split2": "^4.1.0"
   },
   "devDependencies": {
-    "@types/node": "^18",
+    "@types/node": "^22.15.18",
     "@types/split2": "^3",
     "@types/vinyl": "^2",
     "parcel": "^2.8.3"

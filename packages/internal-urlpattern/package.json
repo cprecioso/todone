@@ -16,6 +16,6 @@
     "urlpattern-polyfill": "^6.0.2"
   },
   "devDependencies": {
-    "@types/node": "^18"
+    "@types/node": "^22.15.18"
   }
 }

@@ -18,7 +18,7 @@
     "prepack": "$npm_execpath run build"
   },
   "dependencies": {
-    "@types/node": "^18"
+    "@types/node": "^22.15.18"
   },
   "devDependencies": {
     "parcel": "^2.8.3"

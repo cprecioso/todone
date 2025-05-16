@@ -23,7 +23,7 @@
     "@todone/types": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^18",
+    "@types/node": "^22.15.18",
     "parcel": "^2.8.3"
   },
   "source": "src/index.ts"
