@@ -16,8 +16,8 @@
   ],
   "scripts": {
     "build:all": "lerna run build",
-    "check:all": "./scripts/check-all.sh",
-    "clean:all": "lerna exec --parallel del-cli dist .parcel-cache",
+    "check:all": "lerna exec --no-parallel -- tsc --noEmit --project .",
+    "clean:all": "lerna exec --parallel del-cli -- dist .parcel-cache",
     "dev:all": "yarn run build:all && lerna run --stream --parallel dev",
     "postinstall": "husky install",
     "publish:all": "yarn run build:all && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"

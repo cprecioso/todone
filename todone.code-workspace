@@ -13,10 +13,6 @@
       "path": "packages/default-plugins",
     },
     {
-      "name": "📦 @todone/github-action",
-      "path": "packages/github-action",
-    },
-    {
       "name": "📦 @todone/internal-github-common",
       "path": "packages/internal-github-common",
     },
