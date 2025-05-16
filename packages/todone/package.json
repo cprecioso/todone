@@ -3,7 +3,7 @@
   "version": "0.8.0",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@4.9.1",
   "engines": {
     "node": ">=18"
   },
@@ -23,14 +23,14 @@
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
     "@todone/types": "workspace:^",
-    "chalk": "^5.2.0",
-    "clipanion": "^3.2.0",
-    "dotenv": "^16.0.3",
-    "globby": "^13.1.3"
+    "chalk": "^5.4.1",
+    "clipanion": "^4.0.0-rc.4",
+    "dotenv": "^16.5.0",
+    "globby": "^14.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.18",
-    "parcel": "^2.8.3"
+    "parcel": "^2.15.1"
   },
   "targets": {
     "main": {

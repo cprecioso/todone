@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@4.9.1",
   "engines": {
     "node": ">=18"
   },
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.18",
-    "parcel": "^2.8.3"
+    "parcel": "^2.15.1"
   },
   "source": "src/index.ts"
 }

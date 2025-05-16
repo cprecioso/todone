@@ -23,18 +23,18 @@
     "publish:all": "yarn run build:all && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
-    "@parcel/packager-ts": "^2.8.3",
-    "@parcel/transformer-typescript-types": "^2.8.3",
+    "@parcel/packager-ts": "^2.15.1",
+    "@parcel/transformer-typescript-types": "^2.15.1",
     "@types/node": "^22.15.18",
-    "del-cli": "^5.0.0",
-    "execa": "^6.1.0",
-    "husky": "^8.0.3",
-    "lerna": "^6.6.1",
-    "lint-staged": "^13.2.0",
+    "del-cli": "^6.0.0",
+    "execa": "^9.5.3",
+    "husky": "^9.1.7",
+    "lerna": "^8.2.2",
+    "lint-staged": "^16.0.0",
     "prettier": "3.5.3",
     "prettier-plugin-organize-imports": "4.1.0",
     "prettier-plugin-pkg": "0.19.1",
     "prettier-plugin-sh": "0.17.4",
-    "typescript": "^5.0.2"
+    "typescript": "^5.8.3"
   }
 }

@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@4.9.1",
   "engines": {
     "node": ">=18"
   },
@@ -13,7 +13,7 @@
     "src"
   ],
   "dependencies": {
-    "urlpattern-polyfill": "^6.0.2"
+    "urlpattern-polyfill": "^10.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.18"
