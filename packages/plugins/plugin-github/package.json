@@ -1,0 +1,33 @@
+{
+  "name": "@todone/plugin-github",
+  "version": "0.5.0",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "parcel build",
+    "check": "tsc --noEmit -p .",
+    "dev": "parcel watch --no-hmr",
+    "prepack": "$npm_execpath run build"
+  },
+  "dependencies": {
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13",
+    "@todone/internal-github-common": "workspace:^",
+    "@todone/internal-urlpattern": "workspace:^",
+    "@todone/types": "workspace:^"
+  },
+  "devDependencies": {
+    "@parcel/packager-ts": "2.15.1",
+    "@parcel/transformer-typescript-types": "2.15.1",
+    "@todone/parcel-config": "workspace:*",
+    "@todone/tsconfig": "workspace:*",
+    "parcel": "2.15.1",
+    "typescript": "~5.8.3"
+  },
+  "source": "src/index.ts"
+}

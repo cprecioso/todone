@@ -5,44 +5,52 @@
       "path": ".",
     },
     {
+      "name": "📦 @todone/parcel-config",
+      "path": "packages/config/parcel-config",
+    },
+    {
+      "name": "📦 @todone/tsconfig",
+      "path": "packages/config/tsconfig",
+    },
+    {
       "name": "📦 @todone/core",
-      "path": "packages/core",
-    },
-    {
-      "name": "📦 @todone/default-plugins",
-      "path": "packages/default-plugins",
-    },
-    {
-      "name": "📦 @todone/internal-github-common",
-      "path": "packages/internal-github-common",
-    },
-    {
-      "name": "📦 @todone/internal-urlpattern",
-      "path": "packages/internal-urlpattern",
-    },
-    {
-      "name": "📦 @todone/plugin-caniuse",
-      "path": "packages/plugin-caniuse",
-    },
-    {
-      "name": "📦 @todone/plugin-date",
-      "path": "packages/plugin-date",
-    },
-    {
-      "name": "📦 @todone/plugin-figma",
-      "path": "packages/plugin-figma",
-    },
-    {
-      "name": "📦 @todone/plugin-github",
-      "path": "packages/plugin-github",
+      "path": "packages/main/core",
     },
     {
       "name": "📦 todone",
-      "path": "packages/todone",
+      "path": "packages/main/todone",
     },
     {
       "name": "📦 @todone/types",
-      "path": "packages/types",
+      "path": "packages/main/types",
+    },
+    {
+      "name": "📦 @todone/default-plugins",
+      "path": "packages/plugins/default-plugins",
+    },
+    {
+      "name": "📦 @todone/internal-github-common",
+      "path": "packages/plugins/internal-github-common",
+    },
+    {
+      "name": "📦 @todone/plugin-caniuse",
+      "path": "packages/plugins/plugin-caniuse",
+    },
+    {
+      "name": "📦 @todone/plugin-date",
+      "path": "packages/plugins/plugin-date",
+    },
+    {
+      "name": "📦 @todone/plugin-figma",
+      "path": "packages/plugins/plugin-figma",
+    },
+    {
+      "name": "📦 @todone/plugin-github",
+      "path": "packages/plugins/plugin-github",
+    },
+    {
+      "name": "📦 @todone/internal-urlpattern",
+      "path": "packages/support/internal-urlpattern",
     },
   ],
   "settings": {

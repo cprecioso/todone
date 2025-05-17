@@ -1,0 +1,14 @@
+{
+  "name": "@todone/tsconfig",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "private": true,
+  "main": "tsconfig.json",
+  "peerDependencies": {
+    "typescript": "~5.8.3"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3"
+  }
+}

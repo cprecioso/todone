@@ -1,6 +1,3 @@
-copy_from_root(devDependencies, '@types/node').
-copy_from_root(field, 'engines.node').
-copy_from_root(field, 'packageManager').
 copy_from_root(field, 'author').
 copy_from_root(field, 'license').
 copy_from_root(_, _) :- false.

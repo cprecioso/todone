@@ -12,6 +12,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jsr/std__bytes@npm:^1.0.5":
+  version: 1.0.6
+  resolution: "@jsr/std__bytes@npm:1.0.6::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__bytes%2F1.0.6.tgz"
+  checksum: 10/b0d2d637dce5d0cf474e02d3c36c8ddbf1119c1ddb88b6b3ba71b1ed1f7f77fbef4bb58d18303e17d04756aac9b295a88c4e9f853dd00cf8bf8d5da9d43c03ba
+  languageName: node
+  linkType: hard
+
+"@jsr/std__internal@npm:^1.0.6":
+  version: 1.0.7
+  resolution: "@jsr/std__internal@npm:1.0.7::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__internal%2F1.0.7.tgz"
+  checksum: 10/67504f5fdd5c0844f04e7b0521fa3b75178fa03a2cc36111f0a8f502601d9320ccfb3402f5de71ed655aa4d3172f5a2f8303fe411f6d346a4c788007a58940f6
+  languageName: node
+  linkType: hard
+
 "@lezer/common@npm:^1.0.0":
   version: 1.2.3
   resolution: "@lezer/common@npm:1.2.3"
@@ -541,7 +555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/packager-ts@npm:^2.15.1":
+"@parcel/packager-ts@npm:2.15.1":
   version: 2.15.1
   resolution: "@parcel/packager-ts@npm:2.15.1"
   dependencies:
@@ -929,20 +943,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/transformer-typescript-tsc@npm:^2.15.1":
-  version: 2.15.1
-  resolution: "@parcel/transformer-typescript-tsc@npm:2.15.1"
-  dependencies:
-    "@parcel/plugin": "npm:2.15.1"
-    "@parcel/source-map": "npm:^2.1.1"
-    "@parcel/ts-utils": "npm:2.15.1"
-  peerDependencies:
-    typescript: ">=3.0.0"
-  checksum: 10/f5f73ac98e6a882de9bc0752f846b4b21e9ba00865dea5ef7ea4ca2474a87f7fd6ca664d0f4c21ed94aef99a96568f6768d76188ba13edb86cf6415885a0db94
-  languageName: node
-  linkType: hard
-
-"@parcel/transformer-typescript-types@npm:^2.15.1":
+"@parcel/transformer-typescript-types@npm:2.15.1":
   version: 2.15.1
   resolution: "@parcel/transformer-typescript-types@npm:2.15.1"
   dependencies:
@@ -1007,21 +1008,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/validator-typescript@npm:^2.15.1":
-  version: 2.15.1
-  resolution: "@parcel/validator-typescript@npm:2.15.1"
-  dependencies:
-    "@parcel/diagnostic": "npm:2.15.1"
-    "@parcel/plugin": "npm:2.15.1"
-    "@parcel/ts-utils": "npm:2.15.1"
-    "@parcel/types": "npm:2.15.1"
-    "@parcel/utils": "npm:2.15.1"
-  peerDependencies:
-    typescript: ">=3.0.0"
-  checksum: 10/ddd1158d3e9f5da0b4470a6b7642519135a5d54fd6f1a6fb361e751320e69ceffe1eeca440eb214ca9ec56115d2d9bf5325f6cf3d9250f4b4f360b3805f69061
-  languageName: node
-  linkType: hard
-
 "@parcel/watcher@npm:^2.0.7":
   version: 2.1.0
   resolution: "@parcel/watcher@npm:2.1.0"
@@ -1076,6 +1062,31 @@ __metadata:
   version: 4.0.0
   resolution: "@sindresorhus/merge-streams@npm:4.0.0"
   checksum: 10/16551c787f5328c8ef05fd9831ade64369ccc992df78deb635ec6c44af217d2f1b43f8728c348cdc4e00585ff2fad6e00d8155199cbf6b154acc45fe65cbf0aa
+  languageName: node
+  linkType: hard
+
+"@std/assert@npm:@jsr/std__assert@^1.0.13":
+  version: 1.0.13
+  resolution: "@jsr/std__assert@npm:1.0.13::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__assert%2F1.0.13.tgz"
+  dependencies:
+    "@jsr/std__internal": "npm:^1.0.6"
+  checksum: 10/e70cda02209b35c807e80ffe2df7a6e57a3e3e29ffbc7bf9e454ccbc8d4f61402c65e1fc989d19ee9f5058cbae0e1110fb44c921798a98b85718d9cc7145b6c5
+  languageName: node
+  linkType: hard
+
+"@std/regexp@npm:@jsr/std__regexp@^1.0.1":
+  version: 1.0.1
+  resolution: "@jsr/std__regexp@npm:1.0.1::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__regexp%2F1.0.1.tgz"
+  checksum: 10/a4c58a809bd2c0992af9c410e4fe3b551e11db906676929a998481c12ffad1a64ccb0cce114e890eb1ad675975587171ee8c075a0b7dba424a4e50f6051df5bb
+  languageName: node
+  linkType: hard
+
+"@std/streams@npm:@jsr/std__streams@^1.0.9":
+  version: 1.0.9
+  resolution: "@jsr/std__streams@npm:1.0.9::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__streams%2F1.0.9.tgz"
+  dependencies:
+    "@jsr/std__bytes": "npm:^1.0.5"
+  checksum: 10/ea744fbd589296c13f4f10dce352bed38eabdb777ff09548b2339c3e4c665031d5867cdc8a72ead8c9903d1f73b8122d1ace566b394d99a36c820965f294baf7
   languageName: node
   linkType: hard
 
@@ -1220,103 +1231,145 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@todone/core@workspace:^, @todone/core@workspace:packages/core":
+"@todone/core@workspace:^, @todone/core@workspace:packages/main/core":
   version: 0.0.0-use.local
-  resolution: "@todone/core@workspace:packages/core"
+  resolution: "@todone/core@workspace:packages/main/core"
   dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
+    "@std/regexp": "npm:@jsr/std__regexp@^1.0.1"
+    "@std/streams": "npm:@jsr/std__streams@^1.0.9"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
     "@todone/types": "workspace:^"
     "@types/node": "npm:^22.15.18"
-    "@types/split2": "npm:^4.2.3"
-    "@types/vinyl": "npm:^2.0.12"
-    escape-string-regexp: "npm:^5.0.0"
-    parcel: "npm:^2.15.1"
-    split2: "npm:^4.2.0"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
-"@todone/default-plugins@workspace:^, @todone/default-plugins@workspace:packages/default-plugins":
+"@todone/default-plugins@workspace:^, @todone/default-plugins@workspace:packages/plugins/default-plugins":
   version: 0.0.0-use.local
-  resolution: "@todone/default-plugins@workspace:packages/default-plugins"
+  resolution: "@todone/default-plugins@workspace:packages/plugins/default-plugins"
   dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@todone/parcel-config": "workspace:*"
     "@todone/plugin-caniuse": "workspace:^"
     "@todone/plugin-date": "workspace:^"
     "@todone/plugin-figma": "workspace:^"
     "@todone/plugin-github": "workspace:^"
-    "@types/node": "npm:^22.15.18"
-    parcel: "npm:^2.15.1"
+    "@todone/tsconfig": "workspace:*"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
-"@todone/internal-github-common@workspace:^, @todone/internal-github-common@workspace:packages/internal-github-common":
+"@todone/internal-github-common@workspace:^, @todone/internal-github-common@workspace:packages/plugins/internal-github-common":
   version: 0.0.0-use.local
-  resolution: "@todone/internal-github-common@workspace:packages/internal-github-common"
+  resolution: "@todone/internal-github-common@workspace:packages/plugins/internal-github-common"
   dependencies:
-    "@types/node": "npm:^22.15.18"
-    parcel: "npm:^2.15.1"
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
-"@todone/internal-urlpattern@workspace:^, @todone/internal-urlpattern@workspace:packages/internal-urlpattern":
+"@todone/internal-urlpattern@workspace:^, @todone/internal-urlpattern@workspace:packages/support/internal-urlpattern":
   version: 0.0.0-use.local
-  resolution: "@todone/internal-urlpattern@workspace:packages/internal-urlpattern"
+  resolution: "@todone/internal-urlpattern@workspace:packages/support/internal-urlpattern"
   dependencies:
-    "@types/node": "npm:^22.15.18"
-    typescript: "npm:~5.8.3"
+    "@todone/tsconfig": "workspace:^"
     urlpattern-polyfill: "npm:^10.1.0"
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-caniuse@workspace:^, @todone/plugin-caniuse@workspace:packages/plugin-caniuse":
+"@todone/parcel-config@workspace:*, @todone/parcel-config@workspace:packages/config/parcel-config":
   version: 0.0.0-use.local
-  resolution: "@todone/plugin-caniuse@workspace:packages/plugin-caniuse"
+  resolution: "@todone/parcel-config@workspace:packages/config/parcel-config"
   dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@todone/tsconfig": "workspace:*"
+    parcel: "npm:2.15.1"
+  peerDependencies:
+    "@parcel/packager-ts": 2.15.1
+    "@parcel/transformer-typescript-types": 2.15.1
+    "@todone/tsconfig": "workspace:*"
+    parcel: 2.15.1
+    typescript: ~5.8.3
+  languageName: unknown
+  linkType: soft
+
+"@todone/plugin-caniuse@workspace:^, @todone/plugin-caniuse@workspace:packages/plugins/plugin-caniuse":
+  version: 0.0.0-use.local
+  resolution: "@todone/plugin-caniuse@workspace:packages/plugins/plugin-caniuse"
+  dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/internal-urlpattern": "workspace:^"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
     "@todone/types": "workspace:^"
     "@types/caniuse-lite": "npm:^1.0.5"
     "@types/node": "npm:^22.15.18"
     browserslist: "npm:^4.24.5"
     caniuse-lite: "npm:^1.0.30001718"
-    parcel: "npm:^2.15.1"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-date@workspace:^, @todone/plugin-date@workspace:packages/plugin-date":
+"@todone/plugin-date@workspace:^, @todone/plugin-date@workspace:packages/plugins/plugin-date":
   version: 0.0.0-use.local
-  resolution: "@todone/plugin-date@workspace:packages/plugin-date"
+  resolution: "@todone/plugin-date@workspace:packages/plugins/plugin-date"
   dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/internal-urlpattern": "workspace:^"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
     "@todone/types": "workspace:^"
-    "@types/node": "npm:^22.15.18"
-    parcel: "npm:^2.15.1"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-figma@workspace:^, @todone/plugin-figma@workspace:packages/plugin-figma":
+"@todone/plugin-figma@workspace:^, @todone/plugin-figma@workspace:packages/plugins/plugin-figma":
   version: 0.0.0-use.local
-  resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
+  resolution: "@todone/plugin-figma@workspace:packages/plugins/plugin-figma"
   dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/internal-urlpattern": "workspace:^"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
     "@todone/types": "workspace:^"
-    "@types/node": "npm:^22.15.18"
-    parcel: "npm:^2.15.1"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-github@workspace:^, @todone/plugin-github@workspace:packages/plugin-github":
+"@todone/plugin-github@workspace:^, @todone/plugin-github@workspace:packages/plugins/plugin-github":
   version: 0.0.0-use.local
-  resolution: "@todone/plugin-github@workspace:packages/plugin-github"
+  resolution: "@todone/plugin-github@workspace:packages/plugins/plugin-github"
   dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/internal-github-common": "workspace:^"
     "@todone/internal-urlpattern": "workspace:^"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
     "@todone/types": "workspace:^"
-    "@types/node": "npm:^22.15.18"
-    parcel: "npm:^2.15.1"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
@@ -1325,10 +1378,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/repo@workspace:."
   dependencies:
-    "@parcel/packager-ts": "npm:^2.15.1"
-    "@parcel/transformer-typescript-tsc": "npm:^2.15.1"
-    "@parcel/transformer-typescript-types": "npm:^2.15.1"
-    "@parcel/validator-typescript": "npm:^2.15.1"
     "@types/node": "npm:^22.15.18"
     execa: "npm:^9.5.3"
     husky: "npm:^9.1.7"
@@ -1342,12 +1391,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/types@workspace:^, @todone/types@workspace:packages/types":
+"@todone/tsconfig@workspace:*, @todone/tsconfig@workspace:^, @todone/tsconfig@workspace:packages/config/tsconfig":
   version: 0.0.0-use.local
-  resolution: "@todone/types@workspace:packages/types"
+  resolution: "@todone/tsconfig@workspace:packages/config/tsconfig"
   dependencies:
-    "@types/node": "npm:^22.15.18"
-    parcel: "npm:^2.15.1"
+    typescript: "npm:~5.8.3"
+  peerDependencies:
+    typescript: ~5.8.3
+  languageName: unknown
+  linkType: soft
+
+"@todone/types@workspace:^, @todone/types@workspace:packages/main/types":
+  version: 0.0.0-use.local
+  resolution: "@todone/types@workspace:packages/main/types"
+  dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
@@ -1366,38 +1428,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/expect@npm:^1.20.4":
-  version: 1.20.4
-  resolution: "@types/expect@npm:1.20.4"
-  checksum: 10/fa25b771c81fed431fdfe7c906ccdcb88af7aa4d06375a7798c317d8bcb2b3f78d132e358025d991ccd72083ffb743fd46e26427aa82dc69d7cdbc9b2e88ff3f
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:*, @types/node@npm:^22.15.18":
+"@types/node@npm:^22.15.18":
   version: 22.15.18
   resolution: "@types/node@npm:22.15.18"
   dependencies:
     undici-types: "npm:~6.21.0"
   checksum: 10/89c8c638beade806753b6fb2f25ed45b0e06f9f7375422137da5752be5c29fa9c75932b942fd55ae7de2b4288e8496912af3e029df45cc93735ac5eb49ece01e
-  languageName: node
-  linkType: hard
-
-"@types/split2@npm:^4.2.3":
-  version: 4.2.3
-  resolution: "@types/split2@npm:4.2.3"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10/972f7d463d6e08bcb64ae1e33c6f0e03a5343a60671e736db55e238282afcfb2e3e5877a6e233f8b2b2e2a6e0f99d9af1f87b373de8e3f7405cacfaa58b99e85
-  languageName: node
-  linkType: hard
-
-"@types/vinyl@npm:^2.0.12":
-  version: 2.0.12
-  resolution: "@types/vinyl@npm:2.0.12"
-  dependencies:
-    "@types/expect": "npm:^1.20.4"
-    "@types/node": "npm:*"
-  checksum: 10/3fb407972a4f64dbb2b020bc6ca418793d66b321acb042c8712eec36cc115fc4b0e2d5eeb03efe48cda8942abd730ae13cd2fc31a2c614403e81b913a6bb38ba
   languageName: node
   linkType: hard
 
@@ -1844,13 +1880,6 @@ __metadata:
   version: 3.2.0
   resolution: "escalade@npm:3.2.0"
   checksum: 10/9d7169e3965b2f9ae46971afa392f6e5a25545ea30f2e2dd99c9b0a95a3f52b5653681a84f5b2911a413ddad2d7a93d3514165072f349b5ffc59c75a899970d6
-  languageName: node
-  linkType: hard
-
-"escape-string-regexp@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "escape-string-regexp@npm:5.0.0"
-  checksum: 10/20daabe197f3cb198ec28546deebcf24b3dbb1a5a269184381b3116d12f0532e06007f4bc8da25669d6a7f8efb68db0758df4cd981f57bc5b57f521a3e12c59e
   languageName: node
   linkType: hard
 
@@ -2849,7 +2878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"parcel@npm:^2.15.1":
+"parcel@npm:2.15.1":
   version: 2.15.1
   resolution: "parcel@npm:2.15.1"
   dependencies:
@@ -3216,13 +3245,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"split2@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "split2@npm:4.2.0"
-  checksum: 10/09bbefc11bcf03f044584c9764cd31a252d8e52cea29130950b26161287c11f519807c5e54bd9e5804c713b79c02cefe6a98f4688630993386be353e03f534ab
-  languageName: node
-  linkType: hard
-
 "sprintf-js@npm:^1.1.3":
   version: 1.1.3
   resolution: "sprintf-js@npm:1.1.3"
@@ -3341,22 +3363,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"todone@workspace:packages/todone":
+"todone@workspace:packages/main/todone":
   version: 0.0.0-use.local
-  resolution: "todone@workspace:packages/todone"
+  resolution: "todone@workspace:packages/main/todone"
   dependencies:
+    "@parcel/packager-ts": "npm:2.15.1"
+    "@parcel/transformer-typescript-types": "npm:2.15.1"
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
+    "@todone/parcel-config": "workspace:*"
+    "@todone/tsconfig": "workspace:*"
     "@todone/types": "workspace:^"
     "@types/node": "npm:^22.15.18"
     chalk: "npm:^5.4.1"
     clipanion: "npm:^4.0.0-rc.4"
     dotenv: "npm:^16.5.0"
     globby: "npm:^14.1.0"
-    parcel: "npm:^2.15.1"
+    parcel: "npm:2.15.1"
     typescript: "npm:~5.8.3"
   bin:
-    todone: bin.mjs
+    todone: bin.js
   languageName: unknown
   linkType: soft
 

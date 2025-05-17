@@ -1,11 +1,12 @@
 {
   "name": "@todone/repo",
   "version": "0.5.0",
+  "type": "module",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*/*"
   ],
   "packageManager": "yarn@4.9.1",
   "engines": {
@@ -22,10 +23,6 @@
     "publish:all": "yarn run build:all && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
-    "@parcel/packager-ts": "^2.15.1",
-    "@parcel/transformer-typescript-tsc": "^2.15.1",
-    "@parcel/transformer-typescript-types": "^2.15.1",
-    "@parcel/validator-typescript": "^2.15.1",
     "@types/node": "^22.15.18",
     "execa": "^9.5.3",
     "husky": "^9.1.7",
