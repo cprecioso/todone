@@ -5,6 +5,9 @@
     "esModuleInterop": true,
     "strict": true,
     "module": "esnext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true
   }
 }

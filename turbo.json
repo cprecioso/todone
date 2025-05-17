@@ -1,0 +1,11 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "globalPassThroughEnv": ["XDG_*"],
+  "tasks": {
+    "build": { "dependsOn": ["^build"] },
+    "check": { "cache": false, "dependsOn": ["^build"] },
+    "clean": { "cache": false },
+    "dev": { "cache": false, "persistent": true, "dependsOn": ["^build"] }
+  }
+}

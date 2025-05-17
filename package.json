@@ -15,26 +15,26 @@
     "dist"
   ],
   "scripts": {
-    "build:all": "lerna run build",
-    "check:all": "lerna exec --no-parallel -- tsc --noEmit --project .",
-    "clean:all": "lerna exec --parallel del-cli -- dist .parcel-cache",
-    "dev:all": "yarn run build:all && lerna run --stream --parallel dev",
+    "build:all": "turbo run build",
+    "check:all": "turbo run check",
+    "dev:all": "turbo run dev",
     "postinstall": "husky install",
     "publish:all": "yarn run build:all && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
     "@parcel/packager-ts": "^2.15.1",
+    "@parcel/transformer-typescript-tsc": "^2.15.1",
     "@parcel/transformer-typescript-types": "^2.15.1",
+    "@parcel/validator-typescript": "^2.15.1",
     "@types/node": "^22.15.18",
-    "del-cli": "^6.0.0",
     "execa": "^9.5.3",
     "husky": "^9.1.7",
-    "lerna": "^8.2.2",
     "lint-staged": "^16.0.0",
     "prettier": "3.5.3",
     "prettier-plugin-organize-imports": "4.1.0",
     "prettier-plugin-pkg": "0.19.1",
     "prettier-plugin-sh": "0.17.4",
+    "turbo": "^2.5.3",
     "typescript": "~5.8.3"
   }
 }
