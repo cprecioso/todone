@@ -22,9 +22,9 @@ export const nodeLibrary = (...args: Parameters<typeof library>) =>
     target: "node22",
   }) satisfies Options;
 
-export const nodeCli = (
-  ...[opts, ...args]: Parameters<typeof nodeLibrary>
-) => ({
-  ...nodeLibrary({ entries: ["bin"], ...opts }, ...args),
-  dts: false,
-});
+export const nodeCli = (...[opts, ...args]: Parameters<typeof nodeLibrary>) =>
+  ({
+    ...nodeLibrary({ entries: ["bin"], ...opts }, ...args),
+    dts: false,
+    replaceNodeEnv: true,
+  }) satisfies Options;
