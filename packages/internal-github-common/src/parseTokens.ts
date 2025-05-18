@@ -41,8 +41,7 @@ export class TokenMap {
     return [...this._data.keys()];
   }
 
-  makeRequest(...requestArgs: ConstructorParameters<typeof Request>) {
-    const req = new Request(...requestArgs);
+  authorizeRequest(req: Request) {
     const { hostname } = new URL(req.url);
     const token = this.get(hostname);
     if (token) req.headers.set("Authorization", `token ${token}`);

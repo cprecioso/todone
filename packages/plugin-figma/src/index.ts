@@ -1,8 +1,9 @@
 import { assert } from "@std/assert";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
+import ky from "ky";
 import * as z from "zod/v4";
-import { CommentsResponse } from "./api";
+import { commentsResponseSchema } from "./api";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
@@ -18,39 +19,44 @@ export default definePlugin(
       envName: "FIGMA_TOKEN",
     },
   },
-  async ({ token }) => ({
-    name: "Figma Comment",
+  async ({ token }) => {
+    const client = ky.extend({
+      prefixUrl: "https://api.figma.com/v1",
+      headers: { "X-FIGMA-TOKEN": token },
+    });
 
-    pattern,
+    return {
+      name: "Figma Comment",
 
-    async check({ url }) {
-      const result = pattern.exec(url);
-      assert(result);
+      pattern,
 
-      const {
-        pathname: {
-          groups: { fileID },
-        },
-        hash: {
-          groups: { commentID },
-        },
-      } = result;
+      async check({ url }) {
+        const result = pattern.exec(url);
+        assert(result);
 
-      const data = (await (
-        await fetch(`https://api.figma.com/v1/files/${fileID}/comments`, {
-          headers: { "X-FIGMA-TOKEN": token },
-        })
-      ).json()) as CommentsResponse;
+        const {
+          pathname: {
+            groups: { fileID },
+          },
+          hash: {
+            groups: { commentID },
+          },
+        } = result;
 
-      const comment = data.comments?.find(
-        (comment) => comment.id === commentID,
-      );
-      assert(comment, "No such comment");
+        const data = commentsResponseSchema.parse(
+          await client.get(`files/${fileID}/comments`).json(),
+        );
 
-      const closeDate = comment.resolved_at && new Date(comment.resolved_at);
-      const isExpired = Boolean(closeDate);
+        const comment = data.comments?.find(
+          (comment) => comment.id === commentID,
+        );
+        assert(comment, "No such comment");
 
-      return { isExpired, expirationDate: closeDate || undefined };
-    },
-  }),
+        const closeDate = comment.resolved_at;
+        const isExpired = Boolean(closeDate);
+
+        return { isExpired, expirationDate: closeDate || undefined };
+      },
+    };
+  },
 );

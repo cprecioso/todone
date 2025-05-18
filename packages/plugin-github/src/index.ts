@@ -2,6 +2,7 @@ import { assert } from "@std/assert";
 import { getApiBaseUrl, TokenMap } from "@todone/internal-github-common";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
+import ky from "ky";
 import * as z from "zod/v4";
 
 const pattern = new URLPattern({
@@ -19,6 +20,16 @@ export default definePlugin(
   async ({ token }) => {
     const tokens = new TokenMap(token);
 
+    const client = ky.extend({
+      hooks: {
+        beforeRequest: [
+          (req) => {
+            tokens.authorizeRequest(req);
+          },
+        ],
+      },
+    });
+
     return {
       name: "GitHub Issue",
 
@@ -33,22 +44,22 @@ export default definePlugin(
         const apiBaseUrl = getApiBaseUrl(url);
         assert(tokens.has(apiBaseUrl.hostname));
 
-        const response = await fetch(
-          tokens.makeRequest(
-            new URL(`repos/${owner}/${repo}/issues/${issueID}`, apiBaseUrl),
-            { headers: { Accept: "application/vnd.github.v3+json" } },
-          ),
+        const response = await client.get(
+          new URL(`repos/${owner}/${repo}/issues/${issueID}`, apiBaseUrl),
+          { headers: { Accept: "application/vnd.github.v3+json" } },
         );
-        const data: any = await response.json();
+
+        const data = (await response.json()) as any;
 
         if (response.status >= 400 && response.status < 500) {
           throw new Error("Error accessing issue or PR: " + data.message);
         }
 
-        if (!data.state)
+        if (!data.state) {
           throw new Error(
             "Not an issue or pull request: " + (await response.text()),
           );
+        }
 
         const isExpired = data.state === "closed";
         const closeDate = data.closed_at && new Date(data.closed_at);

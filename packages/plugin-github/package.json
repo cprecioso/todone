@@ -21,6 +21,7 @@
     "@todone/internal-github-common": "workspace:^",
     "@todone/internal-urlpattern": "workspace:^",
     "@todone/plugin": "workspace:^",
+    "ky": "^1.8.1",
     "zod": "3.25.0-beta.20250518T002810"
   },
   "devDependencies": {

@@ -608,6 +608,7 @@ __metadata:
     "@todone/build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
+    ky: "npm:^1.8.1"
     tsup: "npm:^8.5.0"
     typescript: "npm:~5.8.3"
     zod: "npm:3.25.0-beta.20250518T002810"
@@ -623,6 +624,7 @@ __metadata:
     "@todone/internal-github-common": "workspace:^"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
+    ky: "npm:^1.8.1"
     tsup: "npm:^8.5.0"
     typescript: "npm:~5.8.3"
     zod: "npm:3.25.0-beta.20250518T002810"
@@ -1727,6 +1729,13 @@ __metadata:
   version: 1.1.0
   resolution: "jsbn@npm:1.1.0"
   checksum: 10/bebe7ae829bbd586ce8cbe83501dd8cb8c282c8902a8aeeed0a073a89dc37e8103b1244f3c6acd60278bcbfe12d93a3f83c9ac396868a3b3bbc3c5e5e3b648ef
+  languageName: node
+  linkType: hard
+
+"ky@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "ky@npm:1.8.1"
+  checksum: 10/65c3f8bf545aa11afef9de35676e4199a7e99ef75caf71c1cd3f890c1f13fd704d0329aea347d420b7eb23631d50011db14db8a69916a21a75c60c10b3c94885
   languageName: node
   linkType: hard
 

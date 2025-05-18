@@ -1,8 +1,10 @@
-export interface Comment {
-  id: string;
-  resolved_at?: string;
-}
+import * as z from "zod/v4";
 
-export interface CommentsResponse {
-  comments?: Comment[];
-}
+export const commentSchema = z.object({
+  id: z.string(),
+  resolved_at: z.coerce.date().optional(),
+});
+
+export const commentsResponseSchema = z.object({
+  comments: z.array(commentSchema).optional(),
+});
