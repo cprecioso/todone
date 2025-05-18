@@ -1,4 +1,4 @@
-import type { PluginFactory } from "@todone/types";
+import type { PluginInstance } from "@todone/types";
 
 export interface TodoneOptions {
   /**
@@ -11,13 +11,7 @@ export interface TodoneOptions {
   /**
    * Plugins that matches will be run through
    */
-  plugins: readonly PluginFactory[];
-
-  /**
-   * If `true`, when a plugin errors while instantiating,
-   * just print a message and ignore said plugin.
-   */
-  toleratePluginInstantiationErrors: boolean;
+  plugins: readonly PluginInstance[];
 
   /**
    * Where to log errors
@@ -30,7 +24,6 @@ const defaultWarnLogger = console.error.bind(console);
 export const defaultTodoneOptions: TodoneOptions = {
   keyword: "@TODO",
   plugins: [],
-  toleratePluginInstantiationErrors: false,
   warnLogger: defaultWarnLogger,
 };
 

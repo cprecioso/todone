@@ -2,14 +2,14 @@ import * as t from "@todone/types";
 import * as s from "@todone/util/stream";
 import { analyze } from "./analyzer";
 import { TodoneOptions, normalizeOptions } from "./options";
-import { makePluginContainer } from "./plugins";
+import { PluginContainer } from "./plugins";
 
 export const getAnalysisStreams = async (
   files: AsyncIterable<t.File>,
   partialOptions: Partial<TodoneOptions> = {},
 ) => {
   const options = normalizeOptions(partialOptions);
-  const pluginContainer = await makePluginContainer(options.plugins, options);
+  const pluginContainer = new PluginContainer(options);
 
   const [file$, returnFile$] = ReadableStream.from(files).tee();
 

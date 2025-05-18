@@ -19,12 +19,12 @@
   "dependencies": {
     "@std/assert": "npm:@jsr/std__assert@^1.0.13",
     "@todone/internal-urlpattern": "workspace:^",
-    "@todone/types": "workspace:^"
+    "@todone/plugin": "workspace:^",
+    "zod": "3.25.0-beta.20250518T002810"
   },
   "devDependencies": {
     "@todone/build": "workspace:*",
     "tsup": "^8.5.0",
     "typescript": "~5.8.3"
-  },
-  "extends": "@todone/build/tsconfig"
+  }
 }

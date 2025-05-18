@@ -22,7 +22,7 @@
   "dependencies": {
     "@std/assert": "npm:@jsr/std__assert@^1.0.13",
     "@todone/internal-urlpattern": "workspace:^",
-    "@todone/types": "workspace:^",
+    "@todone/plugin": "workspace:^",
     "browserslist": "^4.24.5",
     "caniuse-lite": "^1.0.30001718"
   },
@@ -32,6 +32,5 @@
     "@types/node": "^22.15.18",
     "tsup": "^8.5.0",
     "typescript": "~5.8.3"
-  },
-  "extends": "@todone/build/tsconfig"
+  }
 }

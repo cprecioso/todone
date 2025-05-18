@@ -1,50 +1,29 @@
 import { assert } from "@std/assert";
 import URLPattern from "@todone/internal-urlpattern";
-import { File, Match, definePlugin } from "@todone/types";
-import browserslist from "browserslist";
-import * as db from "caniuse-lite";
-import { fileURLToPath } from "node:url";
+import { definePlugin } from "@todone/plugin";
 import { CaniuseFlags, UrlFlags } from "./flags";
+import { getBrowsers, getFeatureInfo } from "./lib";
 
-class CaniusePlugin {
-  static displayName = "Caniuse";
+const pattern = new URLPattern({
+  protocol: "http{s}?",
+  hostname: "{www.}?caniuse.com",
+  pathname: "/:feature",
+});
 
-  static readonly pattern = new URLPattern({
-    protocol: "http{s}?",
-    hostname: "{www.}?caniuse.com",
-    pathname: "/:feature",
-  });
+export default definePlugin(undefined, async () => ({
+  name: "Caniuse",
 
-  static async make() {
-    return new this();
-  }
+  pattern,
 
-  #getBrowsers(file: File) {
-    assert(file.isPresent);
-    const path = fileURLToPath(file.url);
-    const browsers = browserslist(undefined, { path }).map((browserString) => {
-      const [browser, version] = browserString.split(" ", 2);
-      return { browser, version };
-    });
-
-    if (browsers.length === 0) throw new Error("No browsers found");
-
-    return browsers;
-  }
-
-  #getFeatureInfo(feature: string) {
-    return db.feature(db.features[feature]);
-  }
-
-  async check({ url, file }: Match) {
-    const result = CaniusePlugin.pattern.exec(url);
+  async check({ url, file }) {
+    const result = pattern.exec(url);
     assert(result);
 
     const { feature } = result.pathname.groups;
     if (!feature) return null;
 
-    const browsers = this.#getBrowsers(file);
-    const featureInfo = this.#getFeatureInfo(feature);
+    const browsers = getBrowsers(file);
+    const featureInfo = getFeatureInfo(feature);
 
     const enabledFlags = new Set((url.hash.slice(1) || null)?.split(","));
 
@@ -93,7 +72,5 @@ class CaniusePlugin {
     const isExpired = browserSupport.every((v) => Boolean(v));
 
     return { isExpired };
-  }
-}
-
-export default definePlugin(CaniusePlugin);
+  },
+}));

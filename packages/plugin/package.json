@@ -1,6 +1,6 @@
 {
-  "name": "@todone/plugin-date",
-  "version": "0.2.0",
+  "name": "@todone/plugin",
+  "version": "0.1.0",
   "type": "module",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
@@ -17,9 +17,11 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
+    "@standard-schema/spec": "^1.0.0",
     "@std/assert": "npm:@jsr/std__assert@^1.0.13",
-    "@todone/internal-urlpattern": "workspace:^",
-    "@todone/plugin": "workspace:^"
+    "@todone/types": "workspace:^",
+    "@todone/util": "workspace:^",
+    "type-fest": "^4.41.0"
   },
   "devDependencies": {
     "@todone/build": "workspace:*",

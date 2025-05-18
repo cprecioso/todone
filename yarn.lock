@@ -479,6 +479,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standard-schema/spec@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@standard-schema/spec@npm:1.0.0"
+  checksum: 10/aee780cc1431888ca4b9aba9b24ffc8f3073fc083acc105e3951481478a2f4dc957796931b2da9e2d8329584cf211e4542275f188296c1cdff3ed44fd93a8bc8
+  languageName: node
+  linkType: hard
+
 "@std/assert@npm:@jsr/std__assert@^1.0.13":
   version: 1.0.13
   resolution: "@jsr/std__assert@npm:1.0.13::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__assert%2F1.0.13.tgz"
@@ -570,7 +577,7 @@ __metadata:
     "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
-    "@todone/types": "workspace:^"
+    "@todone/plugin": "workspace:^"
     "@types/caniuse-lite": "npm:^1.0.5"
     "@types/node": "npm:^22.15.18"
     browserslist: "npm:^4.24.5"
@@ -587,7 +594,7 @@ __metadata:
     "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
-    "@todone/types": "workspace:^"
+    "@todone/plugin": "workspace:^"
     tsup: "npm:^8.5.0"
     typescript: "npm:~5.8.3"
   languageName: unknown
@@ -600,9 +607,10 @@ __metadata:
     "@std/assert": "npm:@jsr/std__assert@^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
-    "@todone/types": "workspace:^"
+    "@todone/plugin": "workspace:^"
     tsup: "npm:^8.5.0"
     typescript: "npm:~5.8.3"
+    zod: "npm:3.25.0-beta.20250518T002810"
   languageName: unknown
   linkType: soft
 
@@ -614,8 +622,24 @@ __metadata:
     "@todone/build": "workspace:*"
     "@todone/internal-github-common": "workspace:^"
     "@todone/internal-urlpattern": "workspace:^"
-    "@todone/types": "workspace:^"
+    "@todone/plugin": "workspace:^"
     tsup: "npm:^8.5.0"
+    typescript: "npm:~5.8.3"
+    zod: "npm:3.25.0-beta.20250518T002810"
+  languageName: unknown
+  linkType: soft
+
+"@todone/plugin@workspace:^, @todone/plugin@workspace:packages/plugin":
+  version: 0.0.0-use.local
+  resolution: "@todone/plugin@workspace:packages/plugin"
+  dependencies:
+    "@standard-schema/spec": "npm:^1.0.0"
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
+    "@todone/build": "workspace:*"
+    "@todone/types": "workspace:^"
+    "@todone/util": "workspace:^"
+    tsup: "npm:^8.5.0"
+    type-fest: "npm:^4.41.0"
     typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
@@ -2783,6 +2807,7 @@ __metadata:
     "@todone/build": "workspace:*"
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
+    "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:^"
     "@todone/util": "workspace:^"
     "@types/node": "npm:^22.15.18"
@@ -2946,6 +2971,13 @@ __metadata:
   version: 3.12.1
   resolution: "typanion@npm:3.12.1"
   checksum: 10/abd4cd4d4c91dfe548639f17e01581ec3a0be4c3b348c41f73a4b510729102a4028b0040163dffecfaefeb13eeb6b15cc018a69e44d49926b859eba6dfaf24bb
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.41.0":
+  version: 4.41.0
+  resolution: "type-fest@npm:4.41.0"
+  checksum: 10/617ace794ac0893c2986912d28b3065ad1afb484cad59297835a0807dc63286c39e8675d65f7de08fafa339afcb8fe06a36e9a188b9857756ae1e92ee8bda212
   languageName: node
   linkType: hard
 
@@ -3134,5 +3166,12 @@ __metadata:
   version: 2.1.1
   resolution: "yoctocolors@npm:2.1.1"
   checksum: 10/563fbec88bce9716d1044bc98c96c329e1d7a7c503e6f1af68f1ff914adc3ba55ce953c871395e2efecad329f85f1632f51a99c362032940321ff80c42a6f74d
+  languageName: node
+  linkType: hard
+
+"zod@npm:3.25.0-beta.20250518T002810":
+  version: 3.25.0-beta.20250518T002810
+  resolution: "zod@npm:3.25.0-beta.20250518T002810"
+  checksum: 10/9a03cd41444cd5ebc1914771622604d9168d967dd14db6c7f2effbf3c5357117d839a7df537893880ea094202aefbcb1ce2a2e67281d6514e655c199548c4a93
   languageName: node
   linkType: hard

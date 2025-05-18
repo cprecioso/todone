@@ -1,22 +1,20 @@
 import { assert } from "@std/assert";
 import URLPattern from "@todone/internal-urlpattern";
-import { definePlugin, Match } from "@todone/types";
+import { definePlugin } from "@todone/plugin";
 
-class DatePlugin {
-  static displayName = "Date";
+const pattern = new URLPattern({
+  protocol: "date",
+  hostname: "",
+  pathname: ":date",
+});
 
-  static readonly pattern = new URLPattern({
-    protocol: "date",
-    hostname: "",
-    pathname: ":date",
-  });
+export default definePlugin(undefined, async () => ({
+  name: "Date",
 
-  static async make() {
-    return new this();
-  }
+  pattern,
 
-  async check({ url }: Match) {
-    const result = DatePlugin.pattern.exec(url);
+  async check({ url }) {
+    const result = pattern.exec(url);
     assert(result);
 
     const { date } = result.pathname.groups;
@@ -26,7 +24,5 @@ class DatePlugin {
     const isExpired = new Date() >= expirationDate;
 
     return { isExpired, expirationDate };
-  }
-}
-
-export default definePlugin(DatePlugin);
+  },
+}));

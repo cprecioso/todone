@@ -25,6 +25,7 @@
     "@std/streams": "npm:@jsr/std__streams@^1.0.9",
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
+    "@todone/plugin": "workspace:^",
     "@todone/types": "workspace:^",
     "@todone/util": "workspace:^",
     "chalk": "^5.4.1",

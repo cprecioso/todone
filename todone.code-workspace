@@ -25,6 +25,10 @@
       "path": "packages/internal-urlpattern",
     },
     {
+      "name": "📦 @todone/plugin",
+      "path": "packages/plugin",
+    },
+    {
       "name": "📦 @todone/plugin-caniuse",
       "path": "packages/plugin-caniuse",
     },
