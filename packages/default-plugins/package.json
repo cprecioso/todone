@@ -1,0 +1,34 @@
+{
+  "name": "@todone/default-plugins",
+  "version": "0.4.0",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "engines": {
+    "node": ">=22"
+  },
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@todone/plugin-caniuse": "workspace:^",
+    "@todone/plugin-date": "workspace:^",
+    "@todone/plugin-figma": "workspace:^",
+    "@todone/plugin-github": "workspace:^"
+  },
+  "devDependencies": {
+    "@todone/build": "workspace:*",
+    "tsup": "^8.5.0",
+    "typescript": "~5.8.3"
+  },
+  "extends": "@todone/build/tsconfig"
+}

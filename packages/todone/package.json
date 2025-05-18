@@ -1,0 +1,41 @@
+{
+  "name": "todone",
+  "version": "0.8.0",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": "./dist/bin.js",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13",
+    "@std/streams": "npm:@jsr/std__streams@^1.0.9",
+    "@todone/core": "workspace:^",
+    "@todone/default-plugins": "workspace:^",
+    "@todone/types": "workspace:^",
+    "@todone/util": "workspace:^",
+    "chalk": "^5.4.1",
+    "clipanion": "^4.0.0-rc.4",
+    "dotenv": "^16.5.0",
+    "globby": "^14.1.0"
+  },
+  "devDependencies": {
+    "@todone/build": "workspace:*",
+    "@types/node": "^22.15.18",
+    "tsup": "^8.5.0",
+    "typescript": "~5.8.3"
+  }
+}

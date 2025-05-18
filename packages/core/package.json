@@ -1,0 +1,32 @@
+{
+  "name": "@todone/core",
+  "version": "0.5.0",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@std/assert": "npm:@jsr/std__assert@^1.0.13",
+    "@std/regexp": "npm:@jsr/std__regexp@^1.0.1",
+    "@std/streams": "npm:@jsr/std__streams@^1.0.9",
+    "@todone/types": "workspace:^",
+    "@todone/util": "workspace:^"
+  },
+  "devDependencies": {
+    "@todone/build": "workspace:*",
+    "tsup": "^8.5.0",
+    "typescript": "~5.8.3"
+  },
+  "extends": "@todone/build/tsconfig"
+}

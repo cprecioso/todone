@@ -1,0 +1,24 @@
+{
+  "name": "@todone/build",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "private": true,
+  "exports": {
+    "./tsconfig": "./tsconfig.base.json",
+    "./tsup": "./dist/tsup.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsup --watch"
+  },
+  "peerDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "~5.8.3"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "~5.8.3"
+  }
+}

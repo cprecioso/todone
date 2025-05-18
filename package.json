@@ -6,7 +6,7 @@
   "license": "ISC",
   "private": true,
   "workspaces": [
-    "packages/*/*"
+    "packages/*"
   ],
   "packageManager": "yarn@4.9.1",
   "engines": {
@@ -23,7 +23,6 @@
     "publish:all": "turbo run prepack && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
-    "@types/node": "^22.15.18",
     "execa": "^9.5.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.0.0",

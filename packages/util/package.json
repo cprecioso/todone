@@ -1,0 +1,42 @@
+{
+  "name": "@todone/util",
+  "version": "0.1.0",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "exports": {
+    "./bool": {
+      "types": "./dist/bool.d.ts",
+      "default": "./dist/bool.js"
+    },
+    "./regex": {
+      "types": "./dist/regex.d.ts",
+      "default": "./dist/regex.js"
+    },
+    "./stream": {
+      "types": "./dist/stream.d.ts",
+      "default": "./dist/stream.js"
+    },
+    "./url": {
+      "types": "./dist/url.d.ts",
+      "default": "./dist/url.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@std/regexp": "npm:@jsr/std__regexp@^1.0.1",
+    "@std/streams": "npm:@jsr/std__streams@^1.0.9"
+  },
+  "devDependencies": {
+    "@todone/build": "workspace:*",
+    "tsup": "^8.5.0",
+    "typescript": "~5.8.3"
+  }
+}
