@@ -1,0 +1,32 @@
+{
+  "name": "@todone/github-action",
+  "version": "0.1.0",
+  "type": "module",
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "private": true,
+  "exports": null,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "ncc build ./src/index.ts",
+    "check": "tsc --noEmit -p .",
+    "dev": "ncc build --watch ./src/index.ts"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.1",
+    "@actions/glob": "^0.5.0",
+    "@todone/core": "workspace:^",
+    "@todone/default-plugins": "workspace:^",
+    "@todone/plugin": "workspace:^",
+    "@todone/types": "workspace:^",
+    "@todone/util": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "@vercel/ncc": "^0.38.3",
+    "typescript": "~5.8.3"
+  }
+}
