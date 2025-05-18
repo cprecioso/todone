@@ -15,8 +15,7 @@
   "scripts": {
     "build": "parcel build",
     "check": "tsc --noEmit -p .",
-    "dev": "parcel watch --no-hmr",
-    "prepack": "$npm_execpath run build"
+    "dev": "parcel watch --no-hmr"
   },
   "dependencies": {
     "@todone/plugin-caniuse": "workspace:^",

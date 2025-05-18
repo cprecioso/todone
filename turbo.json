@@ -6,6 +6,7 @@
     "build": { "dependsOn": ["^build"] },
     "check": { "cache": false, "dependsOn": ["^build"] },
     "clean": { "cache": false },
-    "dev": { "cache": false, "persistent": true, "dependsOn": ["^build"] }
+    "dev": { "cache": false, "persistent": true, "dependsOn": ["^build"] },
+    "prepack": { "dependsOn": ["check", "build"] }
   }
 }

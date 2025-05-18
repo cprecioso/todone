@@ -20,7 +20,7 @@
     "check:all": "turbo run check",
     "dev:all": "turbo run dev",
     "postinstall": "husky install",
-    "publish:all": "yarn run build:all && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
+    "publish:all": "turbo run prepack && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
     "@types/node": "^22.15.18",

@@ -21,8 +21,3 @@ gen_enforced_dependency(WorkspaceCwd, DepName, DepVersion, DepType) :-
 gen_enforced_dependency(WorkspaceCwd, DepName, DepVersion, DepType) :-
   workspace_has_dependency('.', DepName, DepVersion, _),
   workspace_has_dependency(WorkspaceCwd, DepName, _, DepType).
-
-% If you have a `build` script, run it as prepack
-gen_enforced_field(WorkspaceCwd, 'scripts.prepack', '$npm_execpath run build') :-
-  workspace(WorkspaceCwd),
-  workspace_field(WorkspaceCwd, 'scripts.build', _).
