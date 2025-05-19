@@ -6,23 +6,24 @@
   "private": true,
   "exports": {
     "./tsconfig": "./tsconfig.base.json",
-    "./tsup": "./dist/tsup.js",
+    "./tsdown": "./dist/tsdown.js",
     "./typedoc": "./dist/typedoc.js"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsup --watch"
+    "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "tsup": "^8.5.0",
+    "tsdown": "^0.11.12",
     "typescript": "~5.8.3"
   },
   "dependencies": {
     "type-fest": "^4.41.0"
   },
   "devDependencies": {
-    "tsup": "^8.5.0",
+    "@types/node": "^22.15.19",
+    "tsdown": "^0.11.12",
     "typescript": "~5.8.3"
   }
 }

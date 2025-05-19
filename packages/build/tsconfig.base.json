@@ -9,6 +9,8 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "allowJs": true,
-    "noEmit": true
+    "noEmit": true,
+    "declaration": true,
+    "declarationMap": true
   }
 }

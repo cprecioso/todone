@@ -10,9 +10,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "ncc build ./src/index.ts",
+    "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "ncc build --watch ./src/index.ts"
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.19",
-    "@vercel/ncc": "^0.38.3",
+    "tsdown": "^0.11.12",
     "typescript": "~5.8.3"
   }
 }

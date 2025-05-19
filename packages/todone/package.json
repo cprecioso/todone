@@ -16,9 +16,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsup --watch"
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "@std/assert": "jsr:^1.0.13",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@todone/build": "workspace:*",
     "@types/node": "^22.15.19",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.11.12",
     "typescript": "~5.8.3"
   }
 }

@@ -1,4 +1,4 @@
-import type { Options } from "tsup";
+import type { Options } from "tsdown";
 
 export const library = ({ entries = ["index"] } = {}) =>
   ({
@@ -10,7 +10,9 @@ export const library = ({ entries = ["index"] } = {}) =>
 
     platform: "neutral",
 
-    dts: true,
+    dts: {
+      sourcemap: true,
+    },
     sourcemap: true,
   }) satisfies Options;
 
@@ -26,5 +28,4 @@ export const nodeCli = (...[opts, ...args]: Parameters<typeof nodeLibrary>) =>
   ({
     ...nodeLibrary({ entries: ["bin"], ...opts }, ...args),
     dts: false,
-    replaceNodeEnv: true,
   }) satisfies Options;
