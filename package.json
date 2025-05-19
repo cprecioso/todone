@@ -16,6 +16,7 @@
     "dist"
   ],
   "scripts": {
+    "build-docs": "turbo run build && typedoc",
     "build:all": "turbo run build",
     "check:all": "turbo run check",
     "dev:all": "turbo run dev",
@@ -31,6 +32,7 @@
     "prettier-plugin-pkg": "0.19.1",
     "prettier-plugin-sh": "0.17.4",
     "turbo": "^2.5.3",
+    "typedoc": "^0.28.4",
     "typescript": "~5.8.3"
   }
 }

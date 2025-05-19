@@ -11,3 +11,5 @@ dist/
 
 .env*
 .turbo/
+/docs/
+out-docs.json

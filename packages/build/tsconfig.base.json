@@ -8,6 +8,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
-    "allowJs": true
+    "allowJs": true,
+    "noEmit": true
   }
 }
