@@ -674,7 +674,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@std/assert@npm:@jsr/std__assert@^1.0.13":
+"@std/assert@jsr:^1.0.13, @std/assert@npm:@jsr/std__assert@^1.0.13":
   version: 1.0.13
   resolution: "@jsr/std__assert@npm:1.0.13::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__assert%2F1.0.13.tgz"
   dependencies:
@@ -683,14 +683,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@std/regexp@npm:@jsr/std__regexp@^1.0.1":
+"@std/regexp@jsr:^1.0.1, @std/regexp@npm:@jsr/std__regexp@^1.0.1":
   version: 1.0.1
   resolution: "@jsr/std__regexp@npm:1.0.1::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__regexp%2F1.0.1.tgz"
   checksum: 10/a4c58a809bd2c0992af9c410e4fe3b551e11db906676929a998481c12ffad1a64ccb0cce114e890eb1ad675975587171ee8c075a0b7dba424a4e50f6051df5bb
   languageName: node
   linkType: hard
 
-"@std/streams@npm:@jsr/std__streams@^1.0.9":
+"@std/streams@jsr:^1.0.9, @std/streams@npm:@jsr/std__streams@^1.0.9":
   version: 1.0.9
   resolution: "@jsr/std__streams@npm:1.0.9::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__streams%2F1.0.9.tgz"
   dependencies:
@@ -715,9 +715,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/core@workspace:packages/core"
   dependencies:
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
-    "@std/regexp": "npm:@jsr/std__regexp@^1.0.1"
-    "@std/streams": "npm:@jsr/std__streams@^1.0.9"
+    "@std/assert": "jsr:^1.0.13"
+    "@std/regexp": "jsr:^1.0.1"
+    "@std/streams": "jsr:^1.0.9"
     "@todone/build": "workspace:*"
     "@todone/types": "workspace:^"
     "@todone/util": "workspace:^"
@@ -780,7 +780,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-caniuse@workspace:packages/plugin-caniuse"
   dependencies:
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
+    "@std/assert": "jsr:^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
@@ -797,7 +797,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-date@workspace:packages/plugin-date"
   dependencies:
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
+    "@std/assert": "jsr:^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
@@ -810,7 +810,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
   dependencies:
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
+    "@std/assert": "jsr:^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
@@ -825,7 +825,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
+    "@std/assert": "jsr:^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/internal-github-common": "workspace:^"
     "@todone/internal-urlpattern": "workspace:^"
@@ -842,7 +842,7 @@ __metadata:
   resolution: "@todone/plugin@workspace:packages/plugin"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
+    "@std/assert": "jsr:^1.0.13"
     "@todone/build": "workspace:*"
     "@todone/types": "workspace:^"
     "@todone/util": "workspace:^"
@@ -882,8 +882,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/util@workspace:packages/util"
   dependencies:
-    "@std/regexp": "npm:@jsr/std__regexp@^1.0.1"
-    "@std/streams": "npm:@jsr/std__streams@^1.0.9"
+    "@std/regexp": "jsr:^1.0.1"
+    "@std/streams": "jsr:^1.0.9"
     "@todone/build": "workspace:*"
     tsup: "npm:^8.5.0"
     typescript: "npm:~5.8.3"
@@ -3042,8 +3042,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "todone@workspace:packages/todone"
   dependencies:
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13"
-    "@std/streams": "npm:@jsr/std__streams@^1.0.9"
+    "@std/assert": "jsr:^1.0.13"
+    "@std/streams": "jsr:^1.0.9"
     "@todone/build": "workspace:*"
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"

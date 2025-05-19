@@ -31,8 +31,8 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@std/regexp": "npm:@jsr/std__regexp@^1.0.1",
-    "@std/streams": "npm:@jsr/std__streams@^1.0.9"
+    "@std/regexp": "jsr:^1.0.1",
+    "@std/streams": "jsr:^1.0.9"
   },
   "devDependencies": {
     "@todone/build": "workspace:*",

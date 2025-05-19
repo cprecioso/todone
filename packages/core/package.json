@@ -17,9 +17,9 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13",
-    "@std/regexp": "npm:@jsr/std__regexp@^1.0.1",
-    "@std/streams": "npm:@jsr/std__streams@^1.0.9",
+    "@std/assert": "jsr:^1.0.13",
+    "@std/regexp": "jsr:^1.0.1",
+    "@std/streams": "jsr:^1.0.9",
     "@todone/types": "workspace:^",
     "@todone/util": "workspace:^"
   },

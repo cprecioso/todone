@@ -17,7 +17,7 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@std/assert": "npm:@jsr/std__assert@^1.0.13",
+    "@std/assert": "jsr:^1.0.13",
     "@todone/internal-github-common": "workspace:^",
     "@todone/internal-urlpattern": "workspace:^",
     "@todone/plugin": "workspace:^",
