@@ -817,7 +817,7 @@ __metadata:
     ky: "npm:^1.8.1"
     tsup: "npm:^8.5.0"
     typescript: "npm:~5.8.3"
-    zod: "npm:3.25.0-beta.20250518T002810"
+    zod: "npm:3.25.3"
   languageName: unknown
   linkType: soft
 
@@ -833,7 +833,7 @@ __metadata:
     ky: "npm:^1.8.1"
     tsup: "npm:^8.5.0"
     typescript: "npm:~5.8.3"
-    zod: "npm:3.25.0-beta.20250518T002810"
+    zod: "npm:3.25.3"
   languageName: unknown
   linkType: soft
 
@@ -3432,9 +3432,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.25.0-beta.20250518T002810":
-  version: 3.25.0-beta.20250518T002810
-  resolution: "zod@npm:3.25.0-beta.20250518T002810"
-  checksum: 10/9a03cd41444cd5ebc1914771622604d9168d967dd14db6c7f2effbf3c5357117d839a7df537893880ea094202aefbcb1ce2a2e67281d6514e655c199548c4a93
+"zod@npm:3.25.3":
+  version: 3.25.3
+  resolution: "zod@npm:3.25.3"
+  checksum: 10/161ff4ef84e2041639366e4dce10ea40888d59e2c23c71669161bfe6ece28e48fbb0865e75640ac5050cd6f2ea1785aece9d54f3b1d1d7555374157008ca3de4
   languageName: node
   linkType: hard
