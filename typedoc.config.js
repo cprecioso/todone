@@ -25,4 +25,5 @@ export default /** @type {import("typedoc").TypeDocOptions} */ ({
     includeVersion: true,
     excludeInternal: true,
   },
+  plugin: ["typedoc-plugin-dt-links", "typedoc-plugin-mdn-links"],
 });
