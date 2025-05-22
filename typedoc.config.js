@@ -13,7 +13,7 @@ const entryPoints = fs
     const packageJson = JSON.parse(
       fs.readFileSync(path.join(dir, "package.json"), "utf-8"),
     );
-    if (packageJson.private) return false;
+    if (packageJson.private || packageJson.internal) return false;
     return true;
   });
 

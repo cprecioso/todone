@@ -11,5 +11,6 @@
   ],
   "dependencies": {
     "urlpattern-polyfill": "^10.1.0"
-  }
+  },
+  "internal": true
 }
