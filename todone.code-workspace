@@ -29,6 +29,10 @@
       "path": "packages/internal-urlpattern",
     },
     {
+      "name": "📦 @todone/internal-util",
+      "path": "packages/internal-util",
+    },
+    {
       "name": "📦 @todone/plugin",
       "path": "packages/plugin",
     },
@@ -55,10 +59,6 @@
     {
       "name": "📦 @todone/types",
       "path": "packages/types",
-    },
-    {
-      "name": "📦 @todone/util",
-      "path": "packages/util",
     },
   ],
   "settings": {

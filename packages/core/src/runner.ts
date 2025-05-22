@@ -1,5 +1,5 @@
+import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
-import * as s from "@todone/util/stream";
 import { analyze } from "./analyzer";
 import { TodoneOptions, normalizeOptions } from "./options";
 import { PluginContainer } from "./plugins";

@@ -1,5 +1,5 @@
 import { StandardSchemaV1 } from "@standard-schema/spec";
-import { truthy } from "@todone/util/bool";
+import { truthy } from "@todone/internal-util/bool";
 import { BaseConfigSchema } from "../types";
 import { BaseFactories, InstancingOptions } from "./types";
 

@@ -1,6 +1,6 @@
 import { mergeReadableStreams } from "@std/streams";
+import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
-import * as s from "@todone/util/stream";
 import { getAnalysisStreams } from "./runner";
 
 export type InflightReport =

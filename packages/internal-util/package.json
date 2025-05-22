@@ -1,5 +1,5 @@
 {
-  "name": "@todone/util",
+  "name": "@todone/internal-util",
   "version": "0.1.0",
   "type": "module",
   "author": "Carlos Precioso <npm@precioso.design>",

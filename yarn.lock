@@ -613,8 +613,8 @@ __metadata:
     "@std/regexp": "jsr:^1.0.1"
     "@std/streams": "jsr:^1.0.9"
     "@todone/build": "workspace:*"
+    "@todone/internal-util": "workspace:^"
     "@todone/types": "workspace:^"
-    "@todone/util": "workspace:^"
     tsdown: "npm:^0.11.12"
     typescript: "npm:~5.8.3"
   languageName: unknown
@@ -643,9 +643,9 @@ __metadata:
     "@actions/glob": "npm:^0.5.0"
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
+    "@todone/internal-util": "workspace:^"
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:^"
-    "@todone/util": "workspace:^"
     "@types/node": "npm:^22.15.19"
     tsdown: "npm:^0.11.12"
     typescript: "npm:~5.8.3"
@@ -667,6 +667,18 @@ __metadata:
   resolution: "@todone/internal-urlpattern@workspace:packages/internal-urlpattern"
   dependencies:
     urlpattern-polyfill: "npm:^10.1.0"
+  languageName: unknown
+  linkType: soft
+
+"@todone/internal-util@workspace:^, @todone/internal-util@workspace:packages/internal-util":
+  version: 0.0.0-use.local
+  resolution: "@todone/internal-util@workspace:packages/internal-util"
+  dependencies:
+    "@std/regexp": "jsr:^1.0.1"
+    "@std/streams": "jsr:^1.0.9"
+    "@todone/build": "workspace:*"
+    tsdown: "npm:^0.11.12"
+    typescript: "npm:~5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -739,8 +751,8 @@ __metadata:
     "@standard-schema/spec": "npm:^1.0.0"
     "@std/assert": "jsr:^1.0.13"
     "@todone/build": "workspace:*"
+    "@todone/internal-util": "workspace:^"
     "@todone/types": "workspace:^"
-    "@todone/util": "workspace:^"
     tsdown: "npm:^0.11.12"
     type-fest: "npm:^4.41.0"
     typescript: "npm:~5.8.3"
@@ -770,18 +782,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/types@workspace:packages/types"
   dependencies:
-    "@todone/build": "workspace:*"
-    tsdown: "npm:^0.11.12"
-    typescript: "npm:~5.8.3"
-  languageName: unknown
-  linkType: soft
-
-"@todone/util@workspace:^, @todone/util@workspace:packages/util":
-  version: 0.0.0-use.local
-  resolution: "@todone/util@workspace:packages/util"
-  dependencies:
-    "@std/regexp": "jsr:^1.0.1"
-    "@std/streams": "jsr:^1.0.9"
     "@todone/build": "workspace:*"
     tsdown: "npm:^0.11.12"
     typescript: "npm:~5.8.3"
@@ -1962,9 +1962,9 @@ __metadata:
     "@todone/build": "workspace:*"
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
+    "@todone/internal-util": "workspace:^"
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:^"
-    "@todone/util": "workspace:^"
     "@types/node": "npm:^22.15.19"
     chalk: "npm:^5.4.1"
     clipanion: "npm:^4.0.0-rc.4"

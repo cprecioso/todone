@@ -20,9 +20,9 @@
     "@actions/glob": "^0.5.0",
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
+    "@todone/internal-util": "workspace:^",
     "@todone/plugin": "workspace:^",
-    "@todone/types": "workspace:^",
-    "@todone/util": "workspace:^"
+    "@todone/types": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "^22.15.19",

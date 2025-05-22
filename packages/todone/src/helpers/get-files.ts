@@ -1,5 +1,5 @@
+import { map } from "@todone/internal-util/stream";
 import { File } from "@todone/types";
-import { map } from "@todone/util/stream";
 import { globbyStream } from "globby";
 import * as fs from "node:fs";
 import { Readable } from "node:stream";

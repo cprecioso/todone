@@ -20,8 +20,8 @@
     "@std/assert": "jsr:^1.0.13",
     "@std/regexp": "jsr:^1.0.1",
     "@std/streams": "jsr:^1.0.9",
-    "@todone/types": "workspace:^",
-    "@todone/util": "workspace:^"
+    "@todone/internal-util": "workspace:^",
+    "@todone/types": "workspace:^"
   },
   "devDependencies": {
     "@todone/build": "workspace:*",

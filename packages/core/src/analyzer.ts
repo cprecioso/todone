@@ -1,9 +1,9 @@
 import { TextLineStream } from "@std/streams";
+import { truthy } from "@todone/internal-util/bool";
+import { re } from "@todone/internal-util/regex";
+import { filter, map } from "@todone/internal-util/stream";
+import { tryURL } from "@todone/internal-util/url";
 import type { File, Match } from "@todone/types";
-import { truthy } from "@todone/util/bool";
-import { re } from "@todone/util/regex";
-import { filter, map } from "@todone/util/stream";
-import { tryURL } from "@todone/util/url";
 import { TodoneOptions } from "./options";
 
 export const analyze = (file: File, options: TodoneOptions) => {
