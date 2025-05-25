@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
-      - run: corepack enable
+      - run: npx corepack enable
       - uses: actions/setup-node@v4
         with:
           cache: "yarn"
