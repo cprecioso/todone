@@ -52,8 +52,8 @@ export class RunCommand extends Command {
       this.context.stdout.write(`${JSON.stringify(report)}\n`);
     } else {
       const reports = getAnalysisStream(files, options);
-      const expiredResults = await logCLIReports(this.context.stdout, reports);
-      return expiredResults > 0 ? 1 : 0;
+      const counters = await logCLIReports(this.context.stdout, reports);
+      return counters.expiredResults > 0 ? 1 : 0;
     }
   }
 }

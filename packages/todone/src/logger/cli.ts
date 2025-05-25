@@ -23,9 +23,18 @@ export const logCLIReports = async (
   const headerLn = (str = "") => stdout.write(`${str}\n`);
   const infoLn = (str = "") => stdout.write(`\t${str}\n`);
 
-  let expiredReports = 0;
+  let counters = {
+    files: 0,
+    matches: 0,
+    results: 0,
+    expiredResults: 0,
+  };
 
   for await (const report of reports) {
+    if (report.type === "file") counters.files++;
+    if (report.type === "match") counters.matches++;
+    if (report.type === "result") counters.results++;
+
     if (report.type !== "result") continue;
 
     const {
@@ -69,11 +78,19 @@ export const logCLIReports = async (
         );
       }
 
-      if (isExpired) expiredReports++;
+      if (isExpired) counters.expiredResults++;
     }
 
     headerLn();
   }
 
-  return expiredReports;
+  process.stdout.write(`
+Analysis complete:
+${counters.files} files found
+${counters.matches} matches found
+${counters.results} results found
+${counters.expiredResults} expired results found
+`);
+
+  return counters;
 };
