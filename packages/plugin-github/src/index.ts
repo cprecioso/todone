@@ -1,9 +1,10 @@
 import { assert } from "@std/assert";
-import { getApiBaseUrl, TokenMap } from "@todone/internal-github-common";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
 import ky from "ky";
 import * as z from "zod/v4-mini";
+import { getApiBaseUrl } from "./lib/baseUrl";
+import { TokenMap } from "./lib/parseTokens";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
