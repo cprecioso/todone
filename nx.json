@@ -17,6 +17,10 @@
       "dependsOn": ["^build"],
       "cache": false,
       "continuous": true
+    },
+    "publish": {
+      "dependsOn": ["build", "check"],
+      "cache": false
     }
   }
 }

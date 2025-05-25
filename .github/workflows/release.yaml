@@ -26,12 +26,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
+      - run: nx run-many --target=build,check
       - uses: changesets/action@v1
         id: changesets
         with:
           commitMode: github-api
-          publish: |
-            nx build && yarn npm publish --tag latest --access public --provenance
+          publish: nx publish
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ github.token }}

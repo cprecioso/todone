@@ -27,7 +27,8 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "publish": "yarn npm publish --access public --provenance"
   },
   "dependencies": {
     "@std/assert": "jsr:^1.0.13",
