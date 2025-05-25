@@ -22,15 +22,13 @@ export const getFiles = (
   globs: string[],
   { cwd, gitignore }: GetFilesOptions,
 ) =>
-  Readable.toWeb(
-    Readable.from(
-      globbyStream(globs, {
-        cwd,
-        onlyFiles: true,
-        globstar: true,
-        gitignore,
-        expandDirectories: true,
-        absolute: true,
-      }),
-    ),
+  ReadableStream.from(
+    globbyStream(globs, {
+      cwd,
+      onlyFiles: true,
+      globstar: true,
+      gitignore,
+      expandDirectories: true,
+      absolute: true,
+    }),
   ).pipeThrough(map((path: string) => new RealFile(pathToFileURL(path))));
