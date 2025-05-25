@@ -1,5 +1,11 @@
 # @todone/internal-util
 
+## 0.2.2
+
+### Patch Changes
+
+- 2da1f2f: Upgrade dependencies
+
 ## 0.2.1
 
 ### Patch Changes

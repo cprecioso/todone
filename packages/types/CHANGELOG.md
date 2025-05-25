@@ -1,5 +1,11 @@
 # @todone/types
 
+## 0.6.2
+
+### Patch Changes
+
+- 2da1f2f: Upgrade dependencies
+
 ## 0.6.1
 
 ### Patch Changes

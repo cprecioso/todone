@@ -1,5 +1,11 @@
 # @todone/internal-urlpattern
 
+## 1.1.2
+
+### Patch Changes
+
+- 2da1f2f: Upgrade dependencies
+
 ## 1.1.1
 
 ### Patch Changes

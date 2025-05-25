@@ -1,5 +1,14 @@
 # @todone/core
 
+## 0.6.2
+
+### Patch Changes
+
+- 2da1f2f: Upgrade dependencies
+- Updated dependencies [2da1f2f]
+  - @todone/internal-util@0.2.2
+  - @todone/types@0.6.2
+
 ## 0.6.1
 
 ### Patch Changes

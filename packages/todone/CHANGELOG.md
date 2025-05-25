@@ -1,5 +1,17 @@
 # todone
 
+## 0.9.2
+
+### Patch Changes
+
+- 2da1f2f: Upgrade dependencies
+- Updated dependencies [2da1f2f]
+  - @todone/default-plugins@0.5.2
+  - @todone/internal-util@0.2.2
+  - @todone/plugin@0.2.2
+  - @todone/types@0.6.2
+  - @todone/core@0.6.2
+
 ## 0.9.1
 
 ### Patch Changes
