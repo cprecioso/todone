@@ -28,7 +28,7 @@
     "build-docs": "typedoc",
     "dev-docs": "nx watch --includeDependentProjects -p=. -- nx build-docs",
     "postinstall": "husky install",
-    "publish": "NPM_CONFIG_PROVENANCE=true changeset publish"
+    "publish": "changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.4",
