@@ -2,7 +2,7 @@ import { mergeReadableStreams } from "@std/streams";
 import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
 import { makeAnalyzer } from "./analyzer";
-import { TodoneOptions, normalizeOptions } from "./options";
+import { Options, normalizeOptions } from "./options";
 import { PluginContainer } from "./plugins";
 
 export type ReportItem =
@@ -16,7 +16,7 @@ export type FullReport = {
 
 export const getAnalysisStream = (
   files: AsyncIterable<t.File>,
-  partialOptions: Partial<TodoneOptions> = {},
+  partialOptions: Partial<Options> = {},
 ) => {
   const options = normalizeOptions(partialOptions);
   const pluginContainer = new PluginContainer(options);

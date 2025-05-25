@@ -1,9 +1,9 @@
 import type { Match, PluginInstance } from "@todone/types";
-import type { TodoneOptions } from "./options";
+import type { Options } from "./options";
 
 export class PluginContainer {
   readonly #options;
-  constructor(options: TodoneOptions) {
+  constructor(options: Options) {
     this.#options = options;
   }
 

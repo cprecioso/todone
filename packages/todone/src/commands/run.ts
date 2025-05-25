@@ -1,7 +1,7 @@
 import {
   getAnalysisPromise,
   getAnalysisStream,
-  TodoneOptions,
+  Options as TodoneOptions,
 } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
 import { fromEnv } from "@todone/plugin";

@@ -3,9 +3,9 @@ import { re } from "@todone/internal-util/regex";
 import { compactMap } from "@todone/internal-util/stream";
 import { tryURL } from "@todone/internal-util/url";
 import type { File, Match } from "@todone/types";
-import { TodoneOptions } from "./options";
+import { Options } from "./options";
 
-export const makeAnalyzer = (options: TodoneOptions) => {
+export const makeAnalyzer = (options: Options) => {
   const matcher = re`${options.keyword}\s+?(\S+)`("dgu");
 
   return (file: File) => {

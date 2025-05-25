@@ -1,6 +1,6 @@
 import type { PluginInstance } from "@todone/types";
 
-export interface TodoneOptions {
+export interface Options {
   /**
    * Keyword to match against
    *
@@ -21,12 +21,12 @@ export interface TodoneOptions {
 
 const defaultWarnLogger = console.error.bind(console);
 
-export const defaultTodoneOptions: TodoneOptions = {
+export const defaultTodoneOptions: Options = {
   keyword: "@TODO",
   plugins: [],
   warnLogger: defaultWarnLogger,
 };
 
 export const normalizeOptions = (
-  partialOptions: Partial<TodoneOptions>,
-): TodoneOptions => ({ ...defaultTodoneOptions, ...partialOptions });
+  partialOptions: Partial<Options>,
+): Options => ({ ...defaultTodoneOptions, ...partialOptions });

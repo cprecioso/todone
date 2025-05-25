@@ -1,2 +1,2 @@
-export type { TodoneOptions } from "./options";
+export type { Options } from "./options";
 export * from "./runner";

@@ -1,4 +1,4 @@
-import { getAnalysisPromise, TodoneOptions } from "@todone/core";
+import { getAnalysisPromise, Options as TodoneOptions } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
 import {
   FactoriesToConfigObject,
