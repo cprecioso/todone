@@ -25,36 +25,13 @@ jobs:
     outputs:
       needs-publish: ${{ steps.changesets.outputs.hasChangesets == 'false' }}
 
-  test:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "Here is the value:" $VALUE
-        env:
-          VALUE: ${{ toJson(needs.release.outputs.needs-publish) }}
-
-  test-a:
-    needs: release
-    runs-on: ubuntu-latest
-    if: needs.release.outputs.needs-publish
-    steps:
-      - run: echo "Hey"
-
-  test-b:
-    needs: release
-    runs-on: ubuntu-latest
-    if: ${{ !needs.release.outputs.needs-publish }}
-    steps:
-      - run: echo "Ho"
-
   build:
     needs: release
     uses: ./.github/workflows/build.yaml
 
   deploy-packages:
     needs: [release, build]
-    if: needs.release.outputs.needs-publish
+    if: needs.release.outputs.needs-publish == 'true'
 
     permissions:
       contents: read
@@ -80,7 +57,7 @@ jobs:
 
   deploy-pages:
     needs: [release, build]
-    if: needs.release.outputs.needs-publish
+    if: needs.release.outputs.needs-publish == 'true'
 
     permissions:
       contents: read
