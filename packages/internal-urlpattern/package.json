@@ -4,13 +4,26 @@
   "type": "module",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "main": "src/index.mjs",
-  "types": "src/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },
   "files": [
-    "src"
+    "dist"
   ],
+  "scripts": {
+    "build": "tsdown",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsdown --watch"
+  },
   "dependencies": {
     "urlpattern-polyfill": "^10.1.0"
   },
+  "devDependencies": {
+    "@todone/build": "workspace:*",
+    "tsdown": "^0.11.12",
+    "typescript": "~5.8.3"
+  },
+  "sideEffects": false,
   "internal": true
 }
