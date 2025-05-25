@@ -23,7 +23,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     outputs:
-      needs-publish: ${{ steps.changesets.outputs.hasChangesets == 'false' }}
+      needs-publish: ${{ steps.changesets.outputs.hasChangesets == 'true' }}
 
   build:
     needs: release
