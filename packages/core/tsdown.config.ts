@@ -1,3 +1,3 @@
-import { library } from "@todone/build/tsdown";
+import { library } from "@todone/internal-build/tsdown";
 
 export default library();

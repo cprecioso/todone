@@ -34,7 +34,7 @@
     "globby": "^14.1.0"
   },
   "devDependencies": {
-    "@todone/build": "workspace:*",
+    "@todone/internal-build": "workspace:*",
     "@types/node": "^22.15.19",
     "tsdown": "^0.11.12",
     "typescript": "~5.8.3"

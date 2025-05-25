@@ -35,7 +35,7 @@
     "@std/streams": "jsr:^1.0.9"
   },
   "devDependencies": {
-    "@todone/build": "workspace:*",
+    "@todone/internal-build": "workspace:*",
     "tsdown": "^0.11.12",
     "typescript": "~5.8.3"
   },

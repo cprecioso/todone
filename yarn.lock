@@ -499,9 +499,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@todone/build@workspace:*, @todone/build@workspace:packages/build":
+"@todone/core@workspace:^, @todone/core@workspace:packages/core":
   version: 0.0.0-use.local
-  resolution: "@todone/build@workspace:packages/build"
+  resolution: "@todone/core@workspace:packages/core"
+  dependencies:
+    "@std/assert": "jsr:^1.0.13"
+    "@std/regexp": "jsr:^1.0.1"
+    "@std/streams": "jsr:^1.0.9"
+    "@todone/internal-build": "workspace:*"
+    "@todone/internal-util": "workspace:^"
+    "@todone/types": "workspace:^"
+    tsdown: "npm:^0.11.12"
+    typescript: "npm:~5.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@todone/default-plugins@workspace:^, @todone/default-plugins@workspace:packages/default-plugins":
+  version: 0.0.0-use.local
+  resolution: "@todone/default-plugins@workspace:packages/default-plugins"
+  dependencies:
+    "@todone/internal-build": "workspace:*"
+    "@todone/plugin-caniuse": "workspace:^"
+    "@todone/plugin-date": "workspace:^"
+    "@todone/plugin-figma": "workspace:^"
+    "@todone/plugin-github": "workspace:^"
+    tsdown: "npm:^0.11.12"
+    typescript: "npm:~5.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@todone/internal-build@workspace:*, @todone/internal-build@workspace:packages/internal-build":
+  version: 0.0.0-use.local
+  resolution: "@todone/internal-build@workspace:packages/internal-build"
   dependencies:
     "@types/node": "npm:^22.15.19"
     tsdown: "npm:^0.11.12"
@@ -514,40 +543,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/core@workspace:^, @todone/core@workspace:packages/core":
-  version: 0.0.0-use.local
-  resolution: "@todone/core@workspace:packages/core"
-  dependencies:
-    "@std/assert": "jsr:^1.0.13"
-    "@std/regexp": "jsr:^1.0.1"
-    "@std/streams": "jsr:^1.0.9"
-    "@todone/build": "workspace:*"
-    "@todone/internal-util": "workspace:^"
-    "@todone/types": "workspace:^"
-    tsdown: "npm:^0.11.12"
-    typescript: "npm:~5.8.3"
-  languageName: unknown
-  linkType: soft
-
-"@todone/default-plugins@workspace:^, @todone/default-plugins@workspace:packages/default-plugins":
-  version: 0.0.0-use.local
-  resolution: "@todone/default-plugins@workspace:packages/default-plugins"
-  dependencies:
-    "@todone/build": "workspace:*"
-    "@todone/plugin-caniuse": "workspace:^"
-    "@todone/plugin-date": "workspace:^"
-    "@todone/plugin-figma": "workspace:^"
-    "@todone/plugin-github": "workspace:^"
-    tsdown: "npm:^0.11.12"
-    typescript: "npm:~5.8.3"
-  languageName: unknown
-  linkType: soft
-
 "@todone/internal-github-common@workspace:^, @todone/internal-github-common@workspace:packages/internal-github-common":
   version: 0.0.0-use.local
   resolution: "@todone/internal-github-common@workspace:packages/internal-github-common"
   dependencies:
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     tsdown: "npm:^0.11.12"
     typescript: "npm:~5.8.3"
   languageName: unknown
@@ -557,7 +557,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/internal-urlpattern@workspace:packages/internal-urlpattern"
   dependencies:
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     tsdown: "npm:^0.11.12"
     typescript: "npm:~5.8.3"
     urlpattern-polyfill: "npm:^10.1.0"
@@ -570,7 +570,7 @@ __metadata:
   dependencies:
     "@std/regexp": "jsr:^1.0.1"
     "@std/streams": "jsr:^1.0.9"
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     tsdown: "npm:^0.11.12"
     typescript: "npm:~5.8.3"
   languageName: unknown
@@ -581,7 +581,7 @@ __metadata:
   resolution: "@todone/plugin-caniuse@workspace:packages/plugin-caniuse"
   dependencies:
     "@std/assert": "jsr:^1.0.13"
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:*"
@@ -599,7 +599,7 @@ __metadata:
   resolution: "@todone/plugin-date@workspace:packages/plugin-date"
   dependencies:
     "@std/assert": "jsr:^1.0.13"
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
     tsdown: "npm:^0.11.12"
@@ -612,7 +612,7 @@ __metadata:
   resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
   dependencies:
     "@std/assert": "jsr:^1.0.13"
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
     ky: "npm:^1.8.1"
@@ -627,7 +627,7 @@ __metadata:
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
     "@std/assert": "jsr:^1.0.13"
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     "@todone/internal-github-common": "workspace:^"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
@@ -644,7 +644,7 @@ __metadata:
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     "@std/assert": "jsr:^1.0.13"
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     "@todone/internal-util": "workspace:^"
     "@todone/types": "workspace:^"
     tsdown: "npm:^0.11.12"
@@ -676,7 +676,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/types@workspace:packages/types"
   dependencies:
-    "@todone/build": "workspace:*"
+    "@todone/internal-build": "workspace:*"
     tsdown: "npm:^0.11.12"
     typescript: "npm:~5.8.3"
   languageName: unknown
@@ -2736,9 +2736,9 @@ __metadata:
   dependencies:
     "@std/assert": "jsr:^1.0.13"
     "@std/streams": "jsr:^1.0.9"
-    "@todone/build": "workspace:*"
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
+    "@todone/internal-build": "workspace:*"
     "@todone/internal-util": "workspace:^"
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:^"

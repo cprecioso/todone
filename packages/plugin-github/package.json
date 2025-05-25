@@ -25,7 +25,7 @@
     "zod": "3.25.3"
   },
   "devDependencies": {
-    "@todone/build": "workspace:*",
+    "@todone/internal-build": "workspace:*",
     "tsdown": "^0.11.12",
     "typescript": "~5.8.3"
   },

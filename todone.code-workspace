@@ -5,16 +5,16 @@
       "path": ".",
     },
     {
-      "name": "📦 @todone/build",
-      "path": "packages/build",
-    },
-    {
       "name": "📦 @todone/core",
       "path": "packages/core",
     },
     {
       "name": "📦 @todone/default-plugins",
       "path": "packages/default-plugins",
+    },
+    {
+      "name": "📦 @todone/internal-build",
+      "path": "packages/internal-build",
     },
     {
       "name": "📦 @todone/internal-github-common",

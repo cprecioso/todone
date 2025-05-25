@@ -1,5 +1,5 @@
 {
-  "name": "@todone/build",
+  "name": "@todone/internal-build",
   "type": "module",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",

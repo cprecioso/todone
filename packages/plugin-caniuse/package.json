@@ -27,7 +27,7 @@
     "caniuse-lite": "^1.0.30001718"
   },
   "devDependencies": {
-    "@todone/build": "workspace:*",
+    "@todone/internal-build": "workspace:*",
     "@todone/types": "workspace:*",
     "@types/caniuse-lite": "^1.0.5",
     "@types/node": "^22.15.19",
