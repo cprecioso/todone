@@ -1,3 +1,4 @@
+import { PluginInstance } from "@todone/types";
 import { JsonObject } from "type-fest";
 import { instancePlugins } from "./base";
 import {
@@ -17,17 +18,17 @@ export const fromObject = async <const Factories extends BaseFactories>(
     options,
   );
 
-export const fromJSON = async <const Factories extends BaseFactories>(
+export const fromJSON: <const Factories extends BaseFactories>(
   factories: Factories,
   config: Record<string, JsonObject>,
   options?: InstancingOptions,
-) => fromObject(factories, config, options);
+) => Promise<PluginInstance[]> = fromObject;
 
-export const fromCode = async <const Factories extends BaseFactories>(
+export const fromCode: <const Factories extends BaseFactories>(
   factories: Factories,
   config: FactoriesToConfigObject<Factories>,
   options?: InstancingOptions,
-) => fromObject(factories, config as any, options);
+) => Promise<PluginInstance[]> = fromObject;
 
 export const fromEnv = async <const Factories extends BaseFactories>(
   factories: Factories,
