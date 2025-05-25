@@ -3,7 +3,7 @@ import { getApiBaseUrl, TokenMap } from "@todone/internal-github-common";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
 import ky from "ky";
-import * as z from "zod/v4";
+import * as z from "zod/v4-mini";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
@@ -13,7 +13,7 @@ const pattern = new URLPattern({
 export default definePlugin(
   {
     token: {
-      schema: z.string().optional(),
+      schema: z.optional(z.string()),
       envName: "GITHUB_TOKEN",
     },
   },
