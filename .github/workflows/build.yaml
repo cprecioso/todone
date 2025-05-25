@@ -1,26 +1,15 @@
 name: Build packages
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: corepack enable
       - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
-      - uses: actions/setup-node@v4
-        with:
-          cache: "yarn"
-      - run: yarn install --immutable
+      - uses: ./.github/actions/prepare
       - run: yarn nx run-many -t package:all,build-docs
       - uses: actions/upload-artifact@v4
         with:
@@ -29,20 +18,3 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs
-
-  deploy-pages:
-    needs: build
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
