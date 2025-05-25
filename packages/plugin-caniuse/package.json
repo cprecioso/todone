@@ -3,6 +3,14 @@
   "version": "0.2.0",
   "type": "module",
   "description": "A todone plugin that will alert you when a feature is supported by your target browsers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/plugin-caniuse#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {

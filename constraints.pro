@@ -1,5 +1,7 @@
 copy_from_root(field, 'author').
 copy_from_root(field, 'license').
+copy_from_root(field, 'repository').
+copy_from_root(field, 'bugs').
 copy_from_root(_, _) :- false.
 
 % Copy fields from root

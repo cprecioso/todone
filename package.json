@@ -2,6 +2,15 @@
   "name": "@todone/repo",
   "version": "0.5.0",
   "type": "module",
+  "description": "todone monorepo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "private": true,

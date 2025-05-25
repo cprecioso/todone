@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Helper functions and types for creating todone plugins",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/plugin#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {

@@ -3,14 +3,20 @@
   "version": "0.8.0",
   "type": "module",
   "description": "Never forget to follow up on your code's TODOs, maintain code quality, and pay back your technical debt.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/todone#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {
     "node": ">=22"
   },
-  "bin": {
-    "todone": "dist/bin.js"
-  },
+  "bin": "dist/bin.js",
   "exports": {
     "types": "./dist/index.d.ts",
     "default": "./dist/index.js"

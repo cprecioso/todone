@@ -3,6 +3,14 @@
   "version": "0.5.0",
   "type": "module",
   "description": "Core implementation of todone",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {

@@ -3,6 +3,14 @@
   "version": "1.0.1",
   "type": "module",
   "description": "Internal URL pattern polyfill for todone",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/internal-urlpattern#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {
