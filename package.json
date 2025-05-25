@@ -16,12 +16,10 @@
     "dist"
   ],
   "scripts": {
-    "build-docs": "nx run-many -t build && typedoc",
-    "build:all": "nx run-many -t build",
-    "check:all": "nx run-many -t check",
-    "dev:all": "nx run-many -t dev",
+    "build-docs": "typedoc",
+    "dev-docs": "nx watch --includeDependentProjects -p=. -- nx build-docs",
     "postinstall": "husky install",
-    "publish:all": "nx run-many -t prepack && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
+    "publish:all": "yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
     "execa": "^9.5.3",
@@ -36,5 +34,29 @@
     "typedoc-plugin-dt-links": "^2.0.2",
     "typedoc-plugin-mdn-links": "^5.0.2",
     "typescript": "~5.8.3"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "*"
+    ],
+    "targets": {
+      "build": {},
+      "check": {},
+      "dev": {},
+      "publish": {
+        "dependsOn": [
+          "^prepack"
+        ]
+      },
+      "build-docs": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/docs"
+        ]
+      }
+    }
   }
 }
