@@ -9,6 +9,18 @@ export const map = <T, U>(fn: (item: T, index: number) => U) =>
     }
   });
 
+export const compactMap = <T, U>(
+  fn: (item: T, index: number) => U | undefined | null,
+) =>
+  toTransformStream(async function* (source: ReadableStream<T>) {
+    let i = 0;
+    for await (const item of source) {
+      const result = fn(item, i);
+      if (result != null) yield result;
+      i++;
+    }
+  });
+
 export const filter = <T, U extends T>(
   fn: (item: T, index: number) => item is U,
 ) =>
@@ -37,7 +49,9 @@ export const flatMap = <T, U>(
     }
   });
 
-export const unasync = <T>(fn: () => Promise<ReadableStream<T>>) =>
+export const create = <T>(
+  fn: () => ReadableStream<T> | Promise<ReadableStream<T>>,
+) =>
   ReadableStream.from(
     (async function* () {
       yield* await fn();

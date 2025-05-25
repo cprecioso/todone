@@ -1,7 +1,7 @@
 import { mergeReadableStreams } from "@std/streams";
 import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
-import { analyze } from "./analyzer";
+import { makeAnalyzer } from "./analyzer";
 import { TodoneOptions, normalizeOptions } from "./options";
 import { PluginContainer } from "./plugins";
 
@@ -24,7 +24,7 @@ export const getAnalysisStream = (
   const [file$, returnFile$] = ReadableStream.from(files).tee();
 
   const [match$, returnMatch$] = file$
-    .pipeThrough(s.flatMap((file) => analyze(file, options)))
+    .pipeThrough(s.flatMap(makeAnalyzer(options)))
     .tee();
 
   const returnResult$ = match$.pipeThrough(
