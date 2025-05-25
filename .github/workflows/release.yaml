@@ -31,8 +31,7 @@ jobs:
         with:
           commitMode: github-api
           publish: |
-            nx build
-            yarn npm publish --tag latest --access public --provenance
+            nx build && yarn npm publish --tag latest --access public --provenance
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ github.token }}
