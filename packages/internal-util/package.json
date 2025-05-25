@@ -37,8 +37,7 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch",
-    "publish": ""
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "@std/regexp": "jsr:^1.0.1",

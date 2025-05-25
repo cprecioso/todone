@@ -26,8 +26,7 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch",
-    "publish": "yarn npm publish --access public --provenance"
+    "dev": "tsdown --watch"
   },
   "dependencies": {
     "@todone/plugin-caniuse": "workspace:^",
