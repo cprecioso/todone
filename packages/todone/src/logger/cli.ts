@@ -1,4 +1,4 @@
-import { ReportItem } from "@todone/core";
+import { AnalysisItem } from "@todone/core";
 import * as t from "@todone/types";
 import chalk from "chalk";
 import { relative as relativePath } from "node:path";
@@ -18,7 +18,7 @@ const humanFilename = (file: t.File) => {
 
 export const logCLIReports = async (
   stdout: Writable,
-  reports: AsyncIterable<ReportItem>,
+  reports: AsyncIterable<AnalysisItem>,
 ) => {
   const headerLn = (str = "") => stdout.write(`${str}\n`);
   const infoLn = (str = "") => stdout.write(`\t${str}\n`);

@@ -15,6 +15,14 @@ const parseStandardSchema = async (
   return result.value;
 };
 
+/**
+ * Instances the plugins with the configuration, given as a function that returns
+ * the configuration for each plugin.
+ *
+ * This is an advanced function. You only need to use it if you have custom way of
+ * providing the configuration for each plugin, such as fetching it from a database
+ * or an API.
+ */
 export const instancePlugins = async <const Factories extends BaseFactories>(
   factories: Factories,
   getConfig: (
@@ -35,21 +43,23 @@ export const instancePlugins = async <const Factories extends BaseFactories>(
     await Promise.all(
       Object.entries(factories).map(async ([name, factory]) => {
         try {
-          const pluginConfig = Object.fromEntries(
-            await Promise.all(
-              Object.entries(factory.configSchema ?? {}).map(
-                async ([key, schema]) => {
-                  const input = await getConfig(name, key, schema);
-                  const result = await parseStandardSchema(
-                    `${name}.${key}`,
-                    schema.schema,
-                    input,
-                  );
-                  return [key, result] as const;
-                },
-              ),
-            ),
-          );
+          const pluginConfig = factory.configSchema
+            ? Object.fromEntries(
+                await Promise.all(
+                  Object.entries(factory.configSchema).map(
+                    async ([key, schema]) => {
+                      const input = await getConfig(name, key, schema);
+                      const result = await parseStandardSchema(
+                        `${name}.${key}`,
+                        schema.schema,
+                        input,
+                      );
+                      return [key, result] as const;
+                    },
+                  ),
+                ),
+              )
+            : {};
 
           try {
             return await factory.make(pluginConfig);

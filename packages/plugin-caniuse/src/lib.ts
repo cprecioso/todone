@@ -5,7 +5,7 @@ import * as db from "caniuse-lite";
 import { fileURLToPath } from "node:url";
 
 export const getBrowsers = (file: File) => {
-  assert(file.isPresent);
+  assert(file.isPresent, "This plugin requires the file to be present");
   const path = fileURLToPath(file.url);
   const browsers = browserslist(undefined, { path }).map((browserString) => {
     const [browser, version] = browserString.split(" ", 2);

@@ -10,7 +10,8 @@ const pattern = new URLPattern({
   pathname: "/:feature",
 });
 
-export default definePlugin(undefined, async () => ({
+/** The plugin factory. Doesn't take any options. */
+export default definePlugin(null, async () => ({
   name: "Caniuse",
 
   pattern,

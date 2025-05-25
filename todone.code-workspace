@@ -17,10 +17,6 @@
       "path": "packages/internal-build",
     },
     {
-      "name": "📦 @todone/internal-github-common",
-      "path": "packages/internal-github-common",
-    },
-    {
       "name": "📦 @todone/internal-urlpattern",
       "path": "packages/internal-urlpattern",
     },

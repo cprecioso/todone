@@ -12,6 +12,7 @@ const pattern = new URLPattern({
   hash: "#:commentID",
 });
 
+/** The plugin factory */
 export default definePlugin(
   {
     token: {
