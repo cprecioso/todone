@@ -2,6 +2,7 @@
   "name": "@todone/plugin-github",
   "version": "0.5.0",
   "type": "module",
+  "description": "A todone plugin that will alert you when an GitHub issue or pull request has been resolved",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {

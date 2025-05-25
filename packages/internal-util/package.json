@@ -2,6 +2,7 @@
   "name": "@todone/internal-util",
   "version": "0.1.0",
   "type": "module",
+  "description": "Internal utility functions for todone",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {

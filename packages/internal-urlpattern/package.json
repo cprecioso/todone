@@ -2,6 +2,7 @@
   "name": "@todone/internal-urlpattern",
   "version": "1.0.1",
   "type": "module",
+  "description": "Internal URL pattern polyfill for todone",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {

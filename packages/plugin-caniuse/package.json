@@ -2,6 +2,7 @@
   "name": "@todone/plugin-caniuse",
   "version": "0.2.0",
   "type": "module",
+  "description": "A todone plugin that will alert you when a feature is supported by your target browsers",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {

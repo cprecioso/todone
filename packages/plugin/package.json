@@ -2,6 +2,7 @@
   "name": "@todone/plugin",
   "version": "0.1.0",
   "type": "module",
+  "description": "Helper functions and types for creating todone plugins",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {

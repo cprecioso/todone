@@ -2,12 +2,15 @@
   "name": "todone",
   "version": "0.8.0",
   "type": "module",
+  "description": "Never forget to follow up on your code's TODOs, maintain code quality, and pay back your technical debt.",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {
     "node": ">=22"
   },
-  "bin": "./dist/bin.js",
+  "bin": {
+    "todone": "dist/bin.js"
+  },
   "exports": {
     "types": "./dist/index.d.ts",
     "default": "./dist/index.js"

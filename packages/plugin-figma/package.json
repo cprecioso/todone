@@ -2,6 +2,7 @@
   "name": "@todone/plugin-figma",
   "version": "0.2.0",
   "type": "module",
+  "description": "A todone plugin that will alert you when a comment in a Figma file has been resolved",
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {
