@@ -32,6 +32,7 @@
     "publish:all": "yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.4",
     "execa": "^9.5.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.0.0",
