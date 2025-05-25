@@ -1,4 +1,1 @@
-> [!NOTE]
-> Internal use only. This package is not intended for public use.
-
-This package holds common utilities for the packages in this monorepo.
+Visit the docs at <https://cprecioso.github.io/todone/modules/_todone_internal-util.html>

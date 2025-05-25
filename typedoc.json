@@ -2,9 +2,11 @@
   "entryPointStrategy": "packages",
   "entryPoints": ["./packages/*"],
   "includeVersion": true,
+  "readme": "./docs.md",
   "packageOptions": {
     "includeVersion": true,
-    "excludeInternal": true
+    "excludeInternal": true,
+    "readme": "./docs.md"
   },
   "plugin": ["typedoc-plugin-dt-links", "typedoc-plugin-mdn-links"]
 }

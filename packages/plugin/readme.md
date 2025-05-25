@@ -1,3 +1,1 @@
-# @todone/plugin
-
-Adds helper functions to create plugins, and instancing them with the correct settings.
+Visit the docs at <https://cprecioso.github.io/todone/modules/_todone_plugin.html>
