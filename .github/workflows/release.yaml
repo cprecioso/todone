@@ -10,31 +10,34 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
-
   release:
-    needs: build
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
       pull-requests: write
       id-token: write
+      pages: write
       packages: write
 
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
-      - run: nx run-many --target=build,check
+      - run: yarn nx run-many -t build,check
       - uses: changesets/action@v1
         id: changesets
         with:
           commitMode: github-api
-          publish: nx publish
+          publish: yarn nx publish
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ github.token }}
           NODE_AUTH_TOKEN: ${{ github.token }} }}
+      - run: yarn nx build-docs
+        if: steps.changesets.outputs.hasChangesets == 'false'
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        with:
+          path: ./docs
       - uses: actions/deploy-pages@v4
         if: steps.changesets.outputs.hasChangesets == 'false'

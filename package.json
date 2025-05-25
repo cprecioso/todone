@@ -27,7 +27,8 @@
   "scripts": {
     "build-docs": "typedoc",
     "dev-docs": "nx watch --includeDependentProjects -p=. -- nx build-docs",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "publish": ""
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.4",

@@ -22,8 +22,7 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch",
-    "publish": "yarn npm publish --access public --provenance"
+    "dev": "tsdown --watch"
   },
   "peerDependencies": {
     "tsdown": "^0.11.12",
@@ -38,5 +37,6 @@
     "tsdown": "^0.11.12",
     "typescript": "~5.8.3"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "internal": true
 }

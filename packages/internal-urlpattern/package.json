@@ -23,7 +23,8 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "publish": ""
   },
   "dependencies": {
     "urlpattern-polyfill": "^10.1.0"
