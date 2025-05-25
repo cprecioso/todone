@@ -1,4 +1,4 @@
-import { getReportsPromise, TodoneOptions } from "@todone/core";
+import { getAnalysisPromise, TodoneOptions } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
 import {
   FactoriesToConfigObject,
@@ -14,7 +14,7 @@ export const run = async (
   { cwd = process.cwd(), gitignore = true, ...options }: Options,
 ) => {
   const files = getFiles(globs, { cwd, gitignore });
-  return await getReportsPromise(files, options);
+  return await getAnalysisPromise(files, options);
 };
 
 export const makeDefaultPlugins = (

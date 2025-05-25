@@ -1,6 +1,6 @@
 import {
-  getReportsPromise,
-  getReportStream,
+  getAnalysisPromise,
+  getAnalysisStream,
   TodoneOptions,
 } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
@@ -48,10 +48,10 @@ export class RunCommand extends Command {
     };
 
     if (this.json) {
-      const report = await getReportsPromise(files, options);
+      const report = await getAnalysisPromise(files, options);
       this.context.stdout.write(`${JSON.stringify(report)}\n`);
     } else {
-      const reports = getReportStream(files, options);
+      const reports = getAnalysisStream(files, options);
       const expiredResults = await logCLIReports(this.context.stdout, reports);
       return expiredResults > 0 ? 1 : 0;
     }

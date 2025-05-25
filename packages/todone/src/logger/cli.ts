@@ -1,5 +1,5 @@
-import { InflightReport } from "@todone/core";
-import { ReportFile } from "@todone/types";
+import { ReportItem } from "@todone/core";
+import * as t from "@todone/types";
 import chalk from "chalk";
 import { relative as relativePath } from "node:path";
 import type { Writable } from "node:stream";
@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 const dateFormatter = new Intl.DateTimeFormat();
 
 const cwd = process.cwd();
-const humanFilename = (file: ReportFile) => {
+const humanFilename = (file: t.File) => {
   if (!file.isPresent) return file.url;
   const url = new URL(file.url);
   if (url.protocol !== "file:") return file.url;
@@ -18,7 +18,7 @@ const humanFilename = (file: ReportFile) => {
 
 export const logCLIReports = async (
   stdout: Writable,
-  reports: AsyncIterable<InflightReport>,
+  reports: AsyncIterable<ReportItem>,
 ) => {
   const headerLn = (str = "") => stdout.write(`${str}\n`);
   const infoLn = (str = "") => stdout.write(`\t${str}\n`);
