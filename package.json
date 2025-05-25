@@ -27,6 +27,7 @@
   "scripts": {
     "build-docs": "typedoc",
     "dev-docs": "nx watch --includeDependentProjects -p=. -- nx build-docs",
+    "package:all": "mkdir -p out && yarn workspaces foreach --all --parallel --no-private pack --out ../../out/%s-%v.tgz",
     "postinstall": "husky install",
     "publish:all": "yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
@@ -73,6 +74,16 @@
         ],
         "cache": false,
         "continuous": true
+      },
+      "package:all": {
+        "dependsOn": [
+          "build",
+          "check"
+        ],
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/out/*.tgz"
+        ]
       }
     }
   }
