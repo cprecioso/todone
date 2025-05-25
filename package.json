@@ -57,6 +57,13 @@
         "outputs": [
           "{projectRoot}/docs"
         ]
+      },
+      "dev-docs": {
+        "dependsOn": [
+          "build-docs"
+        ],
+        "cache": false,
+        "continuous": true
       }
     }
   }
