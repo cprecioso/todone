@@ -2,6 +2,6 @@
 version = "22.15.1"
 backend = "core:node"
 
-[tools."npm:turbo"]
-version = "2.5.3"
-backend = "npm:turbo"
+[tools."npm:nx"]
+version = "21.1.2"
+backend = "npm:nx"

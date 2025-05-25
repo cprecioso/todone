@@ -1,3 +1,3 @@
 [tools]
 node = "lts"
-"npm:turbo" = "latest"
+"npm:nx" = "21"

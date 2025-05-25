@@ -16,22 +16,22 @@
     "dist"
   ],
   "scripts": {
-    "build-docs": "turbo run build && typedoc",
-    "build:all": "turbo run build",
-    "check:all": "turbo run check",
-    "dev:all": "turbo run dev",
+    "build-docs": "nx run-many -t build && typedoc",
+    "build:all": "nx run-many -t build",
+    "check:all": "nx run-many -t check",
+    "dev:all": "nx run-many -t dev",
     "postinstall": "husky install",
-    "publish:all": "turbo run prepack && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
+    "publish:all": "nx run-many -t prepack && yarn workspaces foreach --parallel --verbose --topological-dev --no-private npm publish --access public --tolerate-republish"
   },
   "devDependencies": {
     "execa": "^9.5.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.0.0",
+    "nx": "21.1.2",
     "prettier": "3.5.3",
     "prettier-plugin-organize-imports": "4.1.0",
     "prettier-plugin-pkg": "0.19.1",
     "prettier-plugin-sh": "0.17.4",
-    "turbo": "^2.5.3",
     "typedoc": "^0.28.4",
     "typedoc-plugin-dt-links": "^2.0.2",
     "typedoc-plugin-mdn-links": "^5.0.2",
