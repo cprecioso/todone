@@ -1,6 +1,6 @@
 {
   "name": "@todone/plugin-figma",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "description": "A todone plugin that will alert you when a comment in a Figma file has been resolved",
   "repository": {
