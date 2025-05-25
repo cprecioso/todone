@@ -10,8 +10,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+
   release:
+    needs: build
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+      packages: write
+
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
@@ -19,56 +30,12 @@ jobs:
         id: changesets
         with:
           commitMode: github-api
+          publish: |
+            nx build
+            yarn npm publish --tag latest --access public --provenance
         env:
           GITHUB_TOKEN: ${{ github.token }}
-
-    outputs:
-      needs-publish: ${{ steps.changesets.outputs.hasChangesets == 'false' }}
-
-  build:
-    needs: release
-    uses: ./.github/workflows/build.yaml
-
-  deploy-packages:
-    needs: [release, build]
-    if: needs.release.outputs.needs-publish == 'true'
-
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v4
-        with:
-          registry-url: https://npm.pkg.github.com/
-      - uses: actions/download-artifact@v4
-        with:
-          name: packages
-      - name: Publish packages
-        run: |
-          for file in ./*; do
-            echo "Publishing $package"
-            npm publish --tag latest --access public --provenance $file || true
-          done
-        env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
-
-  deploy-pages:
-    needs: [release, build]
-    if: needs.release.outputs.needs-publish == 'true'
-
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    steps:
+          NPM_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ github.token }} }}
       - uses: actions/deploy-pages@v4
-        id: deployment
+        if: steps.changesets.outputs.hasChangesets == 'false'
