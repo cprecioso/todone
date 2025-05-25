@@ -41,7 +41,7 @@
     "prettier-plugin-pkg": "0.19.1",
     "prettier-plugin-sh": "0.17.4",
     "typedoc": "^0.28.4",
-    "typedoc-plugin-dt-links": "^2.0.2",
+    "typedoc-plugin-dt-links": "^2.0.3",
     "typedoc-plugin-mdn-links": "^5.0.2",
     "typescript": "~5.8.3"
   },
