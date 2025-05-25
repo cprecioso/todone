@@ -7,9 +7,7 @@
 
 node_modules/
 dist/
-.parcel-cache/
 
 .env*
-.turbo/
 /docs/
 out-docs.json
