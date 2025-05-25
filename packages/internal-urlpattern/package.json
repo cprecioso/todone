@@ -1,6 +1,6 @@
 {
   "name": "@todone/internal-urlpattern",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "Internal URL pattern polyfill for todone",
   "repository": {

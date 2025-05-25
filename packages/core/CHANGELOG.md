@@ -1,5 +1,14 @@
 # @todone/core
 
+## 0.6.1
+
+### Patch Changes
+
+- ddebfb7: Final CI
+- Updated dependencies [ddebfb7]
+  - @todone/internal-util@0.2.1
+  - @todone/types@0.6.1
+
 ## 0.6.0
 
 ### Minor Changes
