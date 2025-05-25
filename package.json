@@ -45,7 +45,8 @@
       "dev": {},
       "publish": {
         "dependsOn": [
-          "^prepack"
+          "build",
+          "check"
         ]
       },
       "build-docs": {
