@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "plugins": [
+    {
+      "type": "node-workspace",
+      "updatePeerDependencies": true
+    }
+  ],
+  "release-type": "node",
+  "packages": {
+    ".": {},
+    "packages/core": {},
+    "packages/default-plugins": {},
+    "packages/internal-build": {},
+    "packages/internal-urlpattern": {},
+    "packages/internal-util": {},
+    "packages/plugin": {},
+    "packages/plugin-caniuse": {},
+    "packages/plugin-date": {},
+    "packages/plugin-figma": {},
+    "packages/plugin-github": {},
+    "packages/todone": {},
+    "packages/types": {}
+  }
+}
