@@ -1,5 +1,14 @@
 # @todone/plugin-date
 
+## [0.3.2](https://github.com/cprecioso/todone/compare/plugin-date-v0.3.1...plugin-date-v0.3.2) (2025-05-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin bumped to 0.3.0
+
 ## 0.3.1
 
 ### Patch Changes

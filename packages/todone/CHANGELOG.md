@@ -1,5 +1,20 @@
 # todone
 
+## [0.10.0](https://github.com/cprecioso/todone/compare/todone@0.9.1...todone-v0.10.0) (2025-05-27)
+
+
+### Features
+
+* rename instancing functions ([c1b1dc8](https://github.com/cprecioso/todone/commit/c1b1dc8d1c0c3dbaa077bfe2266f53f2f4b45857))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/default-plugins bumped to 0.5.2
+    * @todone/plugin bumped to 0.3.0
+
 ## 0.9.1
 
 ### Patch Changes

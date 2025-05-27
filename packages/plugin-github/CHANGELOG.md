@@ -1,5 +1,14 @@
 # @todone/plugin-github
 
+## [0.6.2](https://github.com/cprecioso/todone/compare/plugin-github-v0.6.1...plugin-github-v0.6.2) (2025-05-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin bumped to 0.3.0
+
 ## 0.6.1
 
 ### Patch Changes
