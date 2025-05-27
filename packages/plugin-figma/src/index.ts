@@ -12,6 +12,19 @@ const pattern = new URLPattern({
   hash: "#:commentID",
 });
 
+const patternResultSchema = z.object({
+  pathname: z.object({
+    groups: z.object({
+      fileID: z.string(),
+    }),
+  }),
+  hash: z.object({
+    groups: z.object({
+      commentID: z.string(),
+    }),
+  }),
+});
+
 /** The plugin factory */
 export default definePlugin(
   {
@@ -32,8 +45,7 @@ export default definePlugin(
       pattern,
 
       async check({ url }) {
-        const result = pattern.exec(url);
-        assert(result);
+        const result = patternResultSchema.parse(pattern.exec(url));
 
         const {
           pathname: {
@@ -56,7 +68,11 @@ export default definePlugin(
         const closeDate = comment.resolved_at;
         const isExpired = Boolean(closeDate);
 
-        return { isExpired, expirationDate: closeDate || undefined };
+        return {
+          title: `Figma comment from ${comment.user.handle}`,
+          isExpired,
+          expirationDate: closeDate || undefined,
+        };
       },
     };
   },

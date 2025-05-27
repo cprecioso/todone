@@ -43,6 +43,8 @@ export interface PluginInstance {
 }
 
 export interface PluginResult {
+  /** A human title for the reference URL */
+  title: string;
   /** This TODO has expired and needs action */
   isExpired: boolean;
   /** If known, when this TODO expired or will expire */

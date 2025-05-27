@@ -1,11 +1,20 @@
-import { assert } from "@std/assert";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
+import { isPast } from "date-fns";
+import * as z from "zod/v4-mini";
 
 const pattern = new URLPattern({
   protocol: "date",
   hostname: "",
   pathname: ":date",
+});
+
+const patternResultSchema = z.object({
+  pathname: z.object({
+    groups: z.object({
+      date: z.string(),
+    }),
+  }),
 });
 
 /** The plugin factory. Doesn't take any options. */
@@ -15,15 +24,16 @@ export default definePlugin(null, async () => ({
   pattern,
 
   async check({ url }) {
-    const result = pattern.exec(url);
-    assert(result);
-
+    const result = patternResultSchema.parse(pattern.exec(url));
     const { date } = result.pathname.groups;
-    if (!date) return null;
 
     const expirationDate = new Date(date);
-    const isExpired = new Date() >= expirationDate;
+    const isExpired = isPast(expirationDate);
 
-    return { isExpired, expirationDate };
+    return {
+      title: date,
+      isExpired,
+      expirationDate,
+    };
   },
 }));

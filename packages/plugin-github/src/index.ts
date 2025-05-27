@@ -1,14 +1,24 @@
-import { assert } from "@std/assert";
+import { createTokenAuth } from "@octokit/auth-token";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
-import ky from "ky";
+import { Octokit } from "octokit";
 import * as z from "zod/v4-mini";
-import { getApiBaseUrl } from "./lib/baseUrl";
-import { TokenMap } from "./lib/parseTokens";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
-  pathname: "/:owner/:repo/:issueKind(issues|pull)/:issueID",
+  hostname: "{www.}?github.com",
+  pathname: "/:owner/:repo/:issue_kind(issues|pull)/:number",
+});
+
+const patternResultSchema = z.object({
+  pathname: z.object({
+    groups: z.object({
+      owner: z.string(),
+      repo: z.string(),
+      issue_kind: z.enum(["issues", "pull"]),
+      number: z.coerce.number(),
+    }),
+  }),
 });
 
 export default definePlugin(
@@ -19,16 +29,8 @@ export default definePlugin(
     },
   },
   async ({ token }) => {
-    const tokens = new TokenMap(token);
-
-    const client = ky.extend({
-      hooks: {
-        beforeRequest: [
-          (req) => {
-            tokens.authorizeRequest(req);
-          },
-        ],
-      },
+    const client = new Octokit({
+      authStrategy: token ? createTokenAuth(token) : undefined,
     });
 
     return {
@@ -37,35 +39,24 @@ export default definePlugin(
       pattern,
 
       async check({ url }) {
-        const result = pattern.exec(url);
-        assert(result);
+        const result = patternResultSchema.parse(pattern.exec(url));
 
-        const { owner, repo, issueID } = result.pathname.groups;
+        const { owner, repo, issue_kind, number } = result.pathname.groups;
 
-        const apiBaseUrl = getApiBaseUrl(url);
-        assert(tokens.has(apiBaseUrl.hostname));
-
-        const response = await client.get(
-          new URL(`repos/${owner}/${repo}/issues/${issueID}`, apiBaseUrl),
-          { headers: { Accept: "application/vnd.github.v3+json" } },
-        );
-
-        const data = (await response.json()) as any;
-
-        if (response.status >= 400 && response.status < 500) {
-          throw new Error("Error accessing issue or PR: " + data.message);
-        }
-
-        if (!data.state) {
-          throw new Error(
-            "Not an issue or pull request: " + (await response.text()),
-          );
-        }
+        const { data } =
+          issue_kind === "issues"
+            ? await client.rest.issues.get({
+                owner,
+                repo,
+                issue_number: number,
+              })
+            : await client.rest.pulls.get({ owner, repo, pull_number: number });
 
         const isExpired = data.state === "closed";
         const closeDate = data.closed_at && new Date(data.closed_at);
 
         return {
+          title: data.title,
           isExpired,
           expirationDate: closeDate || undefined,
         };

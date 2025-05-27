@@ -1,6 +1,6 @@
-import { assert } from "@std/assert";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
+import * as z from "zod/v4-mini";
 import { CaniuseFlags, UrlFlags } from "./flags";
 import { getBrowsers, getFeatureInfo } from "./lib";
 
@@ -10,6 +10,14 @@ const pattern = new URLPattern({
   pathname: "/:feature",
 });
 
+const patternResultSchema = z.object({
+  pathname: z.object({
+    groups: z.object({
+      feature: z.string(),
+    }),
+  }),
+});
+
 /** The plugin factory. Doesn't take any options. */
 export default definePlugin(null, async () => ({
   name: "Caniuse",
@@ -17,11 +25,8 @@ export default definePlugin(null, async () => ({
   pattern,
 
   async check({ url, file }) {
-    const result = pattern.exec(url);
-    assert(result);
-
+    const result = patternResultSchema.parse(pattern.exec(url));
     const { feature } = result.pathname.groups;
-    if (!feature) return null;
 
     const browsers = getBrowsers(file);
     const featureInfo = getFeatureInfo(feature);
@@ -72,6 +77,9 @@ export default definePlugin(null, async () => ({
 
     const isExpired = browserSupport.every((v) => Boolean(v));
 
-    return { isExpired };
+    return {
+      title: featureInfo.title,
+      isExpired,
+    };
   },
 }));
