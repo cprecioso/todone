@@ -66,3 +66,13 @@ export const teeMap = <T, U>(
   const mapped$ = forMap$.pipeThrough(map(fn));
   return [value$, mapped$] as const;
 };
+
+// @TODO https://github.com/actions/runner/issues/3600
+// Once GitHub Actions supports Node.js 22, we can use Array.fromAsync directly
+export const toArray = async <T>(stream: ReadableStream<T>): Promise<T[]> => {
+  const result: T[] = [];
+  for await (const item of stream) {
+    result.push(item);
+  }
+  return result;
+};

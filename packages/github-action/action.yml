@@ -1,0 +1,19 @@
+name: todone
+description: Analyze your TODOs in code and create a summary
+
+inputs:
+  globs:
+    description: "Files to analyze, glob patterns supported"
+    required: true
+  github-token:
+    description: "GitHub token to access the repository"
+    required: false
+    default: "${{ github.token }}"
+  create-issues:
+    description: "Create issues for TODOs found in the code"
+    required: false
+    default: "true"
+
+runs:
+  using: "node20"
+  main: "dist/bin.js"
