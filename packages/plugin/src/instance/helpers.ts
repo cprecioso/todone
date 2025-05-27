@@ -14,7 +14,7 @@ import {
  * @param options - Options for instancing the plugins, such as error handling.
  * @returns A promise that resolves to an object of plugin instances.
  */
-export const fromObject = async <const Factories extends BaseFactories>(
+export const pluginsFromObject = async <const Factories extends BaseFactories>(
   factories: Factories,
   config: Record<string, Record<string, unknown>>,
   options?: InstancingOptions,
@@ -30,18 +30,18 @@ export const fromObject = async <const Factories extends BaseFactories>(
  * of plugin names and their type-safe configuration.
  *
  * This is a convenience function that adds type safety to the arguments
- * of the {@link fromObject} function.
+ * of the {@link pluginsFromObject} function.
  *
  * @param factories - An object of plugin names and their factories.
  * @param config - A type-safe object of plugin names and their configuration.
  * @param options - Options for instancing the plugins, such as error handling.
  * @returns A promise that resolves to an object of plugin instances.
  */
-export const fromCode = <const Factories extends BaseFactories>(
+export const pluginsFromCode = <const Factories extends BaseFactories>(
   factories: Factories,
   config: FactoriesToConfigObject<Factories>,
   options?: InstancingOptions,
-) => fromObject(factories, config, options);
+) => pluginsFromObject(factories, config, options);
 
 /**
  * Instances the plugins with the configuration, given as a shallow object of
@@ -52,7 +52,7 @@ export const fromCode = <const Factories extends BaseFactories>(
  * @param options - Options for instancing the plugins, such as error handling.
  * @returns A promise that resolves to an object of plugin instances.
  */
-export const fromEnv = async <const Factories extends BaseFactories>(
+export const pluginsFromEnv = async <const Factories extends BaseFactories>(
   factories: Factories,
   config: Partial<Record<string, string>>,
   options?: InstancingOptions,

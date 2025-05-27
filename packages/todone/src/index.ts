@@ -2,8 +2,8 @@ import { analyzePromise, Options as TodoneOptions } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
 import {
   FactoriesToConfigObject,
-  fromCode,
   InstancingOptions,
+  pluginsFromCode,
 } from "@todone/plugin";
 import { getFiles, GetFilesOptions } from "./helpers/get-files";
 
@@ -20,4 +20,4 @@ export const run = async (
 export const makeDefaultPlugins = (
   config: FactoriesToConfigObject<typeof defaultPlugins>,
   options?: InstancingOptions,
-) => fromCode(defaultPlugins, config, options);
+) => pluginsFromCode(defaultPlugins, config, options);

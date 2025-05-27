@@ -4,7 +4,7 @@ import {
   Options as TodoneOptions,
 } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
-import { fromEnv } from "@todone/plugin";
+import { pluginsFromEnv } from "@todone/plugin";
 import { Command, Option } from "clipanion";
 import { getFiles } from "../helpers/get-files";
 import { logCLIReports } from "../logger/cli";
@@ -36,7 +36,7 @@ export class RunCommand extends Command {
     const report = (reason: string) => (error: unknown) =>
       err(`${reason}: ${error}`);
 
-    const plugins = await fromEnv(defaultPlugins, process.env, {
+    const plugins = await pluginsFromEnv(defaultPlugins, process.env, {
       onConfigError: report("Failure to load plugin config"),
       onInstancingError: report("Failure to load plugin"),
     });
