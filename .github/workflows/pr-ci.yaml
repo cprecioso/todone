@@ -9,8 +9,4 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
-      - run: yarn nx run-many -t build,check
+    uses: ./.github/workflows/build.yaml

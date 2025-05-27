@@ -1,0 +1,64 @@
+name: Run release process
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release-please
+
+    outputs:
+      releases_created: ${{ steps.release-please.outputs.releases_created }}
+
+  build:
+    needs: release-please
+    uses: ./.github/workflows/build.yaml
+
+  publish-packages:
+    needs: [release-please, build]
+    if: needs.release-please.outputs.releases_created
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/setup-node@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: packages
+      - run: |
+          for file in ./*; do
+            npm publish --access public --provenance $file || true
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} }}
+
+  publish-docs:
+    needs: [release-please, build]
+    if: needs.release-please.outputs.releases_created
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
+
+    steps:
+      - uses: actions/deploy-pages@v4
