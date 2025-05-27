@@ -1,6 +1,6 @@
 {
   "name": "@todone/default-plugins",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "type": "module",
   "description": "Recommended plugins for todone",
   "repository": {

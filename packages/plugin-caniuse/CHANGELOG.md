@@ -1,5 +1,14 @@
 # @todone/plugin-caniuse
 
+## [0.3.2](https://github.com/cprecioso/todone/compare/plugin-caniuse-v0.3.1...plugin-caniuse-v0.3.2) (2025-05-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin bumped to 0.3.0
+
 ## 0.3.1
 
 ### Patch Changes
