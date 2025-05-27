@@ -1,5 +1,5 @@
 [tools.node]
-version = "22.15.1"
+version = "20.19.2"
 backend = "core:node"
 
 [tools."npm:nx"]

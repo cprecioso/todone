@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { findPackageJSON } from "node:module";
 import path from "node:path";
 import type { PackageJson } from "type-fest";
 import type { TypeDocOptions } from "typedoc";
@@ -20,7 +19,9 @@ const iterateExports = function* (
   }
 
   if (Array.isArray(exportsField)) {
-    yield* exportsField.values().flatMap((e) => iterateExports(e));
+    for (const e of exportsField) {
+      yield* iterateExports(e);
+    }
     return;
   }
 
@@ -45,8 +46,7 @@ const inspectPackageJson = function* (pkgJson: PackageJson) {
 };
 
 export const defaultConfig = (baseDir: string): TypeDocOptions => {
-  const pkgJsonPath = findPackageJSON(baseDir, import.meta.url);
-  assert(pkgJsonPath, "package.json not found");
+  const pkgJsonPath = new URL("./package.json", baseDir);
 
   const pkgJson: PackageJson = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
 
@@ -61,7 +61,7 @@ export const defaultConfig = (baseDir: string): TypeDocOptions => {
     }
   }
 
-  const entryPoints = inspectPackageJson(pkgJson)
+  const entryPoints = [...inspectPackageJson(pkgJson)]
     .map((file) =>
       file.replace(/^(?:.\/)?dist\//, "src/").replace(/\.js$/, ".ts"),
     )

@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["ESNext"],
+    // TODO Remove this when we drop support for Node 20
+    "target": "es2022",
+    "lib": ["es2023"],
+
     "isolatedModules": true,
     "esModuleInterop": true,
     "strict": true,

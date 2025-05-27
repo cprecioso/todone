@@ -540,7 +540,7 @@ __metadata:
   resolution: "@todone/github-action@workspace:packages/github-action"
   dependencies:
     "@todone/internal-build": "workspace:*"
-    "@types/node": "npm:^22.15.21"
+    "@types/node": "npm:^20.17.51"
     tsdown: "npm:^0.12.4"
     typescript: "npm:~5.8.3"
   languageName: unknown
@@ -550,7 +550,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/internal-build@workspace:packages/internal-build"
   dependencies:
-    "@types/node": "npm:^22.15.21"
+    "@types/node": "npm:^20.17.51"
     tsdown: "npm:^0.12.4"
     type-fest: "npm:^4.41.0"
     typedoc: "npm:^0.28.5"
@@ -594,7 +594,7 @@ __metadata:
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:*"
     "@types/caniuse-lite": "npm:^1.0.5"
-    "@types/node": "npm:^22.15.21"
+    "@types/node": "npm:^20.17.51"
     browserslist: "npm:^4.24.5"
     caniuse-lite: "npm:^1.0.30001718"
     tsdown: "npm:^0.12.4"
@@ -714,12 +714,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.15.21":
-  version: 22.15.21
-  resolution: "@types/node@npm:22.15.21"
+"@types/node@npm:^20.17.51":
+  version: 20.17.51
+  resolution: "@types/node@npm:20.17.51"
   dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10/cb4189587cca445bfb8166c0ed39f9344d743f37f3da892f2999a99bbabda45dc773237e61ecb7d1dc83dd95718cb1b5715b0be5dd7953565b19019e36a7cf39
+    undici-types: "npm:~6.19.2"
+  checksum: 10/1f98f9c7dba22e7e494e6436cfdf241f99287c3f7edab8fdb616de78c50eb1b9afd41132a6f9cb619ae0f3e485b862b81d65744ceec7ad1c6fdf1597c2b5fa96
   languageName: node
   linkType: hard
 
@@ -2745,7 +2745,7 @@ __metadata:
     "@todone/internal-util": "workspace:^"
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:^"
-    "@types/node": "npm:^22.15.21"
+    "@types/node": "npm:^20.17.51"
     chalk: "npm:^5.4.1"
     clipanion: "npm:^4.0.0-rc.4"
     dotenv: "npm:^16.5.0"
@@ -2909,10 +2909,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.21.0":
-  version: 6.21.0
-  resolution: "undici-types@npm:6.21.0"
-  checksum: 10/ec8f41aa4359d50f9b59fa61fe3efce3477cc681908c8f84354d8567bb3701fafdddf36ef6bff307024d3feb42c837cf6f670314ba37fc8145e219560e473d14
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 10/cf0b48ed4fc99baf56584afa91aaffa5010c268b8842f62e02f752df209e3dea138b372a60a963b3b2576ed932f32329ce7ddb9cb5f27a6c83040d8cd74b7a70
   languageName: node
   linkType: hard
 
