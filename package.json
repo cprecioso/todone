@@ -30,7 +30,7 @@
     "postinstall": "husky install"
   },
   "devDependencies": {
-    "execa": "^9.5.3",
+    "execa": "^9.6.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.0.0",
     "nx": "21.1.2",
@@ -38,7 +38,7 @@
     "prettier-plugin-organize-imports": "4.1.0",
     "prettier-plugin-pkg": "0.19.1",
     "prettier-plugin-sh": "0.17.4",
-    "typedoc": "^0.28.4",
+    "typedoc": "^0.28.5",
     "typedoc-plugin-dt-links": "^2.0.3",
     "typedoc-plugin-mdn-links": "^5.0.2",
     "typescript": "~5.8.3"
