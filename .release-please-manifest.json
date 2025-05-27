@@ -1,1 +1,15 @@
-{}
+{
+  ".": "0.5.0",
+  "packages/core": "0.6.1",
+  "packages/default-plugins": "0.5.1",
+  "packages/internal-build": "0.2.1",
+  "packages/internal-urlpattern": "1.1.1",
+  "packages/internal-util": "0.2.1",
+  "packages/plugin": "0.2.1",
+  "packages/plugin-caniuse": "0.3.1",
+  "packages/plugin-date": "0.3.1",
+  "packages/plugin-figma": "0.3.1",
+  "packages/plugin-github": "0.6.1",
+  "packages/todone": "0.9.1",
+  "packages/types": "0.6.1"
+}
