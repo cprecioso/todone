@@ -1,0 +1,49 @@
+name: Publish release
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+
+  publish-packages:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: https://registry.npmjs.org/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: packages
+      - run: |
+          for file in ./*; do
+            npm publish --access public --provenance $file || true
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} }}
+
+  publish-docs:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
+
+    steps:
+      - uses: actions/deploy-pages@v4
