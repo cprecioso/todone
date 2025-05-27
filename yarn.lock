@@ -535,6 +535,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@todone/github-action@workspace:packages/github-action":
+  version: 0.0.0-use.local
+  resolution: "@todone/github-action@workspace:packages/github-action"
+  dependencies:
+    "@todone/internal-build": "workspace:*"
+    "@types/node": "npm:^22.15.21"
+    tsdown: "npm:^0.12.4"
+    typescript: "npm:~5.8.3"
+  languageName: unknown
+  linkType: soft
+
 "@todone/internal-build@workspace:*, @todone/internal-build@workspace:packages/internal-build":
   version: 0.0.0-use.local
   resolution: "@todone/internal-build@workspace:packages/internal-build"

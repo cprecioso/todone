@@ -11,6 +11,7 @@
     ".": {},
     "packages/core": {},
     "packages/default-plugins": {},
+    "packages/github-action": {},
     "packages/internal-build": {},
     "packages/internal-urlpattern": {},
     "packages/internal-util": {},

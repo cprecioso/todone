@@ -2,6 +2,7 @@
   ".": "0.6.0",
   "packages/core": "0.6.1",
   "packages/default-plugins": "0.5.2",
+  "packages/github-action": "0.0.0",
   "packages/internal-build": "0.2.1",
   "packages/internal-urlpattern": "1.1.1",
   "packages/internal-util": "0.2.1",

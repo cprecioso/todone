@@ -1,0 +1,31 @@
+{
+  "name": "@todone/github-action",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Run todone as a GitHub Action",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/github-action#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsdown --watch"
+  },
+  "devDependencies": {
+    "@todone/internal-build": "workspace:*",
+    "@types/node": "^22.15.21",
+    "tsdown": "^0.12.4",
+    "typescript": "~5.8.3"
+  }
+}
