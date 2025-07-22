@@ -1,7 +1,3 @@
-// @TODO https://github.com/actions/runner/issues/3600
-// Remove polyfills when GitHub Actions runner supports Node.js 22+
-import "@ungap/with-resolvers";
-
 import * as core from "@actions/core";
 import { toTransformStream } from "@std/streams";
 import { analyzeStream } from "@todone/core";

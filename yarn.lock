@@ -1020,7 +1020,6 @@ __metadata:
     "@todone/plugin": "workspace:*"
     "@todone/types": "workspace:*"
     "@types/node": "npm:^22.16.5"
-    "@ungap/with-resolvers": "npm:^0.1.0"
     tsdown: "npm:^0.13.0"
     typescript: "npm:~5.8.3"
   languageName: unknown
@@ -1223,13 +1222,6 @@ __metadata:
   version: 3.0.3
   resolution: "@types/unist@npm:3.0.3"
   checksum: 10/96e6453da9e075aaef1dc22482463898198acdc1eeb99b465e65e34303e2ec1e3b1ed4469a9118275ec284dc98019f63c3f5d49422f0e4ac707e5ab90fb3b71a
-  languageName: node
-  linkType: hard
-
-"@ungap/with-resolvers@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@ungap/with-resolvers@npm:0.1.0"
-  checksum: 10/295fe3eb9f9139333773b7cdc7091f89380611586a0cc787b8fb021a6a06587fd53feb1273fd5cf87fb647d7af21710bea06ff70bc90f4cf93262b6e3a5d553e
   languageName: node
   linkType: hard
 

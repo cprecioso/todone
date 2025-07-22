@@ -35,8 +35,7 @@
     "@todone/default-plugins": "workspace:*",
     "@todone/internal-util": "workspace:*",
     "@todone/plugin": "workspace:*",
-    "@todone/types": "workspace:*",
-    "@ungap/with-resolvers": "^0.1.0"
+    "@todone/types": "workspace:*"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
