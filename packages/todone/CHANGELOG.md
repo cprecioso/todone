@@ -1,5 +1,25 @@
 # todone
 
+## [0.11.0](https://github.com/cprecioso/todone/compare/todone-v0.10.0...todone-v0.11.0) (2025-07-22)
+
+
+### Features
+
+* migrate to node 20 ([f016ec9](https://github.com/cprecioso/todone/commit/f016ec96a55e67a4b0b1625be7fed3dbd65f680c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/core bumped to 0.6.2
+    * @todone/default-plugins bumped to 0.6.0
+    * @todone/internal-util bumped to 0.3.0
+    * @todone/plugin bumped to 0.3.1
+    * @todone/types bumped to 0.7.0
+  * devDependencies
+    * @todone/internal-build bumped to 0.3.0
+
 ## [0.10.0](https://github.com/cprecioso/todone/compare/todone@0.9.1...todone-v0.10.0) (2025-05-27)
 
 

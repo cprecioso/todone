@@ -1,5 +1,22 @@
 # @todone/plugin-date
 
+## [0.4.0](https://github.com/cprecioso/todone/compare/plugin-date-v0.3.2...plugin-date-v0.4.0) (2025-07-22)
+
+
+### Features
+
+* add names to plugin matches ([afc821d](https://github.com/cprecioso/todone/commit/afc821df99b3aa4c260adad0eb26291f395159e0))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/internal-urlpattern bumped to 1.1.2
+    * @todone/plugin bumped to 0.3.1
+  * devDependencies
+    * @todone/internal-build bumped to 0.3.0
+
 ## [0.3.2](https://github.com/cprecioso/todone/compare/plugin-date-v0.3.1...plugin-date-v0.3.2) (2025-05-27)
 
 
