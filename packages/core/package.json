@@ -28,13 +28,13 @@
   "dependencies": {
     "@std/assert": "jsr:^1.0.13",
     "@std/regexp": "jsr:^1.0.1",
-    "@std/streams": "jsr:^1.0.9",
+    "@std/streams": "jsr:^1.0.10",
     "@todone/internal-util": "workspace:^",
     "@todone/types": "workspace:^"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "tsdown": "^0.12.4",
+    "tsdown": "^0.13.0",
     "typescript": "~5.8.3"
   },
   "publishConfig": {

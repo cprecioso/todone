@@ -28,16 +28,16 @@
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "tsdown": "^0.12.4",
+    "tsdown": "^0.13.0",
     "typescript": "~5.8.3"
   },
   "dependencies": {
     "type-fest": "^4.41.0",
-    "typedoc": "^0.28.5"
+    "typedoc": "^0.28.7"
   },
   "devDependencies": {
-    "@types/node": "^20.17.51",
-    "tsdown": "^0.12.4",
+    "@types/node": "^20.19.9",
+    "tsdown": "^0.13.0",
     "typescript": "~5.8.3"
   },
   "sideEffects": false

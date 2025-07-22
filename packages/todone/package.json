@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@std/assert": "jsr:^1.0.13",
-    "@std/streams": "jsr:^1.0.9",
+    "@std/streams": "jsr:^1.0.10",
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
     "@todone/internal-util": "workspace:^",
@@ -39,13 +39,13 @@
     "@todone/types": "workspace:^",
     "chalk": "^5.4.1",
     "clipanion": "^4.0.0-rc.4",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.2.0",
     "globby": "^14.1.0"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "@types/node": "^20.17.51",
-    "tsdown": "^0.12.4",
+    "@types/node": "^20.19.9",
+    "tsdown": "^0.13.0",
     "typescript": "~5.8.3"
   },
   "publishConfig": {
