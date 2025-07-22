@@ -1012,10 +1012,13 @@ __metadata:
     "@actions/core": "npm:1.11.1"
     "@actions/github": "npm:6.0.1"
     "@actions/glob": "npm:0.5.0"
+    "@std/streams": "jsr:^1.0.10"
     "@todone/core": "workspace:*"
     "@todone/default-plugins": "workspace:*"
     "@todone/internal-build": "workspace:*"
+    "@todone/internal-util": "workspace:*"
     "@todone/plugin": "workspace:*"
+    "@todone/types": "workspace:*"
     "@types/node": "npm:^20.19.9"
     tsdown: "npm:^0.13.0"
     typescript: "npm:~5.8.3"
@@ -1048,7 +1051,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/internal-util@workspace:^, @todone/internal-util@workspace:packages/internal-util":
+"@todone/internal-util@workspace:*, @todone/internal-util@workspace:^, @todone/internal-util@workspace:packages/internal-util":
   version: 0.0.0-use.local
   resolution: "@todone/internal-util@workspace:packages/internal-util"
   dependencies:

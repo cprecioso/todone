@@ -26,9 +26,12 @@
     "@actions/core": "1.11.1",
     "@actions/github": "6.0.1",
     "@actions/glob": "0.5.0",
+    "@std/streams": "jsr:^1.0.10",
     "@todone/core": "workspace:*",
     "@todone/default-plugins": "workspace:*",
-    "@todone/plugin": "workspace:*"
+    "@todone/internal-util": "workspace:*",
+    "@todone/plugin": "workspace:*",
+    "@todone/types": "workspace:*"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",

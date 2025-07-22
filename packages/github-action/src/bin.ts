@@ -1,7 +1,12 @@
 import * as core from "@actions/core";
+import { toTransformStream } from "@std/streams";
 import { analyzeStream } from "@todone/core";
 import * as s from "@todone/internal-util/stream";
-import { makeIssueCreator } from "./lib/create-issues";
+import {
+  generateIssue,
+  groupByMatchURL,
+  makeIssueReconciler,
+} from "./lib/create-issues";
 import { makeFileStream } from "./lib/files";
 import { makeDebugLogger, makeResultLogger } from "./lib/logger";
 import { makePlugins } from "./lib/make-plugins";
@@ -18,7 +23,17 @@ const files = makeFileStream(globs);
 
 const reportStream = analyzeStream(files, { plugins, warnLogger })
   .pipeThrough(s.tap(makeDebugLogger()))
-  .pipeThrough(s.tap(makeResultLogger()))
-  .pipeThrough(s.tap(makeIssueCreator(createIssues, githubToken)));
+  .pipeThrough(s.tap(makeResultLogger()));
 
-await s.toArray(reportStream).then(makeSummary);
+const [streamForSummary, streamForIssues] = reportStream.tee();
+
+const summaryTask = s.toArray(streamForSummary).then(makeSummary);
+const issuesTask = s
+  .toArray(
+    streamForIssues
+      .pipeThrough(toTransformStream(groupByMatchURL))
+      .pipeThrough(s.map(generateIssue)),
+  )
+  .then(makeIssueReconciler(createIssues, githubToken));
+
+await Promise.all([summaryTask, issuesTask]);
