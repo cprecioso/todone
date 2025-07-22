@@ -19,12 +19,12 @@ export const makeAnalyzer = (options: Options) => {
           for (const match of text.matchAll(matcher)) {
             const url = tryURL(match[1]);
             if (url) {
-              const indices = (match as any).indices[0] as [number, number];
+              const [startIndex, endIndex] = match.indices![0];
               return {
                 file,
                 url,
-                start: { line, column: indices[0] + 1 },
-                end: { line, column: indices[1] + 1 },
+                start: { line, column: startIndex + 1 },
+                end: { line, column: endIndex + 1 },
               } as Match;
             }
           }
