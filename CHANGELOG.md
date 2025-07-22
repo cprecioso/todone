@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.0.0](https://github.com/cprecioso/todone/compare/repo-v0.7.0...repo-v1.0.0) (2025-07-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade support to node 22
+
+### Features
+
+* allow empty globs version ([2c42ff8](https://github.com/cprecioso/todone/commit/2c42ff88e9e030d9d62be17607821e7d06993c8d))
+* upgrade support to node 22 ([e80077d](https://github.com/cprecioso/todone/commit/e80077da736a61a535adaf37de3bab0bf13fdc0e))
+* use node24 in the action ([7ee7269](https://github.com/cprecioso/todone/commit/7ee72693e05ef75dafef784088c530505c7f00b7))
+
+
+### Bug Fixes
+
+* return to node 20 for github actinos, add polyfills ([281193e](https://github.com/cprecioso/todone/commit/281193eeb54fb70d8189de54bae0f2f48aea0beb))
+* undo node20 change ([7ccac80](https://github.com/cprecioso/todone/commit/7ccac806e90a289c2c43ca8b55da51597109e78a))
+
 ## [0.7.0](https://github.com/cprecioso/todone/compare/repo-v0.6.0...repo-v0.7.0) (2025-07-22)
 
 
