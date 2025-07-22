@@ -14,7 +14,7 @@
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "bin": "dist/bin.js",
   "exports": {
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "@types/node": "^20.19.9",
+    "@types/node": "^22.16.5",
     "tsdown": "^0.13.0",
     "typescript": "~5.8.3"
   },

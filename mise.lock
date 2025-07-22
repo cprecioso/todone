@@ -1,11 +1,6 @@
 [tools.node]
-version = "20.19.4"
+version = "22.17.1"
 backend = "core:node"
-
-[tools.node.platforms.macos-arm64]
-checksum = "sha256:8b89801f527a85e3f7de539512c9dde08673ac99db6458cc7cc627e05d707054"
-size = 41529939
-url = "https://nodejs.org/dist/v20.19.4/node-v20.19.4-darwin-arm64.tar.gz"
 
 [tools."npm:nx"]
 version = "21.3.2"

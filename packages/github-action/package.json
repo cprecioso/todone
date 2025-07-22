@@ -15,7 +15,7 @@
   "license": "ISC",
   "private": true,
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "files": [
     "action.yml",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "@types/node": "^20.19.9",
+    "@types/node": "^22.16.5",
     "tsdown": "^0.13.0",
     "typescript": "~5.8.3"
   }

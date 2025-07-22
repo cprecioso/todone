@@ -1,9 +1,6 @@
 {
+  "extends": ["@tsconfig/node22"],
   "compilerOptions": {
-    // TODO Remove this when we drop support for Node 20
-    "target": "es2022",
-    "lib": ["es2023"],
-
     "isolatedModules": true,
     "esModuleInterop": true,
     "strict": true,

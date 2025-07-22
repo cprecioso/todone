@@ -15,7 +15,7 @@
   "license": "ISC",
   "private": true,
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "exports": {
     "./tsconfig": "./tsconfig.base.json",
@@ -36,7 +36,8 @@
     "typedoc": "^0.28.7"
   },
   "devDependencies": {
-    "@types/node": "^20.19.9",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^22.16.5",
     "tsdown": "^0.13.0",
     "typescript": "~5.8.3"
   },
