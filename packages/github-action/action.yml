@@ -4,7 +4,8 @@ description: Analyze your TODOs in code and create a summary
 inputs:
   globs:
     description: "Files to analyze, glob patterns supported"
-    required: true
+    required: false
+    default: "**/*"
   github-token:
     description: "GitHub token to access the repository"
     required: false
