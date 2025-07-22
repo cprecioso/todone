@@ -10,6 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cprecioso/todone-action@v1
-        with:
-          globs: "**/*"
+      - uses: cprecioso/todone-action@main
