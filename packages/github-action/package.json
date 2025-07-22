@@ -17,6 +17,10 @@
   "engines": {
     "node": ">=20"
   },
+  "files": [
+    "action.yml",
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
