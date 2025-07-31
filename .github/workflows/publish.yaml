@@ -13,6 +13,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    environment:
+      name: npm
+      url: https://www.npmjs.com/org/todone
+
     permissions:
       contents: read
       id-token: write
@@ -25,12 +29,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: packages
+
       - run: |
           for file in ./*; do
             npm publish --access public --provenance $file || true
           done
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} }}
 
   publish-docs:
     needs: build
