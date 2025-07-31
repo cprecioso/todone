@@ -1,3 +1,5 @@
 [tools]
 node = "lts"
-"npm:nx" = "21"
+
+[env]
+_.path = [".bin"]
