@@ -7,8 +7,9 @@
       "outputs": ["{projectRoot}/dist"]
     },
     "check": {
+      "cache": true,
       "dependsOn": ["^build"],
-      "cache": false
+      "outputs": []
     },
     "clean": {
       "cache": false
