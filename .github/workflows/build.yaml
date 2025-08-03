@@ -1,4 +1,4 @@
-name: Build and check PR
+name: Build and check code
 
 on:
   workflow_dispatch:
