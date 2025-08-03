@@ -1,5 +1,12 @@
 # @todone/internal-build
 
+## [1.0.1](https://github.com/cprecioso/todone/compare/internal-build-v1.0.0...internal-build-v1.0.1) (2025-08-03)
+
+
+### Bug Fixes
+
+* add extension where needed ([69a28c3](https://github.com/cprecioso/todone/commit/69a28c3b4622cb7a0e14c68ec7da1224b892781f))
+
 ## [1.0.0](https://github.com/cprecioso/todone/compare/internal-build-v0.3.0...internal-build-v1.0.0) (2025-08-03)
 
 

@@ -1,5 +1,20 @@
 # todone
 
+## [1.0.1](https://github.com/cprecioso/todone/compare/todone-v1.0.0...todone-v1.0.1) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/core bumped to 0.6.4
+    * @todone/default-plugins bumped to 1.0.1
+    * @todone/internal-util bumped to 0.3.2
+    * @todone/plugin bumped to 0.3.3
+    * @todone/types bumped to 0.7.2
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.1
+
 ## [1.0.0](https://github.com/cprecioso/todone/compare/todone-v0.11.0...todone-v1.0.0) (2025-08-03)
 
 

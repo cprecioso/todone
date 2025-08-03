@@ -1,15 +1,15 @@
 {
-  "packages/core": "0.6.3",
-  "packages/default-plugins": "1.0.0",
-  "packages/github-action": "2.0.0",
-  "packages/internal-build": "1.0.0",
-  "packages/internal-urlpattern": "1.1.3",
-  "packages/internal-util": "0.3.1",
-  "packages/plugin": "0.3.2",
-  "packages/plugin-caniuse": "1.0.0",
-  "packages/plugin-date": "0.4.1",
-  "packages/plugin-figma": "0.4.1",
-  "packages/plugin-github": "0.7.1",
-  "packages/todone": "1.0.0",
-  "packages/types": "0.7.1"
+  "packages/core": "0.6.4",
+  "packages/default-plugins": "1.0.1",
+  "packages/github-action": "2.0.1",
+  "packages/internal-build": "1.0.1",
+  "packages/internal-urlpattern": "1.1.4",
+  "packages/internal-util": "0.3.2",
+  "packages/plugin": "0.3.3",
+  "packages/plugin-caniuse": "1.0.1",
+  "packages/plugin-date": "0.4.2",
+  "packages/plugin-figma": "0.4.2",
+  "packages/plugin-github": "0.7.2",
+  "packages/todone": "1.0.1",
+  "packages/types": "0.7.2"
 }
