@@ -2,24 +2,21 @@ import * as glob from "@actions/glob";
 import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
 import * as fs from "node:fs";
-import { relative as relativePath } from "node:path";
+import * as path from "node:path";
 import { Readable } from "node:stream";
-import { fileURLToPath, pathToFileURL } from "node:url";
 
 const cwd = process.cwd();
-export const humanFilename = (file: t.File) => {
-  if (!file.isPresent) return file.url.toString();
-  const url = new URL(file.url);
-  if (url.protocol !== "file:") return file.url.toString();
-  const path = fileURLToPath(url);
-  return path.startsWith(cwd) ? relativePath(cwd, path) : path;
-};
-
 class RealFile implements t.File {
-  constructor(public readonly url: URL) {}
-  isPresent = true;
+  constructor(public readonly localPath: string) {}
+
+  get location() {
+    return this.localPath.startsWith(cwd)
+      ? path.relative(cwd, this.localPath)
+      : this.localPath;
+  }
+
   getContent() {
-    return Readable.toWeb(fs.createReadStream(this.url));
+    return Readable.toWeb(fs.createReadStream(this.localPath));
   }
 }
 
@@ -30,4 +27,4 @@ export const makeFileStream = (globs: string) =>
       const iterable = globber.globGenerator();
       return ReadableStream.from(iterable);
     })
-    .pipeThrough(s.map((path) => new RealFile(pathToFileURL(path))));
+    .pipeThrough(s.map((path) => new RealFile(path)));

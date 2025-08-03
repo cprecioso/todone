@@ -1,20 +1,10 @@
 import { AnalysisItem } from "@todone/core";
-import * as t from "@todone/types";
 import chalk from "chalk";
-import { relative as relativePath } from "node:path";
 import type { Writable } from "node:stream";
-import { fileURLToPath } from "node:url";
 
 const dateFormatter = new Intl.DateTimeFormat();
 
 const cwd = process.cwd();
-const humanFilename = (file: t.File) => {
-  if (!file.isPresent) return file.url;
-  const url = new URL(file.url);
-  if (url.protocol !== "file:") return file.url;
-  const path = fileURLToPath(url);
-  return path.startsWith(cwd) ? relativePath(cwd, path) : path;
-};
 
 export const logCLIReports = async (
   stdout: Writable,
@@ -40,16 +30,14 @@ export const logCLIReports = async (
     const {
       result,
       match: {
-        file,
+        file: { location },
         url,
         start: { line, column },
       },
     } = report.item;
 
-    const fileName = humanFilename(file);
-
     headerLn(
-      chalk.blueBright(fileName) +
+      chalk.blueBright(location) +
         ":" +
         chalk.yellowBright(line) +
         ":" +

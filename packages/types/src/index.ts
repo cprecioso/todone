@@ -6,11 +6,24 @@ export interface Offset {
 
 /** An object representing a file and its contents */
 export interface File {
-  /** The file's location */
-  url: URL;
-  getContent: () => ReadableStream<Uint8Array>;
-  /** Whether the URL represents a currently-present file in the filesystem */
-  isPresent: boolean;
+  /**
+   * The file's human-readable location.
+   *
+   * For example, a path if running on local files, or a URL if running on
+   * remote files.
+   */
+  readonly location: string;
+
+  readonly getContent: (this: this) => ReadableStream<Uint8Array>;
+
+  /**
+   * If the file is present locally, this is the path to it.
+   *
+   * This is useful for plugins that depend on the file structure being
+   * available locally, for example to check configurations in a repo's root
+   * directory.
+   */
+  readonly localPath?: string;
 }
 
 export interface Match {
@@ -27,8 +40,8 @@ export interface Result {
 }
 
 /**
- * Something that can be `test`ed against a string, like a RegExp can.
- * An `URLPattern` is also used often.
+ * Something that can be `test`ed against a string, like a RegExp can. An
+ * `URLPattern` is also used often.
  */
 export type Searchable = RegExp | Pick<RegExp, "test">;
 
@@ -36,7 +49,10 @@ export type Searchable = RegExp | Pick<RegExp, "test">;
 export interface PluginInstance {
   /** The plugin's name, will be used for reporting */
   readonly name: string;
-  /** If a match's URL tests true against any of these patterns, it will be processed by this plugin */
+  /**
+   * If a match's URL tests true against any of these patterns, it will be
+   * processed by this plugin
+   */
   readonly pattern?: Searchable | Searchable[];
   /** The plugin checks if this URL has expired or not */
   check(match: Match): Promise<PluginResult | null>;

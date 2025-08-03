@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
 import { AnalysisItem } from "@todone/core";
-import { humanFilename } from "./files";
 
 export const makeSummary = async (items: AnalysisItem[]) => {
   await core.summary
@@ -22,7 +21,7 @@ export const makeSummary = async (items: AnalysisItem[]) => {
               result,
             },
           }) => [
-            humanFilename(file),
+            file.location,
             line.toString(),
             column.toString(),
             url.toString(),

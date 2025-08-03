@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
 import { AnalysisItem } from "@todone/core";
-import { humanFilename } from "./files";
 
 export const makeDebugLogger = () => (item: AnalysisItem) =>
   core.debug("Found: " + JSON.stringify(item, null, 2));
@@ -12,14 +11,12 @@ export const makeResultLogger = () => async (item: AnalysisItem) => {
     item: {
       match: {
         url,
-        file,
+        file: { location },
         start: { line, column },
       },
       result,
     },
   } = item;
-
-  const fileName = humanFilename(file);
 
   const infoLines = result
     ? [
@@ -30,7 +27,7 @@ export const makeResultLogger = () => async (item: AnalysisItem) => {
     : [url.toString(), "No plugin responded"];
 
   core.info(
-    `Found match at ${fileName}:${line}:${column}` +
+    `Found match at ${location}:${line}:${column}` +
       infoLines.map((l) => `\n\t${l}`).join(""),
   );
 };

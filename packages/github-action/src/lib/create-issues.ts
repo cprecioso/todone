@@ -53,7 +53,7 @@ It is present in the following files:
 ${results
   .map(
     (item) =>
-      `- ${item.match.file.url.toString()}:L${item.match.start.line}-${item.match.end.line}`,
+      `- ${item.match.file.location}:L${item.match.start.line}-${item.match.end.line}`,
   )
   .join("\n")}
 
