@@ -27,49 +27,47 @@ export const logCLIReports = async (
 
     if (report.type !== "result") continue;
 
-    const {
-      result,
-      match: {
-        file: { location },
-        url,
-        start: { line, column },
-      },
-    } = report.item;
+    const { url, result, matches } = report.result;
 
-    headerLn(
-      chalk.blueBright(location) +
-        ":" +
-        chalk.yellowBright(line) +
-        ":" +
-        chalk.yellowBright(column),
-    );
-    infoLn(chalk.bold(url));
-
-    if (!result) {
-      infoLn(chalk.gray("No plugin responded"));
-    } else {
-      const { isExpired, expirationDate } = result;
-
-      infoLn(
-        isExpired
-          ? chalk.bgYellow.redBright("EXPIRED")
-          : chalk.blue("Not expired yet"),
+    for (const {
+      file,
+      position: { line, column },
+    } of matches) {
+      headerLn(
+        chalk.blueBright(file) +
+          ":" +
+          chalk.yellowBright(line) +
+          ":" +
+          chalk.yellowBright(column),
       );
+      infoLn(chalk.bold(url));
 
-      if (expirationDate) {
+      if (!result) {
+        infoLn(chalk.gray("No plugin responded"));
+      } else {
+        const { isExpired, expirationDate } = result;
+
         infoLn(
-          [
-            isExpired ? "expired" : "will expire",
-            "on",
-            dateFormatter.format(expirationDate),
-          ].join(" "),
+          isExpired
+            ? chalk.bgYellow.redBright("EXPIRED")
+            : chalk.blue("Not expired yet"),
         );
+
+        if (expirationDate) {
+          infoLn(
+            [
+              isExpired ? "expired" : "will expire",
+              "on",
+              dateFormatter.format(expirationDate),
+            ].join(" "),
+          );
+        }
+
+        if (isExpired) counters.expiredResults++;
       }
 
-      if (isExpired) counters.expiredResults++;
+      headerLn();
     }
-
-    headerLn();
   }
 
   process.stdout.write(`

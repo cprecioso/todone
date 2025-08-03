@@ -58,13 +58,10 @@ export const create = <T>(
     })(),
   );
 
-export const teeMap = <T, U>(
-  stream: ReadableStream<T>,
-  fn: (item: T, index: number) => U,
-) => {
-  const [value$, forMap$] = stream.tee();
-  const mapped$ = forMap$.pipeThrough(map(fn));
-  return [value$, mapped$] as const;
+export const tee3 = <T>(stream: ReadableStream<T>) => {
+  const [inner, a] = stream.tee();
+  const [b, c] = inner.tee();
+  return [a, b, c] as const;
 };
 
 // @TODO https://github.com/actions/runner/issues/3600
@@ -75,4 +72,18 @@ export const toArray = async <T>(stream: ReadableStream<T>): Promise<T[]> => {
     result.push(item);
   }
   return result;
+};
+
+export const reduce = async <T, U>(
+  stream: ReadableStream<T>,
+  fn: (acc: U, item: T, index: number) => U,
+  initialValue: U,
+) => {
+  let i = 0;
+  let acc = initialValue;
+  for await (const item of stream) {
+    acc = fn(acc, item, i);
+    i++;
+  }
+  return acc;
 };

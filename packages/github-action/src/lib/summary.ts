@@ -10,26 +10,17 @@ export const makeSummary = async (items: AnalysisItem[]) => {
       ),
       ...items
         .filter((item) => item.type === "result")
-        .map(
-          ({
-            item: {
-              match: {
-                file,
-                start: { line, column },
-                url,
-              },
-              result,
-            },
-          }) => [
-            file.location,
-            line.toString(),
-            column.toString(),
+        .flatMap(({ result: { url, result, matches } }) =>
+          matches.map((match) => [
+            match.file,
+            match.position.line.toString(),
+            match.position.column.toString(),
             url.toString(),
-            result ? (result.isExpired ? "Yes" : "No") : "",
+            result ? (result.isExpired ? "❗" : "⌛") : "",
             result
               ? result.expirationDate?.toISOString() || "No expiration date"
               : "",
-          ],
+          ]),
         ),
     ])
     .write();

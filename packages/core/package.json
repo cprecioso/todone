@@ -30,11 +30,13 @@
     "@std/regexp": "jsr:^1.0.1",
     "@std/streams": "jsr:^1.0.10",
     "@todone/internal-util": "workspace:^",
-    "@todone/types": "workspace:^"
+    "@todone/types": "workspace:^",
+    "p-memoize": "^7.1.1"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "tsdown": "^0.13.2",
+    "type-fest": "^4.41.0",
     "typescript": "~5.9.2"
   },
   "publishConfig": {

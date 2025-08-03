@@ -2,19 +2,55 @@ import { mergeReadableStreams } from "@std/streams";
 import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
 import { makeAnalyzer } from "./analyzer";
+import { generateResultStream } from "./lib/results";
 import { Options, normalizeOptions } from "./options";
 import { PluginContainer } from "./plugins";
 
 export type AnalysisItem =
-  | { type: "file"; item: t.File }
-  | { type: "match"; item: t.Match }
-  | { type: "result"; item: t.Result };
+  | { type: "file"; file: t.File }
+  | { type: "match"; url: URL; match: t.Match }
+  | { type: "result"; result: t.Result };
 
 export interface FullAnalysis {
   files: t.File[];
-  matches: t.Match[];
+  matches: Map<string, t.Match[]>;
   results: t.Result[];
 }
+
+/**
+ * This is an internal utility function that actually runs the analysis. It is
+ * used by both `analyzeStream` and `analyzePromise`.
+ *
+ * It is not meant to be used directly by users, as the three streams it returns
+ * have to be run in parallel to prevent deadlocks, and we want to avoid the
+ * complexity associated with that.
+ *
+ * The other functions in this file handle the three streams in different ways
+ * but always in parallel and end up with a single return.
+ */
+const analyze = (
+  inputFiles: AsyncIterable<t.File>,
+  options: Partial<Options> = {},
+) => {
+  const fullOptions = normalizeOptions(options);
+  const pluginContainer = new PluginContainer(fullOptions);
+
+  const [file$, returnFile$] = ReadableStream.from(inputFiles).tee();
+
+  const [match$, returnMatch$] = file$
+    .pipeThrough(s.flatMap(makeAnalyzer(fullOptions)))
+    .tee();
+
+  const returnResult$ = match$.pipeThrough(
+    generateResultStream(pluginContainer),
+  );
+
+  return {
+    file$: returnFile$,
+    match$: returnMatch$,
+    result$: returnResult$,
+  };
+};
 
 /**
  * Run an analysis on a stream of files.
@@ -24,32 +60,14 @@ export const analyzeStream = (
   files: AsyncIterable<t.File>,
   options: Partial<Options> = {},
 ) => {
-  const fullOptions = normalizeOptions(options);
-  const pluginContainer = new PluginContainer(fullOptions);
-
-  const [file$, returnFile$] = ReadableStream.from(files).tee();
-
-  const [match$, returnMatch$] = file$
-    .pipeThrough(s.flatMap(makeAnalyzer(fullOptions)))
-    .tee();
-
-  const returnResult$ = match$.pipeThrough(
-    s.map(
-      async (match): Promise<t.Result> => ({
-        match,
-        result: await pluginContainer.check(match),
-      }),
-    ),
-  );
+  const { file$, match$, result$ } = analyze(files, options);
 
   return mergeReadableStreams<AnalysisItem>(
-    returnFile$.pipeThrough(s.map((file) => ({ type: "file", item: file }))),
-    returnMatch$.pipeThrough(
-      s.map((match) => ({ type: "match", item: match })),
+    file$.pipeThrough(s.map((file) => ({ type: "file", file }))),
+    match$.pipeThrough(
+      s.map(({ url, match }) => ({ type: "match", url, match })),
     ),
-    returnResult$.pipeThrough(
-      s.map((result) => ({ type: "result", item: result })),
-    ),
+    result$.pipeThrough(s.map((result) => ({ type: "result", result }))),
   );
 };
 
@@ -58,30 +76,35 @@ export const analyzeStream = (
  * @returns A promise of a full report containing files, matches, and results.
  */
 export const analyzePromise = async (
-  files: AsyncIterable<t.File>,
+  inputFiles: AsyncIterable<t.File>,
   options: Partial<Options> = {},
-) => {
-  const stream = analyzeStream(files, options);
+): Promise<FullAnalysis> => {
+  const { file$, match$, result$ } = analyze(inputFiles, options);
 
-  const report: FullAnalysis = {
-    files: [],
-    matches: [],
-    results: [],
-  };
+  const fileArrayPromise = s.toArray(file$);
 
-  for await (const value of stream) {
-    switch (value.type) {
-      case "file":
-        report.files.push(value.item);
-        break;
-      case "match":
-        report.matches.push(value.item);
-        break;
-      case "result":
-        report.results.push(value.item);
-        break;
-    }
-  }
+  const matchMapPromise = s.reduce(
+    match$,
+    (map, item) => {
+      const url = item.url.toString();
+      let arr = map.get(url);
+      if (!arr) {
+        arr = [];
+        map.set(url, arr);
+      }
+      arr.push(item.match);
+      return map;
+    },
+    new Map<string, t.Match[]>(),
+  );
 
-  return report;
+  const resultArrayPromise = s.toArray(result$);
+
+  const [files, matches, results] = await Promise.all([
+    fileArrayPromise,
+    matchMapPromise,
+    resultArrayPromise,
+  ]);
+
+  return { files, matches, results };
 };

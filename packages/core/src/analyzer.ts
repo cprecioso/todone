@@ -15,17 +15,18 @@ export const makeAnalyzer = (options: Options) => {
       .pipeThrough(new TextDecoderStream())
       .pipeThrough(new TextLineStream())
       .pipeThrough(
-        compactMap((text, line) => {
+        compactMap((text, line): { url: URL; match: Match } | undefined => {
           for (const match of text.matchAll(matcher)) {
             const url = tryURL(match[1]);
             if (url) {
-              const [startIndex, endIndex] = match.indices![0];
+              const [startIndex] = match.indices![0];
               return {
-                file,
                 url,
-                start: { line: line + 1, column: startIndex + 1 },
-                end: { line: line + 1, column: endIndex + 1 },
-              } as Match;
+                match: {
+                  file: file.location,
+                  position: { line: line + 1, column: startIndex + 1 },
+                },
+              };
             }
           }
         }),

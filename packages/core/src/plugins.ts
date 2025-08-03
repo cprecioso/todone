@@ -1,4 +1,5 @@
-import type { Match, PluginInstance } from "@todone/types";
+import type { PluginInstance } from "@todone/types";
+import pMemoize from "p-memoize";
 import type { Options } from "./options";
 
 export class PluginContainer {
@@ -16,24 +17,26 @@ export class PluginContainer {
     return false;
   }
 
-  async #checkSinglePlugin(match: Match, url: string, plugin: PluginInstance) {
-    if (!this.#checkPattern(url, plugin)) return null;
-    return await plugin.check(match);
+  async #checkSinglePlugin(url: URL, plugin: PluginInstance) {
+    if (!this.#checkPattern(url.toString(), plugin)) return null;
+    return await plugin.check({ url });
   }
 
-  async check(match: Match) {
-    const urlString = match.url.href;
-    for (const plugin of this.#options.plugins) {
-      try {
-        const result = await this.#checkSinglePlugin(match, urlString, plugin);
-        if (result) return result;
-      } catch (err) {
-        this.#options.warnLogger(
-          `${plugin.name} errored while processing ${urlString}: ${err}`,
-        );
+  check = pMemoize(
+    async (url: URL) => {
+      for (const plugin of this.#options.plugins) {
+        try {
+          const result = await this.#checkSinglePlugin(url, plugin);
+          if (result) return result;
+        } catch (err) {
+          this.#options.warnLogger(
+            `${plugin.name} errored while processing ${url.toString()}: ${err}`,
+          );
+        }
       }
-    }
 
-    return null;
-  }
+      return null;
+    },
+    { cacheKey: ([url]) => url.toString() },
+  );
 }

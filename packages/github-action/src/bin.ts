@@ -1,10 +1,9 @@
 import * as core from "@actions/core";
-import { toTransformStream } from "@std/streams";
 import { analyzeStream } from "@todone/core";
 import * as s from "@todone/internal-util/stream";
 import {
   generateIssue,
-  groupByMatchURL,
+  isExpiredResult,
   makeIssueReconciler,
 } from "./lib/create-issues";
 import { makeFileStream } from "./lib/files";
@@ -31,7 +30,7 @@ const summaryTask = s.toArray(streamForSummary).then(makeSummary);
 const issuesTask = s
   .toArray(
     streamForIssues
-      .pipeThrough(toTransformStream(groupByMatchURL))
+      .pipeThrough(s.filter(isExpiredResult))
       .pipeThrough(s.map(generateIssue)),
   )
   .then(makeIssueReconciler(createIssues, githubToken));

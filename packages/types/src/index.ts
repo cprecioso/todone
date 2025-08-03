@@ -15,28 +15,17 @@ export interface File {
   readonly location: string;
 
   readonly getContent: (this: this) => ReadableStream<Uint8Array>;
-
-  /**
-   * If the file is present locally, this is the path to it.
-   *
-   * This is useful for plugins that depend on the file structure being
-   * available locally, for example to check configurations in a repo's root
-   * directory.
-   */
-  readonly localPath?: string;
 }
 
 export interface Match {
-  file: File;
-  start: Offset;
-  end: Offset;
-  /** The content of the match */
-  url: URL;
+  file: File["location"];
+  position: Offset;
 }
 
 export interface Result {
-  match: Match;
+  url: URL;
   result: PluginResult | null;
+  matches: readonly Match[];
 }
 
 /**
@@ -49,13 +38,15 @@ export type Searchable = RegExp | Pick<RegExp, "test">;
 export interface PluginInstance {
   /** The plugin's name, will be used for reporting */
   readonly name: string;
+
   /**
    * If a match's URL tests true against any of these patterns, it will be
    * processed by this plugin
    */
   readonly pattern?: Searchable | Searchable[];
+
   /** The plugin checks if this URL has expired or not */
-  check(match: Match): Promise<PluginResult | null>;
+  check(options: { url: URL }): Promise<PluginResult | null>;
 }
 
 export interface PluginResult {
