@@ -23,8 +23,8 @@ export const makeAnalyzer = (options: Options) => {
               return {
                 file,
                 url,
-                start: { line, column: startIndex + 1 },
-                end: { line, column: endIndex + 1 },
+                start: { line: line + 1, column: startIndex + 1 },
+                end: { line: line + 1, column: endIndex + 1 },
               } as Match;
             }
           }
