@@ -29,12 +29,12 @@
     "@todone/internal-urlpattern": "workspace:^",
     "@todone/plugin": "workspace:^",
     "date-fns": "^4.1.0",
-    "zod": "^4.0.5"
+    "zod": "^4.0.14"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "tsdown": "^0.13.0",
-    "typescript": "~5.8.3"
+    "tsdown": "^0.13.2",
+    "typescript": "~5.9.2"
   },
   "publishConfig": {
     "provenance": true,
