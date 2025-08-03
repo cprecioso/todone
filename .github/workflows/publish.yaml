@@ -25,6 +25,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
 
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: "https://registry.npmjs.org"
+
       - uses: actions/download-artifact@v4
         with:
           name: packages
@@ -33,7 +37,7 @@ jobs:
       - name: Publish changed packages
         run: |
           for file in ./tarballs/*; do
-            npm publish --access public --provenance $file || true
+            npm publish $file || true
           done
 
   publish-docs:
