@@ -1,5 +1,17 @@
 # @todone/plugin-date
 
+## [0.4.2](https://github.com/cprecioso/todone/compare/plugin-date-v0.4.1...plugin-date-v0.4.2) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/internal-urlpattern bumped to 1.1.4
+    * @todone/plugin bumped to 0.3.3
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.1
+
 ## [0.4.1](https://github.com/cprecioso/todone/compare/plugin-date-v0.4.0...plugin-date-v0.4.1) (2025-08-03)
 
 

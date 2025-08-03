@@ -1,5 +1,19 @@
 # @todone/default-plugins
 
+## [1.0.1](https://github.com/cprecioso/todone/compare/default-plugins-v1.0.0...default-plugins-v1.0.1) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin-caniuse bumped to 1.0.1
+    * @todone/plugin-date bumped to 0.4.2
+    * @todone/plugin-figma bumped to 0.4.2
+    * @todone/plugin-github bumped to 0.7.2
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.1
+
 ## [1.0.0](https://github.com/cprecioso/todone/compare/default-plugins-v0.6.0...default-plugins-v1.0.0) (2025-08-03)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@todone/core",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "type": "module",
   "description": "Core implementation of todone",
   "repository": {

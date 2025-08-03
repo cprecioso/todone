@@ -1,5 +1,14 @@
 # @todone/internal-util
 
+## [0.3.2](https://github.com/cprecioso/todone/compare/internal-util-v0.3.1...internal-util-v0.3.2) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.1
+
 ## [0.3.1](https://github.com/cprecioso/todone/compare/internal-util-v0.3.0...internal-util-v0.3.1) (2025-08-03)
 
 
