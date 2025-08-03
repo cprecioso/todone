@@ -38,7 +38,7 @@ jobs:
       - name: Publish changed packages
         run: |
           for file in ./tarballs/*; do
-            npm publish $file || true
+            mise x npm:npm -- npm publish $file || true
           done
 
   publish-docs:
