@@ -1,5 +1,14 @@
 # @todone/types
 
+## [0.7.2](https://github.com/cprecioso/todone/compare/types-v0.7.1...types-v0.7.2) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.1
+
 ## [0.7.1](https://github.com/cprecioso/todone/compare/types-v0.7.0...types-v0.7.1) (2025-08-03)
 
 

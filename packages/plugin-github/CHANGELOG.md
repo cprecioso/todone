@@ -1,5 +1,17 @@
 # @todone/plugin-github
 
+## [0.7.2](https://github.com/cprecioso/todone/compare/plugin-github-v0.7.1...plugin-github-v0.7.2) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/internal-urlpattern bumped to 1.1.4
+    * @todone/plugin bumped to 0.3.3
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.1
+
 ## [0.7.1](https://github.com/cprecioso/todone/compare/plugin-github-v0.7.0...plugin-github-v0.7.1) (2025-08-03)
 
 

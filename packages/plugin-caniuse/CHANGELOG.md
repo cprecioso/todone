@@ -1,5 +1,18 @@
 # @todone/plugin-caniuse
 
+## [1.0.1](https://github.com/cprecioso/todone/compare/plugin-caniuse-v1.0.0...plugin-caniuse-v1.0.1) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/internal-urlpattern bumped to 1.1.4
+    * @todone/plugin bumped to 0.3.3
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.1
+    * @todone/types bumped to 0.7.2
+
 ## [1.0.0](https://github.com/cprecioso/todone/compare/plugin-caniuse-v0.4.0...plugin-caniuse-v1.0.0) (2025-08-03)
 
 
