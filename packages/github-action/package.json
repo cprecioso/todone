@@ -35,7 +35,8 @@
     "@todone/default-plugins": "workspace:*",
     "@todone/internal-util": "workspace:*",
     "@todone/plugin": "workspace:*",
-    "@todone/types": "workspace:*"
+    "@todone/types": "workspace:*",
+    "dedent": "^1.6.0"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",

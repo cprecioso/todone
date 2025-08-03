@@ -1020,6 +1020,7 @@ __metadata:
     "@todone/plugin": "workspace:*"
     "@todone/types": "workspace:*"
     "@types/node": "npm:^22.17.0"
+    dedent: "npm:^1.6.0"
     tsdown: "npm:^0.13.2"
     typescript: "npm:~5.9.2"
   languageName: unknown
@@ -1655,6 +1656,18 @@ __metadata:
     supports-color:
       optional: true
   checksum: 10/8e2709b2144f03c7950f8804d01ccb3786373df01e406a0f66928e47001cf2d336cbed9ee137261d4f90d68d8679468c755e3548ed83ddacdc82b194d2468afe
+  languageName: node
+  linkType: hard
+
+"dedent@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "dedent@npm:1.6.0"
+  peerDependencies:
+    babel-plugin-macros: ^3.1.0
+  peerDependenciesMeta:
+    babel-plugin-macros:
+      optional: true
+  checksum: 10/f100cb11001309f2185c4334c6f29e5323c1e73b7b75e3b1893bc71ef53cd13fb80534efc8fa7163a891ede633e310a9c600ba38c363cc9d14a72f238fe47078
   languageName: node
   linkType: hard
 
