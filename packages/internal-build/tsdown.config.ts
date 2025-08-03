@@ -1,3 +1,3 @@
-import { nodeLibrary } from "./src/tsdown";
+import { nodeLibrary } from "./src/tsdown.ts";
 
 export default nodeLibrary({ entries: ["*"] });
