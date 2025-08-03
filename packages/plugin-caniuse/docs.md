@@ -2,9 +2,9 @@
 
 A {@link todone} plugin that will alert you when a feature is supported by your target browsers.
 
-## Setup
+## Options
 
-It needs to be configured with a list of browsers you want to support through the regular [browserlist config](https://github.com/browserslist/browserslist).
+- `browserslist`: A [browserslist](https://github.com/browserslist/browserslist#queries) query or array of browserslist queries. If using environment variables, set `BROWSERSLIST`.
 
 ## Usage
 

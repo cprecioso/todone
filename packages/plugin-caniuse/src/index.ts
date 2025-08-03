@@ -19,67 +19,78 @@ const patternResultSchema = z.object({
 });
 
 /** The plugin factory. Doesn't take any options. */
-export default definePlugin(null, async () => ({
-  name: "Caniuse",
-
-  pattern,
-
-  async check({ url, file }) {
-    const result = patternResultSchema.parse(pattern.exec(url));
-    const { feature } = result.pathname.groups;
-
-    const browsers = getBrowsers(file);
-    const featureInfo = getFeatureInfo(feature);
-
-    const enabledFlags = new Set((url.hash.slice(1) || null)?.split(","));
-
-    const browserSupport = browsers.map(({ browser, version }) => {
-      const featureStatus = featureInfo.stats[browser][version];
-      const caniuseFlags = new Set(featureStatus.split(" "));
-
-      if (
-        !enabledFlags.has(UrlFlags.IgnoreDisabled) &&
-        caniuseFlags.has(CaniuseFlags.Disabled)
-      ) {
-        return false;
-      }
-
-      if (
-        enabledFlags.has(UrlFlags.NoPrefix) &&
-        caniuseFlags.has(CaniuseFlags.SupportedWithPrefix)
-      ) {
-        return false;
-      }
-
-      if (
-        enabledFlags.has(UrlFlags.NoPolyfill) &&
-        caniuseFlags.has(CaniuseFlags.SupportedWithPolyfill)
-      ) {
-        return false;
-      }
-
-      if (
-        enabledFlags.has(UrlFlags.Full) &&
-        caniuseFlags.has(CaniuseFlags.Partial)
-      ) {
-        return false;
-      }
-
-      if (
-        caniuseFlags.has(CaniuseFlags.Supported) ||
-        caniuseFlags.has(CaniuseFlags.Partial)
-      ) {
-        return true;
-      }
-
-      return false;
-    });
-
-    const isExpired = browserSupport.every((v) => Boolean(v));
+export default definePlugin(
+  {
+    browserslist: {
+      envName: "BROWSERSLIST",
+      schema: z.union([z.string(), z.array(z.string())]),
+    },
+  },
+  async ({ browserslist }) => {
+    const browsers = getBrowsers(browserslist);
 
     return {
-      title: featureInfo.title,
-      isExpired,
+      name: "Caniuse",
+
+      pattern,
+
+      async check({ url }) {
+        const result = patternResultSchema.parse(pattern.exec(url));
+        const { feature } = result.pathname.groups;
+
+        const featureInfo = getFeatureInfo(feature);
+
+        const enabledFlags = new Set((url.hash.slice(1) || null)?.split(","));
+
+        const browserSupport = browsers.map(({ browser, version }) => {
+          const featureStatus = featureInfo.stats[browser][version];
+          const caniuseFlags = new Set(featureStatus.split(" "));
+
+          if (
+            !enabledFlags.has(UrlFlags.IgnoreDisabled) &&
+            caniuseFlags.has(CaniuseFlags.Disabled)
+          ) {
+            return false;
+          }
+
+          if (
+            enabledFlags.has(UrlFlags.NoPrefix) &&
+            caniuseFlags.has(CaniuseFlags.SupportedWithPrefix)
+          ) {
+            return false;
+          }
+
+          if (
+            enabledFlags.has(UrlFlags.NoPolyfill) &&
+            caniuseFlags.has(CaniuseFlags.SupportedWithPolyfill)
+          ) {
+            return false;
+          }
+
+          if (
+            enabledFlags.has(UrlFlags.Full) &&
+            caniuseFlags.has(CaniuseFlags.Partial)
+          ) {
+            return false;
+          }
+
+          if (
+            caniuseFlags.has(CaniuseFlags.Supported) ||
+            caniuseFlags.has(CaniuseFlags.Partial)
+          ) {
+            return true;
+          }
+
+          return false;
+        });
+
+        const isExpired = browserSupport.every((v) => Boolean(v));
+
+        return {
+          title: featureInfo.title,
+          isExpired,
+        };
+      },
     };
   },
-}));
+);
