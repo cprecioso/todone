@@ -1,5 +1,17 @@
 # @todone/core
 
+## [0.6.3](https://github.com/cprecioso/todone/compare/core-v0.6.2...core-v0.6.3) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/internal-util bumped to 0.3.1
+    * @todone/types bumped to 0.7.1
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.0
+
 ## [0.6.2](https://github.com/cprecioso/todone/compare/core-v0.6.1...core-v0.6.2) (2025-07-22)
 
 

@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.0.0](https://github.com/cprecioso/todone/compare/github-action-v1.0.0...github-action-v2.0.0) (2025-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade support to node 22
+
+### Features
+
+* allow empty globs version ([2c42ff8](https://github.com/cprecioso/todone/commit/2c42ff88e9e030d9d62be17607821e7d06993c8d))
+* upgrade support to node 22 ([e80077d](https://github.com/cprecioso/todone/commit/e80077da736a61a535adaf37de3bab0bf13fdc0e))
+* use node24 in the action ([7ee7269](https://github.com/cprecioso/todone/commit/7ee72693e05ef75dafef784088c530505c7f00b7))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/core bumped to 0.6.3
+    * @todone/default-plugins bumped to 1.0.0
+    * @todone/internal-util bumped to 0.3.1
+    * @todone/plugin bumped to 0.3.2
+    * @todone/types bumped to 0.7.1
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.0
+
 ## 1.0.0 (2025-07-22)
 
 

@@ -1,5 +1,27 @@
 # @todone/plugin-caniuse
 
+## [1.0.0](https://github.com/cprecioso/todone/compare/plugin-caniuse-v0.4.0...plugin-caniuse-v1.0.0) (2025-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade support to node 22
+
+### Features
+
+* upgrade support to node 22 ([e80077d](https://github.com/cprecioso/todone/commit/e80077da736a61a535adaf37de3bab0bf13fdc0e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/internal-urlpattern bumped to 1.1.3
+    * @todone/plugin bumped to 0.3.2
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.0
+    * @todone/types bumped to 0.7.1
+
 ## [0.4.0](https://github.com/cprecioso/todone/compare/plugin-caniuse-v0.3.2...plugin-caniuse-v0.4.0) (2025-07-22)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "todone",
-  "version": "0.11.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Never forget to follow up on your code's TODOs, maintain code quality, and pay back your technical debt.",
   "repository": {

@@ -1,5 +1,16 @@
 # @todone/internal-build
 
+## [1.0.0](https://github.com/cprecioso/todone/compare/internal-build-v0.3.0...internal-build-v1.0.0) (2025-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade support to node 22
+
+### Features
+
+* upgrade support to node 22 ([e80077d](https://github.com/cprecioso/todone/commit/e80077da736a61a535adaf37de3bab0bf13fdc0e))
+
 ## [0.3.0](https://github.com/cprecioso/todone/compare/internal-build-v0.2.1...internal-build-v0.3.0) (2025-07-22)
 
 
