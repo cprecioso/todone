@@ -1037,7 +1037,7 @@ __metadata:
     typescript: "npm:~5.9.2"
   peerDependencies:
     tsdown: ^0.13.0
-    typescript: ~5.8.3
+    typescript: ~5.9.2
   languageName: unknown
   linkType: soft
 
