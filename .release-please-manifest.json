@@ -1,5 +1,4 @@
 {
-  ".": "1.0.0",
   "packages/core": "0.6.3",
   "packages/default-plugins": "1.0.0",
   "packages/github-action": "2.0.0",
