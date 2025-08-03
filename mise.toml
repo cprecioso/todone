@@ -1,5 +1,7 @@
 [tools]
 node = "lts"
+"npm:corepack" = "latest"
+"npm:npm" = "latest"
 
 [env]
 _.path = [".bin"]
