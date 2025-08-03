@@ -8,7 +8,6 @@
   ],
   "release-type": "node",
   "packages": {
-    ".": {},
     "packages/core": {},
     "packages/default-plugins": {},
     "packages/github-action": {},
