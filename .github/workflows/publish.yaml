@@ -30,7 +30,8 @@ jobs:
         with:
           name: packages
 
-      - run: |
+      - name: Publish changed packages
+        run: |
           for file in ./*; do
             npm publish --access public --provenance $file || true
           done
