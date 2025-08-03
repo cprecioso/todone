@@ -1,5 +1,29 @@
 # todone
 
+## [1.0.0](https://github.com/cprecioso/todone/compare/todone-v0.11.0...todone-v1.0.0) (2025-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade support to node 22
+
+### Features
+
+* upgrade support to node 22 ([e80077d](https://github.com/cprecioso/todone/commit/e80077da736a61a535adaf37de3bab0bf13fdc0e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/core bumped to 0.6.3
+    * @todone/default-plugins bumped to 1.0.0
+    * @todone/internal-util bumped to 0.3.1
+    * @todone/plugin bumped to 0.3.2
+    * @todone/types bumped to 0.7.1
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.0
+
 ## [0.11.0](https://github.com/cprecioso/todone/compare/todone-v0.10.0...todone-v0.11.0) (2025-07-22)
 
 

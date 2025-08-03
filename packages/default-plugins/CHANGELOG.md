@@ -1,5 +1,28 @@
 # @todone/default-plugins
 
+## [1.0.0](https://github.com/cprecioso/todone/compare/default-plugins-v0.6.0...default-plugins-v1.0.0) (2025-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade support to node 22
+
+### Features
+
+* upgrade support to node 22 ([e80077d](https://github.com/cprecioso/todone/commit/e80077da736a61a535adaf37de3bab0bf13fdc0e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin-caniuse bumped to 1.0.0
+    * @todone/plugin-date bumped to 0.4.1
+    * @todone/plugin-figma bumped to 0.4.1
+    * @todone/plugin-github bumped to 0.7.1
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.0
+
 ## [0.6.0](https://github.com/cprecioso/todone/compare/default-plugins-v0.5.2...default-plugins-v0.6.0) (2025-07-22)
 
 

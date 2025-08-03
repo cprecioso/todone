@@ -1,5 +1,14 @@
 # @todone/internal-urlpattern
 
+## [1.1.3](https://github.com/cprecioso/todone/compare/internal-urlpattern-v1.1.2...internal-urlpattern-v1.1.3) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.0
+
 ## [1.1.2](https://github.com/cprecioso/todone/compare/internal-urlpattern-v1.1.1...internal-urlpattern-v1.1.2) (2025-07-22)
 
 

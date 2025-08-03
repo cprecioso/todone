@@ -1,5 +1,17 @@
 # @todone/plugin-figma
 
+## [0.4.1](https://github.com/cprecioso/todone/compare/plugin-figma-v0.4.0...plugin-figma-v0.4.1) (2025-08-03)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/internal-urlpattern bumped to 1.1.3
+    * @todone/plugin bumped to 0.3.2
+  * devDependencies
+    * @todone/internal-build bumped to 1.0.0
+
 ## [0.4.0](https://github.com/cprecioso/todone/compare/plugin-figma-v0.3.2...plugin-figma-v0.4.0) (2025-07-22)
 
 
