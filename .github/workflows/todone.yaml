@@ -22,7 +22,7 @@ jobs:
       - run: yarn install --immutable
 
       - name: Build action
-        run: nx run @todone/github-action:build
+        run: yarn run nx run @todone/github-action:build
 
       - name: Run todone
         uses: ./packages/github-action
