@@ -64,7 +64,7 @@ export const tee3 = <T>(stream: ReadableStream<T>) => {
   return [a, b, c] as const;
 };
 
-// @TODO https://github.com/actions/runner/issues/3600
+// *TODO https://github.com/actions/runner/issues/3600
 // Once GitHub Actions supports Node.js 22, we can use Array.fromAsync directly
 export const toArray = async <T>(stream: ReadableStream<T>): Promise<T[]> => {
   const result: T[] = [];
