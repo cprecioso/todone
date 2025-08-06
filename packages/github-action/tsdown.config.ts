@@ -5,5 +5,8 @@ export default [
   defineConfig({
     ...nodeCli(),
     noExternal: /./,
+    inputOptions: {
+      jsx: "react",
+    },
   }),
 ];

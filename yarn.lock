@@ -1022,12 +1022,14 @@ __metadata:
     "@todone/plugin": "workspace:*"
     "@todone/types": "workspace:*"
     "@types/node": "npm:^22.17.0"
+    "@types/vhtml": "npm:^2.2.9"
     dedent: "npm:^1.6.0"
     execa: "npm:^9.6.0"
     p-map: "npm:^7.0.3"
     tsdown: "npm:^0.13.2"
     type-fest: "npm:^4.41.0"
     typescript: "npm:~5.9.2"
+    vhtml: "npm:^2.2.0"
   languageName: unknown
   linkType: soft
 
@@ -1225,6 +1227,13 @@ __metadata:
   version: 3.0.3
   resolution: "@types/unist@npm:3.0.3"
   checksum: 10/96e6453da9e075aaef1dc22482463898198acdc1eeb99b465e65e34303e2ec1e3b1ed4469a9118275ec284dc98019f63c3f5d49422f0e4ac707e5ab90fb3b71a
+  languageName: node
+  linkType: hard
+
+"@types/vhtml@npm:^2.2.9":
+  version: 2.2.9
+  resolution: "@types/vhtml@npm:2.2.9"
+  checksum: 10/459493e0e504ab4bd91961ab8af74aa83f05a2f644adfe802d9a6973fcf3cfec8590cf30c0bd3c368758b32b0bf5eeb8dc65e90ab156ea09c2161ac7b7d2e3c4
   languageName: node
   linkType: hard
 
@@ -3620,6 +3629,13 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 10/474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"vhtml@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "vhtml@npm:2.2.0"
+  checksum: 10/bced190936454f35cb9c80aa0374f7ba3684604a2df45fee226b9edb19b8fdf09f17d292a1fadf033d815ce7e65162fc70fd2fa82d6895d0d539712c55236927
   languageName: node
   linkType: hard
 

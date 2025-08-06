@@ -1,5 +1,9 @@
+/** @jsx h */
+void h; // If we don't use `h`, prettier will remove it
+
 import * as core from "@actions/core";
 import pMap from "p-map";
+import h from "vhtml";
 import { Result } from "./util";
 
 type Row = [file: string, url: string, expired: string, expirationDate: string];
@@ -19,7 +23,7 @@ export const makeSummary = async (items: Result[]) => {
       const fileUrl = await match.file.getUrl(match.position.line);
       let location: string;
       if (fileUrl) {
-        location = `<a href=${JSON.stringify(fileUrl)}>${match.file.location}</a>`;
+        location = <a href={fileUrl}>{match.file.location}</a>;
       } else {
         location = match.file.location;
       }
@@ -28,7 +32,7 @@ export const makeSummary = async (items: Result[]) => {
 
       return [
         location,
-        `<a href=${JSON.stringify(resultUrl)}>${resultUrl}</a>`,
+        <a href={resultUrl}>{resultUrl}</a>,
         result ? (result.isExpired ? "❗" : "⌛") : "",
         result
           ? result.expirationDate?.toISOString() || "No expiration date"
