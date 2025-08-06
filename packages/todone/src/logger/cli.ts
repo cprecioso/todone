@@ -4,8 +4,6 @@ import type { Writable } from "node:stream";
 
 const dateFormatter = new Intl.DateTimeFormat();
 
-const cwd = process.cwd();
-
 export const logCLIReports = async (
   stdout: Writable,
   reports: AsyncIterable<AnalysisItem>,
