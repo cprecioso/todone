@@ -6,14 +6,6 @@ export interface Offset {
 
 /** An object representing a file and its contents */
 export interface File {
-  /**
-   * The file's human-readable location.
-   *
-   * For example, a path if running on local files, or a URL if running on
-   * remote files.
-   */
-  readonly location: string;
-
   readonly getContent: (this: this) => ReadableStream<Uint8Array>;
 }
 
