@@ -1,26 +1,13 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import { AnalysisItem } from "@todone/core";
 import dedent from "dedent";
-import { GitHubFile } from "./files";
+import pMap from "p-map";
 import { reconcile } from "./reconciler";
-import { partition } from "./util";
+import { ExpiredResult, partition } from "./util";
 
 const TODONE_LABEL = "todone";
 
-type ExpiredResult = AnalysisItem<GitHubFile> & {
-  type: "result";
-  result: { result: { isExpired: true } };
-};
-
-export const isExpiredResult = (
-  item: AnalysisItem<GitHubFile>,
-): item is ExpiredResult =>
-  Boolean(
-    item.type === "result" && item.result && item.result.result?.isExpired,
-  );
-
-export const generateIssue = ({
+export const generateIssue = async ({
   result: { url, result, matches },
 }: ExpiredResult) => {
   const urlString = url.toString();
@@ -34,12 +21,14 @@ export const generateIssue = ({
 
     It is present in the following files:
 
-    ${matches
-      .map(
-        (match) =>
-          `- ${match.file}:L${match.position.line}-${match.position.column}`,
+    ${(
+      await pMap(
+        matches,
+        async (match) =>
+          `- ${(await match.file.getUrl(match.position.line)) || `${match.file.location}:${match.position.line}:${match.position.column}`}`,
+        { concurrency: 1 },
       )
-      .join("\n")}
+    ).join("\n")}
 
     ---
 
@@ -55,7 +44,7 @@ export const generateIssue = ({
 const getFinalData = (txt: string) =>
   txt.match(/<!-- todone (.+) -->\s*$/s)?.[1];
 
-export type IssueDefinition = ReturnType<typeof generateIssue>;
+export type IssueDefinition = Awaited<ReturnType<typeof generateIssue>>;
 
 export const makeIssueReconciler = (createIssues: boolean, token: string) => {
   if (!createIssues) return async () => {};

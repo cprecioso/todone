@@ -1,3 +1,6 @@
+import { AnalysisItem } from "@todone/core";
+import { GitHubFile } from "./files";
+
 export const partition = <T>(
   input: Iterable<T>,
   predicate: (item: T) => boolean,
@@ -12,3 +15,19 @@ export const partition = <T>(
 
   return { trues, falses };
 };
+
+export type Result = AnalysisItem<GitHubFile> & {
+  type: "result";
+};
+
+export const isResult = (item: AnalysisItem<GitHubFile>): item is Result =>
+  item.type === "result";
+
+export type ExpiredResult = Result & {
+  result: { result: { isExpired: true } };
+};
+
+export const isExpiredResult = (
+  item: AnalysisItem<GitHubFile>,
+): item is ExpiredResult =>
+  Boolean(isResult(item) && item.result.result?.isExpired);

@@ -36,7 +36,9 @@
     "@todone/internal-util": "workspace:*",
     "@todone/plugin": "workspace:*",
     "@todone/types": "workspace:*",
-    "dedent": "^1.6.0"
+    "dedent": "^1.6.0",
+    "execa": "^9.6.0",
+    "p-map": "^7.0.3"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",

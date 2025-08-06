@@ -1,28 +1,47 @@
 import * as core from "@actions/core";
-import { AnalysisItem } from "@todone/core";
-import { GitHubFile } from "./files";
+import pMap from "p-map";
+import { Result } from "./util";
 
-export const makeSummary = async (items: AnalysisItem<GitHubFile>[]) => {
+type Row = [file: string, url: string, expired: string, expirationDate: string];
+
+export const makeSummary = async (items: Result[]) => {
+  const flatMatches = items.flatMap(({ result }) =>
+    result.matches.map((match) => ({
+      url: result.url,
+      result: result.result,
+      match,
+    })),
+  );
+
+  const rows = await pMap(
+    flatMatches,
+    async ({ url, result, match }): Promise<Row> => {
+      const fileUrl = await match.file.getUrl(match.position.line);
+      let location: string;
+      if (fileUrl) {
+        location = `[${match.file.location}](${fileUrl})`;
+      } else {
+        location = match.file.location;
+      }
+
+      return [
+        location,
+        url.toString(),
+        result ? (result.isExpired ? "❗" : "⌛") : "",
+        result
+          ? result.expirationDate?.toISOString() || "No expiration date"
+          : "",
+      ] as const;
+    },
+  );
+
   await core.summary
     .addHeading("TODOs found")
     .addTable([
-      ["File", "Line", "Column", "URL", "Expired", "Expiration Date"].map(
+      (["File", "URL", "Expired", "Expiration Date"] satisfies Row).map(
         (data) => ({ data: data, header: true }),
       ),
-      ...items
-        .filter((item) => item.type === "result")
-        .flatMap(({ result: { url, result, matches } }) =>
-          matches.map((match) => [
-            match.file.location,
-            match.position.line.toString(),
-            match.position.column.toString(),
-            url.toString(),
-            result ? (result.isExpired ? "❗" : "⌛") : "",
-            result
-              ? result.expirationDate?.toISOString() || "No expiration date"
-              : "",
-          ]),
-        ),
+      ...rows,
     ])
     .write();
 };
