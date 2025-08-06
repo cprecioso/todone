@@ -8,26 +8,23 @@ export const makeResultLogger = () => async (item: AnalysisItem) => {
   if (item.type !== "result") return;
 
   const {
-    item: {
-      match: {
-        url,
-        file: { location },
-        start: { line, column },
-      },
-      result,
-    },
+    result: { url, matches, result },
   } = item;
 
   const infoLines = result
     ? [
-        url.toString(),
+        result.title || "No title",
         result.isExpired ? "Expired" : "Not expired",
         result.expirationDate?.toISOString() || "No expiration date",
       ]
-    : [url.toString(), "No plugin responded"];
+    : ["No plugin responded"];
+
+  const fileLines = matches.map(
+    ({ file, position: { line, column } }) => `${file}:${line}:${column}`,
+  );
 
   core.info(
-    `Found match at ${location}:${line}:${column}` +
-      infoLines.map((l) => `\n\t${l}`).join(""),
+    `Found: ${url}\n` +
+      [...infoLines, ...fileLines].map((line) => `\t${line}\n`).join(""),
   );
 };
