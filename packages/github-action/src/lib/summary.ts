@@ -19,14 +19,16 @@ export const makeSummary = async (items: Result[]) => {
       const fileUrl = await match.file.getUrl(match.position.line);
       let location: string;
       if (fileUrl) {
-        location = `[${match.file.location}](${fileUrl})`;
+        location = `<a href=${JSON.stringify(match.file.location)}>${fileUrl}</a>`;
       } else {
         location = match.file.location;
       }
 
+      const resultUrl = url.toString();
+
       return [
         location,
-        url.toString(),
+        `<a href=${JSON.stringify(resultUrl)}>${resultUrl}</a>`,
         result ? (result.isExpired ? "❗" : "⌛") : "",
         result
           ? result.expirationDate?.toISOString() || "No expiration date"
