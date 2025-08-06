@@ -1,6 +1,9 @@
+import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { AnalysisItem } from "@todone/core";
 import dedent from "dedent";
+import { reconcile } from "./reconciler";
+import { partition } from "./util";
 
 const TODONE_LABEL = "todone";
 
@@ -80,53 +83,91 @@ export const makeIssueReconciler = (createIssues: boolean, token: string) => {
     });
   };
 
-  return async (issues: IssueDefinition[]) => {
-    const newIssues = new Map(issues.map((issue) => [issue.id, issue]));
-    const handledIssues = new Set<string>();
-
-    for await (const { data: page } of octokit.paginate.iterator(
+  return async (desiredIssues: IssueDefinition[]) => {
+    const currentIssues = await octokit.paginate(
       octokit.rest.issues.listForRepo,
       { ...repo, state: "open", labels: TODONE_LABEL },
-    )) {
-      for (const existingIssue of page) {
-        const id = getFinalData(existingIssue.body!);
+    );
 
-        if (!id) {
-          await closeWithComment(
-            existingIssue.number,
-            `This issue has no valid ID recognized by todone, and will be closed.
+    core.debug(
+      `Found ${currentIssues.length} open issues with label ${TODONE_LABEL}`,
+    );
 
-If this is an error, please remove the label "${TODONE_LABEL}" from this issue and re-open it.
-`,
-            "not_planned",
-          );
-        } else if (!newIssues.has(id)) {
-          await closeWithComment(
-            existingIssue.number,
-            `The TODO referenced by this issue has been resolved, and it will be closed.
-`,
-            "completed",
-          );
-        } else {
-          const newIssue = newIssues.get(id)!;
-          await octokit.rest.issues.update({
-            ...repo,
-            issue_number: existingIssue.number,
-            body: newIssue.body,
-          });
-          handledIssues.add(id);
-        }
-      }
+    const { trues: validCurrentIssues, falses: invalidCurrentIssues } =
+      partition(
+        currentIssues.map((issue) => {
+          const id = (issue.body && getFinalData(issue.body)) || null;
+          return id ? { type: "valid", id, issue } : { type: "invalid", issue };
+        }),
+        ({ type }) => type === "valid",
+      );
 
-      for (const [id, newIssue] of newIssues.entries()) {
-        if (handledIssues.has(id)) continue;
+    core.debug(
+      `Found ${validCurrentIssues.length} valid issues and ${invalidCurrentIssues.length} invalid issues.`,
+    );
 
-        await octokit.rest.issues.create({
+    for (const {
+      issue: { number },
+    } of invalidCurrentIssues) {
+      await closeWithComment(
+        number,
+        dedent`
+          This issue has no valid ID recognized by todone, and will be closed.
+          If this is an error, please remove the label \`${TODONE_LABEL}\` from this issue and re-open it.
+        `,
+        "not_planned",
+      );
+      core.info(`Closed issue #${number} due to invalid ID.`);
+    }
+
+    const currentIssuesMap = new Map(
+      validCurrentIssues.map(({ id, issue }) => [id!, issue]),
+    );
+
+    const desiredIssuesMap = new Map(
+      desiredIssues.map((issue) => [issue.id, issue]),
+    );
+
+    const reconciliation = reconcile(currentIssuesMap, desiredIssuesMap, [
+      "body",
+    ]);
+
+    core.debug(dedent`
+      Reconciliation result:
+        Added: ${reconciliation.added.size},
+        Removed: ${reconciliation.removed.size},
+        Changes: ${reconciliation.changes.size}
+    `);
+
+    for (const { title, body } of reconciliation.added.values()) {
+      await octokit.rest.issues.create({
+        ...repo,
+        title,
+        body,
+        labels: [TODONE_LABEL],
+      });
+      core.info(`Created issue: ${title}`);
+    }
+
+    for (const { number } of reconciliation.removed.values()) {
+      await closeWithComment(
+        number,
+        "The TODO referenced by this issue has been resolved, and it will be closed.",
+        "completed",
+      );
+      core.info(`Closed issue #${number} as resolved.`);
+    }
+
+    for (const { current, changes } of reconciliation.changes.values()) {
+      if (changes) {
+        await octokit.rest.issues.update({
           ...repo,
-          title: newIssue.title,
-          body: newIssue.body,
-          labels: [TODONE_LABEL],
+          issue_number: current.number,
+          ...changes,
         });
+        core.info(`Updated issue #${current.number}`);
+      } else {
+        core.debug(`No changes for issue #${current.number}, skipping update.`);
       }
     }
   };

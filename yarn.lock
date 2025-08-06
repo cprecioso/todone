@@ -1024,6 +1024,7 @@ __metadata:
     "@types/node": "npm:^22.17.0"
     dedent: "npm:^1.6.0"
     tsdown: "npm:^0.13.2"
+    type-fest: "npm:^4.41.0"
     typescript: "npm:~5.9.2"
   languageName: unknown
   linkType: soft
