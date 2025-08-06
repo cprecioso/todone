@@ -19,7 +19,7 @@ export const makeSummary = async (items: Result[]) => {
       const fileUrl = await match.file.getUrl(match.position.line);
       let location: string;
       if (fileUrl) {
-        location = `<a href=${JSON.stringify(match.file.location)}>${fileUrl}</a>`;
+        location = `<a href=${JSON.stringify(fileUrl)}>${match.file.location}</a>`;
       } else {
         location = match.file.location;
       }
