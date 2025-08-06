@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "tsdown": "^0.13.2",
+    "tsdown": "^0.13.3",
     "typescript": "~5.9.2"
   },
   "publishConfig": {

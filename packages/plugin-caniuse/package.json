@@ -33,13 +33,13 @@
     "@todone/plugin": "workspace:^",
     "browserslist": "^4.25.1",
     "caniuse-lite": "^1.0.30001731",
-    "zod": "^4.0.14"
+    "zod": "^4.0.15"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@types/caniuse-lite": "^1.0.5",
     "@types/node": "^22.17.0",
-    "tsdown": "^0.13.2",
+    "tsdown": "^0.13.3",
     "typescript": "~5.9.2"
   },
   "publishConfig": {

@@ -987,7 +987,7 @@ __metadata:
     "@todone/internal-util": "workspace:^"
     "@todone/types": "workspace:^"
     p-memoize: "npm:^7.1.1"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     type-fest: "npm:^4.41.0"
     typescript: "npm:~5.9.2"
   languageName: unknown
@@ -1002,7 +1002,7 @@ __metadata:
     "@todone/plugin-date": "workspace:^"
     "@todone/plugin-figma": "workspace:^"
     "@todone/plugin-github": "workspace:^"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
   languageName: unknown
   linkType: soft
@@ -1026,7 +1026,7 @@ __metadata:
     dedent: "npm:^1.6.0"
     execa: "npm:^9.6.0"
     p-map: "npm:^7.0.3"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     type-fest: "npm:^4.41.0"
     typescript: "npm:~5.9.2"
     vhtml: "npm:^2.2.0"
@@ -1039,7 +1039,7 @@ __metadata:
   dependencies:
     "@tsconfig/node22": "npm:^22.0.2"
     "@types/node": "npm:^22.17.0"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     type-fest: "npm:^4.41.0"
     typedoc: "npm:^0.28.9"
     typescript: "npm:~5.9.2"
@@ -1054,7 +1054,7 @@ __metadata:
   resolution: "@todone/internal-urlpattern@workspace:packages/internal-urlpattern"
   dependencies:
     "@todone/internal-build": "workspace:*"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
     urlpattern-polyfill: "npm:^10.1.0"
   languageName: unknown
@@ -1067,7 +1067,7 @@ __metadata:
     "@std/regexp": "jsr:^1.0.1"
     "@std/streams": "jsr:^1.0.10"
     "@todone/internal-build": "workspace:*"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
   languageName: unknown
   linkType: soft
@@ -1083,9 +1083,9 @@ __metadata:
     "@types/node": "npm:^22.17.0"
     browserslist: "npm:^4.25.1"
     caniuse-lite: "npm:^1.0.30001731"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
-    zod: "npm:^4.0.14"
+    zod: "npm:^4.0.15"
   languageName: unknown
   linkType: soft
 
@@ -1097,9 +1097,9 @@ __metadata:
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
     date-fns: "npm:^4.1.0"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
-    zod: "npm:^4.0.14"
+    zod: "npm:^4.0.15"
   languageName: unknown
   linkType: soft
 
@@ -1112,9 +1112,9 @@ __metadata:
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
     ky: "npm:^1.8.2"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
-    zod: "npm:^4.0.14"
+    zod: "npm:^4.0.15"
   languageName: unknown
   linkType: soft
 
@@ -1126,9 +1126,9 @@ __metadata:
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
     octokit: "npm:^5.0.3"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
-    zod: "npm:^4.0.14"
+    zod: "npm:^4.0.15"
   languageName: unknown
   linkType: soft
 
@@ -1141,7 +1141,7 @@ __metadata:
     "@todone/internal-build": "workspace:*"
     "@todone/internal-util": "workspace:^"
     "@todone/types": "workspace:^"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     type-fest: "npm:^4.41.0"
     typescript: "npm:~5.9.2"
   languageName: unknown
@@ -1152,7 +1152,7 @@ __metadata:
   resolution: "@todone/repo@workspace:."
   dependencies:
     husky: "npm:^9.1.7"
-    lint-staged: "npm:^16.1.3"
+    lint-staged: "npm:^16.1.4"
     nx: "npm:21.3.11"
     prettier: "npm:3.6.2"
     prettier-plugin-organize-imports: "npm:4.2.0"
@@ -1170,7 +1170,7 @@ __metadata:
   resolution: "@todone/types@workspace:packages/types"
   dependencies:
     "@todone/internal-build": "workspace:*"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
   languageName: unknown
   linkType: soft
@@ -1512,6 +1512,13 @@ __metadata:
   version: 5.4.1
   resolution: "chalk@npm:5.4.1"
   checksum: 10/29df3ffcdf25656fed6e95962e2ef86d14dfe03cd50e7074b06bad9ffbbf6089adbb40f75c00744d843685c8d008adaf3aed31476780312553caf07fa86e5bc7
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "chalk@npm:5.5.0"
+  checksum: 10/19f6905b47b628541976a534e2f39c3779f7f9276ff9693cb8f7cdb3e3e09ee5dee16e0c3768632fbb41c2a1f1653ee0041ea7730428b804068945eb0bab09c4
   languageName: node
   linkType: hard
 
@@ -2416,9 +2423,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.1.3":
-  version: 16.1.3
-  resolution: "lint-staged@npm:16.1.3"
+"lint-staged@npm:^16.1.4":
+  version: 16.1.4
+  resolution: "lint-staged@npm:16.1.4"
   dependencies:
     chalk: "npm:^5.4.1"
     commander: "npm:^14.0.0"
@@ -2432,7 +2439,7 @@ __metadata:
     yaml: "npm:^2.8.0"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10/953daec44ce67f47a80c63e7d4465522e36a32b409ebacc63b253f86ceb21328f9a178518bd5e5ac9286497200eddbfe6be64e151189c25757a4590371bedf7c
+  checksum: 10/71330be72e1ca37715f4098eefdc634c6cb4948323ba1e88717b11376f18d8add9b851e5289f0814f10d25aa379aa77efba73ef0b717931632b8f6aae6c3f61d
   languageName: node
   linkType: hard
 
@@ -3057,9 +3064,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rolldown-plugin-dts@npm:^0.15.0":
-  version: 0.15.0
-  resolution: "rolldown-plugin-dts@npm:0.15.0"
+"rolldown-plugin-dts@npm:^0.15.3":
+  version: 0.15.4
+  resolution: "rolldown-plugin-dts@npm:0.15.4"
   dependencies:
     "@babel/generator": "npm:^7.28.0"
     "@babel/parser": "npm:^7.28.0"
@@ -3081,11 +3088,11 @@ __metadata:
       optional: true
     vue-tsc:
       optional: true
-  checksum: 10/15be521d616c6a05b80a361493e6e90bd2e8c8cb23bde724a5ba3287eeddcca872981130c6bfe5635fcc55a4a303455bcfc894abc2e6f96060b8d3292bb8a943
+  checksum: 10/c66cff5eabe20477e664c772616507409c3f230a08b1c18c907fab4d99b92fe0cd745ca9cd6d62e9db527390b9c7db78ca1d738ed5132013a2ee7c7ef49139eb
   languageName: node
   linkType: hard
 
-"rolldown@npm:^1.0.0-beta.30":
+"rolldown@npm:^1.0.0-beta.31":
   version: 1.0.0-beta.9-commit.d91dfb5
   resolution: "rolldown@npm:1.0.0-beta.9-commit.d91dfb5"
   dependencies:
@@ -3379,11 +3386,11 @@ __metadata:
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:^"
     "@types/node": "npm:^22.17.0"
-    chalk: "npm:^5.4.1"
+    chalk: "npm:^5.5.0"
     clipanion: "npm:^4.0.0-rc.4"
     dotenv: "npm:^17.2.1"
     globby: "npm:^14.1.0"
-    tsdown: "npm:^0.13.2"
+    tsdown: "npm:^0.13.3"
     typescript: "npm:~5.9.2"
   bin:
     todone: dist/bin.js
@@ -3410,9 +3417,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsdown@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "tsdown@npm:0.13.2"
+"tsdown@npm:^0.13.3":
+  version: 0.13.3
+  resolution: "tsdown@npm:0.13.3"
   dependencies:
     ansis: "npm:^4.1.0"
     cac: "npm:^6.7.14"
@@ -3421,8 +3428,8 @@ __metadata:
     diff: "npm:^8.0.2"
     empathic: "npm:^2.0.0"
     hookable: "npm:^5.5.3"
-    rolldown: "npm:^1.0.0-beta.30"
-    rolldown-plugin-dts: "npm:^0.15.0"
+    rolldown: "npm:^1.0.0-beta.31"
+    rolldown-plugin-dts: "npm:^0.15.3"
     semver: "npm:^7.7.2"
     tinyexec: "npm:^1.0.1"
     tinyglobby: "npm:^0.2.14"
@@ -3447,7 +3454,7 @@ __metadata:
       optional: true
   bin:
     tsdown: dist/run.mjs
-  checksum: 10/05e03efd862ad442e7fe4e1b051ed504105f4acca625969976b254cde8d988ab8458505f192166e59457f93659b9f48b8369b092d7e151ecc820a56059b92890
+  checksum: 10/96c2105b7dffc3432971c8cfc90830f3ba90f7e4e36faf0eb3a25367c2c2df46ef082537ec2dc53d486b8e4aa69a94bcc9ab52b563d7234876bfb8268e7437e9
   languageName: node
   linkType: hard
 
@@ -3733,9 +3740,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^4.0.14":
-  version: 4.0.14
-  resolution: "zod@npm:4.0.14"
-  checksum: 10/7a4910c34f77a2ea8604811412ff917af8946675a84a7865c50ce071848f527719ed3a646ca7f420dc15e39bee5a249e60310405ff023d3e7222b132d2e1eb5a
+"zod@npm:^4.0.15":
+  version: 4.0.15
+  resolution: "zod@npm:4.0.15"
+  checksum: 10/a91e998d519b697a82e0f5ceea8b9c1e3a2ebc80ef6a275fc71b7f7b052cd4ab45140525c4ba93ad60fa28e0c72dc6f6c326be954aa3f621699b9a2d05fbdf1c
   languageName: node
   linkType: hard
