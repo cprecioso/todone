@@ -11,20 +11,21 @@ export interface GetFilesOptions {
 }
 
 export class LocalFile implements File {
-  #cwd;
-  constructor(
-    public readonly localPath: string,
-    cwd: string,
-  ) {
+  readonly #cwd;
+  readonly #localPath;
+
+  constructor(cwd: string, localPath: string) {
     this.#cwd = cwd;
+    this.#localPath = localPath;
   }
 
+  #_location?: string;
   get location() {
-    return path.relative(this.#cwd, this.localPath);
+    return (this.#_location ??= path.relative(this.#cwd, this.#localPath));
   }
 
   getContent() {
-    return Readable.toWeb(fs.createReadStream(this.localPath));
+    return Readable.toWeb(fs.createReadStream(this.#localPath));
   }
 }
 
@@ -41,4 +42,4 @@ export const getFiles = (
       expandDirectories: true,
       absolute: true,
     }),
-  ).pipeThrough(map((path: string) => new LocalFile(path, cwd)));
+  ).pipeThrough(map((path: string) => new LocalFile(cwd, path)));
