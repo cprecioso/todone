@@ -10,10 +10,21 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  build:
+  build-run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cprecioso/todone-action@main
+      - uses: jdx/mise-action@v2
+
+      - uses: actions/setup-node@v4
+        with:
+          cache: "yarn"
+      - run: yarn install --immutable
+
+      - name: Build action
+        run: nx run @todone/github-action:build
+
+      - name: Run todone
+        uses: ./packages/github-action
         with:
           keyword: "*TODO"
