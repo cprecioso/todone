@@ -27,4 +27,7 @@ jobs:
       - name: Run todone
         uses: ./packages/github-action
         with:
+          globs: |
+            **/*
+            !.nx/**/*
           keyword: "*TODO"
