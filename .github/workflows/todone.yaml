@@ -31,4 +31,5 @@ jobs:
             **/*
             !.nx/**/*
             !node_modules/**/*
+            !dist/**/*
           keyword: "*TODO"
