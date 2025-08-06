@@ -30,4 +30,5 @@ jobs:
           globs: |
             **/*
             !.nx/**/*
+            !node_modules/**/*
           keyword: "*TODO"
