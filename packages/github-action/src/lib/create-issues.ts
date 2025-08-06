@@ -21,7 +21,7 @@ export const generateIssue = ({
   result: { url, result, matches },
 }: ExpiredResult) => {
   const urlString = url.toString();
-  const title = result.title ?? `TODO: ${urlString}`;
+  const title = `TODO: ${result.title ?? urlString}`;
   const body = dedent`
     The following TODO has expired${result.expirationDate ? ` as of ${result.expirationDate.toISOString()}` : ""}:
 
