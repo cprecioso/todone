@@ -1118,7 +1118,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
-    "@octokit/auth-token": "npm:^6.0.0"
     "@todone/internal-build": "workspace:*"
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"

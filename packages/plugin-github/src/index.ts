@@ -1,4 +1,3 @@
-import { createTokenAuth } from "@octokit/auth-token";
 import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
 import { Octokit } from "octokit";
@@ -29,9 +28,7 @@ export default definePlugin(
     },
   },
   async ({ token }) => {
-    const client = new Octokit({
-      authStrategy: token ? createTokenAuth(token) : undefined,
-    });
+    const client = new Octokit({ auth: token });
 
     return {
       name: "GitHub Issue",

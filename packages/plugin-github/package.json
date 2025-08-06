@@ -26,7 +26,6 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@octokit/auth-token": "^6.0.0",
     "@todone/internal-urlpattern": "workspace:^",
     "@todone/plugin": "workspace:^",
     "octokit": "^5.0.3",
