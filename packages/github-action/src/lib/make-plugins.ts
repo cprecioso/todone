@@ -25,7 +25,7 @@ export const makePlugins = async (token: string) => {
     },
   );
 
-  core.notice("Instanced plugins: " + plugins.map((p) => p.name).join(", "));
+  core.info("Instanced plugins: " + plugins.map((p) => p.name).join(", "));
 
   return plugins;
 };
