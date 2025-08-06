@@ -1,12 +1,13 @@
 import { AnalysisItem } from "@todone/core";
 import chalk from "chalk";
 import type { Writable } from "node:stream";
+import { LocalFile } from "../helpers/get-files";
 
 const dateFormatter = new Intl.DateTimeFormat();
 
 export const logCLIReports = async (
   stdout: Writable,
-  reports: AsyncIterable<AnalysisItem>,
+  reports: AsyncIterable<AnalysisItem<LocalFile>>,
 ) => {
   const headerLn = (str = "") => stdout.write(`${str}\n`);
   const infoLn = (str = "") => stdout.write(`\t${str}\n`);
@@ -32,7 +33,7 @@ export const logCLIReports = async (
       position: { line, column },
     } of matches) {
       headerLn(
-        chalk.blueBright(file) +
+        chalk.blueBright(file.location) +
           ":" +
           chalk.yellowBright(line) +
           ":" +

@@ -6,7 +6,7 @@ import * as path from "node:path";
 import { Readable } from "node:stream";
 
 const cwd = process.cwd();
-class RealFile implements t.File {
+export class GitHubFile implements t.File {
   constructor(public readonly localPath: string) {}
 
   get location() {
@@ -27,4 +27,4 @@ export const makeFileStream = (globs: string) =>
       const iterable = globber.globGenerator();
       return ReadableStream.from(iterable);
     })
-    .pipeThrough(s.map((path) => new RealFile(path)));
+    .pipeThrough(s.map((path) => new GitHubFile(path)));

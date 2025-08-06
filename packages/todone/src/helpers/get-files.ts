@@ -10,7 +10,7 @@ export interface GetFilesOptions {
   gitignore: boolean;
 }
 
-class RealFile implements File {
+export class LocalFile implements File {
   #cwd;
   constructor(
     public readonly localPath: string,
@@ -41,4 +41,4 @@ export const getFiles = (
       expandDirectories: true,
       absolute: true,
     }),
-  ).pipeThrough(map((path: string) => new RealFile(path, cwd)));
+  ).pipeThrough(map((path: string) => new LocalFile(path, cwd)));

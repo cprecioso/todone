@@ -2,17 +2,20 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { AnalysisItem } from "@todone/core";
 import dedent from "dedent";
+import { GitHubFile } from "./files";
 import { reconcile } from "./reconciler";
 import { partition } from "./util";
 
 const TODONE_LABEL = "todone";
 
-type ExpiredResult = AnalysisItem & {
+type ExpiredResult = AnalysisItem<GitHubFile> & {
   type: "result";
   result: { result: { isExpired: true } };
 };
 
-export const isExpiredResult = (item: AnalysisItem): item is ExpiredResult =>
+export const isExpiredResult = (
+  item: AnalysisItem<GitHubFile>,
+): item is ExpiredResult =>
   Boolean(
     item.type === "result" && item.result && item.result.result?.isExpired,
   );

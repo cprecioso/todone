@@ -1,7 +1,8 @@
 import * as core from "@actions/core";
 import { AnalysisItem } from "@todone/core";
+import { GitHubFile } from "./files";
 
-export const makeSummary = async (items: AnalysisItem[]) => {
+export const makeSummary = async (items: AnalysisItem<GitHubFile>[]) => {
   await core.summary
     .addHeading("TODOs found")
     .addTable([
@@ -12,7 +13,7 @@ export const makeSummary = async (items: AnalysisItem[]) => {
         .filter((item) => item.type === "result")
         .flatMap(({ result: { url, result, matches } }) =>
           matches.map((match) => [
-            match.file,
+            match.file.location,
             match.position.line.toString(),
             match.position.column.toString(),
             url.toString(),

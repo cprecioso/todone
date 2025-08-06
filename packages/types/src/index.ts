@@ -17,15 +17,15 @@ export interface File {
   readonly getContent: (this: this) => ReadableStream<Uint8Array>;
 }
 
-export interface Match {
-  file: File["location"];
+export interface Match<FileType extends File> {
+  file: FileType;
   position: Offset;
 }
 
-export interface Result {
+export interface Result<FileType extends File> {
   url: URL;
   result: PluginResult | null;
-  matches: readonly Match[];
+  matches: readonly Match<FileType>[];
 }
 
 /**

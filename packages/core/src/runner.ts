@@ -6,15 +6,15 @@ import { generateResultStream } from "./lib/results";
 import { Options, normalizeOptions } from "./options";
 import { PluginContainer } from "./plugins";
 
-export type AnalysisItem =
-  | { type: "file"; file: t.File }
-  | { type: "match"; url: URL; match: t.Match }
-  | { type: "result"; result: t.Result };
+export type AnalysisItem<File extends t.File> =
+  | { type: "file"; file: File }
+  | { type: "match"; url: URL; match: t.Match<File> }
+  | { type: "result"; result: t.Result<File> };
 
-export interface FullAnalysis {
+export interface FullAnalysis<File extends t.File> {
   files: t.File[];
-  matches: Map<string, t.Match[]>;
-  results: t.Result[];
+  matches: Map<string, t.Match<File>[]>;
+  results: t.Result<File>[];
 }
 
 /**
@@ -28,8 +28,8 @@ export interface FullAnalysis {
  * The other functions in this file handle the three streams in different ways
  * but always in parallel and end up with a single return.
  */
-const analyze = (
-  inputFiles: AsyncIterable<t.File>,
+const analyze = <File extends t.File>(
+  inputFiles: AsyncIterable<File>,
   options: Partial<Options> = {},
 ) => {
   const fullOptions = normalizeOptions(options);
@@ -56,13 +56,13 @@ const analyze = (
  * Run an analysis on a stream of files.
  * @returns A stream of analysis items, which can be files, matches, or results.
  */
-export const analyzeStream = (
-  files: AsyncIterable<t.File>,
+export const analyzeStream = <File extends t.File>(
+  files: AsyncIterable<File>,
   options: Partial<Options> = {},
 ) => {
   const { file$, match$, result$ } = analyze(files, options);
 
-  return mergeReadableStreams<AnalysisItem>(
+  return mergeReadableStreams<AnalysisItem<File>>(
     file$.pipeThrough(s.map((file) => ({ type: "file", file }))),
     match$.pipeThrough(
       s.map(({ url, match }) => ({ type: "match", url, match })),
@@ -75,10 +75,10 @@ export const analyzeStream = (
  * Run an analysis on a stream of files.
  * @returns A promise of a full report containing files, matches, and results.
  */
-export const analyzePromise = async (
-  inputFiles: AsyncIterable<t.File>,
+export const analyzePromise = async <File extends t.File>(
+  inputFiles: AsyncIterable<File>,
   options: Partial<Options> = {},
-): Promise<FullAnalysis> => {
+): Promise<FullAnalysis<File>> => {
   const { file$, match$, result$ } = analyze(inputFiles, options);
 
   const fileArrayPromise = s.toArray(file$);
@@ -95,7 +95,7 @@ export const analyzePromise = async (
       arr.push(item.match);
       return map;
     },
-    new Map<string, t.Match[]>(),
+    new Map<string, t.Match<File>[]>(),
   );
 
   const resultArrayPromise = s.toArray(result$);

@@ -2,8 +2,8 @@ import { toTransformStream } from "@std/streams";
 import * as t from "@todone/types";
 import { PluginContainer } from "../plugins";
 
-const makeResult = async (
-  { url, match }: { url: URL; match: t.Match },
+const makeResult = async <File extends t.File>(
+  { url, match }: { url: URL; match: t.Match<File> },
   pluginContainer: PluginContainer,
 ) => ({
   url,
@@ -11,11 +11,14 @@ const makeResult = async (
   matches: [match],
 });
 
-export const generateResultStream = (
+export const generateResultStream = <File extends t.File>(
   pluginContainer: PluginContainer,
-): TransformStream<{ url: URL; match: t.Match }, t.Result> =>
+): TransformStream<{ url: URL; match: t.Match<File> }, t.Result<File>> =>
   toTransformStream(async function* (source) {
-    const map = new Map<string, t.Result & { matches: t.Match[] }>();
+    const map = new Map<
+      string,
+      t.Result<File> & { matches: t.Match<File>[] }
+    >();
 
     for await (const { url, match } of source) {
       const urlString = url.toString();
