@@ -11,7 +11,7 @@ export const createComment = (text: string): t.Html =>
 export const getComment = (node: t.Nodes) => {
   assert(node.type === "html");
   const hast = fromHtml(node.value, { fragment: true });
-  assert(hast.children.length === 0);
+  assert(hast.children.length === 1);
   const [child] = hast.children;
   assert(child.type === "comment");
   return child.value;
