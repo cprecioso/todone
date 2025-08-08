@@ -13,7 +13,7 @@ inputs:
   dry-run:
     description: "If true, the action will not create issues or comments, only print the summary"
     required: false
-    default: "true"
+    default: "false"
   keyword:
     description: 'Keyword to search for TODOs in the code (default: "@TODO")'
     required: false
