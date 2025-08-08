@@ -87,3 +87,8 @@ export const reduce = async <T, U>(
   }
   return acc;
 };
+
+export const consume = async (stream: ReadableStream<unknown>) => {
+  for await (const _ of stream) {
+  }
+};
