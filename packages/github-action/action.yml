@@ -19,7 +19,6 @@ inputs:
     required: false
     default: "@TODO"
   # *TODO https://github.com/cprecioso/todone/issues/25
-  # *TODO https://github.com/cprecioso/todone/issues/24
 
 runs:
   using: "node24"
