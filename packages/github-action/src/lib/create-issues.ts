@@ -11,6 +11,8 @@ import { ExpiredResult, formatDate, partition } from "./util";
 
 const TODONE_LABEL = "todone";
 
+const GITHUB_URL_REGEX = /^https?:\/\/(www\.)?github\.com\//;
+
 export const generateIssue = async ({
   result: { url, result, matches },
 }: ExpiredResult) => {
@@ -39,19 +41,13 @@ export const generateIssue = async ({
         u("text", ":"),
       ]),
 
-      u("list", [
-        u("listItem", [
-          u("paragraph", [
-            ...(result.title
-              ? [
-                  u("link", { url: urlString }, [u("text", result.title)]),
-                  u("break"),
-                ]
-              : []),
-            u("link", { url: urlString }, [u("text", urlString)]),
+      GITHUB_URL_REGEX.test(urlString)
+        ? u("list", [u("listItem", [u("paragraph", [u("text", urlString)])])])
+        : u("paragraph", [
+            u("link", { url: urlString }, [
+              u("text", result.title ?? urlString),
+            ]),
           ]),
-        ]),
-      ]),
 
       u("paragraph", [u("text", "It is present in the following files:")]),
 
