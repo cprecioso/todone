@@ -11,8 +11,6 @@ import { ExpiredResult, formatDate, partition } from "./util";
 
 const TODONE_LABEL = "todone";
 
-const GITHUB_URL_REGEX = /^https?:\/\/(www\.)?github\.com\//;
-
 export const generateIssue = async ({
   result: { url, result, matches },
 }: ExpiredResult) => {
