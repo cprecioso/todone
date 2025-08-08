@@ -14,7 +14,7 @@
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "exports": {
     "types": "./dist/index.d.ts",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@types/caniuse-lite": "^1.0.5",
-    "@types/node": "^22.17.0",
+    "@types/node": "^24.2.0",
     "tsdown": "^0.13.3",
     "typescript": "~5.9.2"
   },

@@ -14,7 +14,7 @@
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "exports": {
     "types": "./dist/index.d.ts",

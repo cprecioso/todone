@@ -21,7 +21,7 @@ export const nodeLibrary = (...args: Parameters<typeof library>) =>
     ...library(...args),
 
     platform: "node",
-    target: "node22",
+    target: "node24",
   }) satisfies Options;
 
 export const nodeCli = (...[opts, ...args]: Parameters<typeof nodeLibrary>) =>

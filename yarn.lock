@@ -1022,7 +1022,7 @@ __metadata:
     "@todone/plugin": "workspace:*"
     "@todone/types": "workspace:*"
     "@types/mdast": "npm:^4.0.4"
-    "@types/node": "npm:^22.17.0"
+    "@types/node": "npm:^24.2.0"
     dedent: "npm:^1.6.0"
     execa: "npm:^9.6.0"
     hast-util-from-html: "npm:^2.0.3"
@@ -1044,8 +1044,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/internal-build@workspace:packages/internal-build"
   dependencies:
-    "@tsconfig/node22": "npm:^22.0.2"
-    "@types/node": "npm:^22.17.0"
+    "@tsconfig/node24": "npm:^24.0.1"
+    "@types/node": "npm:^24.2.0"
     tsdown: "npm:^0.13.3"
     type-fest: "npm:^4.41.0"
     typedoc: "npm:^0.28.9"
@@ -1087,7 +1087,7 @@ __metadata:
     "@todone/internal-urlpattern": "workspace:^"
     "@todone/plugin": "workspace:^"
     "@types/caniuse-lite": "npm:^1.0.5"
-    "@types/node": "npm:^22.17.0"
+    "@types/node": "npm:^24.2.0"
     browserslist: "npm:^4.25.1"
     caniuse-lite: "npm:^1.0.30001731"
     tsdown: "npm:^0.13.3"
@@ -1182,10 +1182,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tsconfig/node22@npm:^22.0.2":
-  version: 22.0.2
-  resolution: "@tsconfig/node22@npm:22.0.2"
-  checksum: 10/b9fb6543856cbac8b9b79c234bbefa3415f083e0a46e6f0fbe418fe21c5d086440222e1383258d75ebac951cbe17564a6d146fafc59c889d6302decd1a7880dd
+"@tsconfig/node24@npm:^24.0.1":
+  version: 24.0.1
+  resolution: "@tsconfig/node24@npm:24.0.1"
+  checksum: 10/0ea96dea3aae641da61e0c376306f2314a6c63b200359925f8ad949705246d5dfab01cc25aaf8d8d04a81919390aa2bfddf172a947f85583e1db977a4dd3fb4f
   languageName: node
   linkType: hard
 
@@ -1262,12 +1262,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.17.0":
-  version: 22.17.0
-  resolution: "@types/node@npm:22.17.0"
+"@types/node@npm:^24.2.0":
+  version: 24.2.0
+  resolution: "@types/node@npm:24.2.0"
   dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10/f77b0e1c3c00e438b56c726d6b1170d4969c600cc8d4ecf2c2aa7692243a8ff455a3d530760da95e0b6aab059c4605a384b43d18f96646c745ff133c00b84875
+    undici-types: "npm:~7.10.0"
+  checksum: 10/b81501e05f15df28102baac60afbc82d30009ee0bf4dee41b7fa326ec5789d0d83dd28c418e04dc30a9513ab6afb9813edc75042aef751336d8dcfefe099709c
   languageName: node
   linkType: hard
 
@@ -3965,7 +3965,7 @@ __metadata:
     "@todone/internal-util": "workspace:^"
     "@todone/plugin": "workspace:^"
     "@todone/types": "workspace:^"
-    "@types/node": "npm:^22.17.0"
+    "@types/node": "npm:^24.2.0"
     chalk: "npm:^5.5.0"
     clipanion: "npm:^4.0.0-rc.4"
     dotenv: "npm:^17.2.1"
@@ -4154,10 +4154,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.21.0":
-  version: 6.21.0
-  resolution: "undici-types@npm:6.21.0"
-  checksum: 10/ec8f41aa4359d50f9b59fa61fe3efce3477cc681908c8f84354d8567bb3701fafdddf36ef6bff307024d3feb42c837cf6f670314ba37fc8145e219560e473d14
+"undici-types@npm:~7.10.0":
+  version: 7.10.0
+  resolution: "undici-types@npm:7.10.0"
+  checksum: 10/1f3fe777937690ab8a7a7bccabc8fdf4b3171f4899b5a384fb5f3d6b56c4b5fec2a51fbf345c9dd002ff6716fd440a37fa8fdb0e13af8eca8889f25445875ba3
   languageName: node
   linkType: hard
 
