@@ -1,12 +1,12 @@
 import { AnalysisItem } from "@todone/core";
 import { GitHubFile } from "./files";
 
-export const partition = <T>(
+export const partition = <T, U extends T>(
   input: Iterable<T>,
-  predicate: (item: T) => boolean,
+  predicate: (item: T) => item is U,
 ) => {
-  const trues: T[] = [];
-  const falses: T[] = [];
+  const trues: U[] = [];
+  const falses: Exclude<T, U>[] = [];
 
   for (const item of input) {
     if (predicate(item)) trues.push(item);

@@ -1,5 +1,4 @@
 import * as core from "@actions/core";
-import * as github from "@actions/github";
 import * as glob from "@actions/glob";
 import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
@@ -7,9 +6,9 @@ import { execa } from "execa";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { Readable } from "node:stream";
+import { sha } from "../input";
 
 const cwd = process.cwd();
-const { sha } = github.context;
 
 export class GitHubFile implements t.File {
   readonly #localPath;
