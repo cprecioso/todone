@@ -52,7 +52,7 @@
     "@todone/internal-build": "workspace:*",
     "@types/mdast": "^4.0.4",
     "@types/node": "^24.2.0",
-    "tsdown": "^0.13.3",
+    "tsdown": "^0.13.4",
     "type-fest": "^4.41.0",
     "typescript": "~5.9.2"
   }

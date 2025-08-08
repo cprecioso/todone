@@ -32,14 +32,14 @@
     "@todone/internal-urlpattern": "workspace:^",
     "@todone/plugin": "workspace:^",
     "browserslist": "^4.25.1",
-    "caniuse-lite": "^1.0.30001731",
+    "caniuse-lite": "^1.0.30001733",
     "zod": "^4.0.15"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@types/caniuse-lite": "^1.0.5",
     "@types/node": "^24.2.0",
-    "tsdown": "^0.13.3",
+    "tsdown": "^0.13.4",
     "typescript": "~5.9.2"
   },
   "publishConfig": {
