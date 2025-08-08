@@ -1,4 +1,3 @@
-import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
 import { isPast } from "date-fns";
 import * as z from "zod/v4-mini";

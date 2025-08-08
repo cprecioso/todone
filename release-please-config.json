@@ -13,7 +13,6 @@
     "packages/default-plugins": {},
     "packages/github-action": {},
     "packages/internal-build": {},
-    "packages/internal-urlpattern": {},
     "packages/internal-util": {},
     "packages/plugin": {},
     "packages/plugin-caniuse": {},

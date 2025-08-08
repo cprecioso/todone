@@ -29,7 +29,6 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@todone/internal-urlpattern": "workspace:*",
     "@todone/plugin": "workspace:^",
     "browserslist": "^4.25.1",
     "caniuse-lite": "^1.0.30001733",

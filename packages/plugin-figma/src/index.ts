@@ -1,5 +1,4 @@
 import { assert } from "@std/assert";
-import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
 import ky from "ky";
 import * as z from "zod/v4-mini";

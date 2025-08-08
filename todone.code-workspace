@@ -21,10 +21,6 @@
       "path": "packages/internal-build",
     },
     {
-      "name": "📦 @todone/internal-urlpattern",
-      "path": "packages/internal-urlpattern",
-    },
-    {
       "name": "📦 @todone/internal-util",
       "path": "packages/internal-util",
     },

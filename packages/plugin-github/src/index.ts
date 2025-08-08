@@ -1,4 +1,3 @@
-import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
 import { Octokit } from "octokit";
 import * as z from "zod/v4-mini";
