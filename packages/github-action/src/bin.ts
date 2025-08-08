@@ -12,12 +12,15 @@ const githubToken = core.getInput("github-token", { required: true });
 const globs = core.getInput("globs", { required: true });
 const createIssues = core.getBooleanInput("create-issues");
 const keyword = core.getInput("keyword", { required: true });
-
-const warnLogger = (line: string): void => core.warning(line);
+const pluginNames = core
+  .getInput("plugins", { required: true })
+  .trim()
+  .split(/\s*\n\s*/gs);
 
 const plugins = await makePlugins(githubToken);
 const files = makeFileStream(globs);
 
+const warnLogger = (line: string): void => core.warning(line);
 const reportStream = analyzeStream(files, { plugins, warnLogger, keyword })
   .pipeThrough(s.tap(makeDebugLogger()))
   .pipeThrough(s.tap(makeResultLogger()));
