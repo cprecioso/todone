@@ -81,7 +81,7 @@ export const analyzePromise = async <File extends t.File>(
 ): Promise<FullAnalysis<File>> => {
   const { file$, match$, result$ } = analyze(inputFiles, options);
 
-  const fileArrayPromise = s.toArray(file$);
+  const fileArrayPromise = Array.fromAsync(file$);
 
   const matchMapPromise = s.reduce(
     match$,
@@ -98,7 +98,7 @@ export const analyzePromise = async <File extends t.File>(
     new Map<string, t.Match<File>[]>(),
   );
 
-  const resultArrayPromise = s.toArray(result$);
+  const resultArrayPromise = Array.fromAsync(result$);
 
   const [files, matches, results] = await Promise.all([
     fileArrayPromise,

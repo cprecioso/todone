@@ -58,22 +58,6 @@ export const create = <T>(
     })(),
   );
 
-export const tee3 = <T>(stream: ReadableStream<T>) => {
-  const [inner, a] = stream.tee();
-  const [b, c] = inner.tee();
-  return [a, b, c] as const;
-};
-
-// *TODO https://github.com/actions/runner/issues/3600
-// Once GitHub Actions supports Node.js 22, we can use Array.fromAsync directly
-export const toArray = async <T>(stream: ReadableStream<T>): Promise<T[]> => {
-  const result: T[] = [];
-  for await (const item of stream) {
-    result.push(item);
-  }
-  return result;
-};
-
 export const reduce = async <T, U>(
   stream: ReadableStream<T>,
   fn: (acc: U, item: T, index: number) => U,

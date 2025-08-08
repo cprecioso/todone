@@ -22,16 +22,14 @@ const [streamForSummary, streamForIssues] = reportStream
   .pipeThrough(s.filter(isResult))
   .tee();
 
-const summaryTask = s.toArray(streamForSummary).then(makeSummary);
+const summaryTask = Array.fromAsync(streamForSummary).then(makeSummary);
 
 const issuesTask = !createIssues
   ? s.consume(streamForIssues)
-  : s
-      .toArray(
-        streamForIssues
-          .pipeThrough(s.filter(isExpiredResult))
-          .pipeThrough(s.map(generateIssue)),
-      )
-      .then(reconcileIssues);
+  : Array.fromAsync(
+      streamForIssues
+        .pipeThrough(s.filter(isExpiredResult))
+        .pipeThrough(s.map(generateIssue)),
+    ).then(reconcileIssues);
 
 await Promise.all([summaryTask, issuesTask]);
