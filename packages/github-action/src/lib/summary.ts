@@ -1,9 +1,7 @@
-/** @jsx h */
-void h; // If we don't use `h`, prettier will remove it
-
 import * as core from "@actions/core";
+import { toHtml } from "hast-util-to-html";
+import { h } from "hastscript";
 import pMap from "p-map";
-import h from "vhtml";
 import { Result } from "./util";
 
 type Row = [file: string, url: string, expired: string, expirationDate: string];
@@ -23,7 +21,7 @@ export const makeSummary = async (items: Result[]) => {
       const fileUrl = await match.file.getUrl(match.position.line);
       let location: string;
       if (fileUrl) {
-        location = <a href={fileUrl}>{match.file.location}</a>;
+        location = toHtml(h("a", { href: fileUrl }, match.file.location));
       } else {
         location = match.file.location;
       }
@@ -32,7 +30,7 @@ export const makeSummary = async (items: Result[]) => {
 
       return [
         location,
-        <a href={resultUrl}>{resultUrl}</a>,
+        toHtml(h("a", { href: resultUrl }, resultUrl)),
         result ? (result.isExpired ? "❗" : "⌛") : "",
         result
           ? result.expirationDate?.toDateString() || "No expiration date"
