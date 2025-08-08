@@ -55,6 +55,8 @@ export class SummaryTable {
       }
     }
 
+    let urlString = toHtml(h("a", { href: url }, url));
+
     let issueNumberStr = issueNumber
       ? toHtml(
           h(
@@ -69,7 +71,7 @@ export class SummaryTable {
 
     return [
       location,
-      url,
+      urlString,
       result ? (result.isExpired ? "❗" : "⌛") : "",
       result
         ? result.expirationDate
