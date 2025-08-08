@@ -10,8 +10,8 @@ inputs:
     description: "GitHub token to access the repository"
     required: false
     default: "${{ github.token }}"
-  create-issues:
-    description: "Create issues for TODOs found in the code"
+  dry-run:
+    description: "If true, the action will not create issues or comments, only print the summary"
     required: false
     default: "true"
   keyword:

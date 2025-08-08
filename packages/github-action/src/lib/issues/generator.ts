@@ -1,8 +1,8 @@
-import * as github from "@actions/github";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
 import pMap from "p-map";
 import { u } from "unist-builder";
+import { server } from "../../input";
 import * as md from "../markdown";
 import { ExpiredResult, formatDate } from "../util";
 import { createIssueData } from "./issue-data";
@@ -35,7 +35,7 @@ export const generateIssue = async ({
         u("text", ":"),
       ]),
 
-      urlString.startsWith(github.context.serverUrl)
+      urlString.startsWith(server)
         ? u("list", [u("listItem", [u("paragraph", [u("text", urlString)])])])
         : u("paragraph", [
             u("link", { url: urlString }, [

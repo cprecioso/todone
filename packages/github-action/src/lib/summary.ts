@@ -1,53 +1,94 @@
-import * as core from "@actions/core";
+import { SummaryTableRow } from "@actions/core/lib/summary";
+import * as t from "@todone/types";
+import { Match } from "@todone/types";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
-import pMap from "p-map";
-import { formatDate, Result } from "./util";
+import { repo, server } from "../input";
+import { GitHubFile } from "./files";
+import { IssueAction } from "./issues/reconciler";
+import { formatDate } from "./util";
 
-type Row = [file: string, url: string, expired: string, expirationDate: string];
+export type RowInput = {
+  url: string;
+  match?: Match<GitHubFile>;
+  result?: t.PluginResult | null;
+  issueNumber?: number;
+  action?: IssueAction;
+};
 
-export const makeSummary = async (items: Result[]) => {
-  const flatMatches = items.flatMap(({ result }) =>
-    result.matches.map((match) => ({
-      url: result.url,
-      result: result.result,
-      match,
-    })),
-  );
+type Row = [
+  file: string,
+  url: string,
+  expired: string,
+  expirationDate: string,
+  issueNumber: string,
+  action: string,
+];
+const HEADER: Row = [
+  "File",
+  "URL",
+  "Expired",
+  "Expiration Date",
+  "Issue",
+  "Action",
+];
 
-  const rows = await pMap(
-    flatMatches,
-    async ({ url, result, match }): Promise<Row> => {
+const actionToString: Record<IssueAction, string> = {
+  [IssueAction.Create]: "Created",
+  [IssueAction.Update]: "Updated",
+  [IssueAction.CloseCompleted]: "Closed (completed)",
+  [IssueAction.CloseInvalid]: "Closed (invalid)",
+};
+
+export class SummaryTable {
+  readonly #rows: Promise<Row>[] = [];
+
+  async #createRow({ url, match, result, action, issueNumber }: RowInput) {
+    let location = "";
+
+    if (match) {
       const fileUrl = await match.file.getUrl(match.position.line);
-      let location: string;
       if (fileUrl) {
         location = toHtml(h("a", { href: fileUrl }, match.file.location));
       } else {
         location = match.file.location;
       }
+    }
 
-      const resultUrl = url.toString();
+    let issueNumberStr = issueNumber
+      ? toHtml(
+          h(
+            "a",
+            {
+              href: `${server}/${repo.owner}/${repo.repo}/issues/${issueNumber}`,
+            },
+            `#${issueNumber}`,
+          ),
+        )
+      : "";
 
-      return [
-        location,
-        toHtml(h("a", { href: resultUrl }, resultUrl)),
-        result ? (result.isExpired ? "❗" : "⌛") : "",
-        result
-          ? result.expirationDate
-            ? formatDate(result.expirationDate)
-            : "No expiration date"
-          : "",
-      ] as const;
-    },
-  );
+    return [
+      location,
+      url,
+      result ? (result.isExpired ? "❗" : "⌛") : "",
+      result
+        ? result.expirationDate
+          ? formatDate(result.expirationDate)
+          : "No expiration date"
+        : "",
+      issueNumberStr,
+      action ? actionToString[action] : "",
+    ] as Row;
+  }
 
-  await core.summary
-    .addHeading("TODOs found")
-    .addTable([
-      (["File", "URL", "Expired", "Expiration Date"] satisfies Row).map(
-        (data) => ({ data: data, header: true }),
-      ),
-      ...rows,
-    ])
-    .write();
-};
+  addRow(params: RowInput) {
+    this.#rows.push(this.#createRow(params));
+  }
+
+  async getTable(): Promise<SummaryTableRow[]> {
+    return [
+      HEADER.map((data) => ({ data, header: true })),
+      ...(await Promise.all(this.#rows)),
+    ];
+  }
+}
