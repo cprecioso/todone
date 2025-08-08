@@ -54,9 +54,11 @@ export class GitHubFile implements t.File {
 
 export const makeFileStream = (globs: string) =>
   s
-    .create(async () => {
-      const globber = await glob.create(globs, { matchDirectories: false });
-      const iterable = globber.globGenerator();
-      return ReadableStream.from(iterable);
-    })
+    .create(
+      (async () => {
+        const globber = await glob.create(globs, { matchDirectories: false });
+        const iterable = globber.globGenerator();
+        return ReadableStream.from(iterable);
+      })(),
+    )
     .pipeThrough(s.map((path) => new GitHubFile(path)));
