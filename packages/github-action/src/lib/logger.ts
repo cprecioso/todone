@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import { AnalysisItem } from "@todone/core";
+import { concat } from "@todone/internal-util/collection";
 import { GitHubFile } from "./files";
 import { formatDate } from "./util";
 
@@ -31,6 +32,8 @@ export const makeResultLogger =
 
     core.info(
       `Found: ${url}\n` +
-        [...infoLines, ...fileLines].map((line) => `\t${line}\n`).join(""),
+        concat(infoLines, fileLines)
+          .map((line) => `\t${line}\n`)
+          .reduce((acc, item) => acc + item, ""),
     );
   };

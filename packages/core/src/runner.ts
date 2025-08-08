@@ -1,4 +1,5 @@
 import { mergeReadableStreams } from "@std/streams";
+import { mapMapValues } from "@todone/internal-util/collection";
 import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
 import { makeAnalyzer } from "./analyzer";
@@ -41,14 +42,12 @@ const analyze = <File extends t.File>(
     .pipeThrough(s.flatMap(makeAnalyzer(fullOptions)))
     .tee();
 
-  const returnResult$ = match$.pipeThrough(
-    generateResultStream(pluginContainer),
-  );
+  const resultsPromise = generateResultStream(pluginContainer, match$);
 
   return {
     file$: returnFile$,
     match$: returnMatch$,
-    result$: returnResult$,
+    resultsPromise,
   };
 };
 
@@ -60,14 +59,18 @@ export const analyzeStream = <File extends t.File>(
   files: AsyncIterable<File>,
   options: Partial<Options> = {},
 ) => {
-  const { file$, match$, result$ } = analyze(files, options);
+  const { file$, match$, resultsPromise } = analyze(files, options);
 
   return mergeReadableStreams<AnalysisItem<File>>(
     file$.pipeThrough(s.map((file) => ({ type: "file", file }))),
     match$.pipeThrough(
       s.map(({ url, match }) => ({ type: "match", url, match })),
     ),
-    result$.pipeThrough(s.map((result) => ({ type: "result", result }))),
+    s.create(
+      resultsPromise.then((results) =>
+        results.map((result) => ({ type: "result", result })),
+      ),
+    ),
   );
 };
 
@@ -79,31 +82,25 @@ export const analyzePromise = async <File extends t.File>(
   inputFiles: AsyncIterable<File>,
   options: Partial<Options> = {},
 ): Promise<FullAnalysis<File>> => {
-  const { file$, match$, result$ } = analyze(inputFiles, options);
+  const { file$, match$, resultsPromise } = analyze(inputFiles, options);
 
   const fileArrayPromise = Array.fromAsync(file$);
 
-  const matchMapPromise = s.reduce(
-    match$,
-    (map, item) => {
-      const url = item.url.toString();
-      let arr = map.get(url);
-      if (!arr) {
-        arr = [];
-        map.set(url, arr);
-      }
-      arr.push(item.match);
-      return map;
-    },
-    new Map<string, t.Match<File>[]>(),
+  const matchMapPromise = Array.fromAsync(match$).then((matches) =>
+    mapMapValues(
+      Map.groupBy(matches, (item) => item.url.toString()),
+      (matches) => matches.map(({ match }) => match),
+    ),
   );
 
-  const resultArrayPromise = Array.fromAsync(result$);
+  const resultsArrayPromise = resultsPromise.then((results) =>
+    Array.from(results),
+  );
 
   const [files, matches, results] = await Promise.all([
     fileArrayPromise,
     matchMapPromise,
-    resultArrayPromise,
+    resultsArrayPromise,
   ]);
 
   return { files, matches, results };

@@ -62,11 +62,9 @@ export const reconcile = <
   }
 
   return {
-    added: new Map(
-      Array.from(addedIds).map((id) => [id, desiredState.get(id)!]),
-    ),
+    added: new Map(addedIds.values().map((id) => [id, desiredState.get(id)!])),
     removed: new Map(
-      Array.from(removedIds).map((id) => [id, currentState.get(id)!]),
+      removedIds.values().map((id) => [id, currentState.get(id)!]),
     ),
     changes,
   };

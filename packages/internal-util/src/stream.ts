@@ -49,28 +49,14 @@ export const flatMap = <T, U>(
     }
   });
 
-export const create = <T>(
-  fn: () => ReadableStream<T> | Promise<ReadableStream<T>>,
-) =>
+type AnyIterable<T> = Iterable<T> | AsyncIterable<T>;
+type MaybePromise<T> = T | Promise<T>;
+export const create = <T>(it: MaybePromise<AnyIterable<T>>) =>
   ReadableStream.from(
     (async function* () {
-      yield* await fn();
+      yield* await it;
     })(),
   );
-
-export const reduce = async <T, U>(
-  stream: ReadableStream<T>,
-  fn: (acc: U, item: T, index: number) => U,
-  initialValue: U,
-) => {
-  let i = 0;
-  let acc = initialValue;
-  for await (const item of stream) {
-    acc = fn(acc, item, i);
-    i++;
-  }
-  return acc;
-};
 
 export const consume = async (stream: ReadableStream<unknown>) => {
   for await (const _ of stream) {

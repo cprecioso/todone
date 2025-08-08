@@ -61,7 +61,7 @@ export const defaultConfig = (baseDir: string): TypeDocOptions => {
     }
   }
 
-  const entryPoints = [...inspectPackageJson(pkgJson)]
+  const entryPoints = inspectPackageJson(pkgJson)
     .map((file) =>
       file.replace(/^(?:.\/)?dist\//, "src/").replace(/\.js$/, ".ts"),
     )
@@ -70,6 +70,6 @@ export const defaultConfig = (baseDir: string): TypeDocOptions => {
 
   return {
     json: "out-docs.json",
-    entryPoints: [...new Set(entryPoints)],
+    entryPoints: new Set(entryPoints).values().toArray(),
   };
 };

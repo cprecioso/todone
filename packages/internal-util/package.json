@@ -18,6 +18,10 @@
       "types": "./dist/bool.d.ts",
       "default": "./dist/bool.js"
     },
+    "./collection": {
+      "types": "./dist/collection.d.ts",
+      "default": "./dist/collection.js"
+    },
     "./regex": {
       "types": "./dist/regex.d.ts",
       "default": "./dist/regex.js"
