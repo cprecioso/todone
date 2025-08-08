@@ -26,7 +26,7 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@todone/internal-urlpattern": "workspace:^",
+    "@todone/internal-urlpattern": "workspace:*",
     "@todone/plugin": "workspace:^",
     "date-fns": "^4.1.0",
     "zod": "^4.0.15"

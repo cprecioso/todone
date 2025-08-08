@@ -34,7 +34,7 @@
     "@std/streams": "jsr:^1.0.10",
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
-    "@todone/internal-util": "workspace:^",
+    "@todone/internal-util": "workspace:*",
     "@todone/plugin": "workspace:^",
     "@todone/types": "workspace:^",
     "chalk": "^5.5.0",
