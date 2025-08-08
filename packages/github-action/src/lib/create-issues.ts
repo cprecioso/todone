@@ -41,7 +41,7 @@ export const generateIssue = async ({
         u("text", ":"),
       ]),
 
-      GITHUB_URL_REGEX.test(urlString)
+      urlString.startsWith(github.context.serverUrl)
         ? u("list", [u("listItem", [u("paragraph", [u("text", urlString)])])])
         : u("paragraph", [
             u("link", { url: urlString }, [
