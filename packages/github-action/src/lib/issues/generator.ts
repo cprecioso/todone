@@ -35,13 +35,18 @@ export const generateIssue = async ({
         u("text", ":"),
       ]),
 
-      urlString.startsWith(server)
-        ? u("list", [u("listItem", [u("paragraph", [u("text", urlString)])])])
-        : u("paragraph", [
+      u("list", [
+        u("listItem", [
+          u("paragraph", [
             u("link", { url: urlString }, [
-              u("text", result.title ?? urlString),
+              u(
+                "text",
+                (!urlString.startsWith(server) && result.title) || urlString,
+              ),
             ]),
           ]),
+        ]),
+      ]),
 
       u("paragraph", [u("text", "It is present in the following files:")]),
 
