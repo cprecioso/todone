@@ -13,7 +13,7 @@ export const generateIssue = async ({
   const urlString = url.toString();
   const title = `TODO: ${result.title ?? urlString}`;
   const body = dedent`
-    The following TODO has expired${result.expirationDate ? ` as of ${result.expirationDate.toISOString()}` : ""}:
+    The following TODO has expired${result.expirationDate ? ` as of ${result.expirationDate.toDateString()}` : ""}:
 
     ~~~
     ${[result.title, urlString].filter(Boolean).join("\n")}

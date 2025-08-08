@@ -35,7 +35,7 @@ export const makeSummary = async (items: Result[]) => {
         <a href={resultUrl}>{resultUrl}</a>,
         result ? (result.isExpired ? "❗" : "⌛") : "",
         result
-          ? result.expirationDate?.toISOString() || "No expiration date"
+          ? result.expirationDate?.toDateString() || "No expiration date"
           : "",
       ] as const;
     },

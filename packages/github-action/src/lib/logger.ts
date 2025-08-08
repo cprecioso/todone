@@ -17,7 +17,7 @@ export const makeResultLogger =
       ? [
           result.title || "No title",
           result.isExpired ? "Expired" : "Not expired",
-          result.expirationDate?.toISOString() || "No expiration date",
+          result.expirationDate?.toDateString() || "No expiration date",
         ]
       : ["No plugin responded"];
 
