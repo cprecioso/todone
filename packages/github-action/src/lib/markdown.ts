@@ -1,9 +1,22 @@
 import { fromHtml } from "hast-util-from-html";
 import { toHtml } from "hast-util-to-html";
 import * as t from "mdast";
+import { fromMarkdown } from "mdast-util-from-markdown";
+import { gfmFromMarkdown, gfmToMarkdown } from "mdast-util-gfm";
+import { toMarkdown } from "mdast-util-to-markdown";
 import { zone } from "mdast-zone";
+import { gfm } from "micromark-extension-gfm";
 import assert from "node:assert/strict";
 import { u } from "unist-builder";
+
+export const parse = (text: string) =>
+  fromMarkdown(text, {
+    extensions: [gfm()],
+    mdastExtensions: [gfmFromMarkdown()],
+  });
+
+export const stringify = (tree: t.Nodes) =>
+  toMarkdown(tree, { extensions: [gfmToMarkdown()] });
 
 export const createComment = (text: string): t.Html =>
   u("html", toHtml(u("comment", text)));

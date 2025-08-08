@@ -1,8 +1,8 @@
 import * as core from "@actions/core";
 import * as mdast from "mdast";
-import { fromMarkdown } from "mdast-util-from-markdown";
 import assert from "node:assert/strict";
 import * as z from "zod";
+import * as md from "../markdown";
 import { createComment, createZone, findZone, getComment } from "../markdown";
 
 const sameInputAndOutput = <T, S extends z.ZodType<T, T>>(schema: S) => schema;
@@ -33,7 +33,7 @@ export const findIssueData = (tree: mdast.Nodes) => {
 };
 
 export const tryGetIssueData = (input: string): IssueData | undefined => {
-  const ast = fromMarkdown(input);
+  const ast = md.parse(input);
   try {
     return findIssueData(ast);
   } catch (error) {

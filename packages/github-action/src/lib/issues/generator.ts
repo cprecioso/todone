@@ -1,7 +1,6 @@
 import * as github from "@actions/github";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
-import { toMarkdown } from "mdast-util-to-markdown";
 import pMap from "p-map";
 import { u } from "unist-builder";
 import * as md from "../markdown";
@@ -14,7 +13,7 @@ export const generateIssue = async ({
   const urlString = url.toString();
   const title = `TODO: ${result.title ?? urlString}`;
 
-  const body = toMarkdown(
+  const body = md.stringify(
     u("root", [
       u("paragraph", [
         u("text", "The following TODO has expired"),
@@ -53,7 +52,7 @@ export const generateIssue = async ({
           async (match) => {
             const fileUrl = await match.file.getUrl(match.position.line);
 
-            return u("listItem", [
+            return u("listItem", { checked: false }, [
               u("paragraph", [
                 fileUrl
                   ? u("link", { url: fileUrl }, [u("text", fileUrl)])
