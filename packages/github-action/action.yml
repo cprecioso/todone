@@ -18,6 +18,9 @@ inputs:
     description: 'Keyword to search for TODOs in the code (default: "@TODO")'
     required: false
     default: "@TODO"
+  plugins:
+    description: "Newline-separated list of npm packages to use as plugins"
+    required: true
 
 runs:
   using: "node24"
