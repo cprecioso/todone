@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  # *TODO https://github.com/actions/runner/pull/3940
+  # *TODO https://github.com/actions/runner/issues/3600
   # Remove when GitHub Actions supports Node 24 without a workaround
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
