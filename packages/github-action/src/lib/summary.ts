@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
 import pMap from "p-map";
-import { Result } from "./util";
+import { formatDate, Result } from "./util";
 
 type Row = [file: string, url: string, expired: string, expirationDate: string];
 
@@ -33,7 +33,9 @@ export const makeSummary = async (items: Result[]) => {
         toHtml(h("a", { href: resultUrl }, resultUrl)),
         result ? (result.isExpired ? "❗" : "⌛") : "",
         result
-          ? result.expirationDate?.toDateString() || "No expiration date"
+          ? result.expirationDate
+            ? formatDate(result.expirationDate)
+            : "No expiration date"
           : "",
       ] as const;
     },

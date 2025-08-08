@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import { AnalysisItem } from "@todone/core";
 import { GitHubFile } from "./files";
+import { formatDate } from "./util";
 
 export const makeDebugLogger = () => (item: AnalysisItem<GitHubFile>) =>
   core.debug("Found: " + JSON.stringify(item, null, 2));
@@ -17,7 +18,9 @@ export const makeResultLogger =
       ? [
           result.title || "No title",
           result.isExpired ? "Expired" : "Not expired",
-          result.expirationDate?.toDateString() || "No expiration date",
+          result.expirationDate
+            ? formatDate(result.expirationDate)
+            : "No expiration date",
         ]
       : ["No plugin responded"];
 

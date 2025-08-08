@@ -31,3 +31,6 @@ export const isExpiredResult = (
   item: AnalysisItem<GitHubFile>,
 ): item is ExpiredResult =>
   Boolean(isResult(item) && item.result.result?.isExpired);
+
+export const formatDate = (date: Date) =>
+  date.toISOString().replace(/T.*$/, "");

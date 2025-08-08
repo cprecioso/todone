@@ -40,7 +40,9 @@
     "execa": "^9.6.0",
     "hast-util-to-html": "^9.0.5",
     "hastscript": "^9.0.1",
-    "p-map": "^7.0.3"
+    "mdast-util-to-markdown": "^2.1.2",
+    "p-map": "^7.0.3",
+    "unist-builder": "^4.0.0"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
