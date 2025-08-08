@@ -132,13 +132,13 @@ export const makeIssueReconciler = (createIssues: boolean, token: string) => {
     `);
 
     for (const { title, body } of reconciliation.added.values()) {
-      await octokit.rest.issues.create({
+      const createdIssue = await octokit.rest.issues.create({
         ...repo,
         title,
         body,
         labels: [TODONE_LABEL],
       });
-      core.info(`Created issue: ${title}`);
+      core.info(`Created issue: #${createdIssue.data.number} ${title}`);
     }
 
     for (const { number } of reconciliation.removed.values()) {
