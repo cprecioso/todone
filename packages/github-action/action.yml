@@ -18,6 +18,7 @@ inputs:
     description: 'Keyword to search for TODOs in the code (default: "@TODO")'
     required: false
     default: "@TODO"
+  # *TODO https://github.com/cprecioso/todone/issues/25
 
 runs:
   using: "node24"
