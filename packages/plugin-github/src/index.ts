@@ -2,11 +2,12 @@ import URLPattern from "@todone/internal-urlpattern";
 import { definePlugin } from "@todone/plugin";
 import { Octokit } from "octokit";
 import * as z from "zod/v4-mini";
+import { resourceFetchers } from "./fetch";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?github.com",
-  pathname: "/:owner/:repo/:issue_kind(issues|pull)/:number",
+  pathname: "/:owner/:repo/:resource_kind(issues|pull|milestone)/:number",
 });
 
 const patternResultSchema = z.object({
@@ -14,7 +15,7 @@ const patternResultSchema = z.object({
     groups: z.object({
       owner: z.string(),
       repo: z.string(),
-      issue_kind: z.enum(["issues", "pull"]),
+      resource_kind: z.enum(["issues", "pull", "milestone"]),
       number: z.coerce.number(),
     }),
   }),
@@ -37,26 +38,8 @@ export default definePlugin(
 
       async check({ url }) {
         const result = patternResultSchema.parse(pattern.exec(url));
-
-        const { owner, repo, issue_kind, number } = result.pathname.groups;
-
-        const { data } =
-          issue_kind === "issues"
-            ? await client.rest.issues.get({
-                owner,
-                repo,
-                issue_number: number,
-              })
-            : await client.rest.pulls.get({ owner, repo, pull_number: number });
-
-        const isExpired = data.state === "closed";
-        const closeDate = data.closed_at && new Date(data.closed_at);
-
-        return {
-          title: data.title,
-          isExpired,
-          expirationDate: closeDate || undefined,
-        };
+        const { owner, repo, resource_kind, number } = result.pathname.groups;
+        return resourceFetchers[resource_kind](client, { owner, repo }, number);
       },
     };
   },
