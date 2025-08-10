@@ -1,6 +1,7 @@
-import { definePlugin } from "@todone/plugin";
-import { isPast } from "date-fns";
-import * as z from "zod/v4-mini";
+import { Plugin, PluginFactory } from "@todone/types";
+import * as Effect from "effect/Effect";
+import * as Layer from "effect/Layer";
+import * as Schema from "effect/Schema";
 
 const pattern = new URLPattern({
   protocol: "date",
@@ -8,31 +9,43 @@ const pattern = new URLPattern({
   pathname: ":date",
 });
 
-const patternResultSchema = z.object({
-  pathname: z.object({
-    groups: z.object({
-      date: z.string(),
-    }),
-  }),
-});
+const matchPattern = (url: URL) =>
+  Effect.andThen(
+    Effect.sync(() => pattern.exec(url)),
+    Schema.decodeUnknown(
+      Schema.Struct({
+        pathname: Schema.Struct({
+          groups: Schema.Struct({
+            date: Schema.String,
+          }),
+        }),
+      }),
+    ),
+  );
 
-/** The plugin factory. Doesn't take any options. */
-export default definePlugin(null, async () => ({
+const decodeDate = Schema.decodeUnknown(Schema.DateFromString);
+
+export default Layer.succeed(Plugin, {
   name: "Date",
 
   pattern,
 
-  async check({ url }) {
-    const result = patternResultSchema.parse(pattern.exec(url));
-    const { date } = result.pathname.groups;
+  check: ({ url }) =>
+    Effect.gen(function* () {
+      const {
+        pathname: {
+          groups: { date },
+        },
+      } = yield* matchPattern(url);
 
-    const expirationDate = new Date(date);
-    const isExpired = isPast(expirationDate);
+      const expirationDate = yield* decodeDate(date);
 
-    return {
-      title: date,
-      isExpired,
-      expirationDate,
-    };
-  },
-}));
+      const isExpired = +expirationDate < Date.now();
+
+      return {
+        title: date,
+        isExpired,
+        expirationDate,
+      };
+    }),
+}) satisfies PluginFactory<unknown>;

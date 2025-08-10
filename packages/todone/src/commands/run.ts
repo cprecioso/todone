@@ -1,18 +1,28 @@
-import {
-  analyzePromise,
-  analyzeStream,
-  Options as TodoneOptions,
-} from "@todone/core";
+import * as Error from "@effect/platform/Error";
+import * as FileSystem from "@effect/platform/FileSystem";
+import { Options, Runner } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
-import { pluginsFromEnv } from "@todone/plugin";
 import { Command, Option } from "clipanion";
-import { getFiles } from "../helpers/get-files";
-import { logCLIReports } from "../logger/cli";
+import * as ConfigProvider from "effect/ConfigProvider";
+import * as Effect from "effect/Effect";
+import { pipe } from "effect/Function";
+import * as Layer from "effect/Layer";
+import * as Stream from "effect/Stream";
+import { getFiles, LocalFile } from "../lib/get-files";
+import { OutputMode } from "../lib/output/base";
+import { makeOutputCli } from "../lib/output/cli";
+import { OutputJson } from "../lib/output/json";
+import { makePlugins } from "../lib/plugins";
+import { EffectComand } from "./common";
 
-export class RunCommand extends Command {
+export class RunCommand extends EffectComand {
   static paths = [Command.Default, ["run"]];
 
   keyword = Option.String("-k,--keyword", "@TODO");
+
+  onlyExpired = Option.Boolean("--only-expired", false, {
+    description: "Only show expired items (ignored if --json is used)",
+  });
 
   json = Option.Boolean("--json", false, {
     description: "Output results as newline-delimited JSON",
@@ -25,35 +35,49 @@ export class RunCommand extends Command {
 
   globs = Option.Rest({ name: "globs", required: 1 });
 
-  async execute() {
-    const err = (err: string) => this.context.stderr.write(`${err}\n`);
+  get effect() {
+    const args = this;
 
-    const files = getFiles(this.globs, {
-      cwd: process.cwd(),
-      gitignore: this.gitignore,
+    const plugins = makePlugins(defaultPlugins, ConfigProvider.fromEnv());
+    const options = Layer.succeed(Options, {
+      keyword: args.keyword,
+      plugins,
     });
 
-    const report = (reason: string) => (error: unknown) =>
-      err(`${reason}: ${error}`);
+    const layer = Layer.mergeAll(
+      args.json ? OutputJson : makeOutputCli(args.onlyExpired),
+      Layer.provide(Runner.Default, options),
+    );
 
-    const plugins = await pluginsFromEnv(defaultPlugins, process.env, {
-      onConfigError: report("Failure to load plugin config"),
-      onInstancingError: report("Failure to load plugin"),
-    });
+    return Effect.gen(function* () {
+      const runner = yield* Runner;
+      const output = yield* OutputMode;
 
-    const options: TodoneOptions = {
-      keyword: this.keyword,
-      warnLogger: err,
-      plugins: plugins,
-    };
+      return yield* pipe(
+        getFiles(args.globs, {
+          cwd: process.cwd(),
+          gitignore: args.gitignore,
+        }),
+        Stream.onStart(output.start),
+        Stream.tap(output.fileItem),
 
-    if (this.json) {
-      const report = await analyzePromise(files, options);
-      this.context.stdout.write(`${JSON.stringify(report)}\n`);
-    } else {
-      const reports = analyzeStream(files, options);
-      const counters = await logCLIReports(this.context.stdout, reports);
-      return counters.expiredResults > 0 ? 1 : 0;
-    }
+        runner.getMatches<
+          Error.PlatformError,
+          FileSystem.FileSystem,
+          LocalFile
+        >(),
+        Stream.tap(output.matchItem),
+
+        runner.getResults(),
+        Stream.tap(output.resultItem),
+
+        Stream.ensuring(output.end),
+        Stream.runFold(
+          0,
+          (exitCode, { result: { isExpired } }) =>
+            exitCode || (isExpired ? 1 : 0),
+        ),
+      );
+    }).pipe(Effect.provide(layer));
   }
 }

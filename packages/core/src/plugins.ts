@@ -1,42 +1,55 @@
-import type { PluginInstance } from "@todone/types";
-import pMemoize from "p-memoize";
-import type { Options } from "./options";
+import * as t from "@todone/types";
+import * as Data from "effect/Data";
+import * as Effect from "effect/Effect";
+import * as pkg from "../package.json" assert { type: "json" };
+import { Options } from "./options";
 
-export class PluginContainer {
-  readonly #options;
-  constructor(options: Options) {
-    this.#options = options;
+const canRun = (
+  url: string,
+  pattern: undefined | t.Searchable | t.Searchable[],
+) => {
+  if (!pattern) return true;
+  const patterns = Array.isArray(pattern) ? pattern : [pattern];
+  for (const pattern of patterns) {
+    if (pattern.test(url)) return true;
   }
+  return false;
+};
 
-  #checkPattern(url: string, { pattern }: PluginInstance) {
-    if (!pattern) return true;
-    const patterns = Array.isArray(pattern) ? pattern : [pattern];
-    for (const pattern of patterns) {
-      if (pattern.test(url)) return true;
+export class UnsupportedPluginError extends Data.Error<{
+  pluginName: string;
+  url: string;
+}> {}
+
+const checkPlugin = (url: URL) =>
+  Effect.gen(function* () {
+    const plugin = yield* t.Plugin;
+
+    const urlString = url.toString();
+    if (!canRun(urlString, plugin.pattern)) {
+      return yield* new UnsupportedPluginError({
+        pluginName: plugin.name,
+        url: urlString,
+      });
     }
-    return false;
-  }
 
-  async #checkSinglePlugin(url: URL, plugin: PluginInstance) {
-    if (!this.#checkPattern(url.toString(), plugin)) return null;
-    return await plugin.check({ url });
-  }
+    return yield* plugin.check({ url });
+  });
 
-  check = pMemoize(
-    async (url: URL) => {
-      for (const plugin of this.#options.plugins) {
-        try {
-          const result = await this.#checkSinglePlugin(url, plugin);
-          if (result) return result;
-        } catch (err) {
-          this.#options.warnLogger(
-            `${plugin.name} errored while processing ${url.toString()}: ${err}`,
-          );
-        }
-      }
+export class PluginRunner extends Effect.Service<PluginRunner>()(
+  `${pkg.name}/Plugin`,
+  {
+    effect: Effect.gen(function* () {
+      const options = yield* Options;
 
-      return null;
-    },
-    { cacheKey: ([url]) => url.toString() },
-  );
-}
+      return {
+        check: (url: URL) =>
+          Effect.raceAll(
+            options.plugins.map((plugin) =>
+              checkPlugin(url).pipe(Effect.provide(plugin)),
+            ),
+          ),
+      };
+    }),
+  },
+) {}

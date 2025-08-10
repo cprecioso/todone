@@ -25,10 +25,6 @@
       "path": "packages/internal-util",
     },
     {
-      "name": "📦 @todone/plugin",
-      "path": "packages/plugin",
-    },
-    {
       "name": "📦 @todone/plugin-caniuse",
       "path": "packages/plugin-caniuse",
     },

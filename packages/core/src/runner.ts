@@ -1,22 +1,11 @@
-import { mergeReadableStreams } from "@std/streams";
-import { mapMapValues } from "@todone/internal-util/collection";
-import * as s from "@todone/internal-util/stream";
 import * as t from "@todone/types";
-import { makeAnalyzer } from "./analyzer";
-import { generateResultStream } from "./lib/results";
-import { Options, normalizeOptions } from "./options";
-import { PluginContainer } from "./plugins";
-
-export type AnalysisItem<File extends t.File> =
-  | { type: "file"; file: File }
-  | { type: "match"; url: URL; match: t.Match<File> }
-  | { type: "result"; result: t.Result<File> };
-
-export interface FullAnalysis<File extends t.File> {
-  files: t.File[];
-  matches: Map<string, t.Match<File>[]>;
-  results: t.Result<File>[];
-}
+import * as Chunk from "effect/Chunk";
+import * as Effect from "effect/Effect";
+import * as GroupBy from "effect/GroupBy";
+import * as Stream from "effect/Stream";
+import * as pkg from "../package.json" assert { type: "json" };
+import { Analyzer, RunnerMatch } from "./analyzer";
+import { PluginRunner } from "./plugins";
 
 /**
  * This is an internal utility function that actually runs the analysis. It is
@@ -29,79 +18,39 @@ export interface FullAnalysis<File extends t.File> {
  * The other functions in this file handle the three streams in different ways
  * but always in parallel and end up with a single return.
  */
-const analyze = <File extends t.File>(
-  inputFiles: AsyncIterable<File>,
-  options: Partial<Options> = {},
-) => {
-  const fullOptions = normalizeOptions(options);
-  const pluginContainer = new PluginContainer(fullOptions);
+export class Runner extends Effect.Service<Runner>()(`${pkg.name}/Runner`, {
+  dependencies: [Analyzer.Default, PluginRunner.Default],
+  effect: Effect.gen(function* () {
+    const analyzer = yield* Analyzer;
+    const runner = yield* PluginRunner;
 
-  const [file$, returnFile$] = ReadableStream.from(inputFiles).tee();
+    return {
+      getMatches:
+        <FE, FR, TFile extends t.File<FE, FR>>() =>
+        <E, R>(stream: Stream.Stream<TFile, E, R>) =>
+          Stream.flatMap(stream, analyzer.findMatches<FE, FR, TFile>),
 
-  const [match$, returnMatch$] = file$
-    .pipeThrough(s.flatMap(makeAnalyzer(fullOptions)))
-    .tee();
-
-  const resultsPromise = generateResultStream(pluginContainer, match$);
-
-  return {
-    file$: returnFile$,
-    match$: returnMatch$,
-    resultsPromise,
-  };
-};
-
-/**
- * Run an analysis on a stream of files.
- * @returns A stream of analysis items, which can be files, matches, or results.
- */
-export const analyzeStream = <File extends t.File>(
-  files: AsyncIterable<File>,
-  options: Partial<Options> = {},
-) => {
-  const { file$, match$, resultsPromise } = analyze(files, options);
-
-  return mergeReadableStreams<AnalysisItem<File>>(
-    file$.pipeThrough(s.map((file) => ({ type: "file", file }))),
-    match$.pipeThrough(
-      s.map(({ url, match }) => ({ type: "match", url, match })),
-    ),
-    s.create(
-      resultsPromise.then((results) =>
-        results.map((result) => ({ type: "result", result })),
-      ),
-    ),
-  );
-};
-
-/**
- * Run an analysis on a stream of files.
- * @returns A promise of a full report containing files, matches, and results.
- */
-export const analyzePromise = async <File extends t.File>(
-  inputFiles: AsyncIterable<File>,
-  options: Partial<Options> = {},
-): Promise<FullAnalysis<File>> => {
-  const { file$, match$, resultsPromise } = analyze(inputFiles, options);
-
-  const fileArrayPromise = Array.fromAsync(file$);
-
-  const matchMapPromise = Array.fromAsync(match$).then((matches) =>
-    mapMapValues(
-      Map.groupBy(matches, (item) => item.url.toString()),
-      (matches) => matches.map(({ match }) => match),
-    ),
-  );
-
-  const resultsArrayPromise = resultsPromise.then((results) =>
-    Array.from(results),
-  );
-
-  const [files, matches, results] = await Promise.all([
-    fileArrayPromise,
-    matchMapPromise,
-    resultsArrayPromise,
-  ]);
-
-  return { files, matches, results };
-};
+      getResults:
+        () =>
+        <TFile extends t.File<unknown, unknown>, E, R>(
+          stream: Stream.Stream<RunnerMatch<TFile>, E, R>,
+        ) =>
+          stream.pipe(
+            Stream.groupByKey((item) => item.url.toString()),
+            GroupBy.evaluate((url, stream) =>
+              Stream.runCollect(stream).pipe(
+                Effect.andThen(Chunk.map((item) => item.match)),
+                Effect.andThen(Chunk.toReadonlyArray),
+                Effect.andThen((matches) => ({ url: new URL(url), matches })),
+                Stream.fromEffect,
+              ),
+            ),
+            Stream.mapEffect(({ url, matches }) =>
+              runner
+                .check(url)
+                .pipe(Effect.andThen((result) => ({ url, result, matches }))),
+            ),
+          ),
+    };
+  }),
+}) {}
