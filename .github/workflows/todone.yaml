@@ -2,6 +2,8 @@ name: Todone
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "32 18 * * *" # Every day at a chosen random time
   push:
     branches:
       - main
