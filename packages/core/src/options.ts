@@ -1,8 +1,6 @@
 import type { Plugin } from "@todone/types";
-import * as ConfigError from "effect/ConfigError";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
 import * as pkg from "../package.json" assert { type: "json" };
 
 export type OptionsType = Context.Tag.Service<Options>;
@@ -19,7 +17,7 @@ export class Options extends Context.Tag(`${pkg}/Config`)<
     /**
      * Plugins that matches will be run through
      */
-    plugins: readonly Layer.Layer<Plugin, ConfigError.ConfigError, never>[];
+    plugins: readonly (typeof Plugin.Service)[];
   }
 >() {
   private static defaultOptions: OptionsType = {

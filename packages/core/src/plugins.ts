@@ -21,10 +21,8 @@ export class UnsupportedPluginError extends Data.Error<{
   url: string;
 }> {}
 
-const checkPlugin = (url: URL) =>
+const checkPlugin = (plugin: typeof t.Plugin.Service, url: URL) =>
   Effect.gen(function* () {
-    const plugin = yield* t.Plugin;
-
     const urlString = url.toString();
     if (!canRun(urlString, plugin.pattern)) {
       return yield* new UnsupportedPluginError({
@@ -45,9 +43,7 @@ export class PluginRunner extends Effect.Service<PluginRunner>()(
       return {
         check: (url: URL) =>
           Effect.raceAll(
-            options.plugins.map((plugin) =>
-              checkPlugin(url).pipe(Effect.provide(plugin)),
-            ),
+            options.plugins.map((plugin) => checkPlugin(plugin, url)),
           ),
       };
     }),

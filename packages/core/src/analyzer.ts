@@ -22,31 +22,33 @@ export class Analyzer extends Effect.Service<Analyzer>()(
       const matcher = re`${keyword}\s+?(\S+)`("dgu");
 
       return {
-        findMatches: <E, R, TFile extends t.File<E, R>>(file: TFile) =>
-          pipe(
-            Stream.decodeText(file.getContent),
-            Stream.splitLines,
-            Stream.zipWithIndex,
-            Stream.mapConcat(([text, line]) =>
-              text
-                .matchAll(matcher)
-                .filter(([, url]) => URL.canParse(url))
-                .map((match): RunnerMatch<TFile> => {
-                  const url = new URL(match[1]);
-                  const [startIndex] = match.indices![0];
-                  return {
-                    url,
-                    match: {
-                      file,
-                      position: {
-                        line: line + 1,
-                        column: startIndex + 1,
+        findMatches:
+          <E, R, TFile extends t.File<E, R>>() =>
+          (file: TFile) =>
+            pipe(
+              Stream.decodeText(file.getContent),
+              Stream.splitLines,
+              Stream.zipWithIndex,
+              Stream.mapConcat(([text, line]) =>
+                text
+                  .matchAll(matcher)
+                  .filter(([, url]) => URL.canParse(url))
+                  .map((match): RunnerMatch<TFile> => {
+                    const url = new URL(match[1]);
+                    const [startIndex] = match.indices![0];
+                    return {
+                      url,
+                      match: {
+                        file,
+                        position: {
+                          line: line + 1,
+                          column: startIndex + 1,
+                        },
                       },
-                    },
-                  };
-                }),
+                    };
+                  }),
+              ),
             ),
-          ),
       };
     }),
   },

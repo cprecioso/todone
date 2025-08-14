@@ -28,13 +28,11 @@ export class Runner extends Effect.Service<Runner>()(`${pkg.name}/Runner`, {
       getMatches:
         <FE, FR, TFile extends t.File<FE, FR>>() =>
         <E, R>(stream: Stream.Stream<TFile, E, R>) =>
-          Stream.flatMap(stream, analyzer.findMatches<FE, FR, TFile>),
+          Stream.flatMap(stream, analyzer.findMatches<FE, FR, TFile>()),
 
       getResults:
-        () =>
-        <TFile extends t.File<unknown, unknown>, E, R>(
-          stream: Stream.Stream<RunnerMatch<TFile>, E, R>,
-        ) =>
+        <TFile extends t.File<unknown, unknown>>() =>
+        <E, R>(stream: Stream.Stream<RunnerMatch<TFile>, E, R>) =>
           stream.pipe(
             Stream.groupByKey((item) => item.url.toString()),
             GroupBy.evaluate((url, stream) =>
