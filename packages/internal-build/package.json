@@ -1,6 +1,6 @@
 {
   "name": "@todone/internal-build",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "type": "module",
   "description": "Internal build configurations for todone",
   "repository": {

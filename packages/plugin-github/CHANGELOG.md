@@ -1,5 +1,27 @@
 # @todone/plugin-github
 
+## [0.8.0](https://github.com/cprecioso/todone/compare/plugin-github-v0.7.2...plugin-github-v0.8.0) (2025-08-14)
+
+
+### Features
+
+* add support for milestone URLs ([1c01e2d](https://github.com/cprecioso/todone/commit/1c01e2de947a5b519f54ceaf3fcba7a084b9a07c))
+* use native URLPattern ([17894f4](https://github.com/cprecioso/todone/commit/17894f49d30b8325cc57c02f49fe163c6a6c59d8))
+
+
+### Bug Fixes
+
+* remove unneeded auth strategy ([a739a5a](https://github.com/cprecioso/todone/commit/a739a5a2a9d7bf6b1c96b8099e83dc73a3126984))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin bumped to 0.3.4
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+
 ## [0.7.2](https://github.com/cprecioso/todone/compare/plugin-github-v0.7.1...plugin-github-v0.7.2) (2025-08-03)
 
 

@@ -1,5 +1,34 @@
 # @todone/plugin-caniuse
 
+## [2.0.0](https://github.com/cprecioso/todone/compare/plugin-caniuse-v1.0.1...plugin-caniuse-v2.0.0) (2025-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to node 24
+* browserslist now uses explicit config instead of checking the file
+* improve File's types
+
+### Features
+
+* browserslist now uses explicit config instead of checking the file ([d0e69ab](https://github.com/cprecioso/todone/commit/d0e69ab38aa7cd0a38857fd132f5d52acf11505d))
+* upgrade to node 24 ([ab81303](https://github.com/cprecioso/todone/commit/ab81303ed712570b64d54394a0442395abf7b827))
+* use native URLPattern ([17894f4](https://github.com/cprecioso/todone/commit/17894f49d30b8325cc57c02f49fe163c6a6c59d8))
+
+
+### Code Refactoring
+
+* improve File's types ([f2de18e](https://github.com/cprecioso/todone/commit/f2de18e8193cafae271433a088cb681e19ef0072))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin bumped to 0.3.4
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+
 ## [1.0.1](https://github.com/cprecioso/todone/compare/plugin-caniuse-v1.0.0...plugin-caniuse-v1.0.1) (2025-08-03)
 
 
