@@ -5,52 +5,52 @@
       "path": ".",
     },
     {
-      "name": "📦 @todone/core",
-      "path": "packages/core",
-    },
-    {
-      "name": "📦 @todone/default-plugins",
-      "path": "packages/default-plugins",
+      "name": "📦 todone",
+      "path": "packages/todone",
     },
     {
       "name": "📦 @todone/github-action",
       "path": "packages/github-action",
     },
     {
-      "name": "📦 @todone/internal-build",
-      "path": "packages/internal-build",
-    },
-    {
-      "name": "📦 @todone/internal-util",
-      "path": "packages/internal-util",
-    },
-    {
-      "name": "📦 @todone/plugin",
-      "path": "packages/plugin",
-    },
-    {
-      "name": "📦 @todone/plugin-caniuse",
-      "path": "packages/plugin-caniuse",
-    },
-    {
-      "name": "📦 @todone/plugin-date",
-      "path": "packages/plugin-date",
-    },
-    {
-      "name": "📦 @todone/plugin-figma",
-      "path": "packages/plugin-figma",
+      "name": "📦 @todone/default-plugins",
+      "path": "packages/default-plugins",
     },
     {
       "name": "📦 @todone/plugin-github",
       "path": "packages/plugin-github",
     },
     {
-      "name": "📦 todone",
-      "path": "packages/todone",
+      "name": "📦 @todone/plugin-figma",
+      "path": "packages/plugin-figma",
+    },
+    {
+      "name": "📦 @todone/plugin-date",
+      "path": "packages/plugin-date",
+    },
+    {
+      "name": "📦 @todone/plugin-caniuse",
+      "path": "packages/plugin-caniuse",
+    },
+    {
+      "name": "📦 @todone/plugin",
+      "path": "packages/plugin",
+    },
+    {
+      "name": "📦 @todone/core",
+      "path": "packages/core",
     },
     {
       "name": "📦 @todone/types",
       "path": "packages/types",
+    },
+    {
+      "name": "📦 @todone/internal-util",
+      "path": "packages/internal-util",
+    },
+    {
+      "name": "📦 @todone/internal-build",
+      "path": "packages/internal-build",
     },
   ],
   "settings": {
