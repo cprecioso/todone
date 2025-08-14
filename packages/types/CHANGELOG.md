@@ -1,5 +1,31 @@
 # @todone/types
 
+## [0.8.0](https://github.com/cprecioso/todone/compare/types-v0.7.2...types-v0.8.0) (2025-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* change result typings
+* improve File's types
+
+### Features
+
+* change result typings ([de6f67a](https://github.com/cprecioso/todone/commit/de6f67a3c799e44297d9466cae28ad95ded5d383))
+* make File generic ([876c97a](https://github.com/cprecioso/todone/commit/876c97a7d2bc840564c9dafbda049eae169dd256))
+* remove `location` requirement from `File` ([dfadfa0](https://github.com/cprecioso/todone/commit/dfadfa0e632154ae560752428de840509a9f9f70))
+
+
+### Code Refactoring
+
+* improve File's types ([f2de18e](https://github.com/cprecioso/todone/commit/f2de18e8193cafae271433a088cb681e19ef0072))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+
 ## [0.7.2](https://github.com/cprecioso/todone/compare/types-v0.7.1...types-v0.7.2) (2025-08-03)
 
 

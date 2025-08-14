@@ -1,6 +1,6 @@
 {
   "name": "@todone/plugin-caniuse",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "type": "module",
   "description": "A todone plugin that will alert you when a feature is supported by your target browsers",
   "repository": {

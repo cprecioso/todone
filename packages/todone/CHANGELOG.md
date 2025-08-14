@@ -1,5 +1,48 @@
 # todone
 
+## [2.0.0](https://github.com/cprecioso/todone/compare/todone-v1.0.1...todone-v2.0.0) (2025-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to node 24
+* change result typings
+* improve File's types
+
+### Features
+
+* change result typings ([de6f67a](https://github.com/cprecioso/todone/commit/de6f67a3c799e44297d9466cae28ad95ded5d383))
+* make File generic ([876c97a](https://github.com/cprecioso/todone/commit/876c97a7d2bc840564c9dafbda049eae169dd256))
+* upgrade to node 24 ([ab81303](https://github.com/cprecioso/todone/commit/ab81303ed712570b64d54394a0442395abf7b827))
+
+
+### Bug Fixes
+
+* remove leftover call ([726b410](https://github.com/cprecioso/todone/commit/726b41046fe1e626b401e00c0c711cb3253cac53))
+
+
+### Performance Improvements
+
+* reorganize LocalFile ([833ada6](https://github.com/cprecioso/todone/commit/833ada601b3337fd6914a1b4a4a872c6898fe144))
+
+
+### Code Refactoring
+
+* improve File's types ([f2de18e](https://github.com/cprecioso/todone/commit/f2de18e8193cafae271433a088cb681e19ef0072))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/core bumped to 0.7.0
+    * @todone/default-plugins bumped to 2.0.0
+    * @todone/internal-util bumped to 0.4.0
+    * @todone/plugin bumped to 0.3.4
+    * @todone/types bumped to 0.8.0
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+
 ## [1.0.1](https://github.com/cprecioso/todone/compare/todone-v1.0.0...todone-v1.0.1) (2025-08-03)
 
 

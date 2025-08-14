@@ -1,5 +1,28 @@
 # @todone/default-plugins
 
+## [2.0.0](https://github.com/cprecioso/todone/compare/default-plugins-v1.0.1...default-plugins-v2.0.0) (2025-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to node 24
+
+### Features
+
+* upgrade to node 24 ([ab81303](https://github.com/cprecioso/todone/commit/ab81303ed712570b64d54394a0442395abf7b827))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @todone/plugin-caniuse bumped to 2.0.0
+    * @todone/plugin-date bumped to 0.5.0
+    * @todone/plugin-figma bumped to 0.5.0
+    * @todone/plugin-github bumped to 0.8.0
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+
 ## [1.0.1](https://github.com/cprecioso/todone/compare/default-plugins-v1.0.0...default-plugins-v1.0.1) (2025-08-03)
 
 
