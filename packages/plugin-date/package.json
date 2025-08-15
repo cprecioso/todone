@@ -25,13 +25,14 @@
     "check": "tsc --noEmit -p .",
     "dev": "tsdown --watch"
   },
-  "dependencies": {
-    "@todone/plugin": "workspace:^",
-    "date-fns": "^4.1.0",
-    "zod": "^4.0.15"
+  "peerDependencies": {
+    "@todone/types": "workspace:^",
+    "effect": "^3.17.7"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
+    "@todone/types": "workspace:*",
+    "effect": "^3.17.7",
     "tsdown": "^0.13.4",
     "typescript": "~5.9.2"
   },

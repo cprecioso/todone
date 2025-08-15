@@ -34,7 +34,6 @@
     "@todone/core": "workspace:*",
     "@todone/default-plugins": "workspace:*",
     "@todone/internal-util": "workspace:*",
-    "@todone/plugin": "workspace:*",
     "@todone/types": "workspace:*",
     "dedent": "^1.6.0",
     "execa": "^9.6.0",

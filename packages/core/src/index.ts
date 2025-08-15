@@ -1,2 +1,3 @@
-export type { Options } from "./options";
-export * from "./runner";
+export type { RunnerMatch } from "./analyzer";
+export { Options, type OptionsType } from "./options";
+export { Runner } from "./runner";

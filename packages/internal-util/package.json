@@ -29,10 +29,6 @@
     "./stream": {
       "types": "./dist/stream.d.ts",
       "default": "./dist/stream.js"
-    },
-    "./url": {
-      "types": "./dist/url.d.ts",
-      "default": "./dist/url.js"
     }
   },
   "files": [

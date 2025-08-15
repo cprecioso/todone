@@ -1,6 +1,8 @@
-import { definePlugin } from "@todone/plugin";
-import { Octokit } from "octokit";
-import * as z from "zod/v4-mini";
+import { Plugin, PluginFactory } from "@todone/types";
+import * as Effect from "effect/Effect";
+import * as Layer from "effect/Layer";
+import * as Schema from "effect/Schema";
+import { GitHub } from "./common";
 import { resourceFetchers } from "./fetch";
 
 const pattern = new URLPattern({
@@ -9,37 +11,51 @@ const pattern = new URLPattern({
   pathname: "/:owner/:repo/:resource_kind(issues|pull|milestone)/:number",
 });
 
-const patternResultSchema = z.object({
-  pathname: z.object({
-    groups: z.object({
-      owner: z.string(),
-      repo: z.string(),
-      resource_kind: z.enum(["issues", "pull", "milestone"]),
-      number: z.coerce.number(),
-    }),
-  }),
-});
+const matchPattern = (url: URL) =>
+  Effect.andThen(
+    Effect.sync(() => pattern.exec(url)),
+    Schema.decodeUnknown(
+      Schema.Struct({
+        pathname: Schema.Struct({
+          groups: Schema.Struct({
+            owner: Schema.String,
+            repo: Schema.String,
+            resource_kind: Schema.Literal("issues", "pull", "milestone"),
+            number: Schema.NumberFromString.pipe(
+              Schema.positive(),
+              Schema.int(),
+            ),
+          }),
+        }),
+      }),
+    ),
+  );
 
-export default definePlugin(
-  {
-    token: {
-      schema: z.optional(z.string()),
-      envName: "GITHUB_TOKEN",
-    },
-  },
-  async ({ token }) => {
-    const client = new Octokit({ auth: token });
+export default Layer.effect(
+  Plugin,
+  Effect.gen(function* () {
+    const gh = yield* GitHub;
 
     return {
-      name: "GitHub Issue",
+      name: "GitHub",
 
       pattern,
 
-      async check({ url }) {
-        const result = patternResultSchema.parse(pattern.exec(url));
-        const { owner, repo, resource_kind, number } = result.pathname.groups;
-        return resourceFetchers[resource_kind](client, { owner, repo }, number);
-      },
+      check: ({ url }) =>
+        Effect.gen(function* () {
+          const {
+            pathname: {
+              groups: { owner, repo, resource_kind, number },
+            },
+          } = yield* matchPattern(url);
+
+          const fetcher = resourceFetchers[resource_kind](
+            { owner, repo },
+            number,
+          );
+
+          return yield* Effect.provideService(fetcher, GitHub, gh);
+        }),
     };
-  },
-);
+  }),
+).pipe(Layer.provide(GitHub.Default)) satisfies PluginFactory<unknown>;
