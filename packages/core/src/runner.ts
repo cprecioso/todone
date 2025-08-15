@@ -7,17 +7,6 @@ import * as pkg from "../package.json" assert { type: "json" };
 import { Analyzer, RunnerMatch } from "./analyzer";
 import { PluginRunner } from "./plugins";
 
-/**
- * This is an internal utility function that actually runs the analysis. It is
- * used by both `analyzeStream` and `analyzePromise`.
- *
- * It is not meant to be used directly by users, as the three streams it returns
- * have to be run in parallel to prevent deadlocks, and we want to avoid the
- * complexity associated with that.
- *
- * The other functions in this file handle the three streams in different ways
- * but always in parallel and end up with a single return.
- */
 export class Runner extends Effect.Service<Runner>()(`${pkg.name}/Runner`, {
   dependencies: [Analyzer.Default, PluginRunner.Default],
   effect: Effect.gen(function* () {
