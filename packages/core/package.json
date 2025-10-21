@@ -30,15 +30,15 @@
     "effect": "^3.17.7"
   },
   "dependencies": {
-    "@std/streams": "jsr:^1.0.10"
+    "@std/streams": "jsr:^1.0.13"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@todone/types": "workspace:*",
-    "effect": "^3.17.7",
-    "tsdown": "^0.13.4",
-    "type-fest": "^4.41.0",
-    "typescript": "~5.9.2"
+    "effect": "^3.18.4",
+    "tsdown": "^0.15.9",
+    "type-fest": "^5.1.0",
+    "typescript": "~5.9.3"
   },
   "publishConfig": {
     "provenance": true,

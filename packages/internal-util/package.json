@@ -41,12 +41,12 @@
   },
   "dependencies": {
     "@std/regexp": "jsr:^1.0.1",
-    "@std/streams": "jsr:^1.0.10"
+    "@std/streams": "jsr:^1.0.13"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "tsdown": "^0.13.4",
-    "typescript": "~5.9.2"
+    "tsdown": "^0.15.9",
+    "typescript": "~5.9.3"
   },
   "publishConfig": {
     "access": "public",

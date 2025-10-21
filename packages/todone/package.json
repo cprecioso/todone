@@ -30,26 +30,26 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@effect/platform": "^0.90.1",
-    "@effect/platform-node": "^0.95.0",
-    "@std/assert": "jsr:^1.0.13",
-    "@std/streams": "jsr:^1.0.10",
+    "@effect/platform": "^0.92.1",
+    "@effect/platform-node": "^0.98.4",
+    "@std/assert": "jsr:^1.0.15",
+    "@std/streams": "jsr:^1.0.13",
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
     "@todone/internal-util": "workspace:*",
     "@todone/types": "workspace:^",
-    "chalk": "^5.5.0",
+    "chalk": "^5.6.2",
     "clipanion": "^4.0.0-rc.4",
-    "dedent": "^1.6.0",
-    "dotenv": "^17.2.1",
-    "effect": "^3.17.7",
-    "globby": "^14.1.0"
+    "dedent": "^1.7.0",
+    "dotenv": "^17.2.3",
+    "effect": "^3.18.4",
+    "globby": "^15.0.0"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "@types/node": "^24.2.0",
-    "tsdown": "^0.13.4",
-    "typescript": "~5.9.2"
+    "@types/node": "^24.9.1",
+    "tsdown": "^0.15.9",
+    "typescript": "~5.9.3"
   },
   "publishConfig": {
     "provenance": true,

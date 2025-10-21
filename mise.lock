@@ -1,11 +1,11 @@
-[tools.node]
-version = "24.5.0"
+[[tools.node]]
+version = "24.10.0"
 backend = "core:node"
 
-[tools."npm:corepack"]
-version = "0.34.0"
+[[tools."npm:corepack"]]
+version = "0.34.1"
 backend = "npm:corepack"
 
-[tools."npm:npm"]
-version = "11.5.2"
+[[tools."npm:npm"]]
+version = "11.6.2"
 backend = "npm:npm"
