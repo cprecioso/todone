@@ -11,8 +11,12 @@ export class OutputMode extends Context.Tag(`${pkg.name}/OutputMode`)<
     start: Effect.Effect<void>;
 
     fileItem: (item: LocalFile) => Effect.Effect<void, unknown>;
-    matchItem: (item: RunnerMatch<LocalFile>) => Effect.Effect<void, unknown>;
-    resultItem: (item: Result<LocalFile>) => Effect.Effect<void, unknown>;
+    matchItem: (
+      item: RunnerMatch<LocalFile.E, LocalFile.R, LocalFile>,
+    ) => Effect.Effect<void, unknown>;
+    resultItem: (
+      item: Result<LocalFile.E, LocalFile.R, LocalFile>,
+    ) => Effect.Effect<void, unknown>;
 
     end: Effect.Effect<void>;
   }

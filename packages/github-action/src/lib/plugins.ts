@@ -1,31 +1,15 @@
-import * as core from "@actions/core";
-import defaultPlugins from "@todone/default-plugins";
-import { pluginsFromEnv } from "@todone/plugin";
+import * as NodeContext from "@effect/platform-node/NodeContext";
+import * as HttpClient from "@effect/platform/HttpClient";
+import { Plugin, PluginFactory } from "@todone/types";
+import * as Effect from "effect/Effect";
 
-export const makePlugins = async (token: string) => {
-  const plugins = await pluginsFromEnv(
-    defaultPlugins,
-    {
-      GITHUB_TOKEN: token,
-      ...process.env,
-    },
-    {
-      onConfigError: (pluginName, error) =>
-        core.warning(
-          new Error("Error while configuring plugin " + pluginName, {
-            cause: error,
-          }),
-        ),
-      onInstancingError: (pluginName, error) =>
-        core.warning(
-          new Error("Error while instancing plugin " + pluginName, {
-            cause: error,
-          }),
-        ),
-    },
-  );
+export type AllowedPlugin = PluginFactory<
+  NodeContext.NodeContext | HttpClient.HttpClient
+>;
 
-  core.info("Instanced plugins: " + plugins.map((p) => p.name).join(", "));
+type NonEmpty<T> = readonly [T, ...(readonly T[])];
 
-  return plugins;
-};
+export type AllowedPluginList = NonEmpty<AllowedPlugin>;
+
+export const makePlugins = (plugins: NonEmpty<AllowedPlugin>) =>
+  Effect.all(plugins.map((plugin) => Effect.provide(Plugin, plugin)));

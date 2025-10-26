@@ -1,7 +1,8 @@
 import * as t from "@todone/types";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
-import * as pkg from "../package.json" assert { type: "json" };
+import { pipe } from "effect/Function";
+import * as pkg from "../package.json" with { type: "json" };
 import { Options } from "./options";
 
 const canRun = (
@@ -31,7 +32,12 @@ const checkPlugin = (plugin: typeof t.Plugin.Service, url: URL) =>
       });
     }
 
-    return yield* plugin.check({ url });
+    return yield* pipe(
+      plugin.check({ url }),
+      Effect.mapError(
+        (error) => new Error(`Plugin ${plugin.name} failed`, { cause: error }),
+      ),
+    );
   });
 
 export class PluginRunner extends Effect.Service<PluginRunner>()(

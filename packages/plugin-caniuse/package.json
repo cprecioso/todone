@@ -33,7 +33,7 @@
     "effect": "^3.17.7"
   },
   "dependencies": {
-    "browserslist": "^4.26.3",
+    "browserslist": "^4.27.0",
     "caniuse-lite": "^1.0.30001751"
   },
   "devDependencies": {

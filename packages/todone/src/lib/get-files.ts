@@ -1,9 +1,6 @@
-import * as Error from "@effect/platform/Error";
 import * as FileSystem from "@effect/platform/FileSystem";
 import { File } from "@todone/types";
-import * as Data from "effect/Data";
-import * as Effect from "effect/Effect";
-import { identity } from "effect/Function";
+import { pipe } from "effect/Function";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import { globbyStream } from "globby";
@@ -14,9 +11,7 @@ export interface GetFilesOptions {
   gitignore: boolean;
 }
 
-export class LocalFile
-  implements File<Error.PlatformError, FileSystem.FileSystem>
-{
+export class LocalFile {
   readonly #cwd;
 
   readonly fullPath;
@@ -31,15 +26,18 @@ export class LocalFile
     return (this.#_location ??= path.relative(this.#cwd, this.fullPath));
   }
 
-  get getContent() {
-    return FileSystem.FileSystem.pipe(
-      Effect.andThen((fs) => fs.stream(this.fullPath)),
-      Stream.flatMap(identity),
-    );
-  }
+  readonly getContent = pipe(
+    FileSystem.FileSystem,
+    Stream.flatMap((fs) => fs.stream(this.fullPath), { switch: true }),
+  );
 }
 
-export class GlobbyError extends Data.Error<{ cause: unknown }> {}
+LocalFile satisfies { new (...args: any[]): File<unknown, unknown> };
+
+export declare namespace LocalFile {
+  export type E = Stream.Stream.Error<LocalFile["getContent"]>;
+  export type R = Stream.Stream.Context<LocalFile["getContent"]>;
+}
 
 export const getFiles = (
   globs: string[],
@@ -54,7 +52,7 @@ export const getFiles = (
       expandDirectories: true,
       absolute: true,
     }),
-    (error) => new GlobbyError({ cause: error }),
+    (error) => new Error("Globber error", { cause: error }),
   ).pipe(
     Stream.mapEffect(Schema.decodeUnknown(Schema.String)),
     Stream.map((path) => new LocalFile(cwd, path)),

@@ -1,64 +1,75 @@
-import * as core from "@actions/core";
 import * as glob from "@actions/glob";
-import * as s from "@todone/internal-util/stream";
+import * as Command from "@effect/platform/Command";
+import * as FileSystem from "@effect/platform/FileSystem";
+import * as Path from "@effect/platform/Path";
 import * as t from "@todone/types";
-import { execa } from "execa";
-import * as fs from "node:fs";
-import * as path from "node:path";
-import { Readable } from "node:stream";
+import * as Effect from "effect/Effect";
+import { pipe, satisfies } from "effect/Function";
+import * as Option from "effect/Option";
+import * as Schema from "effect/Schema";
+import * as Stream from "effect/Stream";
 import { sha } from "../input";
 
 const cwd = process.cwd();
 
-export class GitHubFile implements t.File {
-  readonly #localPath;
+export interface GitHubFile
+  extends Effect.Effect.Success<ReturnType<typeof makeGitHubFile>> {}
 
-  constructor(localPath: string) {
-    this.#localPath = localPath;
-  }
-
-  #_location?: string;
-  get location() {
-    return (this.#_location ??= this.#localPath.startsWith(cwd)
-      ? path.relative(cwd, this.#localPath)
-      : this.#localPath);
-  }
-
-  async getUrl(line?: number) {
-    try {
-      const basename = path.basename(this.#localPath);
-      const dirname = path.dirname(this.#localPath);
-
-      const commitArg = sha ? [`--commit=${sha}`] : [];
-      const lineSuffx = line ? `:${line}` : "";
-
-      const { stdout } = await execa({
-        cwd: dirname,
-      })`gh browse ${basename}${lineSuffx} --no-browser ${commitArg}`;
-
-      return stdout;
-    } catch (error) {
-      core.warning(
-        new Error(
-          `Failed to get GitHub file URL from local path ${JSON.stringify(this.#localPath)}`,
-          { cause: error },
-        ),
-      );
-    }
-  }
-
-  getContent() {
-    return Readable.toWeb(fs.createReadStream(this.#localPath));
-  }
+export declare namespace GitHubFile {
+  type E = Stream.Stream.Error<GitHubFile["getContent"]>;
+  type R = Stream.Stream.Context<GitHubFile["getContent"]>;
 }
 
+const makeGitHubFile = (localPath: string) =>
+  Effect.gen(function* () {
+    const path = yield* Path.Path;
+    const location = localPath.startsWith(cwd)
+      ? path.relative(cwd, localPath)
+      : localPath;
+
+    return satisfies<t.File<unknown, unknown>>()({
+      location,
+      getUrl(line?: number) {
+        const basename = path.basename(localPath);
+        const dirname = path.dirname(localPath);
+
+        const commitArg = sha ? [`--commit=${sha}`] : [];
+        const lineSuffix = line ? `:${line}` : "";
+
+        return pipe(
+          Command.make(
+            "gh",
+            "browse",
+            basename + lineSuffix,
+            "--no-browser",
+            ...commitArg,
+          ),
+          Command.workingDirectory(dirname),
+          Command.streamLines,
+          Stream.runHead,
+          Effect.map(Option.andThen(Schema.decodeOption(Schema.URL))),
+        );
+      },
+      getContent: pipe(
+        FileSystem.FileSystem,
+        Stream.flatMap((fs) => fs.stream(localPath), { switch: true }),
+      ),
+    });
+  });
+
 export const makeFileStream = (globs: string) =>
-  s
-    .create(
-      (async () => {
-        const globber = await glob.create(globs, { matchDirectories: false });
-        const iterable = globber.globGenerator();
-        return ReadableStream.from(iterable);
-      })(),
-    )
-    .pipeThrough(s.map((path) => new GitHubFile(path)));
+  pipe(
+    Effect.tryPromise(async () =>
+      (await glob.create(globs, { matchDirectories: false })).globGenerator(),
+    ),
+    Stream.fromEffect,
+    Stream.flatMap(
+      (globber) =>
+        Stream.fromAsyncIterable(
+          globber,
+          (error) => new Error("Globber failed", { cause: error }),
+        ),
+      { switch: true },
+    ),
+    Stream.mapEffect(makeGitHubFile),
+  );

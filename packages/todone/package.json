@@ -32,8 +32,6 @@
   "dependencies": {
     "@effect/platform": "^0.92.1",
     "@effect/platform-node": "^0.98.4",
-    "@std/assert": "jsr:^1.0.15",
-    "@std/streams": "jsr:^1.0.13",
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
     "@todone/internal-util": "workspace:*",

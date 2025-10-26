@@ -1,5 +1,3 @@
-import * as Error from "@effect/platform/Error";
-import * as FileSystem from "@effect/platform/FileSystem";
 import { Options, Runner } from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
 import * as ConfigProvider from "effect/ConfigProvider";
@@ -47,14 +45,10 @@ export const makeRunEffect = ({
       Stream.onStart(output.start),
       Stream.tap(output.fileItem),
 
-      runner.getMatches<
-        Error.PlatformError,
-        FileSystem.FileSystem,
-        LocalFile
-      >(),
+      runner.getMatches<LocalFile.E, LocalFile.R, LocalFile>(),
       Stream.tap(output.matchItem),
 
-      runner.getResults<LocalFile>(),
+      runner.getResults<LocalFile.E, LocalFile.R, LocalFile>(),
       Stream.tap(output.resultItem),
 
       Stream.ensuring(output.end),

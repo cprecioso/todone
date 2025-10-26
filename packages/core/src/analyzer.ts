@@ -4,14 +4,14 @@ import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Stream from "effect/Stream";
-import * as pkg from "../package.json" assert { type: "json" };
+import * as pkg from "../package.json" with { type: "json" };
 import { Options } from "./options";
 
 export class StreamConsumingError extends Data.Error<{ cause: unknown }> {}
 
-export type RunnerMatch<TFile extends t.File<unknown, unknown>> = {
+export type RunnerMatch<E, R, TFile extends t.File<E, R>> = {
   url: URL;
-  match: t.Match<TFile>;
+  match: t.Match<E, R, TFile>;
 };
 
 export class Analyzer extends Effect.Service<Analyzer>()(
@@ -33,7 +33,7 @@ export class Analyzer extends Effect.Service<Analyzer>()(
                 text
                   .matchAll(matcher)
                   .filter(([, url]) => URL.canParse(url))
-                  .map((match): RunnerMatch<TFile> => {
+                  .map((match): RunnerMatch<E, R, TFile> => {
                     const url = new URL(match[1]);
                     const [startIndex] = match.indices![0];
                     return {

@@ -1,7 +1,7 @@
 import type { Plugin } from "@todone/types";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
-import * as pkg from "../package.json" assert { type: "json" };
+import * as pkg from "../package.json" with { type: "json" };
 
 export type OptionsType = Context.Tag.Service<Options>;
 export class Options extends Context.Tag(`${pkg}/Config`)<

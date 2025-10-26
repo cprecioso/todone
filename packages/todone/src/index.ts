@@ -46,7 +46,7 @@ export const run = (
           FileSystem.FileSystem,
           LocalFile
         >(),
-        runner.getResults<LocalFile>(),
+        runner.getResults<LocalFile.E, LocalFile.R, LocalFile>(),
         Stream.runCollect,
         Effect.andThen(Chunk.toArray),
       ),

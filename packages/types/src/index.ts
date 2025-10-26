@@ -16,15 +16,15 @@ export interface File<E, R> {
   readonly getContent: Stream.Stream<Uint8Array, E, R>;
 }
 
-export interface Match<TFile extends File<unknown, unknown>> {
+export interface Match<E, R, TFile extends File<E, R>> {
   file: TFile;
   position: t;
 }
 
-export interface Result<TFile extends File<unknown, unknown>> {
+export interface Result<E, R, TFile extends File<E, R>> {
   url: URL;
   result: PluginResult | null;
-  matches: readonly Match<TFile>[];
+  matches: readonly Match<E, R, TFile>[];
 }
 
 /**
