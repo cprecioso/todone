@@ -8,6 +8,9 @@ import * as pkg from "../package.json" with { type: "json" };
 import { Analyzer } from "./analyzer";
 import { PluginRunner } from "./plugins";
 
+/**
+ * The runner service provides methods to analyze streams of files and matches.
+ */
 export class Runner extends Effect.Service<Runner>()(`${pkg.name}/Runner`, {
   dependencies: [Analyzer.Default, PluginRunner.Default],
   effect: Effect.gen(function* () {
@@ -15,11 +18,17 @@ export class Runner extends Effect.Service<Runner>()(`${pkg.name}/Runner`, {
     const runner = yield* PluginRunner;
 
     return {
+      /**
+       * Finds and returns a stream of matches from a stream of files.
+       */
       getMatches:
         <FE, FR, TFile extends t.File<FE, FR>>() =>
         <E, R>(stream: Stream.Stream<TFile, E, R>) =>
           Stream.flatMap(stream, analyzer.findMatches<FE, FR, TFile>()),
 
+      /**
+       * Analyzes a stream of matches and returns a stream of results.
+       */
       getResults:
         <FE, FR, TFile extends t.File<FE, FR>>() =>
         <E, R>(stream: Stream.Stream<t.Match<FE, FR, TFile>, E, R>) =>

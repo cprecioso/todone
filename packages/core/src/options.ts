@@ -18,7 +18,11 @@ export interface OptionsType {
 }
 
 /**
- * An Effect Context tag to provide and request the configuration options.
+ * An [Effect
+ * Context](https://effect.website/docs/requirements-management/services/) tag
+ * to provide and request the configuration options.
+ *
+ * @see {@link OptionsType}
  */
 export class Options extends Context.Tag(`${pkg.name}/Options`)<
   Options,
