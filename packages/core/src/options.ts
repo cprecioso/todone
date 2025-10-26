@@ -20,7 +20,7 @@ export interface OptionsType {
 /**
  * An Effect Context tag to provide and request the configuration options.
  */
-export class Options extends Context.Tag(`${pkg}/Config`)<
+export class Options extends Context.Tag(`${pkg}/Options`)<
   Options,
   OptionsType
 >() {
