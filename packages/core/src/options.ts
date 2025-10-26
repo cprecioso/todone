@@ -1,4 +1,4 @@
-import type { Plugin } from "@todone/types";
+import type { PluginInstance } from "@todone/types";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as pkg from "../package.json" with { type: "json" };
@@ -17,7 +17,7 @@ export class Options extends Context.Tag(`${pkg}/Config`)<
     /**
      * Plugins that matches will be run through
      */
-    plugins: readonly (typeof Plugin.Service)[];
+    plugins: readonly PluginInstance[];
   }
 >() {
   private static defaultOptions: OptionsType = {

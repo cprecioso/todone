@@ -1,38 +1,54 @@
-import * as NodeContext from "@effect/platform-node/NodeContext";
-import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient";
 import * as Error from "@effect/platform/Error";
 import * as FileSystem from "@effect/platform/FileSystem";
 import * as todone from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
+import { PluginInstance } from "@todone/types";
 import * as Chunk from "effect/Chunk";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
-import * as Layer from "effect/Layer";
 import * as Stream from "effect/Stream";
 import { getFiles, GetFilesOptions, LocalFile } from "./lib/get-files";
-import * as plugins from "./lib/plugins";
+import { AllowedPlugin, makePlugins as makePluginsEffect } from "./lib/plugins";
+import { NodeRuntimeLayer } from "./lib/runtime";
 
-export interface Options extends todone.OptionsType, Partial<GetFilesOptions> {}
+export type { AllowedPlugin } from "./lib/plugins";
 
-const layer = NodeHttpClient.layer.pipe(Layer.provideMerge(NodeContext.layer));
+export interface Options
+  extends Partial<todone.OptionsType>,
+    Partial<GetFilesOptions> {}
 
+/**
+ * Given some plugin factories, provides them with the necessary configuration
+ * to create a plugin instance.
+ */
 export const makePlugins = (
-  pluginList: plugins.AllowedPluginList,
+  plugins: readonly AllowedPlugin[],
+  /** Configuration for the plugins */
   obj: Record<string, string>,
-) =>
-  plugins
-    .makePlugins(pluginList)
-    .pipe(
-      Effect.withConfigProvider(
-        ConfigProvider.fromMap(new Map(Object.entries(obj))),
-      ),
-      Effect.provide(layer),
-      Effect.runPromise,
-    );
+): Promise<PluginInstance[]> =>
+  makePluginsEffect(plugins).pipe(
+    Effect.withConfigProvider(
+      ConfigProvider.fromMap(new Map(Object.entries(obj))),
+    ),
+    Effect.provide(NodeRuntimeLayer),
+    Effect.runPromise,
+  );
 
-export const makeDefaultPlugins = makePlugins.bind(null, defaultPlugins);
+/**
+ * Creates plugin instances for the default todone plugins ({@link "@todone/default-plugins"}).
+ */
+export const makeDefaultPlugins = (
+  /** Configuration for the plugins */
+  obj: Record<string, string>,
+) => makePlugins(defaultPlugins, obj);
 
+/**
+ * Runs the analysis for the given globs and options.
+ *
+ * @param globs - The glob patterns to analyze.
+ * @param options - The options to configure the analysis.
+ */
 export const run = (
   globs: string[],
   { cwd = process.cwd(), gitignore = true, ...options }: Options,
@@ -53,6 +69,6 @@ export const run = (
     ),
     Effect.provide(todone.Runner.Default),
     todone.Options.provide(options),
-    Effect.provide(layer),
+    Effect.provide(NodeRuntimeLayer),
     Effect.runPromise,
   );

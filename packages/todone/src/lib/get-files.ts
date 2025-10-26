@@ -7,7 +7,18 @@ import { globbyStream } from "globby";
 import * as path from "node:path";
 
 export interface GetFilesOptions {
+  /**
+   * Working directory to resolve globs against.
+   *
+   * @default process.cwd()
+   */
   cwd: string;
+
+  /**
+   * Whether to respect `.gitignore` files.
+   *
+   * @default true
+   */
   gitignore: boolean;
 }
 
