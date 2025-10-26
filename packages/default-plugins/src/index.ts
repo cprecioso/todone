@@ -3,4 +3,9 @@ import date from "@todone/plugin-date";
 import figma from "@todone/plugin-figma";
 import github from "@todone/plugin-github";
 
-export default [caniuse, date, figma, github] as const;
+/**
+ * Default plugins recommended for most users to use with todone.
+ */
+const defaultPlugins = [caniuse, date, figma, github] as const;
+
+export default defaultPlugins;
