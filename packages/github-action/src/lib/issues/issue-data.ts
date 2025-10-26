@@ -1,43 +1,53 @@
 import * as core from "@actions/core";
+import * as Effect from "effect/Effect";
+import * as Schema from "effect/Schema";
 import * as mdast from "mdast";
 import assert from "node:assert/strict";
-import * as z from "zod";
-import * as md from "../markdown";
-import { createComment, createZone, findZone, getComment } from "../markdown";
-
-const sameInputAndOutput = <T, S extends z.ZodType<T, T>>(schema: S) => schema;
-
-const issueDataSchema = sameInputAndOutput(
-  z.strictObject({
-    todoUrl: z.url(),
-  }),
-);
-export type IssueData = z.infer<typeof issueDataSchema>;
+import * as md from "../util/markdown";
+import {
+  createComment,
+  createZone,
+  findZone,
+  getComment,
+} from "../util/markdown";
 
 const zoneId = "todone";
 
-export const createIssueData = (data: z.input<typeof issueDataSchema>) =>
-  createZone(zoneId, [createComment(JSON.stringify(data))]);
+const IssueData = Schema.parseJson(
+  Schema.Struct({
+    todoUrl: Schema.String,
+  }),
+);
 
-export const findIssueData = (tree: mdast.Nodes) => {
-  const content = findZone(tree, zoneId);
-  assert(content, `No zone found with id "${zoneId}"`);
-  assert.equal(
-    content.length,
-    1,
-    `Expected exactly one zone with id "${zoneId}"`,
-  );
-  const comment = getComment(content[0]);
-  const parsed = issueDataSchema.parse(JSON.parse(comment));
-  return parsed;
-};
+export type IssueData = Schema.Schema.Type<typeof IssueData>;
 
-export const tryGetIssueData = (input: string): IssueData | undefined => {
-  const ast = md.parse(input);
-  try {
-    return findIssueData(ast);
-  } catch (error) {
-    core.debug(`Failed to find issue data in the tree:${error}`);
-    return undefined;
-  }
-};
+const encodeCommentDataSync = Schema.encodeSync(IssueData);
+const parseCommentData = Schema.decode(IssueData);
+
+export const createIssueData = (data: IssueData) =>
+  createZone(zoneId, [createComment(encodeCommentDataSync(data))]);
+
+export const findIssueData = (tree: mdast.Nodes) =>
+  Effect.gen(function* () {
+    const content = findZone(tree, zoneId);
+    assert(content, `No zone found with id "${zoneId}"`);
+    assert.equal(
+      content.length,
+      1,
+      `Expected exactly one zone with id "${zoneId}"`,
+    );
+    const comment = getComment(content[0]);
+    const parsed = yield* parseCommentData(comment);
+    return parsed;
+  });
+
+export const getIssueData = (input: string) =>
+  Effect.gen(function* () {
+    const ast = md.parse(input);
+    try {
+      return yield* findIssueData(ast);
+    } catch (error) {
+      core.debug(`Failed to find issue data in the tree:${error}`);
+      throw error;
+    }
+  });

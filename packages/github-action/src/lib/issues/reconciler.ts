@@ -1,54 +1,118 @@
-import * as t from "@todone/types";
-import { IssueData } from "./issue-data";
+import * as Chunk from "effect/Chunk";
+import * as Data from "effect/Data";
+import * as Effect from "effect/Effect";
+import * as Either from "effect/Either";
+import { identity, pipe } from "effect/Function";
+import * as HashMap from "effect/HashMap";
+import * as Option from "effect/Option";
+import * as Sink from "effect/Sink";
+import * as Stream from "effect/Stream";
+import { isExpiredResult, Result } from "../util/result";
+import { GitHubAPI } from "./actions";
+import { getIssueData } from "./issue-data";
 
-export enum IssueAction {
-  Create = "create",
-  Update = "update",
-  CloseCompleted = "close-completed",
-  CloseInvalid = "close-invalid",
-}
+export type IssueSyncStatus = Stream.Stream.Success<
+  ReturnType<typeof reconcileIssues>
+>;
 
-type CurrentIssue = { number: number };
-type ReconcilerInitialItem = { issue: CurrentIssue; issueData: IssueData };
+export const IssueSyncStatus = Data.taggedEnum<IssueSyncStatus>();
 
-export class Reconciler {
-  #reconciledUrls = new Set<string>();
-  #currentIssues;
+export const reconcileIssues = <E, R>(result$: Stream.Stream<Result, E, R>) =>
+  pipe(
+    Effect.gen(function* () {
+      const gh = yield* GitHubAPI;
 
-  constructor(currentIssues: Iterable<ReconcilerInitialItem>) {
-    this.#currentIssues = new Map<string, ReconcilerInitialItem>(
-      Iterator.from(currentIssues).map((item) => [
-        item.issueData.todoUrl,
-        item,
-      ]),
-    );
-  }
+      const [invalidRemoteIssues$, validRemoteIssues$_] = yield* pipe(
+        gh.fetchCurrentIssues(),
+        Stream.mapEffect((issue) =>
+          pipe(
+            Option.fromNullable(issue.body),
+            Effect.andThen(getIssueData),
+            Effect.either,
+            Effect.map(
+              Either.mapBoth({
+                onLeft: () => ({ issue }),
+                onRight: (issueData) => ({ issue, issueData }),
+              }),
+            ),
+          ),
+        ),
+        Stream.partitionEither(Effect.succeed),
+      );
 
-  reconcileResult(result: t.Result<t.File>) {
-    const urlString = result.url.toString();
-    this.#reconciledUrls.add(urlString);
+      const [notTriggeredResults$, expiredResults$_] = yield* pipe(
+        result$,
+        Stream.partition(isExpiredResult),
+      );
 
-    const currentIssue = this.#currentIssues.get(urlString);
-    if (currentIssue) {
-      return {
-        action: IssueAction.Update,
-        number: currentIssue.issue.number,
-      } as const;
-    } else {
-      return {
-        action: IssueAction.Create,
-      } as const;
-    }
-  }
+      const expiredResults$ = yield* Stream.broadcast(expiredResults$_, 2, 1);
 
-  getOrphanedIssues() {
-    const notSeenIssues = this.#currentIssues
-      .entries()
-      .filter(([url]) => !this.#reconciledUrls.has(url));
+      const validRemoteIssues$ = pipe(
+        Effect.gen(function* () {
+          const remoteIssuesByTodoUrl = yield* pipe(
+            validRemoteIssues$_,
+            Stream.runCollect,
+            Effect.map((remoteIssues) =>
+              HashMap.fromIterable(
+                Chunk.toReadonlyArray(remoteIssues).map((issue) => [
+                  issue.issueData.todoUrl,
+                  issue,
+                ]),
+              ),
+            ),
+          );
 
-    return notSeenIssues.map(([url, { issue }]) => ({
-      number: issue.number,
-      url,
-    }));
-  }
-}
+          const [localOnlyIssues$, remoteMatchedIssues$] = yield* pipe(
+            expiredResults$[0],
+            Stream.partitionEither((result) =>
+              pipe(
+                HashMap.get(remoteIssuesByTodoUrl, result.url.toString()),
+                Either.fromOption(() => ({ result })),
+                Either.map(({ issue, issueData }) => ({
+                  result,
+                  issue,
+                  issueData,
+                })),
+                Effect.succeed,
+              ),
+            ),
+          );
+
+          const orphanedIssues$ = pipe(
+            expiredResults$[1],
+            Stream.transduce(
+              Sink.foldLeft(remoteIssuesByTodoUrl, (map, result) =>
+                HashMap.remove(map, result.url.toString()),
+              ),
+            ),
+            Stream.map(HashMap.values),
+            Stream.flattenIterables,
+          );
+
+          return Stream.mergeWithTag(
+            {
+              LocalOnly: localOnlyIssues$,
+              RemoteMatched: remoteMatchedIssues$,
+              Orphaned: orphanedIssues$,
+            },
+            { concurrency: "unbounded" },
+          );
+        }),
+        Stream.flatMap(identity),
+      );
+
+      return pipe(
+        Stream.mergeWithTag(
+          {
+            Invalid: invalidRemoteIssues$,
+            NotTriggered: Stream.map(notTriggeredResults$, (result) => ({
+              result,
+            })),
+          },
+          { concurrency: "unbounded" },
+        ),
+        Stream.merge(validRemoteIssues$),
+      );
+    }),
+    Stream.flatMap(identity),
+  );

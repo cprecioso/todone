@@ -1,37 +1,55 @@
-import { TextLineStream } from "@std/streams";
 import { re } from "@todone/internal-util/regex";
-import { compactMap } from "@todone/internal-util/stream";
-import { tryURL } from "@todone/internal-util/url";
 import type * as t from "@todone/types";
+import * as Data from "effect/Data";
+import * as Effect from "effect/Effect";
+import { pipe } from "effect/Function";
+import * as Stream from "effect/Stream";
+import * as pkg from "../package.json" with { type: "json" };
 import { Options } from "./options";
 
-export const makeAnalyzer = <File extends t.File>(options: Options) => {
-  const matcher = re`${options.keyword}\s+?(\S+)`("dgu");
+export class StreamConsumingError extends Data.Error<{ cause: unknown }> {}
 
-  return (file: File) => {
-    const contentsStream = file.getContent();
-
-    return contentsStream
-      .pipeThrough(new TextDecoderStream())
-      .pipeThrough(new TextLineStream())
-      .pipeThrough(
-        compactMap(
-          (text, line): { url: URL; match: t.Match<File> } | undefined => {
-            for (const match of text.matchAll(matcher)) {
-              const url = tryURL(match[1]);
-              if (url) {
-                const [startIndex] = match.indices![0];
-                return {
-                  url,
-                  match: {
-                    file,
-                    position: { line: line + 1, column: startIndex + 1 },
-                  },
-                };
-              }
-            }
-          },
-        ),
-      );
-  };
+export type RunnerMatch<E, R, TFile extends t.File<E, R>> = {
+  url: URL;
+  match: t.Match<E, R, TFile>;
 };
+
+export class Analyzer extends Effect.Service<Analyzer>()(
+  `${pkg.name}/Analyzer`,
+  {
+    effect: Effect.gen(function* () {
+      const { keyword } = yield* Options;
+      const matcher = re`${keyword}\s+?(\S+)`("dgu");
+
+      return {
+        findMatches:
+          <E, R, TFile extends t.File<E, R>>() =>
+          (file: TFile) =>
+            pipe(
+              Stream.decodeText(file.getContent),
+              Stream.splitLines,
+              Stream.zipWithIndex,
+              Stream.mapConcat(([text, line]) =>
+                text
+                  .matchAll(matcher)
+                  .filter(([, url]) => URL.canParse(url))
+                  .map((match): RunnerMatch<E, R, TFile> => {
+                    const url = new URL(match[1]);
+                    const [startIndex] = match.indices![0];
+                    return {
+                      url,
+                      match: {
+                        file,
+                        position: {
+                          line: line + 1,
+                          column: startIndex + 1,
+                        },
+                      },
+                    };
+                  }),
+              ),
+            ),
+      };
+    }),
+  },
+) {}

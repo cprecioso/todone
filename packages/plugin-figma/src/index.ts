@@ -1,8 +1,9 @@
-import { assert } from "@std/assert";
-import { definePlugin } from "@todone/plugin";
-import ky from "ky";
-import * as z from "zod/v4-mini";
-import { commentsResponseSchema } from "./api";
+import { Plugin, PluginFactory } from "@todone/types";
+import * as Data from "effect/Data";
+import * as Effect from "effect/Effect";
+import * as Layer from "effect/Layer";
+import * as Schema from "effect/Schema";
+import { Figma } from "./api";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
@@ -11,68 +12,65 @@ const pattern = new URLPattern({
   hash: "#:commentID",
 });
 
-const patternResultSchema = z.object({
-  pathname: z.object({
-    groups: z.object({
-      fileID: z.string(),
-    }),
-  }),
-  hash: z.object({
-    groups: z.object({
-      commentID: z.string(),
-    }),
-  }),
-});
+const matchPattern = (url: URL) =>
+  Effect.andThen(
+    Effect.sync(() => pattern.exec(url)),
+    Schema.decodeUnknown(
+      Schema.Struct({
+        pathname: Schema.Struct({
+          groups: Schema.Struct({
+            fileID: Schema.String,
+          }),
+        }),
+        hash: Schema.Struct({
+          groups: Schema.Struct({
+            commentID: Schema.String,
+          }),
+        }),
+      }),
+    ),
+  );
 
-/** The plugin factory */
-export default definePlugin(
-  {
-    token: {
-      schema: z.string(),
-      envName: "FIGMA_TOKEN",
-    },
-  },
-  async ({ token }) => {
-    const client = ky.extend({
-      prefixUrl: "https://api.figma.com/v1",
-      headers: { "X-FIGMA-TOKEN": token },
-    });
+export class CommentNotFoundError extends Data.Error<{}> {}
+
+export default Layer.effect(
+  Plugin,
+  Effect.gen(function* () {
+    const api = yield* Figma;
 
     return {
-      name: "Figma Comment",
+      name: "Figma",
 
       pattern,
 
-      async check({ url }) {
-        const result = patternResultSchema.parse(pattern.exec(url));
+      check: ({ url }) =>
+        Effect.gen(function* () {
+          const {
+            pathname: {
+              groups: { fileID },
+            },
+            hash: {
+              groups: { commentID },
+            },
+          } = yield* matchPattern(url);
 
-        const {
-          pathname: {
-            groups: { fileID },
-          },
-          hash: {
-            groups: { commentID },
-          },
-        } = result;
+          const { comments } = yield* api.Files.GetComments({
+            path: { fileID: fileID },
+          });
+          if (!comments) return yield* new CommentNotFoundError();
 
-        const data = commentsResponseSchema.parse(
-          await client.get(`files/${fileID}/comments`).json(),
-        );
+          const comment = comments.find((comment) => comment.id === commentID);
+          if (!comment) return yield* new CommentNotFoundError();
 
-        const comment = data.comments?.find(
-          (comment) => comment.id === commentID,
-        );
-        assert(comment, "No such comment");
+          const closeDate = comment.resolved_at;
+          const isExpired = Boolean(closeDate);
 
-        const closeDate = comment.resolved_at;
-        const isExpired = Boolean(closeDate);
-
-        return {
-          title: `Figma comment from ${comment.user.handle}`,
-          isExpired,
-          expirationDate: closeDate || undefined,
-        };
-      },
+          return {
+            title: `Figma comment from ${comment.user.handle}`,
+            isExpired,
+            expirationDate: closeDate || undefined,
+          };
+        }),
     };
-  },
-);
+  }),
+).pipe(Layer.provide(Figma.Default)) satisfies PluginFactory<unknown>;

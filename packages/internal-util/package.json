@@ -14,25 +14,9 @@
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "exports": {
-    "./bool": {
-      "types": "./dist/bool.d.ts",
-      "default": "./dist/bool.js"
-    },
-    "./collection": {
-      "types": "./dist/collection.d.ts",
-      "default": "./dist/collection.js"
-    },
     "./regex": {
       "types": "./dist/regex.d.ts",
       "default": "./dist/regex.js"
-    },
-    "./stream": {
-      "types": "./dist/stream.d.ts",
-      "default": "./dist/stream.js"
-    },
-    "./url": {
-      "types": "./dist/url.d.ts",
-      "default": "./dist/url.js"
     }
   },
   "files": [
@@ -43,14 +27,10 @@
     "check": "tsc --noEmit -p .",
     "dev": "tsdown --watch"
   },
-  "dependencies": {
-    "@std/regexp": "jsr:^1.0.1",
-    "@std/streams": "jsr:^1.0.10"
-  },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "tsdown": "^0.13.4",
-    "typescript": "~5.9.2"
+    "tsdown": "^0.15.10",
+    "typescript": "~5.9.3"
   },
   "publishConfig": {
     "access": "public",

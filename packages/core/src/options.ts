@@ -1,32 +1,35 @@
-import type { PluginInstance } from "@todone/types";
+import type { Plugin } from "@todone/types";
+import * as Context from "effect/Context";
+import * as Effect from "effect/Effect";
+import * as pkg from "../package.json" with { type: "json" };
 
-export interface Options {
-  /**
-   * Keyword to match against
-   *
-   * @default "@TODO"
-   */
-  keyword: string;
+export type OptionsType = Context.Tag.Service<Options>;
+export class Options extends Context.Tag(`${pkg}/Config`)<
+  Options,
+  {
+    /**
+     * Keyword to match against
+     *
+     * @default "@TODO"
+     */
+    readonly keyword: string;
 
-  /**
-   * Plugins that matches will be run through
-   */
-  plugins: readonly PluginInstance[];
+    /**
+     * Plugins that matches will be run through
+     */
+    plugins: readonly (typeof Plugin.Service)[];
+  }
+>() {
+  private static defaultOptions: OptionsType = {
+    keyword: "@TODO",
+    plugins: [],
+  };
 
-  /**
-   * Where to log errors
-   */
-  warnLogger: (line: string) => void;
+  static Default = Options.of(this.defaultOptions);
+
+  static provide = (opts: Partial<OptionsType> = {}) =>
+    Effect.provideService(
+      Options,
+      Options.of({ ...this.defaultOptions, ...opts }),
+    );
 }
-
-const defaultWarnLogger = console.error.bind(console);
-
-export const defaultTodoneOptions: Options = {
-  keyword: "@TODO",
-  plugins: [],
-  warnLogger: defaultWarnLogger,
-};
-
-export const normalizeOptions = (
-  partialOptions: Partial<Options>,
-): Options => ({ ...defaultTodoneOptions, ...partialOptions });

@@ -33,10 +33,6 @@
       "path": "packages/plugin-caniuse",
     },
     {
-      "name": "📦 @todone/plugin",
-      "path": "packages/plugin",
-    },
-    {
       "name": "📦 @todone/core",
       "path": "packages/core",
     },

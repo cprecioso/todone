@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
 import "dotenv/config";
+import cli from "./commands";
 
-const { cli } = await import("./commands");
 await cli.runExit(process.argv.slice(2));

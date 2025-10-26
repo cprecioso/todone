@@ -3,4 +3,4 @@ import { RunCommand } from "./run";
 
 cli.register(RunCommand);
 
-export { cli };
+export default cli;

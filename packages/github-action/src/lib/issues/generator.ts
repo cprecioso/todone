@@ -1,94 +1,106 @@
+import * as Effect from "effect/Effect";
+import { pipe } from "effect/Function";
+import * as Option from "effect/Option";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
-import pMap from "p-map";
 import { u } from "unist-builder";
 import { server } from "../../input";
-import * as md from "../markdown";
-import { ExpiredResult, formatDate } from "../util";
+import { formatDate } from "../util/format";
+import * as md from "../util/markdown";
+import { ExpiredResult } from "../util/result";
 import { createIssueData } from "./issue-data";
 
-export const generateIssue = async ({
-  result: { url, result, matches },
-}: ExpiredResult) => {
-  const urlString = url.toString();
-  const title = `TODO: ${result.title ?? urlString}`;
+export const generateIssue = ({ result, matches, url }: ExpiredResult) =>
+  Effect.gen(function* () {
+    const urlString = url.toString();
+    const title = `TODO: ${result.title ?? urlString}`;
 
-  const body = md.stringify(
-    u("root", [
-      u("paragraph", [
-        u("text", "The following TODO has expired"),
-        ...(result.expirationDate
-          ? [
-              u("text", ` as of `),
-              u(
-                "html",
-                toHtml(
-                  h(
-                    "time",
-                    { datetime: result.expirationDate.toISOString() },
-                    formatDate(result.expirationDate),
+    const body = md.stringify(
+      u("root", [
+        u("paragraph", [
+          u("text", "The following TODO has expired"),
+          ...(result.expirationDate
+            ? [
+                u("text", ` as of `),
+                u(
+                  "html",
+                  toHtml(
+                    h(
+                      "time",
+                      { datetime: result.expirationDate.toISOString() },
+                      formatDate(result.expirationDate),
+                    ),
                   ),
                 ),
-              ),
-            ]
-          : []),
-        u("text", ":"),
-      ]),
+              ]
+            : []),
+          u("text", ":"),
+        ]),
 
-      u("list", [
-        u("listItem", [
-          u("paragraph", [
-            u("link", { url: urlString }, [
-              u(
-                "text",
-                (!urlString.startsWith(server) && result.title) || urlString,
-              ),
+        u("list", [
+          u("listItem", [
+            u("paragraph", [
+              u("link", { url: urlString }, [
+                u(
+                  "text",
+                  (!urlString.startsWith(server) && result.title) || urlString,
+                ),
+              ]),
             ]),
           ]),
         ]),
-      ]),
 
-      u("paragraph", [u("text", "It is present in the following files:")]),
+        u("paragraph", [u("text", "It is present in the following files:")]),
 
-      u(
-        "list",
-        await pMap(
-          matches,
-          async (match) => {
-            const fileUrl = await match.file.getUrl(match.position.line);
-
-            return u("listItem", { checked: false }, [
-              u("paragraph", [
-                fileUrl
-                  ? u("link", { url: fileUrl }, [u("text", fileUrl)])
-                  : u(
-                      "text",
-                      `${match.file.location}:${match.position.line}:${match.position.column}`,
-                    ),
-              ]),
-            ]);
-          },
-          { concurrency: 1 },
+        u(
+          "list",
+          yield* Effect.all(
+            matches.map((match) =>
+              pipe(
+                match.file.getUrl(match.position.line),
+                Effect.map(
+                  Option.match({
+                    onNone: () => {
+                      const locationDescription = `${match.file.location}:${match.position.line}:${match.position.column}`;
+                      return u("text", locationDescription);
+                    },
+                    onSome: (fileUrl) => {
+                      const fileUrlString = fileUrl.toString();
+                      return u("link", { url: fileUrlString }, [
+                        u("text", fileUrlString),
+                      ]);
+                    },
+                  }),
+                ),
+                Effect.map((listItemContent) =>
+                  u("listItem", { checked: false }, [
+                    u("paragraph", [listItemContent]),
+                  ]),
+                ),
+              ),
+            ),
+          ),
         ),
-      ),
 
-      u("thematicBreak", []),
+        u("thematicBreak", []),
 
-      u("paragraph", [
-        u("text", "This issue has been automatically created by "),
-        u("inlineCode", { value: "todone" }),
-        u("text", "."),
+        u("paragraph", [
+          u("text", "This issue has been automatically created by "),
+          u("inlineCode", { value: "todone" }),
+          u("text", "."),
+        ]),
+
+        md.createComment(
+          " Please do not edit the following comments, they are automatically generated by todone. ",
+        ),
+
+        ...createIssueData({ todoUrl: urlString }),
       ]),
+    );
 
-      md.createComment(
-        " Please do not edit the following comments, they are automatically generated by todone. ",
-      ),
+    return { todoUrl: urlString, title, body };
+  });
 
-      ...createIssueData({ todoUrl: urlString }),
-    ]),
-  );
-
-  return { todoUrl: urlString, title, body };
-};
-
-export type IssueDefinition = Awaited<ReturnType<typeof generateIssue>>;
+export type IssueDefinition = Effect.Effect.Success<
+  ReturnType<typeof generateIssue>
+>;

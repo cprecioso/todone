@@ -1,4 +1,8 @@
-import { escape } from "@std/regexp/escape";
+declare global {
+  interface RegExpConstructor {
+    escape(s: string): string;
+  }
+}
 
 export const re = (
   template: TemplateStringsArray,
@@ -10,7 +14,7 @@ export const re = (
     reText += templatePart;
     const substitutionPart = substitutions[i];
     if (substitutionPart != null) {
-      reText += escape(substitutionPart);
+      reText += RegExp.escape(substitutionPart);
     }
     i++;
   }

@@ -1,98 +1,68 @@
-import * as core from "@actions/core";
-import { analyzeStream } from "@todone/core";
-import * as s from "@todone/internal-util/stream";
-import { githubToken, globs, keyword } from "./input";
-import { makeFileStream } from "./lib/files";
-import * as gh from "./lib/issues/actions";
-import { generateIssue } from "./lib/issues/generator";
-import { IssueAction, Reconciler } from "./lib/issues/reconciler";
-import { makeDebugLogger, makeResultLogger } from "./lib/logger";
+import * as NodeContext from "@effect/platform-node/NodeContext";
+import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient";
+import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
+import { Options, Runner } from "@todone/core";
+import defaultPlugins from "@todone/default-plugins";
+import * as Effect from "effect/Effect";
+import { pipe } from "effect/Function";
+import * as Layer from "effect/Layer";
+import * as Stream from "effect/Stream";
+import * as input from "./input";
+import { GitHubFile, makeFileStream } from "./lib/files";
+import { GitHubAPI } from "./lib/issues/actions";
+import { reconcileIssues } from "./lib/issues/reconciler";
+import { syncChanges } from "./lib/output/issues";
+import { AnalysisLogger } from "./lib/output/logger";
+import { outputToSummary } from "./lib/output/summary";
 import { makePlugins } from "./lib/plugins";
-import { SummaryTable } from "./lib/summary";
-import { isExpiredResult, isResult } from "./lib/util";
 
-const plugins = await makePlugins(githubToken);
-const files = makeFileStream(globs);
+const main = Effect.gen(function* () {
+  const options = Layer.effect(
+    Options,
+    Effect.map(makePlugins(defaultPlugins), (plugins) => ({
+      keyword: input.keyword,
+      plugins,
+    })),
+  );
 
-const warnLogger = (line: string): void => core.warning(line);
+  const layer = Layer.mergeAll(
+    Runner.Default,
+    input.dryRun ? GitHubAPI.DryRun : GitHubAPI.Default,
+    AnalysisLogger.Default,
+  ).pipe(Layer.provide(options));
 
-const analysis$ = analyzeStream(files, { plugins, warnLogger, keyword })
-  .pipeThrough(s.tap(makeDebugLogger()))
-  .pipeThrough(s.tap(makeResultLogger()))
-  .pipeThrough(s.filter(isResult));
+  return yield* pipe(
+    Effect.gen(function* () {
+      const runner = yield* Runner;
 
-const summaryTable = new SummaryTable();
+      return yield* pipe(
+        makeFileStream(input.globs),
 
-const { valid, invalid } = await gh.fetchCurrentIssues();
+        Stream.tap(AnalysisLogger.logFile),
 
-for (const { issue } of invalid) {
-  await gh.closeInvalid(issue.number);
-}
+        runner.getMatches<GitHubFile.E, GitHubFile.R, GitHubFile>(),
 
-const reconciler = new Reconciler(valid);
+        Stream.tap(AnalysisLogger.logMatch),
 
-for await (const item of analysis$) {
-  if (isExpiredResult(item)) {
-    const issueDefinition = await generateIssue(item);
-    const patch = reconciler.reconcileResult(item.result);
+        runner.getResults<GitHubFile.E, GitHubFile.R, GitHubFile>(),
 
-    switch (patch.action) {
-      case IssueAction.Create: {
-        const newIssueNumber = await gh.createIssue(issueDefinition);
-        for (const match of item.result.matches) {
-          summaryTable.addRow({
-            url: item.result.url.toString(),
-            match,
-            result: item.result.result,
-            issueNumber: newIssueNumber,
-            action: IssueAction.Create,
-          });
-        }
-        break;
-      }
+        Stream.tap(AnalysisLogger.logResult),
 
-      case IssueAction.Update: {
-        const updatedIssueNumber = await gh.updateIssue(
-          patch.number,
-          issueDefinition,
-        );
-        for (const match of item.result.matches) {
-          summaryTable.addRow({
-            url: item.result.url.toString(),
-            match,
-            result: item.result.result,
-            issueNumber: updatedIssueNumber,
-            action: IssueAction.Update,
-          });
-        }
-        break;
-      }
+        reconcileIssues,
 
-      default: {
-        patch satisfies never;
-      }
-    }
-  } else {
-    for (const match of item.result.matches) {
-      summaryTable.addRow({
-        url: item.result.url.toString(),
-        match,
-        result: item.result.result,
-      });
-    }
-  }
-}
+        syncChanges,
 
-for (const issue of reconciler.getOrphanedIssues()) {
-  await gh.closeCompleted(issue.number);
-  summaryTable.addRow({
-    url: issue.url,
-    action: IssueAction.CloseCompleted,
-    issueNumber: issue.number,
-  });
-}
+        outputToSummary,
+      );
+    }),
+    Effect.provide(layer),
+    Effect.scoped,
+  );
+});
 
-await core.summary
-  .addHeading("TODOs found")
-  .addTable(await summaryTable.getTable())
-  .write();
+pipe(
+  main,
+  Effect.scoped,
+  Effect.provide(Layer.mergeAll(NodeHttpClient.layer, NodeContext.layer)),
+  NodeRuntime.runMain,
+);

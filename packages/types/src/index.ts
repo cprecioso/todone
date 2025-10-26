@@ -1,23 +1,30 @@
+import * as ConfigError from "effect/ConfigError";
+import * as Context from "effect/Context";
+import * as Effect from "effect/Effect";
+import * as Layer from "effect/Layer";
+import * as Stream from "effect/Stream";
+import * as pkg from "../package.json" with { type: "json" };
+
 /** A position in a file */
-export interface Offset {
+export interface t {
   line: number;
   column: number;
 }
 
 /** An object representing a file and its contents */
-export interface File {
-  readonly getContent: (this: this) => ReadableStream<Uint8Array>;
+export interface File<E, R> {
+  readonly getContent: Stream.Stream<Uint8Array, E, R>;
 }
 
-export interface Match<FileType extends File> {
-  file: FileType;
-  position: Offset;
+export interface Match<E, R, TFile extends File<E, R>> {
+  file: TFile;
+  position: t;
 }
 
-export interface Result<FileType extends File> {
+export interface Result<E, R, TFile extends File<E, R>> {
   url: URL;
   result: PluginResult | null;
-  matches: readonly Match<FileType>[];
+  matches: readonly Match<E, R, TFile>[];
 }
 
 /**
@@ -26,20 +33,24 @@ export interface Result<FileType extends File> {
  */
 export type Searchable = RegExp | Pick<RegExp, "test">;
 
-/** A plugin for `todone` */
-export interface PluginInstance {
-  /** The plugin's name, will be used for reporting */
-  readonly name: string;
+export type PluginFactory<R> = Layer.Layer<Plugin, ConfigError.ConfigError, R>;
 
-  /**
-   * If a match's URL tests true against any of these patterns, it will be
-   * processed by this plugin
-   */
-  readonly pattern?: Searchable | Searchable[];
+export class Plugin extends Context.Tag(`${pkg.name}/Plugin`)<
+  Plugin,
+  {
+    /** The plugin's name, will be used for reporting */
+    readonly name: string;
 
-  /** The plugin checks if this URL has expired or not */
-  check(options: { url: URL }): Promise<PluginResult | null>;
-}
+    /**
+     * If a match's URL tests true against any of these patterns, it will be
+     * processed by this plugin
+     */
+    readonly pattern?: Searchable | Searchable[];
+
+    /** The plugin checks if this URL has expired or not */
+    check(options: { url: URL }): Effect.Effect<PluginResult, unknown>;
+  }
+>() {}
 
 export interface PluginResult {
   /** A human title for the reference URL */

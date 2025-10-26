@@ -28,6 +28,10 @@
     "check": "tsc --noEmit -p .",
     "dev": "tsdown --watch"
   },
+  "peerDependencies": {
+    "@todone/types": "workspace:^",
+    "effect": "^3.17.7"
+  },
   "dependencies": {
     "@todone/plugin-caniuse": "workspace:^",
     "@todone/plugin-date": "workspace:^",
@@ -36,8 +40,10 @@
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "tsdown": "^0.13.4",
-    "typescript": "~5.9.2"
+    "@todone/types": "workspace:*",
+    "effect": "^3.18.4",
+    "tsdown": "^0.15.10",
+    "typescript": "~5.9.3"
   },
   "publishConfig": {
     "provenance": true,
