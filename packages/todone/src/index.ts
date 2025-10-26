@@ -1,6 +1,6 @@
 import * as NodeContext from "@effect/platform-node/NodeContext";
+import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient";
 import * as Error from "@effect/platform/Error";
-import * as FetchHttpClient from "@effect/platform/FetchHttpClient";
 import * as FileSystem from "@effect/platform/FileSystem";
 import * as todone from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
@@ -15,7 +15,7 @@ import * as plugins from "./lib/plugins";
 
 export interface Options extends todone.OptionsType, Partial<GetFilesOptions> {}
 
-const layer = FetchHttpClient.layer.pipe(Layer.provideMerge(NodeContext.layer));
+const layer = NodeHttpClient.layer.pipe(Layer.provideMerge(NodeContext.layer));
 
 export const makePlugins = (
   pluginList: plugins.AllowedPluginList,
