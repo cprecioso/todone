@@ -9,11 +9,6 @@ import { Options } from "./options";
 
 export class StreamConsumingError extends Data.Error<{ cause: unknown }> {}
 
-export type RunnerMatch<E, R, TFile extends t.File<E, R>> = {
-  url: URL;
-  match: t.Match<E, R, TFile>;
-};
-
 export class Analyzer extends Effect.Service<Analyzer>()(
   `${pkg.name}/Analyzer`,
   {
@@ -33,18 +28,16 @@ export class Analyzer extends Effect.Service<Analyzer>()(
                 text
                   .matchAll(matcher)
                   .filter(([, url]) => URL.canParse(url))
-                  .map((match): RunnerMatch<E, R, TFile> => {
+                  .map((match): t.Match<E, R, TFile> => {
                     const url = new URL(match[1]);
                     const [startIndex] = match.indices![0];
                     return {
-                      url,
-                      match: {
-                        file,
-                        position: {
-                          line: line + 1,
-                          column: startIndex + 1,
-                        },
+                      file,
+                      position: {
+                        line: line + 1,
+                        column: startIndex + 1,
                       },
+                      url,
                     };
                   }),
               ),

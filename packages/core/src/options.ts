@@ -3,22 +3,26 @@ import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as pkg from "../package.json" with { type: "json" };
 
-export type OptionsType = Context.Tag.Service<Options>;
+export interface OptionsType {
+  /**
+   * Keyword to match against
+   *
+   * @default "@TODO"
+   */
+  readonly keyword: string;
+
+  /**
+   * Plugins that matches will be run through
+   */
+  plugins: readonly PluginInstance[];
+}
+
+/**
+ * An Effect Context tag to provide and request the configuration options.
+ */
 export class Options extends Context.Tag(`${pkg}/Config`)<
   Options,
-  {
-    /**
-     * Keyword to match against
-     *
-     * @default "@TODO"
-     */
-    readonly keyword: string;
-
-    /**
-     * Plugins that matches will be run through
-     */
-    plugins: readonly PluginInstance[];
-  }
+  OptionsType
 >() {
   private static defaultOptions: OptionsType = {
     keyword: "@TODO",

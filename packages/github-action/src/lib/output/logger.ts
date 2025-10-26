@@ -1,4 +1,4 @@
-import { RunnerMatch } from "@todone/core";
+import * as t from "@todone/types";
 import * as Effect from "effect/Effect";
 import * as pkg from "../../../package.json" with { type: "json" };
 import { Console } from "../../services/console";
@@ -19,7 +19,7 @@ export class AnalysisLogger extends Effect.Service<AnalysisLogger>()(
 
       return {
         logFile: (item: GitHubFile) => debugItem(item),
-        logMatch: (item: RunnerMatch<GitHubFile.E, GitHubFile.R, GitHubFile>) =>
+        logMatch: (item: t.Match<GitHubFile.E, GitHubFile.R, GitHubFile>) =>
           debugItem(item),
         logResult: (item: Result) =>
           Effect.gen(function* () {

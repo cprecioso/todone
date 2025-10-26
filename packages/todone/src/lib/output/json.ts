@@ -60,12 +60,12 @@ export const OutputJson = Layer.effect(
 
       fileItem: (file) => outputItem({ type: "file", location: file.fullPath }),
 
-      matchItem: ({ url, match }) =>
+      matchItem: ({ url, file, position }) =>
         outputItem({
           type: "match",
           url,
-          location: match.file.fullPath,
-          ...match.position,
+          location: file.fullPath,
+          ...position,
         }),
 
       resultItem: ({ url, result }) =>

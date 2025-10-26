@@ -6,7 +6,7 @@ import * as Stream from "effect/Stream";
 import * as pkg from "../package.json" with { type: "json" };
 
 /** A position in a file */
-export interface Position {
+export interface t {
   /** The 1-based line number */
   line: number;
   /** The 1-based column number */
@@ -25,7 +25,8 @@ export interface File<E, R> {
 /** An object representing a TODO URL as found on a specific file */
 export interface Match<E, R, TFile extends File<E, R>> {
   file: TFile;
-  position: Position;
+  position: t;
+  url: URL;
 }
 
 /**

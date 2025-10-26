@@ -5,7 +5,7 @@ import { pipe } from "effect/Function";
 import * as GroupBy from "effect/GroupBy";
 import * as Stream from "effect/Stream";
 import * as pkg from "../package.json" with { type: "json" };
-import { Analyzer, RunnerMatch } from "./analyzer";
+import { Analyzer } from "./analyzer";
 import { PluginRunner } from "./plugins";
 
 export class Runner extends Effect.Service<Runner>()(`${pkg.name}/Runner`, {
@@ -22,13 +22,12 @@ export class Runner extends Effect.Service<Runner>()(`${pkg.name}/Runner`, {
 
       getResults:
         <FE, FR, TFile extends t.File<FE, FR>>() =>
-        <E, R>(stream: Stream.Stream<RunnerMatch<FE, FR, TFile>, E, R>) =>
+        <E, R>(stream: Stream.Stream<t.Match<FE, FR, TFile>, E, R>) =>
           pipe(
             stream,
             Stream.groupByKey((item) => item.url.toString()),
             GroupBy.evaluate((url, stream) =>
               Stream.runCollect(stream).pipe(
-                Effect.andThen(Chunk.map((item) => item.match)),
                 Effect.andThen(Chunk.toReadonlyArray),
                 Effect.andThen((matches) => ({ url: new URL(url), matches })),
                 Stream.fromEffect,
