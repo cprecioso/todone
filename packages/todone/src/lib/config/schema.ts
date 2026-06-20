@@ -47,3 +47,4 @@ export const Config = Schema.Struct({
 });
 
 export interface Config extends Schema.Schema.Type<typeof Config> {}
+export interface ConfigInput extends Schema.Schema.Encoded<typeof Config> {}
