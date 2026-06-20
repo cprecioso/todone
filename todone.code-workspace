@@ -13,40 +13,32 @@
       "path": "packages/default-plugins",
     },
     {
-      "name": "📦 @todone/plugin-github",
-      "path": "packages/plugin-github",
-    },
-    {
-      "name": "📦 @todone/plugin-figma",
-      "path": "packages/plugin-figma",
-    },
-    {
-      "name": "📦 @todone/plugin-date",
-      "path": "packages/plugin-date",
+      "name": "📦 @todone/internal-build",
+      "path": "packages/internal-build",
     },
     {
       "name": "📦 @todone/plugin-caniuse",
       "path": "packages/plugin-caniuse",
     },
     {
-      "name": "📦 @todone/core",
-      "path": "packages/core",
+      "name": "📦 @todone/plugin-date",
+      "path": "packages/plugin-date",
     },
     {
-      "name": "📦 @todone/types",
-      "path": "packages/types",
+      "name": "📦 @todone/plugin-figma",
+      "path": "packages/plugin-figma",
     },
     {
-      "name": "📦 @todone/internal-util",
-      "path": "packages/internal-util",
+      "name": "📦 @todone/plugin-github",
+      "path": "packages/plugin-github",
     },
     {
-      "name": "📦 @todone/internal-build",
-      "path": "packages/internal-build",
+      "name": "📦 @todone/test-app",
+      "path": "packages/test-app",
     },
   ],
   "settings": {
-    "typescript.tsdk": "✨ @todone/repo/node_modules/typescript/lib",
+    "js/ts.tsdk.path": "node_modules/typescript/lib",
   },
   "extensions": {
     "recommendations": [

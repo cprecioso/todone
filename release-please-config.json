@@ -9,15 +9,11 @@
   "release-type": "node",
   "bump-minor-pre-major": true,
   "packages": {
-    "packages/core": {},
-    "packages/default-plugins": {},
     "packages/internal-build": {},
-    "packages/internal-util": {},
     "packages/plugin-caniuse": {},
     "packages/plugin-date": {},
     "packages/plugin-figma": {},
     "packages/plugin-github": {},
-    "packages/todone": {},
-    "packages/types": {}
+    "packages/todone": {}
   }
 }
