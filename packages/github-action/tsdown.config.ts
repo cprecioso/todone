@@ -8,5 +8,6 @@ export default [
       alwaysBundle: () => true,
       onlyBundle: false,
     },
+    minify: true,
   }),
 ];
