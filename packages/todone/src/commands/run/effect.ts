@@ -7,7 +7,7 @@ import * as Option from "effect/Option";
 import * as Stream from "effect/Stream";
 import { RunCommand } from "./index";
 
-export const makeRunEffect = ({ reporter: overrideReporter }: RunCommand) =>
+export default ({ reporter: overrideReporter }: RunCommand) =>
   Effect.gen(function* () {
     const rawConfig = yield* loadConfigFile();
     const rawConfigWithOverrides = {
