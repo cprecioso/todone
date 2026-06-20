@@ -27,14 +27,14 @@
   },
   "peerDependencies": {
     "@effect/platform": "^0.96.1",
-    "@todone/types": "workspace:^",
-    "effect": "^3.21.3"
+    "effect": "^3.21.3",
+    "todone": "workspace:^"
   },
   "devDependencies": {
     "@effect/platform": "^0.96.1",
     "@todone/internal-build": "workspace:*",
-    "@todone/types": "workspace:*",
     "effect": "^3.21.3",
+    "todone": "workspace:*",
     "tsdown": "^0.22.2",
     "typescript": "~6.0.3"
   },

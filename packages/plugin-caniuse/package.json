@@ -29,8 +29,8 @@
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "@todone/types": "workspace:^",
-    "effect": "^3.21.3"
+    "effect": "^3.21.3",
+    "todone": "workspace:^"
   },
   "dependencies": {
     "browserslist": "^4.28.2",
@@ -38,10 +38,10 @@
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
-    "@todone/types": "workspace:*",
     "@types/caniuse-lite": "^1.0.5",
     "@types/node": "^24.13.2",
     "effect": "^3.21.3",
+    "todone": "workspace:*",
     "tsdown": "^0.22.2",
     "typescript": "~6.0.3"
   },

@@ -1,17 +1,16 @@
-import { Options, Runner } from "@todone/core";
-import defaultPlugins from "@todone/default-plugins";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Stream from "effect/Stream";
-import { RunCommand } from ".";
-import { getFiles } from "../../lib/get-files";
+import { OptionsService } from "../../lib/core/options";
+import { Runner } from "../../lib/core/runner";
+import { getFiles } from "../../lib/files";
 import { OutputMode } from "../../lib/output/base";
 import { makeOutputCli } from "../../lib/output/cli";
 import { OutputJson } from "../../lib/output/json";
-import { makePlugins } from "../../lib/plugins";
+import { RunCommand } from "./index";
 
 export const makeRunEffect = ({
   keyword,
@@ -21,11 +20,11 @@ export const makeRunEffect = ({
   gitignore,
 }: RunCommand) => {
   const options = Layer.effect(
-    Options,
-    Effect.map(makePlugins(defaultPlugins), (plugins) => ({
+    OptionsService,
+    Effect.succeed({
       keyword,
-      plugins,
-    })),
+      plugins: [],
+    }),
   );
 
   const layer = Layer.mergeAll(
@@ -45,7 +44,7 @@ export const makeRunEffect = ({
 
       Stream.tap(output.fileItem),
 
-      runner.getMatches(),
+      runner.getMatches,
       Stream.tap(output.matchItem),
 
       runner.getResults,

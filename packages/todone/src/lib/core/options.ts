@@ -1,9 +1,9 @@
-import type { Plugin } from "@todone/types";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
-import * as pkg from "../package.json" with { type: "json" };
+import * as pkg from "../../../package.json" with { type: "json" };
+import { Plugin } from "../plugins";
 
-export interface OptionsType {
+export interface Options {
   /**
    * Keyword to match against
    *
@@ -22,22 +22,22 @@ export interface OptionsType {
  * Context](https://effect.website/docs/requirements-management/services/) tag
  * to provide and request the configuration options.
  *
- * @see {@link OptionsType}
+ * @see {@link Options}
  */
-export class Options extends Context.Tag(`${pkg.name}/Options`)<
-  Options,
-  OptionsType
+export class OptionsService extends Context.Tag(`${pkg.name}/Options`)<
+  OptionsService,
+  Options
 >() {
-  private static defaultOptions: OptionsType = {
+  private static defaultOptions: Options = {
     keyword: "@TODO",
     plugins: [],
   };
 
-  static Default = Options.of(this.defaultOptions);
+  static Default = OptionsService.of(this.defaultOptions);
 
-  static provide = (opts: Partial<OptionsType> = {}) =>
+  static provide = (opts: Partial<Options> = {}) =>
     Effect.provideService(
-      Options,
-      Options.of({ ...this.defaultOptions, ...opts }),
+      OptionsService,
+      OptionsService.of({ ...this.defaultOptions, ...opts }),
     );
 }

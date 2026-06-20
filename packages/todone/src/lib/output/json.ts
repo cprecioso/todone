@@ -57,13 +57,14 @@ export const OutputJson = Layer.effect(
     );
 
     return {
-      fileItem: (file) => outputItem({ type: "file", location: file.location }),
+      fileItem: (file) =>
+        outputItem({ type: "file", location: file.localPath }),
 
       matchItem: ({ url, file, position }) =>
         outputItem({
           type: "match",
           url,
-          location: file.location,
+          location: file.localPath,
           ...position,
         }),
 

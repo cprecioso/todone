@@ -1,6 +1,6 @@
-import { CheckerResult } from "@todone/types";
 import { UnknownException } from "effect/Cause";
 import * as Effect from "effect/Effect";
+import { CheckerResult } from "todone/plugin";
 import { GitHub } from "./common";
 
 const maybeDate = (date: string | null): Date | undefined =>

@@ -17,9 +17,21 @@
     "node": ">=24"
   },
   "bin": "dist/bin.js",
+  "imports": {
+    "#/package.json": "./package.json",
+    "#/plugin": "./src/plugin.ts",
+    "#/types": "./src/types.ts"
+  },
   "exports": {
-    "types": "./dist/index.d.ts",
-    "default": "./dist/index.js"
+    "./package.json": "./package.json",
+    "./plugin": {
+      "types": "./dist/plugin.d.ts",
+      "default": "./dist/plugin.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    }
   },
   "files": [
     "dist"
@@ -32,10 +44,6 @@
   "dependencies": {
     "@effect/platform": "^0.96.1",
     "@effect/platform-node": "^0.107.0",
-    "@todone/core": "workspace:^",
-    "@todone/default-plugins": "workspace:^",
-    "@todone/internal-util": "workspace:*",
-    "@todone/types": "workspace:^",
     "chalk": "^5.6.2",
     "clipanion": "^4.0.0-rc.4",
     "dedent": "^1.7.2",

@@ -1,11 +1,10 @@
-import { Checker, PluginFactory } from "@todone/types";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 import { flow, pipe, satisfies } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
+import { Checker, PluginFactory } from "todone/plugin";
 import { checkFeatureSupport, getBrowsers, getFeatureInfo } from "./lib";
-
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?caniuse.com",
@@ -78,5 +77,5 @@ export default pipe(
       checkers: [yield* checker],
     };
   }),
-  satisfies<PluginFactory<unknown>>(),
+  satisfies<PluginFactory>(),
 );

@@ -1,8 +1,8 @@
-import * as t from "@todone/types";
+import * as pkg from "#/package.json" with { type: "json" };
+import type { Checker } from "#/plugin";
 import * as Effect from "effect/Effect";
 import { identity, pipe } from "effect/Function";
 import * as Stream from "effect/Stream";
-import * as pkg from "../../package.json" with { type: "json" };
 import { PluginFailedError } from "./base";
 import { PluginProvider } from "./provider";
 
@@ -29,7 +29,7 @@ export class PluginChecker extends Effect.Service<PluginChecker>()(
   },
 ) {}
 
-const checkMatchWithPlugin = (url: URL) => (plugin: t.Checker) =>
+const checkMatchWithPlugin = (url: URL) => (plugin: Checker) =>
   pipe(
     plugin.checkMatch({ url }),
     Effect.mapError(

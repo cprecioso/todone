@@ -55,7 +55,7 @@ export const makeOutputCli = (onlyExpired: boolean) =>
               position: { line, column },
             } of matches) {
               yield* headerLn(
-                chalk.blueBright(file.location) +
+                chalk.blueBright(file.localPath) +
                   ":" +
                   chalk.yellowBright(line) +
                   ":" +

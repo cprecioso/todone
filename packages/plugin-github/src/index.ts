@@ -1,11 +1,10 @@
-import { Checker, PluginFactory } from "@todone/types";
 import * as Effect from "effect/Effect";
 import { flow, pipe, satisfies } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
+import { Checker, PluginFactory } from "todone/plugin";
 import { GitHub } from "./common";
 import { resourceFetchers } from "./fetch";
-
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?github.com",
@@ -69,5 +68,5 @@ export default pipe(
     };
   }),
   Effect.provide(GitHub.Default),
-  satisfies<PluginFactory<unknown>>(),
+  satisfies<PluginFactory>(),
 );

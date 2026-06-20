@@ -1,10 +1,10 @@
-import * as t from "@todone/types";
+import * as pkg from "#/package.json" with { type: "json" };
+import * as t from "#/types";
 import * as Chunk from "effect/Chunk";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as GroupBy from "effect/GroupBy";
 import * as Stream from "effect/Stream";
-import * as pkg from "../package.json" with { type: "json" };
 import { Analyzer } from "./analyzer";
 import { PluginChecker } from "./plugins/checker";
 

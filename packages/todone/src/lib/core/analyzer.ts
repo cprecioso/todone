@@ -1,11 +1,10 @@
-import { re } from "@todone/internal-util/regex";
-import type * as t from "@todone/types";
+import * as pkg from "#/package.json" with { type: "json" };
+import type * as t from "#/types";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Stream from "effect/Stream";
-import * as pkg from "../package.json" with { type: "json" };
-import { Options } from "./options";
+import { OptionsService } from "./options";
 
 export class StreamConsumingError extends Data.Error<{ cause: unknown }> {}
 
@@ -13,8 +12,8 @@ export class Analyzer extends Effect.Service<Analyzer>()(
   `${pkg.name}/Analyzer`,
   {
     effect: Effect.gen(function* () {
-      const { keyword } = yield* Options;
-      const matcher = re`${keyword}\s+?(\S+)`("dgu");
+      const { keyword } = yield* OptionsService;
+      const matcher = new RegExp(`${RegExp.escape(keyword)}\\s+?(\\S+)`, "dgu");
 
       return {
         findMatches: (file: t.File) =>

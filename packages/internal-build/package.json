@@ -36,7 +36,6 @@
     "typedoc": "^0.28.19"
   },
   "devDependencies": {
-    "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.13.2",
     "tsdown": "^0.22.2",
     "typescript": "~6.0.3"

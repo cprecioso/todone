@@ -1,11 +1,10 @@
-import { Checker, PluginFactory } from "@todone/types";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import { flow, pipe, satisfies } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
+import { Checker, PluginFactory } from "todone/plugin";
 import { Figma } from "./api";
-
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?figma.com",
@@ -84,5 +83,5 @@ export default pipe(
     };
   }),
   Effect.provide(Figma.Default),
-  satisfies<PluginFactory<unknown>>(),
+  satisfies<PluginFactory>(),
 );
