@@ -3,6 +3,7 @@ import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import { flow } from "effect/Function";
 import * as Layer from "effect/Layer";
+import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import { OutputMode } from "./base";
 
@@ -56,18 +57,21 @@ export const OutputJson = Layer.effect(
     );
 
     return {
-      fileItem: (file) => outputItem({ type: "file", location: file.fullPath }),
+      fileItem: (file) => outputItem({ type: "file", location: file.location }),
 
       matchItem: ({ url, file, position }) =>
         outputItem({
           type: "match",
           url,
-          location: file.fullPath,
+          location: file.location,
           ...position,
         }),
 
       resultItem: ({ url, result }) =>
-        result ? outputItem({ type: "result", url, ...result }) : Effect.void,
+        Option.match(result, {
+          onSome: (result) => outputItem({ type: "result", url, ...result }),
+          onNone: () => Effect.void,
+        }),
     };
   }),
 );

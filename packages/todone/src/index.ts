@@ -1,5 +1,3 @@
-import * as Error from "@effect/platform/Error";
-import * as FileSystem from "@effect/platform/FileSystem";
 import * as todone from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
 import type { Plugin } from "@todone/types";
@@ -8,7 +6,7 @@ import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Stream from "effect/Stream";
-import { getFiles, GetFilesOptions, LocalFile } from "./lib/get-files";
+import { getFiles, GetFilesOptions } from "./lib/get-files";
 import { AllowedPlugin, makePlugins as makePluginsEffect } from "./lib/plugins";
 import { NodeRuntimeLayer } from "./lib/runtime";
 
@@ -55,13 +53,10 @@ export const run = (
   pipe(
     todone.Runner,
     Effect.andThen((runner) =>
-      getFiles(globs, { cwd, gitignore }).pipe(
-        runner.getMatches<
-          Error.PlatformError,
-          FileSystem.FileSystem,
-          LocalFile
-        >(),
-        runner.getResults<LocalFile.E, LocalFile.R, LocalFile>(),
+      pipe(
+        getFiles(globs, { cwd, gitignore }),
+        runner.getMatches,
+        runner.getResults,
         Stream.runCollect,
         Effect.andThen(Chunk.toArray),
       ),

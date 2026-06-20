@@ -4,9 +4,10 @@ import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Layer from "effect/Layer";
+import * as Option from "effect/Option";
 import * as Stream from "effect/Stream";
 import { RunCommand } from ".";
-import { getFiles, LocalFile } from "../../lib/get-files";
+import { getFiles } from "../../lib/get-files";
 import { OutputMode } from "../../lib/output/base";
 import { makeOutputCli } from "../../lib/output/cli";
 import { OutputJson } from "../../lib/output/json";
@@ -44,16 +45,21 @@ export const makeRunEffect = ({
 
       Stream.tap(output.fileItem),
 
-      runner.getMatches<LocalFile.E, LocalFile.R, LocalFile>(),
+      runner.getMatches(),
       Stream.tap(output.matchItem),
 
-      runner.getResults<LocalFile.E, LocalFile.R, LocalFile>(),
+      runner.getResults,
+
       Stream.tap(output.resultItem),
 
       Stream.runFold(
         0,
-        (exitCode, { result: { isExpired } }) =>
-          exitCode || (isExpired ? 1 : 0),
+        (accExitCode, { result }) =>
+          accExitCode ||
+          Option.match(result, {
+            onSome: ({ isExpired }) => (isExpired ? 1 : 0),
+            onNone: () => 0,
+          }),
       ),
     );
   })

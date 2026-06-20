@@ -3,6 +3,7 @@ import dedent from "dedent";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
+import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";
 import { OutputMode } from "./base";
 
@@ -41,7 +42,13 @@ export const makeOutputCli = (onlyExpired: boolean) =>
           Effect.gen(function* () {
             yield* Ref.update(resultsRef, (n) => n + 1);
 
-            if (onlyExpired && (!result || !result.isExpired)) return;
+            if (onlyExpired) {
+              const isExpired = Option.match(result, {
+                onSome: (result) => result.isExpired,
+                onNone: () => false,
+              });
+              if (!isExpired) return;
+            }
 
             for (const {
               file,
@@ -56,30 +63,30 @@ export const makeOutputCli = (onlyExpired: boolean) =>
               );
               yield* infoLn(chalk.bold(url));
 
-              if (!result) {
-                yield* infoLn(chalk.gray("No plugin responded"));
-              } else {
-                const { isExpired, expirationDate } = result;
+              yield* Option.match(result, {
+                onNone: () => infoLn(chalk.gray("No plugin responded")),
+                onSome: ({ isExpired, expirationDate }) =>
+                  Effect.gen(function* () {
+                    yield* infoLn(
+                      isExpired
+                        ? chalk.bgYellow.redBright("EXPIRED")
+                        : chalk.blue("Not expired yet"),
+                    );
 
-                yield* infoLn(
-                  isExpired
-                    ? chalk.bgYellow.redBright("EXPIRED")
-                    : chalk.blue("Not expired yet"),
-                );
+                    if (expirationDate) {
+                      yield* infoLn(
+                        [
+                          isExpired ? "expired" : "will expire",
+                          "on",
+                          dateFormatter.format(expirationDate),
+                        ].join(" "),
+                      );
+                    }
 
-                if (expirationDate) {
-                  yield* infoLn(
-                    [
-                      isExpired ? "expired" : "will expire",
-                      "on",
-                      dateFormatter.format(expirationDate),
-                    ].join(" "),
-                  );
-                }
-
-                if (isExpired)
-                  yield* Ref.update(expiredResultsRef, (n) => n + 1);
-              }
+                    if (isExpired)
+                      yield* Ref.update(expiredResultsRef, (n) => n + 1);
+                  }),
+              });
 
               yield* headerLn();
             }

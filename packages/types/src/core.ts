@@ -1,3 +1,4 @@
+import * as Option from "effect/Option";
 import * as Stream from "effect/Stream";
 import { CheckerResult } from "./plugins/checker";
 
@@ -11,6 +12,8 @@ export interface Position {
 
 /** An object representing a file and its contents */
 export interface File<E = unknown, R = unknown> {
+  readonly location: string;
+
   /**
    * An [Effect Stream](https://effect.website/docs/stream/introduction/) with
    * the file contents
@@ -32,6 +35,6 @@ export interface Match<TFile extends File = File> {
 export interface Result<TMatch extends Match<File> = Match<File>> {
   /** The URL referred to in the TODO */
   url: URL;
-  result: CheckerResult | null;
+  result: Option.Option<CheckerResult>;
   matches: readonly TMatch[];
 }
