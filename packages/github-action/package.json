@@ -29,7 +29,7 @@
   "dependencies": {
     "@actions/core": "3.0.1",
     "@actions/github": "9.1.1",
-    "@actions/glob": "0.5.1",
+    "@actions/glob": "0.7.0",
     "@effect/platform": "^0.92.1",
     "@effect/platform-node": "^0.98.4",
     "@todone/core": "workspace:*",
