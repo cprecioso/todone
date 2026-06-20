@@ -1,5 +1,7 @@
-import { Plugin, PluginFactory } from "@todone/types";
+import { Checker, PluginFactory } from "@todone/types";
 import * as Effect from "effect/Effect";
+import { flow, pipe, satisfies } from "effect/Function";
+import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 
 const pattern = new URLPattern({
@@ -24,14 +26,12 @@ const matchPattern = (url: URL) =>
 
 const decodeDate = Schema.decodeUnknown(Schema.DateFromString);
 
-export const makeDatePlugin = () =>
-  Effect.sync(
-    (): Plugin => ({
-      name: "Date",
-
-      pattern,
-
-      check: ({ url }) =>
+export const checker = Effect.sync(
+  (): Checker => ({
+    name: "Date Checker",
+    checkMatch: flow(
+      Option.liftPredicate(({ url }) => pattern.test(url)),
+      Option.map(({ url }) =>
         Effect.gen(function* () {
           const {
             pathname: {
@@ -49,7 +49,20 @@ export const makeDatePlugin = () =>
             expirationDate,
           };
         }),
-    }),
-  );
+      ),
+      Option.match({
+        onSome: Effect.map(Option.some),
+        onNone: () => Effect.succeed(Option.none()),
+      }),
+    ),
+  }),
+);
 
-export default makeDatePlugin() satisfies PluginFactory<unknown>;
+export default pipe(
+  Effect.gen(function* () {
+    return {
+      checkers: [yield* checker],
+    };
+  }),
+  satisfies<PluginFactory<unknown>>(),
+);

@@ -1,6 +1,7 @@
-import { Plugin, PluginFactory } from "@todone/types";
+import { Checker, PluginFactory } from "@todone/types";
 import * as Effect from "effect/Effect";
-import { pipe } from "effect/Function";
+import { flow, pipe, satisfies } from "effect/Function";
+import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import { GitHub } from "./common";
 import { resourceFetchers } from "./fetch";
@@ -31,36 +32,42 @@ const matchPattern = (url: URL) =>
     ),
   );
 
-export const makeGitHubPlugin = () =>
-  pipe(
-    GitHub,
-    Effect.map(
-      (gh): Plugin =>
-        ({
-          name: "GitHub",
+const checker = Effect.map(
+  GitHub,
+  (gh): Checker => ({
+    name: "GitHub Issues & PRs Checker",
+    checkMatch: flow(
+      Option.liftPredicate(({ url }) => pattern.test(url)),
+      Option.map(({ url }) =>
+        Effect.gen(function* () {
+          const {
+            pathname: {
+              groups: { owner, repo, resource_kind, number },
+            },
+          } = yield* matchPattern(url);
 
-          pattern,
+          const fetcher = resourceFetchers[resource_kind](
+            { owner, repo },
+            number,
+          );
 
-          check: ({ url }) =>
-            Effect.gen(function* () {
-              const {
-                pathname: {
-                  groups: { owner, repo, resource_kind, number },
-                },
-              } = yield* matchPattern(url);
-
-              const fetcher = resourceFetchers[resource_kind](
-                { owner, repo },
-                number,
-              );
-
-              return yield* Effect.provideService(fetcher, GitHub, gh);
-            }),
-        }) satisfies Plugin,
+          return yield* Effect.provideService(fetcher, GitHub, gh);
+        }),
+      ),
+      Option.match({
+        onSome: Effect.map(Option.some),
+        onNone: () => Effect.succeed(Option.none()),
+      }),
     ),
-  );
+  }),
+);
 
 export default pipe(
-  makeGitHubPlugin(),
+  Effect.gen(function* () {
+    return {
+      checkers: [yield* checker],
+    };
+  }),
   Effect.provide(GitHub.Default),
-) satisfies PluginFactory<unknown>;
+  satisfies<PluginFactory<unknown>>(),
+);

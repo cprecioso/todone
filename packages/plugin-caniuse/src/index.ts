@@ -1,7 +1,8 @@
-import { Plugin, PluginFactory } from "@todone/types";
+import { Checker, PluginFactory } from "@todone/types";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
-import { pipe } from "effect/Function";
+import { flow, pipe, satisfies } from "effect/Function";
+import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import { checkFeatureSupport, getBrowsers, getFeatureInfo } from "./lib";
 
@@ -25,44 +26,57 @@ const matchPattern = (url: URL) =>
     ),
   );
 
-export const makeCaniusePlugin = (browserslist: string[]) =>
-  Effect.sync((): Plugin => {
+export const checker = Effect.map(
+  Config.array(Config.string(), "BROWSERSLIST"),
+  (browserslist): Checker => {
     const browsers = getBrowsers(browserslist);
 
     return {
-      name: "Caniuse",
+      name: "Caniuse Checker",
+      checkMatch: flow(
+        Option.liftPredicate(({ url }) => pattern.test(url)),
+        Option.map(({ url }) =>
+          Effect.gen(function* () {
+            const {
+              pathname: {
+                groups: { feature },
+              },
+            } = yield* matchPattern(url);
 
-      pattern,
+            const featureInfo = getFeatureInfo(feature);
 
-      check: ({ url }) =>
-        Effect.gen(function* () {
-          const {
-            pathname: {
-              groups: { feature },
-            },
-          } = yield* matchPattern(url);
-
-          const featureInfo = getFeatureInfo(feature);
-
-          const enabledFlags = new Set((url.hash.slice(1) || null)?.split(","));
-
-          const browserSupport = browsers
-            .values()
-            .map((browser) =>
-              checkFeatureSupport(featureInfo, enabledFlags, browser),
+            const enabledFlags = new Set(
+              (url.hash.slice(1) || null)?.split(","),
             );
 
-          const isExpired = browserSupport.every((v) => Boolean(v));
+            const browserSupport = browsers
+              .values()
+              .map((browser) =>
+                checkFeatureSupport(featureInfo, enabledFlags, browser),
+              );
 
-          return {
-            title: featureInfo.title,
-            isExpired,
-          };
+            const isExpired = browserSupport.every((v) => Boolean(v));
+
+            return {
+              title: featureInfo.title,
+              isExpired,
+            };
+          }),
+        ),
+        Option.match({
+          onSome: Effect.map(Option.some),
+          onNone: () => Effect.succeed(Option.none()),
         }),
+      ),
     };
-  });
+  },
+);
 
 export default pipe(
-  Config.array(Config.string(), "BROWSERSLIST"),
-  Effect.andThen(makeCaniusePlugin),
-) satisfies PluginFactory<unknown>;
+  Effect.gen(function* () {
+    return {
+      checkers: [yield* checker],
+    };
+  }),
+  satisfies<PluginFactory<unknown>>(),
+);

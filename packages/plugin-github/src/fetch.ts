@@ -1,4 +1,4 @@
-import { PluginResult } from "@todone/types";
+import { CheckerResult } from "@todone/types";
 import { UnknownException } from "effect/Cause";
 import * as Effect from "effect/Effect";
 import { GitHub } from "./common";
@@ -53,5 +53,5 @@ export const resourceFetchers = {
   (
     repo: { owner: string; repo: string },
     number: number,
-  ) => Effect.Effect<PluginResult, UnknownException, GitHub>
+  ) => Effect.Effect<CheckerResult, UnknownException, GitHub>
 >;
