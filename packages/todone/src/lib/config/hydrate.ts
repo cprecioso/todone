@@ -40,7 +40,7 @@ const hydratePlugins = (config: Config) => {
               cause: error,
             }),
         ),
-        Effect.withConfigProvider(ConfigProvider.fromJson(pluginConfig)),
+        Effect.withConfigProvider(ConfigProvider.fromJson(pluginConfig ?? {})),
         Effect.scoped,
       ),
   );
