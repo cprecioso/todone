@@ -4,6 +4,9 @@ import { defineConfig } from "tsdown";
 export default [
   defineConfig({
     ...nodeCli(),
-    noExternal: /./,
+    deps: {
+      alwaysBundle: () => true,
+      onlyBundle: false,
+    },
   }),
 ];

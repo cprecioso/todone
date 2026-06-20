@@ -33,9 +33,9 @@
     "@todone/internal-build": "workspace:*",
     "@todone/types": "workspace:*",
     "effect": "^3.21.3",
-    "tsdown": "^0.15.12",
+    "tsdown": "^0.22.2",
     "type-fest": "^5.7.0",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   },
   "publishConfig": {
     "provenance": true,

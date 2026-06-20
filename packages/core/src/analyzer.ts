@@ -30,7 +30,7 @@ export class Analyzer extends Effect.Service<Analyzer>()(
                   .filter(([, url]) => URL.canParse(url))
                   .map((match): t.Match<E, R, TFile> => {
                     const url = new URL(match[1]);
-                    const [startIndex] = match.indices![0];
+                    const [startIndex] = match.indices![0]!;
                     return {
                       file,
                       position: {

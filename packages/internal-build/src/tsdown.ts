@@ -1,4 +1,4 @@
-import type { Options } from "tsdown";
+import type { UserConfig } from "tsdown";
 
 export const library = ({ entries = ["index"] } = {}) =>
   ({
@@ -7,6 +7,7 @@ export const library = ({ entries = ["index"] } = {}) =>
     outDir: "dist",
     clean: true,
     format: ["esm"],
+    fixedExtension: false,
 
     platform: "neutral",
 
@@ -14,7 +15,7 @@ export const library = ({ entries = ["index"] } = {}) =>
       sourcemap: true,
     },
     sourcemap: true,
-  }) satisfies Options;
+  }) satisfies UserConfig;
 
 export const nodeLibrary = (...args: Parameters<typeof library>) =>
   ({
@@ -22,10 +23,10 @@ export const nodeLibrary = (...args: Parameters<typeof library>) =>
 
     platform: "node",
     target: "node24",
-  }) satisfies Options;
+  }) satisfies UserConfig;
 
 export const nodeCli = (...[opts, ...args]: Parameters<typeof nodeLibrary>) =>
   ({
     ...nodeLibrary({ entries: ["bin"], ...opts }, ...args),
     dts: false,
-  }) satisfies Options;
+  }) satisfies UserConfig;

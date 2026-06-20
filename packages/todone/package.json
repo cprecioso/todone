@@ -46,8 +46,8 @@
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@types/node": "^24.13.2",
-    "tsdown": "^0.15.12",
-    "typescript": "~5.9.3"
+    "tsdown": "^0.22.2",
+    "typescript": "~6.0.3"
   },
   "publishConfig": {
     "provenance": true,

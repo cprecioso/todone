@@ -10,6 +10,7 @@
     "allowJs": true,
     "noEmit": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "types": ["node"]
   }
 }
