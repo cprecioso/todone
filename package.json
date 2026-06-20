@@ -29,6 +29,8 @@
     "postinstall": "husky"
   },
   "devDependencies": {
+    "@todone/plugin-date": "workspace:^",
+    "@todone/plugin-github": "workspace:^",
     "@yarnpkg/types": "^4.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
@@ -37,6 +39,7 @@
     "prettier-plugin-organize-imports": "4.3.0",
     "prettier-plugin-pkg": "0.22.1",
     "prettier-plugin-sh": "0.18.1",
+    "todone": "workspace:^",
     "typedoc": "^0.28.19",
     "typedoc-plugin-dt-links": "^2.0.58",
     "typedoc-plugin-mdn-links": "^5.1.1",
