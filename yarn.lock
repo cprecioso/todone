@@ -1060,7 +1060,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-caniuse@workspace:packages/plugin-caniuse":
+"@todone/plugin-caniuse@workspace:*, @todone/plugin-caniuse@workspace:packages/plugin-caniuse":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-caniuse@workspace:packages/plugin-caniuse"
   dependencies:
@@ -1079,7 +1079,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-date@workspace:packages/plugin-date":
+"@todone/plugin-date@workspace:*, @todone/plugin-date@workspace:packages/plugin-date":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-date@workspace:packages/plugin-date"
   dependencies:
@@ -1094,7 +1094,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-figma@workspace:packages/plugin-figma":
+"@todone/plugin-figma@workspace:*, @todone/plugin-figma@workspace:packages/plugin-figma":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
   dependencies:
@@ -1111,7 +1111,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-github@workspace:packages/plugin-github":
+"@todone/plugin-github@workspace:*, @todone/plugin-github@workspace:packages/plugin-github":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
@@ -1143,6 +1143,19 @@ __metadata:
     typedoc-plugin-dt-links: "npm:^2.0.58"
     typedoc-plugin-mdn-links: "npm:^5.1.1"
     typescript: "npm:~6.0.3"
+  languageName: unknown
+  linkType: soft
+
+"@todone/test-app@workspace:packages/test-app":
+  version: 0.0.0-use.local
+  resolution: "@todone/test-app@workspace:packages/test-app"
+  dependencies:
+    "@todone/plugin-caniuse": "workspace:*"
+    "@todone/plugin-date": "workspace:*"
+    "@todone/plugin-figma": "workspace:*"
+    "@todone/plugin-github": "workspace:*"
+    "@types/node": "npm:^24.13.2"
+    todone: "workspace:*"
   languageName: unknown
   linkType: soft
 
