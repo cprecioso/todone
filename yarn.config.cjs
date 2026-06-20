@@ -3,7 +3,14 @@
 const { defineConfig } = require("@yarnpkg/types");
 
 /** Fields copied verbatim from the root workspace to every other workspace. */
-const FIELDS_TO_COPY = ["type", "author", "license", "repository", "bugs"];
+const FIELDS_TO_COPY = [
+  "type",
+  "author",
+  "license",
+  "repository",
+  "bugs",
+  "packageManager",
+];
 
 module.exports = defineConfig({
   async constraints({ Yarn }) {

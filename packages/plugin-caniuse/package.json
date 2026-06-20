@@ -13,6 +13,7 @@
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
+  "packageManager": "yarn@4.17.0",
   "engines": {
     "node": ">=24"
   },
