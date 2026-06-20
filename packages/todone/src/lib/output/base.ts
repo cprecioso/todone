@@ -7,8 +7,6 @@ import { LocalFile } from "../get-files";
 export class OutputMode extends Context.Tag(`${pkg.name}/OutputMode`)<
   OutputMode,
   {
-    start: Effect.Effect<void>;
-
     fileItem: (item: LocalFile) => Effect.Effect<void, unknown>;
     matchItem: (
       item: t.Match<LocalFile.E, LocalFile.R, LocalFile>,
@@ -16,7 +14,5 @@ export class OutputMode extends Context.Tag(`${pkg.name}/OutputMode`)<
     resultItem: (
       item: t.Result<LocalFile.E, LocalFile.R, LocalFile>,
     ) => Effect.Effect<void, unknown>;
-
-    end: Effect.Effect<void>;
   }
 >() {}

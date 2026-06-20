@@ -42,7 +42,6 @@ export const makeRunEffect = ({
         gitignore: gitignore,
       }),
 
-      Stream.onStart(output.start),
       Stream.tap(output.fileItem),
 
       runner.getMatches<LocalFile.E, LocalFile.R, LocalFile>(),
@@ -51,7 +50,6 @@ export const makeRunEffect = ({
       runner.getResults<LocalFile.E, LocalFile.R, LocalFile>(),
       Stream.tap(output.resultItem),
 
-      Stream.ensuring(output.end),
       Stream.runFold(
         0,
         (exitCode, { result: { isExpired } }) =>

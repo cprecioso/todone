@@ -56,8 +56,6 @@ export const OutputJson = Layer.effect(
     );
 
     return {
-      start: Effect.void,
-
       fileItem: (file) => outputItem({ type: "file", location: file.fullPath }),
 
       matchItem: ({ url, file, position }) =>
@@ -70,8 +68,6 @@ export const OutputJson = Layer.effect(
 
       resultItem: ({ url, result }) =>
         result ? outputItem({ type: "result", url, ...result }) : Effect.void,
-
-      end: Effect.void,
     };
   }),
 );

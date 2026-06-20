@@ -20,9 +20,19 @@ export const makeOutputCli = (onlyExpired: boolean) =>
       const headerLn = (str = "") => Console.log(`${str}`);
       const infoLn = (str = "") => Console.log(`\t${str}`);
 
-      return {
-        start: Effect.void,
+      yield* Effect.addFinalizer(() =>
+        Effect.gen(function* () {
+          Console.log(dedent`
+            Analysis complete:
+            ${yield* filesRef.get} files found
+            ${yield* matchesRef.get} matches found
+            ${yield* resultsRef.get} results found
+            ${yield* expiredResultsRef.get} expired results found
+          `);
+        }),
+      );
 
+      return {
         fileItem: () => Ref.update(filesRef, (n) => n + 1),
 
         matchItem: () => Ref.update(matchesRef, (n) => n + 1),
@@ -74,16 +84,6 @@ export const makeOutputCli = (onlyExpired: boolean) =>
               yield* headerLn();
             }
           }),
-
-        end: Effect.gen(function* () {
-          Console.log(dedent`
-          Analysis complete:
-          ${yield* filesRef.get} files found
-          ${yield* matchesRef.get} matches found
-          ${yield* resultsRef.get} results found
-          ${yield* expiredResultsRef.get} expired results found
-        `);
-        }),
       };
     }),
   );
