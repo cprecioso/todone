@@ -1,5 +1,5 @@
 import { PluginFactory } from "#/plugin";
-import { Effect } from "effect";
+import * as Effect from "effect/Effect";
 import { pipe, satisfies } from "effect/Function";
 import { cliReporter } from "./cli";
 import { jsonReporter } from "./json";
