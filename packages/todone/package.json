@@ -28,6 +28,7 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./config-schema.json": "./config-schema.json",
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
@@ -42,10 +43,11 @@
     }
   },
   "files": [
+    "config-schema.json",
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && todone generate-schema --out config-schema.json",
     "check": "tsc --noEmit -p .",
     "dev": "tsdown --watch"
   },
