@@ -34,7 +34,9 @@ const matchPattern = (url: URL) =>
 const checker = Effect.map(
   GitHub,
   (gh): Checker => ({
-    name: "GitHub Issues & PRs Checker",
+    id: "github-issues-prs",
+    name: "GitHub Issues & PRs",
+
     checkMatch: flow(
       Option.liftPredicate(({ url }) => pattern.test(url)),
       Option.map(({ url }) =>

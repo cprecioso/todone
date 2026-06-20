@@ -19,11 +19,18 @@
   "bin": "dist/bin.js",
   "imports": {
     "#/package.json": "./package.json",
+    "#/index": "./src/index.ts",
     "#/plugin": "./src/plugin.ts",
-    "#/types": "./src/types.ts"
+    "#/builtin-plugin": "./src/builtin-plugin/index.ts",
+    "#/types": "./src/types.ts",
+    "#/lib/*": "./src/lib/*.ts"
   },
   "exports": {
     "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./plugin": {
       "types": "./dist/plugin.d.ts",
       "default": "./dist/plugin.js"
@@ -44,6 +51,7 @@
   "dependencies": {
     "@effect/platform": "^0.96.1",
     "@effect/platform-node": "^0.107.0",
+    "c12": "^4.0.0-beta.5",
     "chalk": "^5.6.2",
     "clipanion": "^4.0.0-rc.4",
     "dedent": "^1.7.2",

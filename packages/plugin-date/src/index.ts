@@ -27,7 +27,9 @@ const decodeDate = Schema.decodeUnknown(Schema.DateFromString);
 
 export const checker = Effect.sync(
   (): Checker => ({
-    name: "Date Checker",
+    id: "date",
+    name: "Date",
+
     checkMatch: flow(
       Option.liftPredicate(({ url }) => pattern.test(url)),
       Option.map(({ url }) =>

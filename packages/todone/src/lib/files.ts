@@ -47,7 +47,7 @@ export class File {
 }
 
 export const getFiles = (
-  globs: string[],
+  globs: readonly string[],
   { cwd, gitignore }: GetFilesOptions,
 ) =>
   pipe(

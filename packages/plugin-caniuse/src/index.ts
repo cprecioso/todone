@@ -31,7 +31,9 @@ export const checker = Effect.map(
     const browsers = getBrowsers(browserslist);
 
     return {
-      name: "Caniuse Checker",
+      id: "caniuse",
+      name: "Caniuse",
+
       checkMatch: flow(
         Option.liftPredicate(({ url }) => pattern.test(url)),
         Option.map(({ url }) =>

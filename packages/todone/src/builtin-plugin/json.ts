@@ -1,11 +1,10 @@
+import { Reporter } from "#/plugin";
 import * as Path from "@effect/platform/Path";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import { flow } from "effect/Function";
-import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { OutputMode } from "./base";
 
 const URLFromString = Schema.transform(Schema.String, Schema.instanceOf(URL), {
   strict: true,
@@ -46,33 +45,38 @@ const ResultItem = Schema.Struct({
 
 export const OutputItem = Schema.Union(FileItem, MatchItem, ResultItem);
 
-export const OutputJson = Layer.effect(
-  OutputMode,
-  Effect.gen(function* () {
-    const outputItem = flow(
-      Schema.encode(OutputItem),
-      Effect.map(JSON.stringify),
-      Effect.flatMap(Console.log),
-      Effect.provideService(Path.Path, yield* Path.Path),
-    );
+export const jsonReporter = Effect.gen(function* () {
+  const outputItem = flow(
+    Schema.encode(OutputItem),
+    Effect.map(JSON.stringify),
+    Effect.flatMap(Console.log),
+    Effect.provideService(Path.Path, yield* Path.Path),
+  );
 
-    return {
-      fileItem: (file) =>
-        outputItem({ type: "file", location: file.localPath }),
+  const plugin: Reporter = {
+    id: "json",
+    name: "JSON Reporter",
 
-      matchItem: ({ url, file, position }) =>
-        outputItem({
-          type: "match",
-          url,
-          location: file.localPath,
-          ...position,
-        }),
+    info: (message: string) => Console.info(message),
+    debug: (message: string) => Console.debug(message),
 
-      resultItem: ({ url, result }) =>
-        Option.match(result, {
-          onSome: (result) => outputItem({ type: "result", url, ...result }),
-          onNone: () => Effect.void,
-        }),
-    };
-  }),
-);
+    reportFile: (file) =>
+      outputItem({ type: "file", location: file.localPath }),
+
+    reportMatch: ({ url, file, position }) =>
+      outputItem({
+        type: "match",
+        url,
+        location: file.localPath,
+        ...position,
+      }),
+
+    reportResult: ({ url, result }) =>
+      Option.match(result, {
+        onSome: (result) => outputItem({ type: "result", url, ...result }),
+        onNone: () => Effect.void,
+      }),
+  };
+
+  return plugin;
+});

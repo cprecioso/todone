@@ -1468,6 +1468,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"c12@npm:^4.0.0-beta.5":
+  version: 4.0.0-beta.5
+  resolution: "c12@npm:4.0.0-beta.5"
+  dependencies:
+    confbox: "npm:^0.2.4"
+    defu: "npm:^6.1.7"
+    exsolve: "npm:^1.0.8"
+    pathe: "npm:^2.0.3"
+    pkg-types: "npm:^2.3.1"
+    rc9: "npm:^3.0.1"
+  peerDependencies:
+    chokidar: ^5
+    dotenv: "*"
+    giget: "*"
+    jiti: "*"
+    magicast: "*"
+  peerDependenciesMeta:
+    chokidar:
+      optional: true
+    dotenv:
+      optional: true
+    giget:
+      optional: true
+    jiti:
+      optional: true
+    magicast:
+      optional: true
+  checksum: 10/97b200cd1106a12b844b1d03b6261d961fe839e72741b2eb66823fefde28dba2aa16de4bacb2fff52a72bffc61b112b050d90ff3b93439e357e54377ad210493
+  languageName: node
+  linkType: hard
+
 "cac@npm:^7.0.0":
   version: 7.0.0
   resolution: "cac@npm:7.0.0"
@@ -1632,6 +1663,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"confbox@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "confbox@npm:0.2.4"
+  checksum: 10/10243036f2eca8f02c85f1c8c99f492d2b690e41b5fb9c6bf91afbaca8972eb760bf9fafb7b669433c1ea0c98f12e910d4d1e73b017cd06b72150d080a2c78b6
+  languageName: node
+  linkType: hard
+
 "content-type@npm:^2.0.0":
   version: 2.0.0
   resolution: "content-type@npm:2.0.0"
@@ -1690,7 +1728,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"defu@npm:^6.1.7":
+"defu@npm:^6.1.6, defu@npm:^6.1.7":
   version: 6.1.7
   resolution: "defu@npm:6.1.7"
   checksum: 10/09480a5fbe6318f622f30017f9386df6ae92ed895fb1ccc61e1ff0d5016b28a321c751749fdd52c996ddd4eafc2c95b77dc0c8cc109881a231c23c7fd630deb9
@@ -1701,6 +1739,13 @@ __metadata:
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
   checksum: 10/46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
+  languageName: node
+  linkType: hard
+
+"destr@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "destr@npm:2.0.5"
+  checksum: 10/0e4fba62a55a4188c7ab13eed5ebeeda037ead1ab21cf6be40ca39828b258475ad9eb1e7de50a5ea8041705d454a4d090caf9f92b89f03b04d2e229716f7da0a
   languageName: node
   linkType: hard
 
@@ -1958,6 +2003,13 @@ __metadata:
   version: 3.1.2
   resolution: "exponential-backoff@npm:3.1.2"
   checksum: 10/ca2f01f1aa4dafd3f3917bd531ab5be08c6f5f4b2389d2e974f903de3cbeb50b9633374353516b6afd70905775e33aba11afab1232d3acf0aa2963b98a611c51
+  languageName: node
+  linkType: hard
+
+"exsolve@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "exsolve@npm:1.0.8"
+  checksum: 10/e7e8eac048af9f6856628a46df15529ab37428bdb5f7bc5b7824614383223de1aff60ebe85f44d9c8d4ee218d98c71df1a3e2d336f7d022a4dccd97a0651ec5b
   languageName: node
   linkType: hard
 
@@ -3224,6 +3276,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pkg-types@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "pkg-types@npm:2.3.1"
+  dependencies:
+    confbox: "npm:^0.2.4"
+    exsolve: "npm:^1.0.8"
+    pathe: "npm:^2.0.3"
+  checksum: 10/59d892b5e18b319a66e745214b66bc68a77c6eccc4bf955582775aa393f79a6a29495184233d71e10a986e9346e44d72f5957d2d0e7104cb0d6ef43b4e92a969
+  languageName: node
+  linkType: hard
+
 "prettier-plugin-organize-imports@npm:4.3.0":
   version: 4.3.0
   resolution: "prettier-plugin-organize-imports@npm:4.3.0"
@@ -3317,6 +3380,16 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: 10/72900df0616e473e824202113c3df6abae59150dfb73ed13273503127235320e9c8ca4aaaaccfd58cf417c6ca92a6e68ee9a5c3182886ae949a768639b388a7b
+  languageName: node
+  linkType: hard
+
+"rc9@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "rc9@npm:3.0.1"
+  dependencies:
+    defu: "npm:^6.1.6"
+    destr: "npm:^2.0.5"
+  checksum: 10/fa74066c55bc342c4497d562a84a121a6e07af86a306a1f35a1ded077befb89f026f6f6f271d7b8207e173a66a5efcd6646e8d0cf3b9287a0fcdb5119d8feee7
   languageName: node
   linkType: hard
 
@@ -3815,6 +3888,7 @@ __metadata:
     "@effect/platform-node": "npm:^0.107.0"
     "@todone/internal-build": "workspace:*"
     "@types/node": "npm:^24.13.2"
+    c12: "npm:^4.0.0-beta.5"
     chalk: "npm:^5.6.2"
     clipanion: "npm:^4.0.0-rc.4"
     dedent: "npm:^1.7.2"

@@ -36,7 +36,9 @@ export class CommentNotFoundError extends Data.Error<{}> {}
 const checker = Effect.map(
   Figma,
   (api): Checker => ({
-    name: "Figma Comment Checker",
+    id: "figma-commment",
+    name: "Figma Comment",
+
     checkMatch: flow(
       Option.liftPredicate(({ url }) => pattern.test(url)),
       Option.map(({ url }) =>
