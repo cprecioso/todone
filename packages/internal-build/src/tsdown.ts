@@ -11,10 +11,10 @@ export const library = ({ entries = ["index"] } = {}) =>
 
     platform: "neutral",
 
+    sourcemap: true,
     dts: {
       sourcemap: true,
     },
-    sourcemap: true,
   }) satisfies UserConfig;
 
 export const nodeLibrary = (...args: Parameters<typeof library>) =>

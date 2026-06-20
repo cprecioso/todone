@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import * as fs from "node:fs/promises";
 import path from "node:path";
 import type { PackageJson } from "type-fest";
 import type { TypeDocOptions } from "typedoc";
@@ -45,10 +45,14 @@ const inspectPackageJson = function* (pkgJson: PackageJson) {
   if (pkgJson.exports) yield* iterateExports(pkgJson.exports);
 };
 
-export const defaultConfig = (baseDir: string): TypeDocOptions => {
+export const defaultConfig = async (
+  baseDir: string,
+): Promise<TypeDocOptions> => {
   const pkgJsonPath = new URL("./package.json", baseDir);
 
-  const pkgJson: PackageJson = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
+  const pkgJson: PackageJson = JSON.parse(
+    await fs.readFile(pkgJsonPath, "utf8"),
+  );
 
   const pkgName = pkgJson.name;
   assert(pkgName, "package.json#name not found");
