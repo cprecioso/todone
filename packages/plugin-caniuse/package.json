@@ -30,19 +30,19 @@
   },
   "peerDependencies": {
     "@todone/types": "workspace:^",
-    "effect": "^3.17.7"
+    "effect": "^3.21.3"
   },
   "dependencies": {
-    "browserslist": "^4.27.0",
-    "caniuse-lite": "^1.0.30001751"
+    "browserslist": "^4.28.2",
+    "caniuse-lite": "^1.0.30001799"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@todone/types": "workspace:*",
     "@types/caniuse-lite": "^1.0.5",
-    "@types/node": "^24.9.1",
-    "effect": "^3.18.4",
-    "tsdown": "^0.15.10",
+    "@types/node": "^24.13.2",
+    "effect": "^3.21.3",
+    "tsdown": "^0.15.12",
     "typescript": "~5.9.3"
   },
   "publishConfig": {

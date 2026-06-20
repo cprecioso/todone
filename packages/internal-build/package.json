@@ -28,17 +28,17 @@
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "tsdown": "^0.13.4",
+    "tsdown": "^0.15.12",
     "typescript": "~5.9.2"
   },
   "dependencies": {
     "type-fest": "^5.1.0",
-    "typedoc": "^0.28.14"
+    "typedoc": "^0.28.19"
   },
   "devDependencies": {
-    "@tsconfig/node24": "^24.0.1",
-    "@types/node": "^24.9.1",
-    "tsdown": "^0.15.10",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^24.13.2",
+    "tsdown": "^0.15.12",
     "typescript": "~5.9.3"
   },
   "sideEffects": false

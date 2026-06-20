@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "@todone/types": "workspace:^",
-    "effect": "^3.17.7"
+    "effect": "^3.21.3"
   },
   "dependencies": {
     "@todone/plugin-caniuse": "workspace:^",
@@ -41,8 +41,8 @@
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@todone/types": "workspace:*",
-    "effect": "^3.18.4",
-    "tsdown": "^0.15.10",
+    "effect": "^3.21.3",
+    "tsdown": "^0.15.12",
     "typescript": "~5.9.3"
   },
   "publishConfig": {

@@ -29,19 +29,19 @@
   "dependencies": {
     "@actions/core": "1.11.1",
     "@actions/github": "6.0.1",
-    "@actions/glob": "0.5.0",
+    "@actions/glob": "0.5.1",
     "@effect/platform": "^0.92.1",
     "@effect/platform-node": "^0.98.4",
     "@todone/core": "workspace:*",
     "@todone/default-plugins": "workspace:*",
     "@todone/internal-util": "workspace:*",
     "@todone/types": "workspace:*",
-    "dedent": "^1.7.0",
-    "execa": "^9.6.0",
+    "dedent": "^1.7.2",
+    "execa": "^9.6.1",
     "hast-util-from-html": "^2.0.3",
     "hast-util-to-html": "^9.0.5",
     "hastscript": "^9.0.1",
-    "mdast-util-from-markdown": "^2.0.2",
+    "mdast-util-from-markdown": "^2.0.3",
     "mdast-util-gfm": "^3.1.0",
     "mdast-util-to-markdown": "^2.1.2",
     "mdast-zone": "^6.1.0",
@@ -51,8 +51,8 @@
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^24.9.1",
-    "tsdown": "^0.15.10",
+    "@types/node": "^24.13.2",
+    "tsdown": "^0.15.12",
     "typescript": "~5.9.3"
   }
 }
