@@ -60,6 +60,7 @@ export const getFiles = (
         gitignore,
         expandDirectories: true,
         absolute: true,
+        dot: true,
       }),
       (error) => new Error("Globber error", { cause: error }),
     ),
