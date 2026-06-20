@@ -53,5 +53,27 @@ module.exports = defineConfig({
           : sourceDependency.range,
       );
     }
+
+    // If a workspace depends on a local package, it must itself provide that
+    // package's peer dependencies in one of its own dependency fields
+    for (const workspace of Yarn.workspaces()) {
+      for (const dependency of Yarn.dependencies({ workspace })) {
+        const dependencyWorkspace = Yarn.workspace({ ident: dependency.ident });
+        if (!dependencyWorkspace) continue;
+        for (const peerDependency of Yarn.dependencies({
+          workspace: dependencyWorkspace,
+          type: "peerDependencies",
+        })) {
+          const provided = Yarn.dependency({
+            workspace,
+            ident: peerDependency.ident,
+          });
+          if (provided) continue;
+          workspace.error(
+            `Missing dependency on "${peerDependency.ident}", required as a peer dependency by "${dependency.ident}"`,
+          );
+        }
+      }
+    }
   },
 });
