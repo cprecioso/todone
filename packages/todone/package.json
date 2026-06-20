@@ -30,8 +30,8 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@effect/platform": "^0.92.1",
-    "@effect/platform-node": "^0.98.4",
+    "@effect/platform": "^0.96.1",
+    "@effect/platform-node": "^0.107.0",
     "@todone/core": "workspace:^",
     "@todone/default-plugins": "workspace:^",
     "@todone/internal-util": "workspace:*",

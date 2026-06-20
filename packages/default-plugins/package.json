@@ -29,7 +29,7 @@
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "@effect/platform": "^0.92.1",
+    "@effect/platform": "^0.96.1",
     "@todone/types": "workspace:^",
     "effect": "^3.21.3"
   },

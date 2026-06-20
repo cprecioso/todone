@@ -125,51 +125,51 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@effect/platform-node-shared@npm:^0.51.6":
-  version: 0.51.6
-  resolution: "@effect/platform-node-shared@npm:0.51.6"
+"@effect/platform-node-shared@npm:^0.60.0":
+  version: 0.60.0
+  resolution: "@effect/platform-node-shared@npm:0.60.0"
   dependencies:
     "@parcel/watcher": "npm:^2.5.1"
     multipasta: "npm:^0.2.7"
     ws: "npm:^8.18.2"
   peerDependencies:
-    "@effect/cluster": ^0.50.6
-    "@effect/platform": ^0.92.1
-    "@effect/rpc": ^0.71.1
-    "@effect/sql": ^0.46.0
-    effect: ^3.18.4
-  checksum: 10/2d65227136fcf12dd949eb1054b47bbb614503c11caf0e5560f23fedc73a1985aa9151d19b5c7c7be2f31e9f911a3dc0f70e2e4ac31e37aa3dd7c5c124ae2eff
+    "@effect/cluster": ^0.59.0
+    "@effect/platform": ^0.96.1
+    "@effect/rpc": ^0.75.1
+    "@effect/sql": ^0.51.1
+    effect: ^3.21.2
+  checksum: 10/2d83ce5cafac5d5cafa0ef12b25def68edaedc8ec7efeb9ca6081f5a306c9b1156e60ad765553d011adf575e08471997cca837e66bdf48572f60f8931aac4748
   languageName: node
   linkType: hard
 
-"@effect/platform-node@npm:^0.98.4":
-  version: 0.98.4
-  resolution: "@effect/platform-node@npm:0.98.4"
+"@effect/platform-node@npm:^0.107.0":
+  version: 0.107.0
+  resolution: "@effect/platform-node@npm:0.107.0"
   dependencies:
-    "@effect/platform-node-shared": "npm:^0.51.6"
+    "@effect/platform-node-shared": "npm:^0.60.0"
     mime: "npm:^3.0.0"
     undici: "npm:^7.10.0"
     ws: "npm:^8.18.2"
   peerDependencies:
-    "@effect/cluster": ^0.50.6
-    "@effect/platform": ^0.92.1
-    "@effect/rpc": ^0.71.1
-    "@effect/sql": ^0.46.0
-    effect: ^3.18.4
-  checksum: 10/b28c38617d5e4c1072a7f0e835b6ae6b91fcd3949bbe12a271f7f4c53b18ea5dfe95e74aa68948b7cc820dbaffeb83372021401de41bbd5ecef1d2b9491bf90a
+    "@effect/cluster": ^0.59.0
+    "@effect/platform": ^0.96.1
+    "@effect/rpc": ^0.75.1
+    "@effect/sql": ^0.51.1
+    effect: ^3.21.2
+  checksum: 10/ca6a0f6801233e31dfe56421679bcff551278be799dff32fe6c47e41b4df529bf1a70e1968a8f05cce4d148cc754e53424da39d48668adaa5f9f8b263805da8d
   languageName: node
   linkType: hard
 
-"@effect/platform@npm:^0.92.1":
-  version: 0.92.1
-  resolution: "@effect/platform@npm:0.92.1"
+"@effect/platform@npm:^0.96.1":
+  version: 0.96.1
+  resolution: "@effect/platform@npm:0.96.1"
   dependencies:
     find-my-way-ts: "npm:^0.1.6"
-    msgpackr: "npm:^1.11.4"
+    msgpackr: "npm:^1.11.10"
     multipasta: "npm:^0.2.7"
   peerDependencies:
-    effect: ^3.18.1
-  checksum: 10/cc51f0fccf0e0022323877d72aed5b34f2e6efbe1879cfcf6ba5a9c491a3c4d855d33e626dbf1c5f76ed12bf5cc92febfc50213c3d1fb478759f563d63940ef4
+    effect: ^3.21.2
+  checksum: 10/36d8b1d43d636be02f9119e0e6d981565a88801ec097bda1cae0ed65bea9fb1963226140b3f6b714f4ea9091a248bc20bf2cc0d775b238a9ef4010ddea48fa65
   languageName: node
   linkType: hard
 
@@ -1153,7 +1153,7 @@ __metadata:
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   peerDependencies:
-    "@effect/platform": ^0.92.1
+    "@effect/platform": ^0.96.1
     "@todone/types": "workspace:^"
     effect: ^3.21.3
   languageName: unknown
@@ -1166,8 +1166,8 @@ __metadata:
     "@actions/core": "npm:3.0.1"
     "@actions/github": "npm:9.1.1"
     "@actions/glob": "npm:0.7.0"
-    "@effect/platform": "npm:^0.92.1"
-    "@effect/platform-node": "npm:^0.98.4"
+    "@effect/platform": "npm:^0.96.1"
+    "@effect/platform-node": "npm:^0.107.0"
     "@todone/core": "workspace:*"
     "@todone/default-plugins": "workspace:*"
     "@todone/internal-build": "workspace:*"
@@ -1256,7 +1256,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
   dependencies:
-    "@effect/platform": "npm:^0.92.1"
+    "@effect/platform": "npm:^0.96.1"
     "@todone/internal-build": "workspace:*"
     "@todone/types": "workspace:*"
     effect: "npm:^3.21.3"
@@ -1264,7 +1264,7 @@ __metadata:
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   peerDependencies:
-    "@effect/platform": ^0.92.1
+    "@effect/platform": ^0.96.1
     "@todone/types": "workspace:^"
     effect: ^3.21.3
   languageName: unknown
@@ -3822,15 +3822,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msgpackr@npm:^1.11.4":
-  version: 1.11.5
-  resolution: "msgpackr@npm:1.11.5"
+"msgpackr@npm:^1.11.10":
+  version: 1.12.1
+  resolution: "msgpackr@npm:1.12.1"
   dependencies:
     msgpackr-extract: "npm:^3.0.2"
   dependenciesMeta:
     msgpackr-extract:
       optional: true
-  checksum: 10/8d1db85d355bbe87428ae91a161dad4e67647761f4266d8ac06abe29e1fbae976aec4cc9435d32a1a4240d10bf01294dc2a00cec1c94409b77c4749f9bc9feb5
+  checksum: 10/90f5eabb2b059f441714ec0b09cfccea589caf36604598ae44a023e6c113f97889ca6c899beb318bc1a6bb7d6b4d6bef75a6fc13a01aa49c3111ae08da2c6db5
   languageName: node
   linkType: hard
 
@@ -4873,8 +4873,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "todone@workspace:packages/todone"
   dependencies:
-    "@effect/platform": "npm:^0.92.1"
-    "@effect/platform-node": "npm:^0.98.4"
+    "@effect/platform": "npm:^0.96.1"
+    "@effect/platform-node": "npm:^0.107.0"
     "@todone/core": "workspace:^"
     "@todone/default-plugins": "workspace:^"
     "@todone/internal-build": "workspace:*"
