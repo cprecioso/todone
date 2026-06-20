@@ -1788,13 +1788,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^17.4.2":
-  version: 17.4.2
-  resolution: "dotenv@npm:17.4.2"
-  checksum: 10/ca1b6f54d58e39914901e1518958e86083aca8deb5aa2e7f2a51acd53291d97852479b0ab26ed949b6a45a0e9adcc7b0d1c3c72375e8ea670f7005e341c6daba
-  languageName: node
-  linkType: hard
-
 "dts-resolver@npm:^3.0.0":
   version: 3.0.0
   resolution: "dts-resolver@npm:3.0.0"
@@ -3892,7 +3885,6 @@ __metadata:
     chalk: "npm:^5.6.2"
     clipanion: "npm:^4.0.0-rc.4"
     dedent: "npm:^1.7.2"
-    dotenv: "npm:^17.4.2"
     effect: "npm:^3.21.3"
     globby: "npm:^16.2.0"
     tsdown: "npm:^0.22.2"
