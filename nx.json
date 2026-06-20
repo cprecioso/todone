@@ -19,5 +19,6 @@
       "cache": false,
       "continuous": true
     }
-  }
+  },
+  "analytics": false
 }
