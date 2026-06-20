@@ -54,11 +54,7 @@ module.exports = defineConfig({
       if (!sourceDependency) continue;
       // A `workspace:*` source becomes `workspace:^` as a peerDep, so consumers
       // get a semver range instead of an exact pin
-      peerDependency.update(
-        sourceDependency.range === "workspace:*"
-          ? "workspace:^"
-          : sourceDependency.range,
-      );
+      peerDependency.update(sourceDependency.range);
     }
 
     // If a workspace depends on a local package, it must itself provide that

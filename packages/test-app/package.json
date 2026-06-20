@@ -20,12 +20,12 @@
     "test": "todone run"
   },
   "devDependencies": {
-    "@todone/plugin-caniuse": "workspace:*",
-    "@todone/plugin-date": "workspace:*",
-    "@todone/plugin-figma": "workspace:*",
-    "@todone/plugin-github": "workspace:*",
+    "@todone/plugin-caniuse": "workspace:^",
+    "@todone/plugin-date": "workspace:^",
+    "@todone/plugin-figma": "workspace:^",
+    "@todone/plugin-github": "workspace:^",
     "@types/node": "^24.13.2",
-    "todone": "workspace:*"
+    "todone": "workspace:^"
   },
   "publishConfig": {
     "provenance": true,

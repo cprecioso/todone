@@ -1045,7 +1045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@todone/internal-build@workspace:*, @todone/internal-build@workspace:packages/internal-build":
+"@todone/internal-build@workspace:^, @todone/internal-build@workspace:packages/internal-build":
   version: 0.0.0-use.local
   resolution: "@todone/internal-build@workspace:packages/internal-build"
   dependencies:
@@ -1060,17 +1060,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-caniuse@workspace:*, @todone/plugin-caniuse@workspace:packages/plugin-caniuse":
+"@todone/plugin-caniuse@workspace:^, @todone/plugin-caniuse@workspace:packages/plugin-caniuse":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-caniuse@workspace:packages/plugin-caniuse"
   dependencies:
-    "@todone/internal-build": "workspace:*"
+    "@todone/internal-build": "workspace:^"
     "@types/caniuse-lite": "npm:^1.0.5"
     "@types/node": "npm:^24.13.2"
     browserslist: "npm:^4.28.2"
     caniuse-lite: "npm:^1.0.30001799"
     effect: "npm:^3.21.3"
-    todone: "workspace:*"
+    todone: "workspace:^"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   peerDependencies:
@@ -1079,13 +1079,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-date@workspace:*, @todone/plugin-date@workspace:packages/plugin-date":
+"@todone/plugin-date@workspace:^, @todone/plugin-date@workspace:packages/plugin-date":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-date@workspace:packages/plugin-date"
   dependencies:
-    "@todone/internal-build": "workspace:*"
+    "@todone/internal-build": "workspace:^"
     effect: "npm:^3.21.3"
-    todone: "workspace:*"
+    todone: "workspace:^"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   peerDependencies:
@@ -1094,14 +1094,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-figma@workspace:*, @todone/plugin-figma@workspace:packages/plugin-figma":
+"@todone/plugin-figma@workspace:^, @todone/plugin-figma@workspace:packages/plugin-figma":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
   dependencies:
     "@effect/platform": "npm:^0.96.1"
-    "@todone/internal-build": "workspace:*"
+    "@todone/internal-build": "workspace:^"
     effect: "npm:^3.21.3"
-    todone: "workspace:*"
+    todone: "workspace:^"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   peerDependencies:
@@ -1111,14 +1111,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@todone/plugin-github@workspace:*, @todone/plugin-github@workspace:packages/plugin-github":
+"@todone/plugin-github@workspace:^, @todone/plugin-github@workspace:packages/plugin-github":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
-    "@todone/internal-build": "workspace:*"
+    "@todone/internal-build": "workspace:^"
     effect: "npm:^3.21.3"
     octokit: "npm:^5.0.5"
-    todone: "workspace:*"
+    todone: "workspace:^"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   peerDependencies:
@@ -1150,12 +1150,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/test-app@workspace:packages/test-app"
   dependencies:
-    "@todone/plugin-caniuse": "workspace:*"
-    "@todone/plugin-date": "workspace:*"
-    "@todone/plugin-figma": "workspace:*"
-    "@todone/plugin-github": "workspace:*"
+    "@todone/plugin-caniuse": "workspace:^"
+    "@todone/plugin-date": "workspace:^"
+    "@todone/plugin-figma": "workspace:^"
+    "@todone/plugin-github": "workspace:^"
     "@types/node": "npm:^24.13.2"
-    todone: "workspace:*"
+    todone: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -3895,13 +3895,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"todone@workspace:*, todone@workspace:packages/todone":
+"todone@workspace:^, todone@workspace:packages/todone":
   version: 0.0.0-use.local
   resolution: "todone@workspace:packages/todone"
   dependencies:
     "@effect/platform": "npm:^0.96.1"
     "@effect/platform-node": "npm:^0.107.0"
-    "@todone/internal-build": "workspace:*"
+    "@todone/internal-build": "workspace:^"
     "@types/node": "npm:^24.13.2"
     c12: "npm:^4.0.0-beta.5"
     chalk: "npm:^5.6.2"

@@ -31,9 +31,9 @@
     "todone": "workspace:^"
   },
   "devDependencies": {
-    "@todone/internal-build": "workspace:*",
+    "@todone/internal-build": "workspace:^",
     "effect": "^3.21.3",
-    "todone": "workspace:*",
+    "todone": "workspace:^",
     "tsdown": "^0.22.2",
     "typescript": "~6.0.3"
   },
