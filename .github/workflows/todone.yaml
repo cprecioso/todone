@@ -14,7 +14,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  build:
+  build-run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -26,9 +26,9 @@ jobs:
       - run: yarn install --immutable
 
       - name: Build action
-        run: yarn nx run todone:build
+        run: yarn nx run @todone/repo:build
 
       - name: Run todone
         env:
           NODE_OPTIONS: "--enable-source-maps"
-        run: "$(yarn workspace todone bin todone)"
+        run: yarn todone run

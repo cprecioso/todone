@@ -50,6 +50,7 @@
       "*"
     ],
     "targets": {
+      "build": {},
       "build-docs": {
         "dependsOn": [
           "^build"
