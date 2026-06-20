@@ -1,10 +1,11 @@
-import { SummaryTableRow } from "@actions/core/lib/summary";
+import type { summary } from "@actions/core";
 import * as t from "@todone/types";
 import { Match } from "@todone/types";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
+import type { ArrayValues } from "type-fest";
 import { repo, server } from "../../../input";
 import { GitHubFile } from "../../files";
 import { formatDate } from "../../util/format";
@@ -16,6 +17,8 @@ export type RowInput = {
   issueNumber?: number;
   actionMessage?: string;
 };
+
+type SummaryTableRow = ArrayValues<Parameters<typeof summary.addTable>[0]>;
 
 export type Row = SummaryTableRow &
   [
