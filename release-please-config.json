@@ -14,7 +14,6 @@
     "packages/github-action": {},
     "packages/internal-build": {},
     "packages/internal-util": {},
-    "packages/plugin": {},
     "packages/plugin-caniuse": {},
     "packages/plugin-date": {},
     "packages/plugin-figma": {},

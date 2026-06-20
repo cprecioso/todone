@@ -4,7 +4,6 @@
   "packages/github-action": "2.0.1",
   "packages/internal-build": "1.0.1",
   "packages/internal-util": "0.3.2",
-  "packages/plugin": "0.3.3",
   "packages/plugin-caniuse": "1.0.1",
   "packages/plugin-date": "0.4.2",
   "packages/plugin-figma": "0.4.2",
