@@ -1,6 +1,5 @@
 // @ts-check
 
-/** @type {import('@yarnpkg/types')} */
 const { defineConfig } = require("@yarnpkg/types");
 
 /** Fields copied verbatim from the root workspace to every other workspace. */
