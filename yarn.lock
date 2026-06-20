@@ -2499,6 +2499,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jiti@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "jiti@npm:2.7.0"
+  bin:
+    jiti: lib/jiti-cli.mjs
+  checksum: 10/6d75a8dbd61dbee031aa0937fabb748ff8ddf370b971958cc704f5cf26b4c5bdc9dcd0563059b2627a2bd41d946fa0bc64f912fdc8981ca7945a9d63c74ad0f9
+  languageName: node
+  linkType: hard
+
 "jsbn@npm:1.1.0":
   version: 1.1.0
   resolution: "jsbn@npm:1.1.0"
@@ -3887,6 +3896,7 @@ __metadata:
     dedent: "npm:^1.7.2"
     effect: "npm:^3.21.3"
     globby: "npm:^16.2.0"
+    jiti: "npm:^2.7.0"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   bin:
