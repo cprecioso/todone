@@ -12,8 +12,9 @@ import { sha } from "../input";
 
 const cwd = process.cwd();
 
-export interface GitHubFile
-  extends Effect.Effect.Success<ReturnType<typeof makeGitHubFile>> {}
+export interface GitHubFile extends Effect.Effect.Success<
+  ReturnType<typeof makeGitHubFile>
+> {}
 
 export declare namespace GitHubFile {
   type E = Stream.Stream.Error<GitHubFile["getContent"]>;

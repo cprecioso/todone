@@ -15,8 +15,7 @@ import { NodeRuntimeLayer } from "./lib/runtime";
 export type { AllowedPlugin } from "./lib/plugins";
 
 export interface Options
-  extends Partial<todone.OptionsType>,
-    Partial<GetFilesOptions> {}
+  extends Partial<todone.OptionsType>, Partial<GetFilesOptions> {}
 
 /**
  * Given some plugin factories, provides them with the necessary configuration
