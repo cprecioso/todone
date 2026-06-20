@@ -1260,7 +1260,6 @@ __metadata:
     "@todone/internal-build": "workspace:*"
     "@todone/types": "workspace:*"
     effect: "npm:^3.21.3"
-    ky: "npm:^1.14.3"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
   peerDependencies:
@@ -2942,13 +2941,6 @@ __metadata:
   version: 3.2.0
   resolution: "jsonc-parser@npm:3.2.0"
   checksum: 10/bd68b902e5f9394f01da97921f49c5084b2dc03a0c5b4fdb2a429f8d6f292686c1bf87badaeb0a8148d024192a88f5ad2e57b2918ba43fe25cf15f3371db64d4
-  languageName: node
-  linkType: hard
-
-"ky@npm:^1.14.3":
-  version: 1.14.3
-  resolution: "ky@npm:1.14.3"
-  checksum: 10/afd6a6ff10e33138d5338c014a051ca920c6ced7f8452748dfe960c26fb5456f36e103cd8b5868ebf2a38bf13c2b3f53b74cbea44a1b53923e1921bb9a6447b1
   languageName: node
   linkType: hard
 
