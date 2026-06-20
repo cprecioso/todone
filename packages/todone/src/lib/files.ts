@@ -6,29 +6,14 @@ import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import { globbyStream } from "globby";
 
-export interface GetFilesOptions {
-  /**
-   * Working directory to resolve globs against.
-   *
-   * @default process.cwd()
-   */
-  cwd: string;
-
-  /**
-   * Whether to respect `.gitignore` files.
-   *
-   * @default true
-   */
-  gitignore: boolean;
-}
-
 /** An object representing a file and its contents */
 export class File {
   static make(cwd: string, localPath: string) {
-    return Effect.map(
-      Path.Path,
-      (path) => new this(localPath, path.join(cwd, localPath)),
-    );
+    return Effect.map(Path.Path, (path) => {
+      const fullPath = path.resolve(cwd, localPath);
+      const relativePath = path.relative(cwd, fullPath);
+      return new this(relativePath, fullPath);
+    });
   }
 
   private constructor(
@@ -44,6 +29,22 @@ export class File {
     FileSystem.FileSystem,
     Stream.flatMap((fs) => fs.stream(this.fullPath), { switch: true }),
   );
+}
+
+export interface GetFilesOptions {
+  /**
+   * Working directory to resolve globs against.
+   *
+   * @default process.cwd()
+   */
+  cwd: string;
+
+  /**
+   * Whether to respect `.gitignore` files.
+   *
+   * @default true
+   */
+  gitignore: boolean;
 }
 
 export const getFiles = (
