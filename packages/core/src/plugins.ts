@@ -22,7 +22,7 @@ export class UnsupportedPluginError extends Data.Error<{
   url: string;
 }> {}
 
-const checkPlugin = (plugin: typeof t.Plugin.Service, url: URL) =>
+const checkPlugin = (plugin: t.Plugin, url: URL) =>
   Effect.gen(function* () {
     const urlString = url.toString();
     if (!canRun(urlString, plugin.pattern)) {

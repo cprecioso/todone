@@ -1,6 +1,6 @@
 import { Plugin, PluginFactory } from "@todone/types";
 import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
+import { pipe } from "effect/Function";
 import * as Schema from "effect/Schema";
 import { GitHub } from "./common";
 import { resourceFetchers } from "./fetch";
@@ -31,31 +31,36 @@ const matchPattern = (url: URL) =>
     ),
   );
 
-export default Layer.effect(
-  Plugin,
-  Effect.gen(function* () {
-    const gh = yield* GitHub;
+export const makeGitHubPlugin = () =>
+  pipe(
+    GitHub,
+    Effect.map(
+      (gh): Plugin =>
+        ({
+          name: "GitHub",
 
-    return {
-      name: "GitHub",
+          pattern,
 
-      pattern,
+          check: ({ url }) =>
+            Effect.gen(function* () {
+              const {
+                pathname: {
+                  groups: { owner, repo, resource_kind, number },
+                },
+              } = yield* matchPattern(url);
 
-      check: ({ url }) =>
-        Effect.gen(function* () {
-          const {
-            pathname: {
-              groups: { owner, repo, resource_kind, number },
-            },
-          } = yield* matchPattern(url);
+              const fetcher = resourceFetchers[resource_kind](
+                { owner, repo },
+                number,
+              );
 
-          const fetcher = resourceFetchers[resource_kind](
-            { owner, repo },
-            number,
-          );
+              return yield* Effect.provideService(fetcher, GitHub, gh);
+            }),
+        }) satisfies Plugin,
+    ),
+  );
 
-          return yield* Effect.provideService(fetcher, GitHub, gh);
-        }),
-    };
-  }),
-).pipe(Layer.provide(GitHub.Default)) satisfies PluginFactory<unknown>;
+export default pipe(
+  makeGitHubPlugin(),
+  Effect.provide(GitHub.Default),
+) satisfies PluginFactory<unknown>;

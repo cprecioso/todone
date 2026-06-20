@@ -2,7 +2,7 @@ import * as Error from "@effect/platform/Error";
 import * as FileSystem from "@effect/platform/FileSystem";
 import * as todone from "@todone/core";
 import defaultPlugins from "@todone/default-plugins";
-import { PluginInstance } from "@todone/types";
+import type { Plugin } from "@todone/types";
 import * as Chunk from "effect/Chunk";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
@@ -25,7 +25,7 @@ export const makePlugins = (
   plugins: readonly AllowedPlugin[],
   /** Configuration for the plugins */
   obj: Record<string, string>,
-): Promise<PluginInstance[]> =>
+): Promise<Plugin[]> =>
   makePluginsEffect(plugins).pipe(
     Effect.withConfigProvider(
       ConfigProvider.fromMap(new Map(Object.entries(obj))),

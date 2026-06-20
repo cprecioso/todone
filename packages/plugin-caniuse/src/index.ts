@@ -1,7 +1,7 @@
 import { Plugin, PluginFactory } from "@todone/types";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
+import { pipe } from "effect/Function";
 import * as Schema from "effect/Schema";
 import { checkFeatureSupport, getBrowsers, getFeatureInfo } from "./lib";
 
@@ -25,11 +25,8 @@ const matchPattern = (url: URL) =>
     ),
   );
 
-export default Layer.effect(
-  Plugin,
-  Effect.gen(function* () {
-    const browserslist = yield* Config.array(Config.string(), "BROWSERSLIST");
-
+export const makeCaniusePlugin = (browserslist: string[]) =>
+  Effect.sync((): Plugin => {
     const browsers = getBrowsers(browserslist);
 
     return {
@@ -63,5 +60,9 @@ export default Layer.effect(
           };
         }),
     };
-  }),
+  });
+
+export default pipe(
+  Config.array(Config.string(), "BROWSERSLIST"),
+  Effect.andThen(makeCaniusePlugin),
 ) satisfies PluginFactory<unknown>;

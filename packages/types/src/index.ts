@@ -1,9 +1,6 @@
 import * as ConfigError from "effect/ConfigError";
-import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
 import * as Stream from "effect/Stream";
-import * as pkg from "../package.json" with { type: "json" };
 
 /** A position in a file */
 export interface t {
@@ -47,12 +44,11 @@ export interface Result<E, R, TFile extends File<E, R>> {
  */
 export type Searchable = RegExp | Pick<RegExp, "test">;
 
-/**
- * A Plugin factory is an [Effect
- * Layer](https://effect.website/docs/requirements-management/layers/) that
- * provides a {@link PluginInstance} as a service
- */
-export type PluginFactory<R> = Layer.Layer<Plugin, ConfigError.ConfigError, R>;
+export type PluginFactory<R> = Effect.Effect<
+  Plugin,
+  ConfigError.ConfigError,
+  R
+>;
 
 /**
  * A Plugin represents the implementation of a kind of check that can be run
@@ -61,7 +57,7 @@ export type PluginFactory<R> = Layer.Layer<Plugin, ConfigError.ConfigError, R>;
  * For example, a GitHub plugin might check if a URL points to a GitHub issue or
  * PR, and if so, whether that issue or PR is still open.
  */
-export interface PluginInstance {
+export interface Plugin {
   /** The plugin's name, will be used for reporting */
   readonly name: string;
 
@@ -77,17 +73,8 @@ export interface PluginInstance {
    * An [Effect](https://effect.website/docs/getting-started/the-effect-type/)
    * for checking if a URL should be considered as expired or not.
    */
-  check(options: { url: URL }): Effect.Effect<PluginResult, unknown>;
+  check(options: { url: URL }): Effect.Effect<PluginResult, unknown, never>;
 }
-
-/**
- * The [Effect Service](https://effect.website/docs/requirements-management/services/) tag
- * to provide and access a {@link PluginInstance}.
- */
-export class Plugin extends Context.Tag(`${pkg.name}/Plugin`)<
-  Plugin,
-  PluginInstance
->() {}
 
 /**
  * The result of running a Plugin's check against a URL, indicating whether the

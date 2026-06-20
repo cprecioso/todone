@@ -1,6 +1,5 @@
 import { Plugin, PluginFactory } from "@todone/types";
 import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
 import * as Schema from "effect/Schema";
 
 const pattern = new URLPattern({
@@ -25,27 +24,32 @@ const matchPattern = (url: URL) =>
 
 const decodeDate = Schema.decodeUnknown(Schema.DateFromString);
 
-export default Layer.succeed(Plugin, {
-  name: "Date",
+export const makeDatePlugin = () =>
+  Effect.sync(
+    (): Plugin => ({
+      name: "Date",
 
-  pattern,
+      pattern,
 
-  check: ({ url }) =>
-    Effect.gen(function* () {
-      const {
-        pathname: {
-          groups: { date },
-        },
-      } = yield* matchPattern(url);
+      check: ({ url }) =>
+        Effect.gen(function* () {
+          const {
+            pathname: {
+              groups: { date },
+            },
+          } = yield* matchPattern(url);
 
-      const expirationDate = yield* decodeDate(date);
+          const expirationDate = yield* decodeDate(date);
 
-      const isExpired = +expirationDate < Date.now();
+          const isExpired = +expirationDate < Date.now();
 
-      return {
-        title: date,
-        isExpired,
-        expirationDate,
-      };
+          return {
+            title: date,
+            isExpired,
+            expirationDate,
+          };
+        }),
     }),
-}) satisfies PluginFactory<unknown>;
+  );
+
+export default makeDatePlugin() satisfies PluginFactory<unknown>;

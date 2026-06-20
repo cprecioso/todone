@@ -1,4 +1,4 @@
-import { Plugin, PluginFactory } from "@todone/types";
+import { PluginFactory } from "@todone/types";
 import * as Effect from "effect/Effect";
 import { NodeRuntimeContext } from "./runtime";
 
@@ -11,4 +11,4 @@ import { NodeRuntimeContext } from "./runtime";
 export type AllowedPlugin = PluginFactory<NodeRuntimeContext>;
 
 export const makePlugins = (plugins: readonly AllowedPlugin[]) =>
-  Effect.all(plugins.map((plugin) => Effect.provide(Plugin, plugin)));
+  Effect.all(plugins);

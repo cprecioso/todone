@@ -1,7 +1,7 @@
 import { Plugin, PluginFactory } from "@todone/types";
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
+import { pipe } from "effect/Function";
 import * as Schema from "effect/Schema";
 import { Figma } from "./api";
 
@@ -33,44 +33,50 @@ const matchPattern = (url: URL) =>
 
 export class CommentNotFoundError extends Data.Error<{}> {}
 
-export default Layer.effect(
-  Plugin,
-  Effect.gen(function* () {
-    const api = yield* Figma;
+export const makeFigmaPlugin = () =>
+  pipe(
+    Figma,
+    Effect.map(
+      (api): Plugin => ({
+        name: "Figma",
 
-    return {
-      name: "Figma",
+        pattern,
 
-      pattern,
+        check: ({ url }) =>
+          Effect.gen(function* () {
+            const {
+              pathname: {
+                groups: { fileID },
+              },
+              hash: {
+                groups: { commentID },
+              },
+            } = yield* matchPattern(url);
 
-      check: ({ url }) =>
-        Effect.gen(function* () {
-          const {
-            pathname: {
-              groups: { fileID },
-            },
-            hash: {
-              groups: { commentID },
-            },
-          } = yield* matchPattern(url);
+            const { comments } = yield* api.Files.GetComments({
+              path: { fileID: fileID },
+            });
+            if (!comments) return yield* new CommentNotFoundError();
 
-          const { comments } = yield* api.Files.GetComments({
-            path: { fileID: fileID },
-          });
-          if (!comments) return yield* new CommentNotFoundError();
+            const comment = comments.find(
+              (comment) => comment.id === commentID,
+            );
+            if (!comment) return yield* new CommentNotFoundError();
 
-          const comment = comments.find((comment) => comment.id === commentID);
-          if (!comment) return yield* new CommentNotFoundError();
+            const closeDate = comment.resolved_at;
+            const isExpired = Boolean(closeDate);
 
-          const closeDate = comment.resolved_at;
-          const isExpired = Boolean(closeDate);
+            return {
+              title: `Figma comment from ${comment.user.handle}`,
+              isExpired,
+              expirationDate: closeDate || undefined,
+            };
+          }),
+      }),
+    ),
+  );
 
-          return {
-            title: `Figma comment from ${comment.user.handle}`,
-            isExpired,
-            expirationDate: closeDate || undefined,
-          };
-        }),
-    };
-  }),
-).pipe(Layer.provide(Figma.Default)) satisfies PluginFactory<unknown>;
+export default pipe(
+  makeFigmaPlugin(),
+  Effect.provide(Figma.Default),
+) satisfies PluginFactory<unknown>;
