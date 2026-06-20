@@ -27,5 +27,31 @@ module.exports = defineConfig({
       if (!rootDependency) continue;
       dependency.update(rootDependency.range);
     }
+
+    // Keep peerDependencies in sync with the version declared in
+    // devDependencies or dependencies (those are the source of truth)
+    for (const peerDependency of Yarn.dependencies({
+      type: "peerDependencies",
+    })) {
+      const sourceDependency =
+        Yarn.dependency({
+          workspace: peerDependency.workspace,
+          ident: peerDependency.ident,
+          type: "devDependencies",
+        }) ??
+        Yarn.dependency({
+          workspace: peerDependency.workspace,
+          ident: peerDependency.ident,
+          type: "dependencies",
+        });
+      if (!sourceDependency) continue;
+      // A `workspace:*` source becomes `workspace:^` as a peerDep, so consumers
+      // get a semver range instead of an exact pin
+      peerDependency.update(
+        sourceDependency.range === "workspace:*"
+          ? "workspace:^"
+          : sourceDependency.range,
+      );
+    }
   },
 });
