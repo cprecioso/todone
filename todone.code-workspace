@@ -9,10 +9,6 @@
       "path": "packages/todone",
     },
     {
-      "name": "📦 @todone/github-action",
-      "path": "packages/github-action",
-    },
-    {
       "name": "📦 @todone/default-plugins",
       "path": "packages/default-plugins",
     },
