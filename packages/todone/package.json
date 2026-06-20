@@ -41,7 +41,7 @@
     "dedent": "^1.7.2",
     "dotenv": "^17.4.2",
     "effect": "^3.21.3",
-    "globby": "^15.0.0"
+    "globby": "^16.2.0"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:*",
