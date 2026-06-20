@@ -30,9 +30,6 @@
     "@todone/types": "workspace:^",
     "effect": "^3.21.3"
   },
-  "dependencies": {
-    "ky": "^1.14.3"
-  },
   "devDependencies": {
     "@effect/platform": "^0.96.1",
     "@todone/internal-build": "workspace:*",
