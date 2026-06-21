@@ -36,136 +36,143 @@ export const createIssuesReporter: Factory<Reporter> = {
         const resultsRef = yield* Ref.make<Result[]>([]);
 
         const sync = (repo: { owner: string; repo: string }) =>
-    Effect.gen(function* () {
-      const results = yield* Ref.get(resultsRef);
-      const api = yield* makeGitHubAPI({ client, repo, dryRun, log: info });
-      const outcomes = yield* reconcile(api, results);
+          Effect.gen(function* () {
+            const results = yield* Ref.get(resultsRef);
+            const api = yield* makeGitHubAPI({
+              client,
+              repo,
+              dryRun,
+              log: info,
+            });
+            const outcomes = yield* reconcile(api, results);
 
-      const rows: RowData[] = [];
+            const rows: RowData[] = [];
 
-      const pushMatchRows = (
-        outcome: Extract<
-          SyncOutcome,
-          { _tag: "LocalOnly" | "RemoteMatched" | "NotTriggered" }
-        >,
-        actionMessage: string,
-        issueNumber?: number,
-      ) => {
-        const result =
-          outcome._tag === "NotTriggered"
-            ? Option.getOrUndefined(outcome.result)
-            : outcome.result;
-        for (const match of outcome.matches) {
-          rows.push({
-            match,
-            url: outcome.url,
-            result,
-            issueNumber,
-            actionMessage,
+            const pushMatchRows = (
+              outcome: Extract<
+                SyncOutcome,
+                { _tag: "LocalOnly" | "RemoteMatched" | "NotTriggered" }
+              >,
+              actionMessage: string,
+              issueNumber?: number,
+            ) => {
+              const result =
+                outcome._tag === "NotTriggered"
+                  ? Option.getOrUndefined(outcome.result)
+                  : outcome.result;
+              for (const match of outcome.matches) {
+                rows.push({
+                  match,
+                  url: outcome.url,
+                  result,
+                  issueNumber,
+                  actionMessage,
+                });
+              }
+            };
+
+            for (const outcome of outcomes) {
+              switch (outcome._tag) {
+                case "LocalOnly": {
+                  const issueNumber = yield* api.createIssue(
+                    generateIssue(context, {
+                      url: new URL(outcome.url),
+                      result: outcome.result,
+                      matches: outcome.matches,
+                    }),
+                  );
+                  pushMatchRows(outcome, "Created", issueNumber);
+                  break;
+                }
+
+                case "RemoteMatched": {
+                  yield* api.updateIssue(
+                    outcome.issueNumber,
+                    generateIssue(context, {
+                      url: new URL(outcome.url),
+                      result: outcome.result,
+                      matches: outcome.matches,
+                    }),
+                  );
+                  pushMatchRows(outcome, "Updated", outcome.issueNumber);
+                  break;
+                }
+
+                case "Orphaned": {
+                  yield* api.closeCompleted(outcome.issueNumber);
+                  rows.push({
+                    url: outcome.url,
+                    issueNumber: outcome.issueNumber,
+                    actionMessage: "Closed (completed)",
+                  });
+                  break;
+                }
+
+                case "Invalid": {
+                  yield* api.closeInvalid(outcome.issueNumber);
+                  rows.push({
+                    issueNumber: outcome.issueNumber,
+                    actionMessage: "Closed (invalid)",
+                  });
+                  break;
+                }
+
+                case "NotTriggered": {
+                  pushMatchRows(outcome, "Waiting");
+                  break;
+                }
+              }
+            }
+
+            yield* writeSummary(context, {
+              heading: "TODOs found",
+              columns: [
+                "file",
+                "url",
+                "expired",
+                "expirationDate",
+                "issue",
+                "action",
+              ],
+              rows,
+            });
           });
-        }
-      };
 
-      for (const outcome of outcomes) {
-        switch (outcome._tag) {
-          case "LocalOnly": {
-            const issueNumber = yield* api.createIssue(
-              generateIssue(context, {
-                url: new URL(outcome.url),
-                result: outcome.result,
-                matches: outcome.matches,
-              }),
-            );
-            pushMatchRows(outcome, "Created", issueNumber);
-            break;
-          }
+        const runSync = (context: ActionContext) =>
+          Option.match(context.repo, {
+            onNone: () =>
+              Effect.sync(() =>
+                core.warning(
+                  "GITHUB_REPOSITORY is not set; skipping GitHub issue sync.",
+                ),
+              ),
+            onSome: (repo) =>
+              pipe(
+                sync(repo),
+                Effect.catchAll((error) =>
+                  Effect.sync(() =>
+                    core.error(`Failed to sync issues: ${error}`),
+                  ),
+                ),
+              ),
+          });
 
-          case "RemoteMatched": {
-            yield* api.updateIssue(
-              outcome.issueNumber,
-              generateIssue(context, {
-                url: new URL(outcome.url),
-                result: outcome.result,
-                matches: outcome.matches,
-              }),
-            );
-            pushMatchRows(outcome, "Updated", outcome.issueNumber);
-            break;
-          }
+        // Bound to the command scope opened by `Effect.scoped`, so it fires once at
+        // end of run after every result has been accumulated.
+        yield* Effect.addFinalizer(() => runSync(context));
 
-          case "Orphaned": {
-            yield* api.closeCompleted(outcome.issueNumber);
-            rows.push({
-              url: outcome.url,
-              issueNumber: outcome.issueNumber,
-              actionMessage: "Closed (completed)",
-            });
-            break;
-          }
+        const plugin: Reporter = {
+          info,
+          debug: (message) => Effect.sync(() => core.debug(message)),
 
-          case "Invalid": {
-            yield* api.closeInvalid(outcome.issueNumber);
-            rows.push({
-              issueNumber: outcome.issueNumber,
-              actionMessage: "Closed (invalid)",
-            });
-            break;
-          }
+          reportFile: () => Effect.void,
+          reportMatch: () => Effect.void,
 
-          case "NotTriggered": {
-            pushMatchRows(outcome, "Waiting");
-            break;
-          }
-        }
-      }
+          reportResult: (result) =>
+            Ref.update(resultsRef, (results) => [...results, result]),
+        };
 
-      yield* writeSummary(context, {
-        heading: "TODOs found",
-        columns: [
-          "file",
-          "url",
-          "expired",
-          "expirationDate",
-          "issue",
-          "action",
-        ],
-        rows,
-      });
-    });
-
-  const runSync = (context: ActionContext) =>
-    Option.match(context.repo, {
-      onNone: () =>
-        Effect.sync(() =>
-          core.warning(
-            "GITHUB_REPOSITORY is not set; skipping GitHub issue sync.",
-          ),
-        ),
-      onSome: (repo) =>
-        pipe(
-          sync(repo),
-          Effect.catchAll((error) =>
-            Effect.sync(() => core.error(`Failed to sync issues: ${error}`)),
-          ),
-        ),
-    });
-
-  // Bound to the command scope opened by `Effect.scoped`, so it fires once at
-  // end of run after every result has been accumulated.
-  yield* Effect.addFinalizer(() => runSync(context));
-
-  const plugin: Reporter = {
-    info,
-    debug: (message) => Effect.sync(() => core.debug(message)),
-
-    reportFile: () => Effect.void,
-    reportMatch: () => Effect.void,
-
-    reportResult: (result) =>
-      Ref.update(resultsRef, (results) => [...results, result]),
-  };
-
-  return plugin;
+        return plugin;
       }),
       Effect.provide(GitHub.Default),
     ),
