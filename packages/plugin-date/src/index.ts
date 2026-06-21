@@ -1,8 +1,10 @@
 import * as Effect from "effect/Effect";
-import { flow, pipe, satisfies } from "effect/Function";
+import { flow } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { Checker, PluginFactory } from "todone/plugin";
+import { Checker, Factory, PluginFactory } from "todone/plugin";
+import * as pkg from "../package.json" with { type: "json" };
+
 const pattern = new URLPattern({
   protocol: "date",
   hostname: "",
@@ -25,45 +27,42 @@ const matchPattern = (url: URL) =>
 
 const decodeDate = Schema.decodeUnknown(Schema.DateFromString);
 
-export const checker = Effect.sync(
-  (): Checker => ({
-    id: "date",
-    name: "Date",
+export const checker: Factory<Checker> = {
+  id: `${pkg.name}/date`,
+  create: () =>
+    Effect.succeed({
+      checkMatch: flow(
+        Option.liftPredicate(({ url }) => pattern.test(url)),
+        Option.map(({ url }) =>
+          Effect.gen(function* () {
+            const {
+              pathname: {
+                groups: { date },
+              },
+            } = yield* matchPattern(url);
 
-    checkMatch: flow(
-      Option.liftPredicate(({ url }) => pattern.test(url)),
-      Option.map(({ url }) =>
-        Effect.gen(function* () {
-          const {
-            pathname: {
-              groups: { date },
-            },
-          } = yield* matchPattern(url);
+            const expirationDate = yield* decodeDate(date);
 
-          const expirationDate = yield* decodeDate(date);
+            const isExpired = +expirationDate < Date.now();
 
-          const isExpired = +expirationDate < Date.now();
-
-          return {
-            title: date,
-            isExpired,
-            expirationDate,
-          };
+            return {
+              title: date,
+              isExpired,
+              expirationDate,
+            };
+          }),
+        ),
+        Option.match({
+          onSome: Effect.map(Option.some),
+          onNone: () => Effect.succeed(Option.none()),
         }),
       ),
-      Option.match({
-        onSome: Effect.map(Option.some),
-        onNone: () => Effect.succeed(Option.none()),
-      }),
-    ),
-  }),
-);
+    }),
+};
 
-export default pipe(
-  Effect.gen(function* () {
-    return {
-      checkers: [yield* checker],
-    };
-  }),
-  satisfies<PluginFactory>(),
-);
+const plugin: PluginFactory = {
+  id: pkg.name,
+  create: () => Effect.succeed({ checkers: [checker] }),
+};
+
+export default plugin;

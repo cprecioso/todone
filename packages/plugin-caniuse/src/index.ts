@@ -1,10 +1,12 @@
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
-import { flow, pipe, satisfies } from "effect/Function";
+import { flow } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { Checker, PluginFactory } from "todone/plugin";
+import { Checker, Factory, PluginFactory } from "todone/plugin";
+import * as pkg from "../package.json" with { type: "json" };
 import { checkFeatureSupport, getBrowsers, getFeatureInfo } from "./lib";
+
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?caniuse.com",
@@ -25,59 +27,62 @@ const matchPattern = (url: URL) =>
     ),
   );
 
-export const checker = Effect.map(
-  Config.array(Config.string(), "BROWSERSLIST"),
-  (browserslist): Checker => {
-    const browsers = getBrowsers(browserslist);
+export const checker: Factory<Checker> = {
+  id: `${pkg.name}/caniuse-feature`,
 
-    return {
-      id: "caniuse",
-      name: "Caniuse",
+  create: () =>
+    Effect.map(
+      Config.array(Config.string(), "BROWSERSLIST"),
+      (browserslist): Checker => {
+        const browsers = getBrowsers(browserslist);
 
-      checkMatch: flow(
-        Option.liftPredicate(({ url }) => pattern.test(url)),
-        Option.map(({ url }) =>
-          Effect.gen(function* () {
-            const {
-              pathname: {
-                groups: { feature },
-              },
-            } = yield* matchPattern(url);
+        return {
+          checkMatch: flow(
+            Option.liftPredicate(({ url }) => pattern.test(url)),
+            Option.map(({ url }) =>
+              Effect.gen(function* () {
+                const {
+                  pathname: {
+                    groups: { feature },
+                  },
+                } = yield* matchPattern(url);
 
-            const featureInfo = getFeatureInfo(feature);
+                const featureInfo = getFeatureInfo(feature);
 
-            const enabledFlags = new Set(
-              (url.hash.slice(1) || null)?.split(","),
-            );
+                const enabledFlags = new Set(
+                  (url.hash.slice(1) || null)?.split(","),
+                );
 
-            const browserSupport = browsers
-              .values()
-              .map((browser) =>
-                checkFeatureSupport(featureInfo, enabledFlags, browser),
-              );
+                const browserSupport = browsers
+                  .values()
+                  .map((browser) =>
+                    checkFeatureSupport(featureInfo, enabledFlags, browser),
+                  );
 
-            const isExpired = browserSupport.every((v) => Boolean(v));
+                const isExpired = browserSupport.every((v) => Boolean(v));
 
-            return {
-              title: featureInfo.title,
-              isExpired,
-            };
-          }),
-        ),
-        Option.match({
-          onSome: Effect.map(Option.some),
-          onNone: () => Effect.succeed(Option.none()),
-        }),
-      ),
-    };
-  },
-);
+                return {
+                  title: featureInfo.title,
+                  isExpired,
+                };
+              }),
+            ),
+            Option.match({
+              onSome: Effect.map(Option.some),
+              onNone: () => Effect.succeed(Option.none()),
+            }),
+          ),
+        };
+      },
+    ),
+};
 
-export default pipe(
-  Effect.gen(function* () {
-    return {
-      checkers: [yield* checker],
-    };
-  }),
-  satisfies<PluginFactory>(),
-);
+const plugin: PluginFactory = {
+  id: pkg.name,
+  create: () =>
+    Effect.succeed({
+      checkers: [checker],
+    }),
+};
+
+export default plugin;

@@ -5,7 +5,8 @@ import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Schema from "effect/Schema";
-import { BUILTIN_PLUGIN_NAME, Config } from "./schema";
+import { BUILTIN_PLUGIN_ID } from "../../builtin-plugin/base";
+import { Config } from "./schema";
 
 export type HydratedConfig = Effect.Effect.Success<
   ReturnType<typeof hydrateConfig>
@@ -23,49 +24,46 @@ export const hydrateConfig = (rawConfig: unknown) =>
 
 const hydratePlugins = (config: Config) => {
   const configWithBuiltin = {
-    [BUILTIN_PLUGIN_NAME]: {},
+    [BUILTIN_PLUGIN_ID]: {},
     ...config.plugins,
   };
 
   const pluginEffects = Object.entries(configWithBuiltin).map(
     ([name, pluginConfig]) =>
       pipe(
-        name === BUILTIN_PLUGIN_NAME
-          ? Effect.succeed(builtinPlugin as PluginFactory)
-          : loadExternalPlugin(name),
-        Effect.flatten,
-        Effect.mapError(
-          (error) =>
-            new Error(`Plugin ${name} failed to initialize`, {
-              cause: error,
-            }),
+        loadPlugin(name),
+        Effect.andThen((factory) =>
+          Effect.mapError(
+            factory.create(),
+            (error) =>
+              new Error(`Plugin ${factory.id ?? name} failed to initialize`, {
+                cause: error,
+              }),
+          ),
         ),
         Effect.withConfigProvider(ConfigProvider.fromJson(pluginConfig ?? {})),
-        Effect.scoped,
       ),
   );
 
   return Effect.all(pluginEffects);
 };
 
+const loadPlugin = (name: string) =>
+  name === BUILTIN_PLUGIN_ID ? loadBuiltinPlugin() : loadExternalPlugin(name);
+
+const loadBuiltinPlugin = () => Effect.succeed(builtinPlugin);
+
 const loadExternalPlugin = (name: string) =>
   pipe(
     Effect.tryPromise({
       try: async () => {
         const mod = await import(name);
-        const factory = "default" in mod ? mod.default : mod;
+        const factory = mod.default || mod;
         return factory as PluginFactory;
       },
       catch: (error) =>
         new Error(`Failed to load plugin ${name}`, { cause: error }),
     }),
-    Effect.tap((factory) =>
-      Effect.isEffect(factory)
-        ? Effect.void
-        : Effect.fail(
-            new Error(`Plugin ${name} does not export a valid factory`),
-          ),
-    ),
   );
 
 const hydrateReporter = (reporter: string, plugins: readonly Plugin[]) =>
@@ -77,6 +75,10 @@ const hydrateReporter = (reporter: string, plugins: readonly Plugin[]) =>
       } else {
         reporter = "json";
       }
+    }
+
+    if (!reporter.includes("/")) {
+      reporter = `${BUILTIN_PLUGIN_ID}/${reporter}`;
     }
 
     const reporterPlugin = plugins

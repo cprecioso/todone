@@ -1,10 +1,12 @@
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
-import { flow, pipe, satisfies } from "effect/Function";
+import { flow, pipe } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { Checker, PluginFactory } from "todone/plugin";
+import { Checker, Factory, PluginFactory } from "todone/plugin";
+import * as pkg from "../package.json" with { type: "json" };
 import { Figma } from "./api";
+
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?figma.com",
@@ -33,57 +35,63 @@ const matchPattern = (url: URL) =>
 
 export class CommentNotFoundError extends Data.Error<{}> {}
 
-const checker = Effect.map(
-  Figma,
-  (api): Checker => ({
-    id: "figma-commment",
-    name: "Figma Comment",
+const checker: Factory<Checker> = {
+  id: `${pkg.name}/figma-comment`,
+  create: () =>
+    pipe(
+      Figma,
+      Effect.map(
+        (api): Checker => ({
+          checkMatch: flow(
+            Option.liftPredicate(({ url }) => pattern.test(url)),
+            Option.map(({ url }) =>
+              Effect.gen(function* () {
+                const {
+                  pathname: {
+                    groups: { fileID },
+                  },
+                  hash: {
+                    groups: { commentID },
+                  },
+                } = yield* matchPattern(url);
 
-    checkMatch: flow(
-      Option.liftPredicate(({ url }) => pattern.test(url)),
-      Option.map(({ url }) =>
-        Effect.gen(function* () {
-          const {
-            pathname: {
-              groups: { fileID },
-            },
-            hash: {
-              groups: { commentID },
-            },
-          } = yield* matchPattern(url);
+                const { comments } = yield* api.Files.GetComments({
+                  path: { fileID: fileID },
+                });
+                if (!comments) return yield* new CommentNotFoundError();
 
-          const { comments } = yield* api.Files.GetComments({
-            path: { fileID: fileID },
-          });
-          if (!comments) return yield* new CommentNotFoundError();
+                const comment = comments.find(
+                  (comment) => comment.id === commentID,
+                );
+                if (!comment) return yield* new CommentNotFoundError();
 
-          const comment = comments.find((comment) => comment.id === commentID);
-          if (!comment) return yield* new CommentNotFoundError();
+                const closeDate = comment.resolved_at;
+                const isExpired = Boolean(closeDate);
 
-          const closeDate = comment.resolved_at;
-          const isExpired = Boolean(closeDate);
-
-          return {
-            title: `Figma comment from ${comment.user.handle}`,
-            isExpired,
-            expirationDate: closeDate || undefined,
-          };
+                return {
+                  title: `Figma comment from ${comment.user.handle}`,
+                  isExpired,
+                  expirationDate: closeDate || undefined,
+                };
+              }),
+            ),
+            Option.match({
+              onSome: Effect.map(Option.some),
+              onNone: () => Effect.succeed(Option.none()),
+            }),
+          ),
         }),
       ),
-      Option.match({
-        onSome: Effect.map(Option.some),
-        onNone: () => Effect.succeed(Option.none()),
-      }),
+      Effect.provide(Figma.Default),
     ),
-  }),
-);
+};
 
-export default pipe(
-  Effect.gen(function* () {
-    return {
-      checkers: [yield* checker],
-    };
-  }),
-  Effect.provide(Figma.Default),
-  satisfies<PluginFactory>(),
-);
+const plugin: PluginFactory = {
+  id: pkg.name,
+  create: () =>
+    Effect.succeed({
+      checkers: [checker],
+    }),
+};
+
+export default plugin;

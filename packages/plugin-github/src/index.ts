@@ -1,10 +1,12 @@
 import * as Effect from "effect/Effect";
-import { flow, pipe, satisfies } from "effect/Function";
+import { flow, pipe } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { Checker, PluginFactory } from "todone/plugin";
+import { Checker, Factory, PluginFactory } from "todone/plugin";
+import * as pkg from "../package.json" with { type: "json" };
 import { GitHub } from "./common";
 import { resourceFetchers } from "./fetch";
+
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?github.com",
@@ -31,44 +33,46 @@ const matchPattern = (url: URL) =>
     ),
   );
 
-const checker = Effect.map(
-  GitHub,
-  (gh): Checker => ({
-    id: "github-issues-prs",
-    name: "GitHub Issues & PRs",
+const checker: Factory<Checker> = {
+  id: `${pkg.name}/issues`,
 
-    checkMatch: flow(
-      Option.liftPredicate(({ url }) => pattern.test(url)),
-      Option.map(({ url }) =>
-        Effect.gen(function* () {
-          const {
-            pathname: {
-              groups: { owner, repo, resource_kind, number },
-            },
-          } = yield* matchPattern(url);
+  create: () =>
+    pipe(
+      GitHub,
+      Effect.map(
+        (gh): Checker => ({
+          checkMatch: flow(
+            Option.liftPredicate(({ url }) => pattern.test(url)),
+            Option.map(({ url }) =>
+              Effect.gen(function* () {
+                const {
+                  pathname: {
+                    groups: { owner, repo, resource_kind, number },
+                  },
+                } = yield* matchPattern(url);
 
-          const fetcher = resourceFetchers[resource_kind](
-            { owner, repo },
-            number,
-          );
+                const fetcher = resourceFetchers[resource_kind](
+                  { owner, repo },
+                  number,
+                );
 
-          return yield* Effect.provideService(fetcher, GitHub, gh);
+                return yield* Effect.provideService(fetcher, GitHub, gh);
+              }),
+            ),
+            Option.match({
+              onSome: Effect.map(Option.some),
+              onNone: () => Effect.succeed(Option.none()),
+            }),
+          ),
         }),
       ),
-      Option.match({
-        onSome: Effect.map(Option.some),
-        onNone: () => Effect.succeed(Option.none()),
-      }),
+      Effect.provide(GitHub.Default),
     ),
-  }),
-);
+};
 
-export default pipe(
-  Effect.gen(function* () {
-    return {
-      checkers: [yield* checker],
-    };
-  }),
-  Effect.provide(GitHub.Default),
-  satisfies<PluginFactory>(),
-);
+const plugin: PluginFactory = {
+  id: pkg.name,
+  create: () => Effect.succeed({ checkers: [checker] }),
+};
+
+export default plugin;

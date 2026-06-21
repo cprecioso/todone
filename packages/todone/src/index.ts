@@ -13,8 +13,8 @@ export const run = ({
   ...config
 }: HydratedConfig) =>
   pipe(
-    Runner,
-    Effect.map((runner) =>
+    Effect.all([Runner, reporter.create()]),
+    Effect.map(([runner, reporter]) =>
       pipe(
         getFiles(config.globs, {
           cwd: process.cwd(),

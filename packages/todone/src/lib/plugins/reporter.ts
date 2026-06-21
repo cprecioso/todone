@@ -1,8 +1,7 @@
 import * as t from "#/types";
 import * as Effect from "effect/Effect";
-import { PluginBase } from "./base";
 
-export interface Reporter extends PluginBase {
+export interface Reporter {
   info: (message: string) => Effect.Effect<void, unknown>;
   debug: (message: string) => Effect.Effect<void, unknown>;
 

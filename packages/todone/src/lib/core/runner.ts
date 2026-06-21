@@ -6,7 +6,7 @@ import { pipe } from "effect/Function";
 import * as GroupBy from "effect/GroupBy";
 import * as Stream from "effect/Stream";
 import { Analyzer } from "./analyzer";
-import { PluginChecker } from "./plugins/checker";
+import { PluginChecker } from "./checker";
 
 /**
  * The runner service provides methods to analyze streams of files and matches.

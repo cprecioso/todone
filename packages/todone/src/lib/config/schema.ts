@@ -1,7 +1,5 @@
 import * as Schema from "effect/Schema";
 
-export const BUILTIN_PLUGIN_NAME = "builtin";
-
 const optionalKey = <S extends Schema.Schema.All>(
   schema: S,
   defaultValue: Schema.Schema.Type<S>,
