@@ -1,4 +1,5 @@
-import type { ConfigInput as Config } from "./lib/config/schema";
+import type { ConfigInput } from "./lib/config/schema";
+
+export type Config = Omit<ConfigInput, "$schema">;
 
 export const defineConfig = (config: Config) => config;
-export type { Config };
