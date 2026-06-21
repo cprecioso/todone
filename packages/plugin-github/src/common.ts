@@ -6,8 +6,11 @@ import * as pkg from "../package.json" with { type: "json" };
 
 export class GitHub extends Effect.Service<GitHub>()(`${pkg.name}/GitHub`, {
   effect: Effect.gen(function* () {
-    const token = yield* Config.redacted(Config.string("GITHUB_TOKEN"));
-    const client = new Octokit({ auth: Redacted.value(token) });
+    const token = yield* Config.withDefault(
+      Config.redacted(Config.string("GITHUB_TOKEN")),
+      undefined,
+    );
+    const client = new Octokit({ auth: token && Redacted.value(token) });
     return { client };
   }),
 }) {}

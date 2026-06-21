@@ -1,6 +1,5 @@
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
-import { PluginBase } from "./base";
 
 /**
  * A Checker represents the implementation of a kind of check that can be run
@@ -9,7 +8,7 @@ import { PluginBase } from "./base";
  * For example, a GitHub plugin might check if a URL points to a GitHub issue or
  * PR, and if so, whether that issue or PR is still open.
  */
-export interface Checker extends PluginBase {
+export interface Checker {
   /**
    * An [Effect](https://effect.website/docs/getting-started/the-effect-type/)
    * for checking if a URL should be considered as expired or not.

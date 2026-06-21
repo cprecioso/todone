@@ -4,7 +4,8 @@ import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";
-import { Reporter } from "todone/plugin";
+import { Factory, Reporter } from "todone/plugin";
+import * as pkg from "../../package.json" with { type: "json" };
 import { GitHub } from "../common";
 import { ActionContext, loadContext } from "./context";
 import { makeGitHubAPI } from "./issues/actions";
@@ -20,15 +21,21 @@ const info = (message: string) => Effect.sync(() => core.info(message));
  * issues and creates/updates/closes them via the GitHub REST API, then writes a
  * job summary describing what happened. Honors a `dryRun` plugin option.
  */
-export const createIssuesReporter = Effect.gen(function* () {
-  const context = yield* loadContext;
-  const { client } = yield* GitHub;
-  const dryRun = yield* Config.withDefault(Config.boolean("dryRun"), false);
+export const createIssuesReporter: Factory<Reporter> = {
+  id: `${pkg.name}/create-issues`,
+  create: () =>
+    pipe(
+      Effect.gen(function* () {
+        const context = yield* loadContext;
+        const { client } = yield* GitHub;
+        const dryRun = yield* Config.withDefault(
+          Config.boolean("dryRun"),
+          false,
+        );
 
-  const resultsRef = yield* Ref.make<Result[]>([]);
-  const finalizerRegistered = yield* Ref.make(false);
+        const resultsRef = yield* Ref.make<Result[]>([]);
 
-  const sync = (repo: { owner: string; repo: string }) =>
+        const sync = (repo: { owner: string; repo: string }) =>
     Effect.gen(function* () {
       const results = yield* Ref.get(resultsRef);
       const api = yield* makeGitHubAPI({ client, repo, dryRun, log: info });
@@ -143,20 +150,15 @@ export const createIssuesReporter = Effect.gen(function* () {
         ),
     });
 
-  const registerFinalizer = Effect.gen(function* () {
-    const already = yield* Ref.getAndSet(finalizerRegistered, true);
-    if (already) return;
-    yield* Effect.addFinalizer(() => runSync(context));
-  });
+  // Bound to the command scope opened by `Effect.scoped`, so it fires once at
+  // end of run after every result has been accumulated.
+  yield* Effect.addFinalizer(() => runSync(context));
 
   const plugin: Reporter = {
-    id: "github-create-issues",
-    name: "GitHub Create Issues",
-
     info,
     debug: (message) => Effect.sync(() => core.debug(message)),
 
-    reportFile: () => registerFinalizer,
+    reportFile: () => Effect.void,
     reportMatch: () => Effect.void,
 
     reportResult: (result) =>
@@ -164,4 +166,7 @@ export const createIssuesReporter = Effect.gen(function* () {
   };
 
   return plugin;
-});
+      }),
+      Effect.provide(GitHub.Default),
+    ),
+};

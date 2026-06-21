@@ -1,7 +1,7 @@
 {
   "entryPointStrategy": "packages",
   "entryPoints": ["./packages/*"],
-  "exclude": ["./packages/internal-*"],
+  "exclude": ["./packages/internal-*", "./packages/test-*"],
   "includeVersion": true,
   "readme": "./docs.md",
   "packageOptions": {

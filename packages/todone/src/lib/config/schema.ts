@@ -1,7 +1,5 @@
 import * as Schema from "effect/Schema";
 
-export const BUILTIN_PLUGIN_NAME = "builtin";
-
 const optionalKey = <S extends Schema.Schema.All>(
   schema: S,
   defaultValue: Schema.Schema.Type<S>,
@@ -9,6 +7,19 @@ const optionalKey = <S extends Schema.Schema.All>(
   Schema.optionalWith(schema, { default: () => defaultValue }).annotations({
     default: defaultValue,
   });
+
+export const PluginOptions = Schema.Struct({
+  import: Schema.optional(Schema.String).annotations({
+    description:
+      "The module specifier to import the plugin from. By default, this will be the key of the plugin in the plugins object.",
+  }),
+  options: Schema.optional(Schema.Unknown).annotations({
+    description:
+      "The configuration to pass to the plugin. Can be any valid JSON value, the plugin is in charge of validating it.",
+  }),
+}).annotations({ identifier: "PluginOptions" });
+
+export type PluginOptions = Schema.Schema.Type<typeof PluginOptions>;
 
 export const Config = Schema.Struct({
   $schema: Schema.optional(Schema.String),
@@ -28,15 +39,13 @@ export const Config = Schema.Struct({
   reporter: optionalKey(Schema.String, "auto").annotations({
     description:
       "The reporter to use. Can be 'auto', 'cli', 'json', or the ID of a custom reporter.",
-    examples: ["auto", "cli", "json", "my-custom-reporter"],
   }),
 
   plugins: optionalKey(
     Schema.Record({
       key: Schema.String,
-      value: Schema.Unknown.annotations({
-        description:
-          "The configuration to pass to the plugin. Can be any valid JSON value, the plugin is in charge of validating it.",
+      value: Schema.NullishOr(PluginOptions).annotations({
+        description: "The configuration for the plugin.",
       }),
     }),
     {},

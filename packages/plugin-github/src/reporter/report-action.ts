@@ -3,7 +3,8 @@ import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";
-import { Reporter } from "todone/plugin";
+import { Factory, Reporter } from "todone/plugin";
+import * as pkg from "../../package.json" with { type: "json" };
 import { loadContext } from "./context";
 import { logFile, logMatch, logResult } from "./logger";
 import { RowData, writeSummary } from "./summary/component";
@@ -13,59 +14,58 @@ import { RowData, writeSummary } from "./summary/component";
  * Actions job summary, using the Actions toolkit. Local only: it never calls
  * the GitHub REST API.
  */
-export const reportActionReporter = Effect.gen(function* () {
-  const context = yield* loadContext;
+export const reportActionReporter: Factory<Reporter> = {
+  id: `${pkg.name}/report-action`,
+  create: () =>
+    Effect.gen(function* () {
+      const context = yield* loadContext;
 
-  const rowsRef = yield* Ref.make<RowData[]>([]);
-  const finalizerRegistered = yield* Ref.make(false);
+      const rowsRef = yield* Ref.make<RowData[]>([]);
 
-  const registerFinalizer = Effect.gen(function* () {
-    const already = yield* Ref.getAndSet(finalizerRegistered, true);
-    if (already) return;
-
-    yield* Effect.addFinalizer(() =>
-      pipe(
-        Ref.get(rowsRef),
-        Effect.flatMap((rows) =>
-          writeSummary(context, {
-            heading: "TODOs found",
-            columns: ["file", "url", "expired", "expirationDate"],
-            rows,
-          }),
-        ),
-        Effect.catchAll((error) =>
-          Effect.sync(() => core.warning(`Failed to write summary: ${error}`)),
-        ),
-      ),
-    );
-  });
-
-  const plugin: Reporter = {
-    id: "github-report-action",
-    name: "GitHub Report Action",
-
-    info: (message) => Effect.sync(() => core.info(message)),
-    debug: (message) => Effect.sync(() => core.debug(message)),
-
-    reportFile: (file) => Effect.zipRight(registerFinalizer, logFile(file)),
-
-    reportMatch: (match) => logMatch(match),
-
-    reportResult: (result) =>
-      Effect.gen(function* () {
-        yield* logResult(result);
-        yield* Ref.update(rowsRef, (rows) => [
-          ...rows,
-          ...result.matches.map(
-            (match): RowData => ({
-              match,
-              url: result.url.toString(),
-              result: Option.getOrUndefined(result.result),
+      // Bound to the command scope opened by `Effect.scoped`, so it fires once
+      // at end of run after every row has been accumulated.
+      yield* Effect.addFinalizer(() =>
+        pipe(
+          Ref.get(rowsRef),
+          Effect.flatMap((rows) =>
+            writeSummary(context, {
+              heading: "TODOs found",
+              columns: ["file", "url", "expired", "expirationDate"],
+              rows,
             }),
           ),
-        ]);
-      }),
-  };
+          Effect.catchAll((error) =>
+            Effect.sync(() =>
+              core.warning(`Failed to write summary: ${error}`),
+            ),
+          ),
+        ),
+      );
 
-  return plugin;
-});
+      const plugin: Reporter = {
+        info: (message) => Effect.sync(() => core.info(message)),
+        debug: (message) => Effect.sync(() => core.debug(message)),
+
+        reportFile: (file) => logFile(file),
+
+        reportMatch: (match) => logMatch(match),
+
+        reportResult: (result) =>
+          Effect.gen(function* () {
+            yield* logResult(result);
+            yield* Ref.update(rowsRef, (rows) => [
+              ...rows,
+              ...result.matches.map(
+                (match): RowData => ({
+                  match,
+                  url: result.url.toString(),
+                  result: Option.getOrUndefined(result.result),
+                }),
+              ),
+            ]);
+          }),
+      };
+
+      return plugin;
+    }),
+};
