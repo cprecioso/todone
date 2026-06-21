@@ -5,6 +5,8 @@ import * as Schema from "effect/Schema";
 import { Checker, PluginFactory } from "todone/plugin";
 import { GitHub } from "./common";
 import { resourceFetchers } from "./fetch";
+import { createIssuesReporter } from "./reporter/create-issues";
+import { reportActionReporter } from "./reporter/report-action";
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?github.com",
@@ -67,6 +69,7 @@ export default pipe(
   Effect.gen(function* () {
     return {
       checkers: [yield* checker],
+      reporters: [yield* reportActionReporter, yield* createIssuesReporter],
     };
   }),
   Effect.provide(GitHub.Default),

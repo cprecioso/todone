@@ -24,21 +24,28 @@ export const cliReporter = Effect.gen(function* () {
   const matchesRef = yield* Ref.make(0);
   const resultsRef = yield* Ref.make(0);
   const expiredResultsRef = yield* Ref.make(0);
+  const finalizerRegistered = yield* Ref.make(false);
 
   const headerLn = (str = "") => Console.log(`${str}`);
   const infoLn = (str = "") => Console.log(`\t${str}`);
 
-  yield* Effect.addFinalizer(() =>
-    Effect.gen(function* () {
-      Console.log(dedent`
-        Analysis complete:
-        ${yield* filesRef.get} files found
-        ${yield* matchesRef.get} matches found
-        ${yield* resultsRef.get} results found
-        ${yield* expiredResultsRef.get} expired results found
-      `);
-    }),
-  );
+  const printSummary = Effect.gen(function* () {
+    yield* Console.log(dedent`
+      Analysis complete:
+      ${yield* filesRef.get} files found
+      ${yield* matchesRef.get} matches found
+      ${yield* resultsRef.get} results found
+      ${yield* expiredResultsRef.get} expired results found
+    `);
+  });
+
+  // Registered from the first report call (not the factory body) so it binds to
+  // the run scope and fires at end of run, after all items are counted.
+  const registerFinalizer = Effect.gen(function* () {
+    const already = yield* Ref.getAndSet(finalizerRegistered, true);
+    if (already) return;
+    yield* Effect.addFinalizer(() => printSummary);
+  });
 
   const plugin: Reporter = {
     id: "cli",
@@ -47,7 +54,11 @@ export const cliReporter = Effect.gen(function* () {
     info: (message: string) => Console.info(message),
     debug: (message: string) => Console.debug(message),
 
-    reportFile: () => Ref.update(filesRef, (n) => n + 1),
+    reportFile: () =>
+      Effect.zipRight(
+        registerFinalizer,
+        Ref.update(filesRef, (n) => n + 1),
+      ),
 
     reportMatch: () => Ref.update(matchesRef, (n) => n + 1),
 

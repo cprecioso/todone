@@ -1,3 +1,3 @@
-import { library } from "@todone/internal-build/tsdown";
+import { nodeLibrary } from "@todone/internal-build/tsdown";
 
-export default library();
+export default nodeLibrary();
