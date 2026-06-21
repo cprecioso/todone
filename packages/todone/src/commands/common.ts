@@ -14,8 +14,8 @@ export abstract class EffectComand extends Command {
     return pipe(
       Effect.tryPromise(this.effect),
       Effect.flatten,
-      provideRuntime,
       Effect.scoped,
+      provideRuntime,
       NodeRuntime.runMain(),
     );
   }

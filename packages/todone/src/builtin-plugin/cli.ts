@@ -34,13 +34,13 @@ export const cliReporter: Factory<Reporter> = {
 
       yield* Effect.addFinalizer(() =>
         Effect.gen(function* () {
-          Console.log(dedent`
-        Analysis complete:
-        ${yield* filesRef.get} files found
-        ${yield* matchesRef.get} matches found
-        ${yield* resultsRef.get} results found
-        ${yield* expiredResultsRef.get} expired results found
-      `);
+          yield* Console.log(dedent`
+            Analysis complete:
+            ${yield* filesRef.get} files found
+            ${yield* matchesRef.get} matches found
+            ${yield* resultsRef.get} results found
+            ${yield* expiredResultsRef.get} expired results found
+          `);
         }),
       );
 
