@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import * as Config from "effect/Config";
+import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import { pipe } from "effect/Function";
 import * as Option from "effect/Option";
@@ -49,17 +50,16 @@ export const createIssuesReporter: Factory<Reporter> = {
             const rows: RowData[] = [];
 
             const pushMatchRows = (
-              outcome: Extract<
+              outcome: Data.TaggedEnum.Value<
                 SyncOutcome,
-                { _tag: "LocalOnly" | "RemoteMatched" | "NotTriggered" }
+                "LocalOnly" | "RemoteMatched" | "NotTriggered"
               >,
               actionMessage: string,
               issueNumber?: number,
             ) => {
-              const result =
-                outcome._tag === "NotTriggered"
-                  ? Option.getOrUndefined(outcome.result)
-                  : outcome.result;
+              const result = SyncOutcome.$is("NotTriggered")(outcome)
+                ? Option.getOrUndefined(outcome.result)
+                : outcome.result;
               for (const match of outcome.matches) {
                 rows.push({
                   match,
@@ -72,56 +72,56 @@ export const createIssuesReporter: Factory<Reporter> = {
             };
 
             for (const outcome of outcomes) {
-              switch (outcome._tag) {
-                case "LocalOnly": {
-                  const issueNumber = yield* api.createIssue(
-                    generateIssue(context, {
-                      url: new URL(outcome.url),
-                      result: outcome.result,
-                      matches: outcome.matches,
-                    }),
-                  );
-                  pushMatchRows(outcome, "Created", issueNumber);
-                  break;
-                }
+              yield* SyncOutcome.$match(outcome, {
+                LocalOnly: (outcome) =>
+                  Effect.gen(function* () {
+                    const issueNumber = yield* api.createIssue(
+                      generateIssue(context, {
+                        url: new URL(outcome.url),
+                        result: outcome.result,
+                        matches: outcome.matches,
+                      }),
+                    );
+                    pushMatchRows(outcome, "Created", issueNumber);
+                  }),
 
-                case "RemoteMatched": {
-                  yield* api.updateIssue(
-                    outcome.issueNumber,
-                    generateIssue(context, {
-                      url: new URL(outcome.url),
-                      result: outcome.result,
-                      matches: outcome.matches,
-                    }),
-                  );
-                  pushMatchRows(outcome, "Updated", outcome.issueNumber);
-                  break;
-                }
+                RemoteMatched: (outcome) =>
+                  Effect.gen(function* () {
+                    yield* api.updateIssue(
+                      outcome.issueNumber,
+                      generateIssue(context, {
+                        url: new URL(outcome.url),
+                        result: outcome.result,
+                        matches: outcome.matches,
+                      }),
+                    );
+                    pushMatchRows(outcome, "Updated", outcome.issueNumber);
+                  }),
 
-                case "Orphaned": {
-                  yield* api.closeCompleted(outcome.issueNumber);
-                  rows.push({
-                    url: outcome.url,
-                    issueNumber: outcome.issueNumber,
-                    actionMessage: "Closed (completed)",
-                  });
-                  break;
-                }
+                Orphaned: (outcome) =>
+                  Effect.gen(function* () {
+                    yield* api.closeCompleted(outcome.issueNumber);
+                    rows.push({
+                      url: outcome.url,
+                      issueNumber: outcome.issueNumber,
+                      actionMessage: "Closed (completed)",
+                    });
+                  }),
 
-                case "Invalid": {
-                  yield* api.closeInvalid(outcome.issueNumber);
-                  rows.push({
-                    issueNumber: outcome.issueNumber,
-                    actionMessage: "Closed (invalid)",
-                  });
-                  break;
-                }
+                Invalid: (outcome) =>
+                  Effect.gen(function* () {
+                    yield* api.closeInvalid(outcome.issueNumber);
+                    rows.push({
+                      issueNumber: outcome.issueNumber,
+                      actionMessage: "Closed (invalid)",
+                    });
+                  }),
 
-                case "NotTriggered": {
-                  pushMatchRows(outcome, "Waiting");
-                  break;
-                }
-              }
+                NotTriggered: (outcome) =>
+                  Effect.gen(function* () {
+                    pushMatchRows(outcome, "Waiting");
+                  }),
+              });
             }
 
             yield* writeSummary(context, {

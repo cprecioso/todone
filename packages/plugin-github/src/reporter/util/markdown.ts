@@ -30,7 +30,8 @@ export const getComment = (node: t.Nodes) => {
   return child.value;
 };
 
-// Follows the convention from `mdast-zone`
+// Follows the convention from `mdast-zone`, since it doesn't create zones, only
+// finds them.
 export const createZone = <const InNodes extends readonly t.Nodes[]>(
   name: string,
   content: InNodes,
