@@ -7,7 +7,9 @@ export default defineConfig({
   plugins: {
     "@todone/plugin-date": {},
     "@todone/plugin-github": {
-      GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+      options: {
+        GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+      },
     },
   },
 });

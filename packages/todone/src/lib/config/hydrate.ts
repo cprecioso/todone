@@ -23,7 +23,7 @@ export const hydrateConfig = (rawConfig: unknown) =>
   });
 
 const hydratePlugins = (config: Config) => {
-  const configWithBuiltin = {
+  const configWithBuiltin: Config["plugins"] = {
     [BUILTIN_PLUGIN_ID]: {},
     ...config.plugins,
   };
@@ -31,7 +31,7 @@ const hydratePlugins = (config: Config) => {
   const pluginEffects = Object.entries(configWithBuiltin).map(
     ([name, pluginConfig]) =>
       pipe(
-        loadPlugin(name),
+        loadPlugin(pluginConfig?.import ?? name),
         Effect.andThen((factory) =>
           Effect.mapError(
             factory.create(),
@@ -41,28 +41,35 @@ const hydratePlugins = (config: Config) => {
               }),
           ),
         ),
-        Effect.withConfigProvider(ConfigProvider.fromJson(pluginConfig ?? {})),
+        Effect.withConfigProvider(
+          ConfigProvider.fromJson(pluginConfig?.options ?? {}),
+        ),
       ),
   );
 
   return Effect.all(pluginEffects);
 };
 
-const loadPlugin = (name: string) =>
-  name === BUILTIN_PLUGIN_ID ? loadBuiltinPlugin() : loadExternalPlugin(name);
+const loadPlugin = (name: string, importName = name) =>
+  importName === BUILTIN_PLUGIN_ID
+    ? loadBuiltinPlugin()
+    : loadExternalPlugin(name, importName);
 
 const loadBuiltinPlugin = () => Effect.succeed(builtinPlugin);
 
-const loadExternalPlugin = (name: string) =>
+const loadExternalPlugin = (name: string, importName: string) =>
   pipe(
     Effect.tryPromise({
       try: async () => {
-        const mod = await import(name);
+        const mod = await import(importName);
         const factory = mod.default || mod;
         return factory as PluginFactory;
       },
       catch: (error) =>
-        new Error(`Failed to load plugin ${name}`, { cause: error }),
+        new Error(
+          `Failed to load plugin ${name} with \`import(${JSON.stringify(importName)})\``,
+          { cause: error },
+        ),
     }),
   );
 
