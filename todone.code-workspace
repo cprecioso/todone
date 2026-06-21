@@ -9,10 +9,6 @@
       "path": "packages/todone",
     },
     {
-      "name": "📦 @todone/default-plugins",
-      "path": "packages/default-plugins",
-    },
-    {
       "name": "📦 @todone/internal-build",
       "path": "packages/internal-build",
     },
