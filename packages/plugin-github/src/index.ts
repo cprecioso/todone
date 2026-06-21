@@ -6,7 +6,8 @@ import { Checker, Factory, PluginFactory } from "todone/plugin";
 import * as pkg from "../package.json" with { type: "json" };
 import { GitHub } from "./common";
 import { resourceFetchers } from "./fetch";
-
+import { createIssuesReporter } from "./reporter/create-issues";
+import { reportActionReporter } from "./reporter/report-action";
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?github.com",
@@ -72,7 +73,11 @@ const checker: Factory<Checker> = {
 
 const plugin: PluginFactory = {
   id: pkg.name,
-  create: () => Effect.succeed({ checkers: [checker] }),
+  create: () =>
+    Effect.succeed({
+      checkers: [checker],
+      reporters: [reportActionReporter, createIssuesReporter],
+    }),
 };
 
 export default plugin;

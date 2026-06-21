@@ -31,10 +31,21 @@
     "todone": "workspace:^"
   },
   "dependencies": {
-    "octokit": "^5.0.5"
+    "@actions/core": "3.0.1",
+    "hast-util-from-html": "^2.0.3",
+    "hast-util-to-html": "^9.0.5",
+    "hastscript": "^9.0.1",
+    "mdast-util-from-markdown": "^2.0.3",
+    "mdast-util-gfm": "^3.1.0",
+    "mdast-util-to-markdown": "^2.1.2",
+    "mdast-zone": "^6.1.0",
+    "micromark-extension-gfm": "^3.0.0",
+    "octokit": "^5.0.5",
+    "unist-builder": "^4.0.0"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
+    "@types/mdast": "^4.0.4",
     "effect": "^3.21.3",
     "todone": "workspace:^",
     "tsdown": "^0.22.2",
