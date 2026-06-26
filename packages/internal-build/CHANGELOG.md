@@ -1,5 +1,29 @@
 # @todone/internal-build
 
+## [2.0.0](https://github.com/cprecioso/todone/compare/internal-build-v1.0.1...internal-build-v2.0.0) (2026-06-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* merge core and types into main package
+* migrate to Effect
+* upgrade to node 24
+
+### Features
+
+* merge core and types into main package ([8e4d745](https://github.com/cprecioso/todone/commit/8e4d745ebe6dca28a8c7995d64690c6666356f94))
+* upgrade to node 24 ([ab81303](https://github.com/cprecioso/todone/commit/ab81303ed712570b64d54394a0442395abf7b827))
+
+
+### Performance Improvements
+
+* use native iterable handling ([7f1e14a](https://github.com/cprecioso/todone/commit/7f1e14acaf0b4ac70f08b7a4f6f872c087c6321b))
+
+
+### Code Refactoring
+
+* migrate to Effect ([8844e25](https://github.com/cprecioso/todone/commit/8844e2515fcf3b3f49b3880bef151f32b10bca84))
+
 ## [1.0.1](https://github.com/cprecioso/todone/compare/internal-build-v1.0.0...internal-build-v1.0.1) (2025-08-03)
 
 

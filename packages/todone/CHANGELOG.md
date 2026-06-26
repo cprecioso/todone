@@ -1,5 +1,77 @@
 # todone
 
+## [2.0.0](https://github.com/cprecioso/todone/compare/todone-v1.0.1...todone-v2.0.0) (2026-06-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* allow importing plugins with a specific name
+* rework plugin types
+* rework plugin loading
+* merge core and types into main package
+* simplify plugin types
+* upgrade globby
+* remove RunnerMatch
+* migrate to Effect
+* upgrade to node 24
+* change result typings
+* improve File's types
+
+### Features
+
+* add defineConfig export ([64b09db](https://github.com/cprecioso/todone/commit/64b09db02e75aa2911dcab3e827b0d0c125bd727))
+* add more information to the JSON schema ([922beff](https://github.com/cprecioso/todone/commit/922beff11200d561c8fbdca262a06ab0ad4f978d))
+* allow importing plugins with a specific name ([4cbb94e](https://github.com/cprecioso/todone/commit/4cbb94ec0df78b15ce32136a4dc918382edcc25e))
+* better error logging ([533da11](https://github.com/cprecioso/todone/commit/533da115dae0abedf789c38e1a2f128fe0e1ec74))
+* change result typings ([de6f67a](https://github.com/cprecioso/todone/commit/de6f67a3c799e44297d9466cae28ad95ded5d383))
+* create json schema for config ([1ef1308](https://github.com/cprecioso/todone/commit/1ef1308031eccaa348cc8ba3f5ebae384815d26a))
+* don't type  in the JS config ([8aedc41](https://github.com/cprecioso/todone/commit/8aedc412833b437bcaefc4b50d78ba808fe52912))
+* go into dot files ([6d0d9e1](https://github.com/cprecioso/todone/commit/6d0d9e186a5bfbffcb6f926ec331e2c759f0c3ff))
+* import config with jiti ([2945eaa](https://github.com/cprecioso/todone/commit/2945eaa0d53c969787660f4fe5b578fcfcc3cc6b))
+* make File generic ([876c97a](https://github.com/cprecioso/todone/commit/876c97a7d2bc840564c9dafbda049eae169dd256))
+* merge core and types into main package ([8e4d745](https://github.com/cprecioso/todone/commit/8e4d745ebe6dca28a8c7995d64690c6666356f94))
+* remove unneeded dotenv ([f3ed392](https://github.com/cprecioso/todone/commit/f3ed39210b46cae9309aaa495e5ad1497151b285))
+* rework plugin loading ([dcca7a9](https://github.com/cprecioso/todone/commit/dcca7a9773a8b58b85e7b69931c9ea90f21b221d))
+* upgrade to node 24 ([ab81303](https://github.com/cprecioso/todone/commit/ab81303ed712570b64d54394a0442395abf7b827))
+* use workspace:^ ranges ([4a517ac](https://github.com/cprecioso/todone/commit/4a517ac0c90e45585032ba521600b1222c5fbb62))
+
+
+### Bug Fixes
+
+* allow empty configs ([a716b19](https://github.com/cprecioso/todone/commit/a716b19eb1ea6bdad03335f2ec8cc672c42dc286))
+* correctly set paths for a File ([3d1c5f4](https://github.com/cprecioso/todone/commit/3d1c5f47d5c6bc81dd2daa332d88e6c95f710b0e))
+* fix types ([057eb82](https://github.com/cprecioso/todone/commit/057eb8209290968cc6bd8dd6c5e6faf7813f8f04))
+* move to scoped effects for `OutputMode`s ([508fce1](https://github.com/cprecioso/todone/commit/508fce168a28f14933c5d10029c2d5b3357b0b2b))
+* print summary after analysis ([388509c](https://github.com/cprecioso/todone/commit/388509cff5e2702a0eb486864f4c59b4f2d4f4c1))
+* remove leftover call ([726b410](https://github.com/cprecioso/todone/commit/726b41046fe1e626b401e00c0c711cb3253cac53))
+* rework plugin types ([b1aad1f](https://github.com/cprecioso/todone/commit/b1aad1f3e13533d22f5c8911dde24b54e4973abf))
+* use Node HTTP client ([040aa8b](https://github.com/cprecioso/todone/commit/040aa8b3dbc497d4812cf6f181becf326bace2c0))
+
+
+### Performance Improvements
+
+* reorganize LocalFile ([833ada6](https://github.com/cprecioso/todone/commit/833ada601b3337fd6914a1b4a4a872c6898fe144))
+
+
+### Miscellaneous Chores
+
+* simplify plugin types ([7c411ba](https://github.com/cprecioso/todone/commit/7c411ba947f08a788336cf774cd00d9f0c1ff1af))
+* upgrade globby ([11f1a97](https://github.com/cprecioso/todone/commit/11f1a97efc8317eba0ae6f8f62372cb50ea68af3))
+
+
+### Code Refactoring
+
+* improve File's types ([f2de18e](https://github.com/cprecioso/todone/commit/f2de18e8193cafae271433a088cb681e19ef0072))
+* migrate to Effect ([8844e25](https://github.com/cprecioso/todone/commit/8844e2515fcf3b3f49b3880bef151f32b10bca84))
+* remove RunnerMatch ([96ce549](https://github.com/cprecioso/todone/commit/96ce549f17ee6433e2f0e32a233ef0fa93bc3368))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+
 ## [1.0.1](https://github.com/cprecioso/todone/compare/todone-v1.0.0...todone-v1.0.1) (2025-08-03)
 
 
