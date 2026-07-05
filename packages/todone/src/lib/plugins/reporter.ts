@@ -1,11 +1,10 @@
 import * as t from "#/types";
-import * as Effect from "effect/Effect";
 
-export interface Reporter {
-  info: (message: string) => Effect.Effect<void, unknown>;
-  debug: (message: string) => Effect.Effect<void, unknown>;
+export interface Reporter extends AsyncDisposable {
+  info: (message: string) => Promise<void>;
+  debug: (message: string) => Promise<void>;
 
-  reportFile: (item: t.File) => Effect.Effect<void, unknown>;
-  reportMatch: (item: t.Match) => Effect.Effect<void, unknown>;
-  reportResult: (item: t.Result) => Effect.Effect<void, unknown>;
+  reportFile: (item: t.File) => Promise<void>;
+  reportMatch: (item: t.Match) => Promise<void>;
+  reportResult: (item: t.Result) => Promise<void>;
 }

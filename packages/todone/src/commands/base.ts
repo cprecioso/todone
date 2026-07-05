@@ -1,5 +1,5 @@
+import pkg from "#/package.json" with { type: "json" };
 import { Builtins, Cli } from "clipanion";
-import pkg from "../../package.json" with { type: "json" };
 
 const cli = new Cli({
   binaryName: pkg.name,

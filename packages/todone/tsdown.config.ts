@@ -1,6 +1,5 @@
-import { nodeCli, nodeLibrary } from "@todone/internal-build/tsdown";
+import { defaultConfig } from "@todone/internal-build/tsdown";
 
-export default [
-  nodeLibrary({ entries: ["index", "config", "plugin", "types"] }),
-  nodeCli(),
-];
+export default defaultConfig({
+  entries: ["bin", "index", "config", "plugin", "types"],
+});

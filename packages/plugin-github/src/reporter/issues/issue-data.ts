@@ -1,7 +1,6 @@
-import * as Effect from "effect/Effect";
-import * as Schema from "effect/Schema";
 import * as mdast from "mdast";
 import assert from "node:assert/strict";
+import * as z from "zod";
 import * as md from "../util/markdown";
 import {
   createComment,
@@ -12,36 +11,26 @@ import {
 
 const zoneId = "todone";
 
-const IssueData = Schema.parseJson(
-  Schema.Struct({
-    todoUrl: Schema.String,
-  }),
-);
+const IssueData = z.object({
+  todoUrl: z.string(),
+});
 
-export type IssueData = Schema.Schema.Type<typeof IssueData>;
-
-const encodeCommentDataSync = Schema.encodeSync(IssueData);
-const parseCommentData = Schema.decode(IssueData);
+export type IssueData = z.infer<typeof IssueData>;
 
 export const createIssueData = (data: IssueData) =>
-  createZone(zoneId, [createComment(encodeCommentDataSync(data))]);
+  createZone(zoneId, [createComment(JSON.stringify(data))]);
 
-export const findIssueData = (tree: mdast.Nodes) =>
-  Effect.gen(function* () {
-    const content = findZone(tree, zoneId);
-    assert(content, `No zone found with id "${zoneId}"`);
-    assert.equal(
-      content.length,
-      1,
-      `Expected exactly one zone with id "${zoneId}"`,
-    );
-    const comment = getComment(content[0]);
-    const parsed = yield* parseCommentData(comment);
-    return parsed;
-  });
+/** Throws if the tree does not contain a well-formed data zone. */
+export const findIssueData = (tree: mdast.Nodes): IssueData => {
+  const content = findZone(tree, zoneId);
+  assert(content, `No zone found with id "${zoneId}"`);
+  assert.equal(
+    content.length,
+    1,
+    `Expected exactly one zone with id "${zoneId}"`,
+  );
+  const comment = getComment(content[0]);
+  return IssueData.parse(JSON.parse(comment));
+};
 
-export const getIssueData = (input: string) =>
-  Effect.gen(function* () {
-    const ast = md.parse(input);
-    return yield* findIssueData(ast);
-  });
+export const getIssueData = (input: string) => findIssueData(md.parse(input));

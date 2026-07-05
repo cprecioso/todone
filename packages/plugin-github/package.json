@@ -27,7 +27,6 @@
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "effect": "^3.21.3",
     "todone": "workspace:^"
   },
   "dependencies": {
@@ -41,12 +40,12 @@
     "mdast-zone": "^6.1.0",
     "micromark-extension-gfm": "^3.0.0",
     "octokit": "^5.0.5",
-    "unist-builder": "^4.0.0"
+    "unist-builder": "^4.0.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
     "@types/mdast": "^4.0.4",
-    "effect": "^3.21.3",
     "todone": "workspace:^",
     "tsdown": "^0.22.2",
     "typescript": "~6.0.3"

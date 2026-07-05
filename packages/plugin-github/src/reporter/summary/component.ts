@@ -1,6 +1,4 @@
 import * as core from "@actions/core";
-import * as Effect from "effect/Effect";
-import * as Option from "effect/Option";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
 import { CheckerResult } from "todone/plugin";
@@ -49,10 +47,8 @@ const renderCell = (
     case "file": {
       if (!row.match) return "";
       const { file, position } = row.match;
-      return Option.match(filePermalink(context, file, position.line), {
-        onNone: () => file.localPath,
-        onSome: (href) => link(href, file.localPath),
-      });
+      const href = filePermalink(context, file, position.line);
+      return href ? link(href, file.localPath) : file.localPath;
     }
 
     case "url":
@@ -70,14 +66,12 @@ const renderCell = (
 
     case "issue": {
       if (!row.issueNumber) return "";
-      return Option.match(context.repo, {
-        onNone: () => `#${row.issueNumber}`,
-        onSome: ({ owner, repo }) =>
-          link(
-            `${context.serverUrl}/${owner}/${repo}/issues/${row.issueNumber}`,
-            `#${row.issueNumber}`,
-          ),
-      });
+      if (!context.repo) return `#${row.issueNumber}`;
+      const { owner, repo } = context.repo;
+      return link(
+        `${context.serverUrl}/${owner}/${repo}/issues/${row.issueNumber}`,
+        `#${row.issueNumber}`,
+      );
     }
 
     case "action":
@@ -95,22 +89,21 @@ export interface SummaryInput {
  * Writes a GitHub Actions job summary table, rendering only the requested
  * columns. Uses the Actions toolkit (`core.summary`).
  */
-export const writeSummary = (
+export const writeSummary = async (
   context: ActionContext,
   input: SummaryInput,
-): Effect.Effect<void, unknown> =>
-  Effect.tryPromise(async () => {
-    const header = input.columns.map((column) => ({
-      data: COLUMN_LABELS[column],
-      header: true,
-    }));
+): Promise<void> => {
+  const header = input.columns.map((column) => ({
+    data: COLUMN_LABELS[column],
+    header: true,
+  }));
 
-    const body = input.rows.map((row) =>
-      input.columns.map((column) => renderCell(context, column, row)),
-    );
+  const body = input.rows.map((row) =>
+    input.columns.map((column) => renderCell(context, column, row)),
+  );
 
-    await core.summary
-      .addHeading(input.heading)
-      .addTable([header, ...body])
-      .write();
-  });
+  await core.summary
+    .addHeading(input.heading)
+    .addTable([header, ...body])
+    .write();
+};

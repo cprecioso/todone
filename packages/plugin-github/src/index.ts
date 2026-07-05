@@ -1,83 +1,76 @@
-import * as Effect from "effect/Effect";
-import { flow, pipe } from "effect/Function";
-import * as Option from "effect/Option";
-import * as Schema from "effect/Schema";
-import { Checker, Factory, PluginFactory } from "todone/plugin";
+import assert from "node:assert/strict";
+import { Octokit } from "octokit";
+import { PluginFactory } from "todone/plugin";
+import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
-import { GitHub } from "./common";
-import { resourceFetchers } from "./fetch";
-import { createIssuesReporter } from "./reporter/create-issues";
+import { makeResourceFetchers } from "./api";
+import { makeCreateIssuesReporter } from "./reporter/create-issues";
 import { reportActionReporter } from "./reporter/report-action";
+
 const pattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?github.com",
   pathname: "/:owner/:repo/:resource_kind(issues|pull|milestone)/:number",
 });
 
-const matchPattern = (url: URL) =>
-  Effect.andThen(
-    Effect.sync(() => pattern.exec(url)),
-    Schema.decodeUnknown(
-      Schema.Struct({
-        pathname: Schema.Struct({
-          groups: Schema.Struct({
-            owner: Schema.String,
-            repo: Schema.String,
-            resource_kind: Schema.Literal("issues", "pull", "milestone"),
-            number: Schema.NumberFromString.pipe(
-              Schema.positive(),
-              Schema.int(),
-            ),
-          }),
-        }),
-      }),
-    ),
-  );
+const PatternResult = z.object({
+  pathname: z.object({
+    groups: z.object({
+      owner: z.string(),
+      repo: z.string(),
+      resource_kind: z.enum(["issues", "pull", "milestone"]),
+      number: z.coerce.number().int().positive(),
+    }),
+  }),
+});
 
-const checker: Factory<Checker> = {
-  id: `${pkg.name}/issues`,
-
-  create: () =>
-    pipe(
-      GitHub,
-      Effect.map(
-        (gh): Checker => ({
-          checkMatch: flow(
-            Option.liftPredicate(({ url }) => pattern.test(url)),
-            Option.map(({ url }) =>
-              Effect.gen(function* () {
-                const {
-                  pathname: {
-                    groups: { owner, repo, resource_kind, number },
-                  },
-                } = yield* matchPattern(url);
-
-                const fetcher = resourceFetchers[resource_kind](
-                  { owner, repo },
-                  number,
-                );
-
-                return yield* Effect.provideService(fetcher, GitHub, gh);
-              }),
-            ),
-            Option.match({
-              onSome: Effect.map(Option.some),
-              onNone: () => Effect.succeed(Option.none()),
-            }),
-          ),
-        }),
-      ),
-      Effect.provide(GitHub.Default),
-    ),
-};
+export const GitHubPluginConfig = z
+  .object({
+    dryRun: z.boolean().default(false).meta({
+      description:
+        "When true, the create-issues reporter logs issue mutations instead of sending them to GitHub.",
+    }),
+  })
+  .prefault({});
 
 const plugin: PluginFactory = {
   id: pkg.name,
-  create: () =>
-    Effect.succeed({
-      checkers: [checker],
-      reporters: [reportActionReporter, createIssuesReporter],
-    }),
+  jsonSchema: z.toJSONSchema(GitHubPluginConfig),
+  make: async (rawOptions) => {
+    const options = GitHubPluginConfig.parse(rawOptions);
+
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    assert(GITHUB_TOKEN, "GITHUB_TOKEN environment variable is required.");
+
+    const resourceFetchers = makeResourceFetchers(GITHUB_TOKEN);
+    const client = new Octokit({ auth: GITHUB_TOKEN });
+
+    return {
+      checkers: [
+        {
+          id: `${pkg.name}/issues`,
+          make: async () => ({
+            checkMatch: async ({ url }) => {
+              const patternResult = pattern.exec(url);
+              if (!patternResult) return null;
+
+              const {
+                pathname: {
+                  groups: { owner, repo, resource_kind, number },
+                },
+              } = PatternResult.parse(patternResult);
+
+              return resourceFetchers[resource_kind]({ owner, repo }, number);
+            },
+          }),
+        },
+      ],
+      reporters: [
+        reportActionReporter,
+        makeCreateIssuesReporter({ client, dryRun: options.dryRun }),
+      ],
+    };
+  },
 };
 
 export default plugin;

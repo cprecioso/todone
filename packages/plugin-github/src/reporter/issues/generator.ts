@@ -1,4 +1,3 @@
-import * as Option from "effect/Option";
 import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
 import { CheckerResult } from "todone/plugin";
@@ -70,16 +69,17 @@ export const generateIssue = (
       u(
         "list",
         matches.map((match) => {
-          const link = filePermalink(context, match.file, match.position.line);
-          const content = Option.match(link, {
-            onNone: () =>
-              u(
+          const fileUrl = filePermalink(
+            context,
+            match.file,
+            match.position.line,
+          );
+          const content = fileUrl
+            ? u("link", { url: fileUrl }, [u("text", fileUrl)])
+            : u(
                 "text",
                 `${match.file.localPath}:${match.position.line}:${match.position.column}`,
-              ),
-            onSome: (fileUrl) =>
-              u("link", { url: fileUrl }, [u("text", fileUrl)]),
-          });
+              );
           return u("listItem", { checked: false }, [u("paragraph", [content])]);
         }),
       ),

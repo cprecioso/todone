@@ -1,11 +1,8 @@
-import * as Data from "effect/Data";
-import * as Effect from "effect/Effect";
-import { flow, pipe } from "effect/Function";
-import * as Option from "effect/Option";
-import * as Schema from "effect/Schema";
-import { Checker, Factory, PluginFactory } from "todone/plugin";
+import assert from "node:assert/strict";
+import { PluginFactory } from "todone/plugin";
+import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
-import { Figma } from "./api";
+import { createFigmaApi } from "./api";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
@@ -14,84 +11,69 @@ const pattern = new URLPattern({
   hash: "#:commentID",
 });
 
-const matchPattern = (url: URL) =>
-  Effect.andThen(
-    Effect.sync(() => pattern.exec(url)),
-    Schema.decodeUnknown(
-      Schema.Struct({
-        pathname: Schema.Struct({
-          groups: Schema.Struct({
-            fileID: Schema.String,
-          }),
-        }),
-        hash: Schema.Struct({
-          groups: Schema.Struct({
-            commentID: Schema.String,
-          }),
-        }),
-      }),
-    ),
-  );
-
-export class CommentNotFoundError extends Data.Error<{}> {}
-
-const checker: Factory<Checker> = {
-  id: `${pkg.name}/figma-comment`,
-  create: () =>
-    pipe(
-      Figma,
-      Effect.map(
-        (api): Checker => ({
-          checkMatch: flow(
-            Option.liftPredicate(({ url }) => pattern.test(url)),
-            Option.map(({ url }) =>
-              Effect.gen(function* () {
-                const {
-                  pathname: {
-                    groups: { fileID },
-                  },
-                  hash: {
-                    groups: { commentID },
-                  },
-                } = yield* matchPattern(url);
-
-                const { comments } = yield* api.Files.GetComments({
-                  path: { fileID: fileID },
-                });
-                if (!comments) return yield* new CommentNotFoundError();
-
-                const comment = comments.find(
-                  (comment) => comment.id === commentID,
-                );
-                if (!comment) return yield* new CommentNotFoundError();
-
-                const closeDate = comment.resolved_at;
-                const isExpired = Boolean(closeDate);
-
-                return {
-                  title: `Figma comment from ${comment.user.handle}`,
-                  isExpired,
-                  expirationDate: closeDate || undefined,
-                };
-              }),
-            ),
-            Option.match({
-              onSome: Effect.map(Option.some),
-              onNone: () => Effect.succeed(Option.none()),
-            }),
-          ),
-        }),
-      ),
-      Effect.provide(Figma.Default),
-    ),
-};
+const PatternResult = z.object({
+  pathname: z.object({
+    groups: z.object({
+      fileID: z.string(),
+    }),
+  }),
+  hash: z.object({
+    groups: z.object({
+      commentID: z.string(),
+    }),
+  }),
+});
 
 const plugin: PluginFactory = {
   id: pkg.name,
-  create: () =>
-    Effect.succeed({
-      checkers: [checker],
-    }),
+  make: async () => {
+    const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
+    assert(FIGMA_TOKEN, "FIGMA_TOKEN environment variable is required");
+
+    const api = createFigmaApi(FIGMA_TOKEN);
+
+    return {
+      checkers: [
+        {
+          id: `${pkg.name}/figma-comment`,
+          make: async () => ({
+            checkMatch: async ({ url }) => {
+              const patternResult = pattern.exec(url);
+              if (!patternResult) return null;
+
+              const {
+                pathname: {
+                  groups: { fileID },
+                },
+                hash: {
+                  groups: { commentID },
+                },
+              } = PatternResult.parse(patternResult);
+
+              const { comments } = await api.Files.GetComments({
+                path: { fileID: fileID },
+              });
+              if (!comments) throw new Error("File not found: " + fileID);
+
+              const comment = comments.find(
+                (comment) => comment.id === commentID,
+              );
+              if (!comment) throw new Error("Comment not found: " + commentID);
+
+              const closeDate = comment.resolved_at;
+              const isExpired = Boolean(closeDate);
+
+              return {
+                title: `Figma comment from ${comment.user.handle}`,
+                isExpired,
+                expirationDate: closeDate || undefined,
+              };
+            },
+          }),
+        },
+      ],
+    };
+  },
 };
 
 export default plugin;
