@@ -1,3 +1,3 @@
-import { nodeLibrary } from "./src/tsdown.ts";
+import { defaultConfig } from "./src/tsdown.ts";
 
-export default nodeLibrary({ entries: ["*"] });
+export default defaultConfig({ entries: ["*"] });

@@ -27,14 +27,14 @@
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "@effect/platform": "^0.96.1",
-    "effect": "^3.21.3",
     "todone": "workspace:^"
   },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
   "devDependencies": {
-    "@effect/platform": "^0.96.1",
     "@todone/internal-build": "workspace:^",
-    "effect": "^3.21.3",
+    "@types/node": "^24.13.2",
     "todone": "workspace:^",
     "tsdown": "^0.22.2",
     "typescript": "~6.0.3"

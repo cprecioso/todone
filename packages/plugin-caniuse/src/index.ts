@@ -1,11 +1,12 @@
-import * as Config from "effect/Config";
-import * as Effect from "effect/Effect";
-import { flow } from "effect/Function";
-import * as Option from "effect/Option";
-import * as Schema from "effect/Schema";
-import { Checker, Factory, PluginFactory } from "todone/plugin";
+import { PluginFactory } from "todone/plugin";
+import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
-import { checkFeatureSupport, getBrowsers, getFeatureInfo } from "./lib";
+import {
+  checkFeatureSupport,
+  getBrowsers,
+  getBrowserslist,
+  getFeatureInfo,
+} from "./lib";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
@@ -13,39 +14,37 @@ const pattern = new URLPattern({
   pathname: "/:feature",
 });
 
-const matchPattern = (url: URL) =>
-  Effect.andThen(
-    Effect.sync(() => pattern.exec(url)),
-    Schema.decodeUnknown(
-      Schema.Struct({
-        pathname: Schema.Struct({
-          groups: Schema.Struct({
-            feature: Schema.String,
-          }),
-        }),
-      }),
-    ),
-  );
+const PatternResult = z.object({
+  pathname: z.object({
+    groups: z.object({
+      feature: z.string(),
+    }),
+  }),
+});
 
-export const checker: Factory<Checker> = {
-  id: `${pkg.name}/caniuse-feature`,
+const plugin: PluginFactory = {
+  id: pkg.name,
+  make: async (rawOptions) => {
+    const browserslist = getBrowserslist();
 
-  create: () =>
-    Effect.map(
-      Config.array(Config.string(), "BROWSERSLIST"),
-      (browserslist): Checker => {
-        const browsers = getBrowsers(browserslist);
+    return {
+      checkers: [
+        {
+          id: `${pkg.name}/caniuse-feature`,
 
-        return {
-          checkMatch: flow(
-            Option.liftPredicate(({ url }) => pattern.test(url)),
-            Option.map(({ url }) =>
-              Effect.gen(function* () {
+          make: async () => {
+            const browsers = getBrowsers(browserslist);
+
+            return {
+              checkMatch: async ({ url }) => {
+                const patternResult = pattern.exec(url);
+                if (!patternResult) return null;
+
                 const {
                   pathname: {
                     groups: { feature },
                   },
-                } = yield* matchPattern(url);
+                } = PatternResult.parse(patternResult);
 
                 const featureInfo = getFeatureInfo(feature);
 
@@ -65,24 +64,13 @@ export const checker: Factory<Checker> = {
                   title: featureInfo.title,
                   isExpired,
                 };
-              }),
-            ),
-            Option.match({
-              onSome: Effect.map(Option.some),
-              onNone: () => Effect.succeed(Option.none()),
-            }),
-          ),
-        };
-      },
-    ),
-};
-
-const plugin: PluginFactory = {
-  id: pkg.name,
-  create: () =>
-    Effect.succeed({
-      checkers: [checker],
-    }),
+              },
+            };
+          },
+        },
+      ],
+    };
+  },
 };
 
 export default plugin;

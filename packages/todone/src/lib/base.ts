@@ -1,4 +1,3 @@
-import * as Option from "effect/Option";
 import { File } from "./files";
 import { CheckerResult } from "./plugins/checker";
 
@@ -24,6 +23,6 @@ export interface Match {
 export interface Result {
   /** The URL referred to in the TODO */
   url: URL;
-  result: Option.Option<CheckerResult>;
-  matches: readonly Match[];
+  match: Match;
+  result: CheckerResult | null;
 }

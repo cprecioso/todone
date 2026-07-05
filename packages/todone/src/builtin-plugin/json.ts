@@ -1,84 +1,93 @@
 import { Factory, Reporter } from "#/plugin";
-import * as Path from "@effect/platform/Path";
-import * as Console from "effect/Console";
-import * as Effect from "effect/Effect";
-import { flow } from "effect/Function";
-import * as Option from "effect/Option";
-import * as Schema from "effect/Schema";
+import * as path from "node:path";
+import * as z from "zod";
 import { BUILTIN_PLUGIN_ID } from "./base";
 
-const URLFromString = Schema.transform(Schema.String, Schema.instanceOf(URL), {
-  strict: true,
-  decode: (str) => new URL(str),
-  encode: (url) => url.toString(),
+const stringToURLCodec = z.codec(z.url(), z.instanceof(URL), {
+  decode: (urlString) => new URL(urlString),
+  encode: (url) => url.href,
 });
 
-const AbsolutePath = Schema.String.pipe(
-  Schema.nonEmptyString(),
-  Schema.filterEffect((str) =>
-    Effect.gen(function* () {
-      const path = yield* Path.Path;
-      return path.isAbsolute(str);
-    }),
-  ),
-);
+const jsonCodec = <T extends z.core.$ZodType>(schema: T) =>
+  z.codec(z.string(), schema, {
+    decode: (jsonString, ctx) => {
+      try {
+        return JSON.parse(jsonString);
+      } catch (err: any) {
+        ctx.issues.push({
+          code: "invalid_format",
+          format: "json",
+          input: jsonString,
+          message: err.message,
+        });
+        return z.NEVER;
+      }
+    },
+    encode: (value) => JSON.stringify(value),
+  });
 
-const FileItem = Schema.Struct({
-  type: Schema.Literal("file"),
+const AbsolutePath = z
+  .string()
+  .nonempty()
+  .refine((str) => path.isAbsolute(str), {
+    error: "Expected an absolute path",
+  });
+
+const FileItem = z.object({
+  type: z.literal("file"),
   location: AbsolutePath,
 });
 
-const MatchItem = Schema.Struct({
-  type: Schema.Literal("match"),
-  url: URLFromString,
+const MatchItem = z.object({
+  type: z.literal("match"),
+  url: stringToURLCodec,
   location: AbsolutePath,
-  line: Schema.NonNegativeInt,
-  column: Schema.NonNegativeInt,
+  line: z.number().nonnegative(),
+  column: z.number().nonnegative(),
 });
 
-const ResultItem = Schema.Struct({
-  type: Schema.Literal("result"),
-  url: URLFromString,
-  title: Schema.String,
-  isExpired: Schema.Boolean,
-  expirationDate: Schema.optional(Schema.Date),
+const ResultItem = z.object({
+  type: z.literal("result"),
+  url: stringToURLCodec,
+  title: z.string(),
+  isExpired: z.boolean(),
+  expirationDate: z.date().optional(),
 });
 
-export const OutputItem = Schema.Union(FileItem, MatchItem, ResultItem);
+const OutputItem = z.union([FileItem, MatchItem, ResultItem]);
+type OutputItem = z.infer<typeof OutputItem>;
 
 export const jsonReporter: Factory<Reporter> = {
   id: `${BUILTIN_PLUGIN_ID}/json`,
-  create: () =>
-    Effect.gen(function* () {
-      const outputItem = flow(
-        Schema.encode(OutputItem),
-        Effect.map(JSON.stringify),
-        Effect.flatMap(Console.log),
-        Effect.provideService(Path.Path, yield* Path.Path),
-      );
+  make: async () => {
+    const outputItem = jsonCodec(OutputItem);
 
-      const plugin: Reporter = {
-        info: (message: string) => Console.info(message),
-        debug: (message: string) => Console.debug(message),
+    return {
+      info: async (message: string) => console.info(message),
+      debug: async (message: string) => console.debug(message),
 
-        reportFile: (file) =>
-          outputItem({ type: "file", location: file.localPath }),
+      reportFile: async (file) =>
+        console.log(
+          outputItem.encode({ type: "file", location: file.localPath }),
+        ),
 
-        reportMatch: ({ url, file, position }) =>
-          outputItem({
+      reportMatch: async ({ url, file, position }) =>
+        console.log(
+          outputItem.encode({
             type: "match",
             url,
             location: file.localPath,
             ...position,
           }),
+        ),
 
-        reportResult: ({ url, result }) =>
-          Option.match(result, {
-            onSome: (result) => outputItem({ type: "result", url, ...result }),
-            onNone: () => Effect.void,
-          }),
-      };
+      reportResult: async ({ url, result }) => {
+        if (result) {
+          console.log(outputItem.encode({ type: "result", url, ...result }));
+        }
+      },
 
-      return plugin;
-    }),
+      async [Symbol.asyncDispose]() {},
+    };
+  },
 };

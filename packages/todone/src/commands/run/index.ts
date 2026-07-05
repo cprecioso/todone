@@ -1,7 +1,6 @@
 import { Command, Option } from "clipanion";
-import { EffectComand } from "../common";
 
-export class RunCommand extends EffectComand {
+export class RunCommand extends Command {
   static paths = [Command.Default, ["run"]];
 
   static usage = Command.Usage({ description: "Run the todone CLI" });
@@ -11,5 +10,5 @@ export class RunCommand extends EffectComand {
       "Override reporter to use (auto, cli, json, or a custom reporter module)",
   });
 
-  effect = async () => (await import("./effect")).default(this);
+  execute = async () => (await import("./impl")).default(this);
 }
