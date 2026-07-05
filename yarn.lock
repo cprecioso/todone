@@ -816,6 +816,7 @@ __metadata:
     todone: "workspace:^"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"
+    zod: "npm:^4.4.3"
   peerDependencies:
     todone: "workspace:^"
   languageName: unknown
@@ -826,6 +827,7 @@ __metadata:
   resolution: "@todone/plugin-figma@workspace:packages/plugin-figma"
   dependencies:
     "@todone/internal-build": "workspace:^"
+    "@types/node": "npm:^24.13.2"
     todone: "workspace:^"
     tsdown: "npm:^0.22.2"
     typescript: "npm:~6.0.3"

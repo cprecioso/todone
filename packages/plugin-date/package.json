@@ -29,6 +29,9 @@
   "peerDependencies": {
     "todone": "workspace:^"
   },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
     "todone": "workspace:^",
