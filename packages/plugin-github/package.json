@@ -27,15 +27,14 @@
     "dev": "tsdown --watch"
   },
   "peerDependencies": {
-    "effect": "^3.21.3",
     "todone": "workspace:^"
   },
   "dependencies": {
-    "octokit": "^5.0.5"
+    "octokit": "^5.0.5",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
-    "effect": "^3.21.3",
     "todone": "workspace:^",
     "tsdown": "^0.22.2",
     "typescript": "~6.0.3"

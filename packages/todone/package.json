@@ -56,20 +56,21 @@
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@effect/platform": "^0.96.1",
-    "@effect/platform-node": "^0.107.0",
+    "@cprecioso/async-iterable-helpers": "^0.2.0",
+    "@std/streams": "jsr:^1.1.1",
     "c12": "^4.0.0-beta.5",
     "chalk": "^5.6.2",
     "clipanion": "^4.0.0-rc.4",
     "dedent": "^1.7.2",
-    "effect": "^3.21.3",
     "globby": "^16.2.0",
-    "jiti": "^2.7.0"
+    "jiti": "^2.7.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
     "@types/node": "^24.13.2",
     "tsdown": "^0.22.2",
+    "type-fest": "^5.7.0",
     "typescript": "~6.0.3"
   },
   "publishConfig": {

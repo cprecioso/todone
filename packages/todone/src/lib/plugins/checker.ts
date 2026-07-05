@@ -1,6 +1,3 @@
-import * as Effect from "effect/Effect";
-import * as Option from "effect/Option";
-
 /**
  * A Checker represents the implementation of a kind of check that can be run
  * against a TODO URL.
@@ -13,9 +10,7 @@ export interface Checker {
    * An [Effect](https://effect.website/docs/getting-started/the-effect-type/)
    * for checking if a URL should be considered as expired or not.
    */
-  checkMatch(options: {
-    url: URL;
-  }): Effect.Effect<Option.Option<CheckerResult>, unknown, never>;
+  checkMatch(options: { url: URL }): Promise<CheckerResult | null>;
 }
 
 /**

@@ -24,9 +24,3 @@ export const nodeLibrary = (...args: Parameters<typeof library>) =>
     platform: "node",
     target: "node24",
   }) satisfies UserConfig;
-
-export const nodeCli = (...[opts, ...args]: Parameters<typeof nodeLibrary>) =>
-  ({
-    ...nodeLibrary({ entries: ["bin"], ...opts }, ...args),
-    dts: false,
-  }) satisfies UserConfig;

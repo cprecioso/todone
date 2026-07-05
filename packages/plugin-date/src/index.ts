@@ -1,8 +1,5 @@
-import * as Effect from "effect/Effect";
-import { flow } from "effect/Function";
-import * as Option from "effect/Option";
-import * as Schema from "effect/Schema";
-import { Checker, Factory, PluginFactory } from "todone/plugin";
+import { PluginFactory } from "todone/plugin";
+import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
 
 const pattern = new URLPattern({
@@ -11,58 +8,48 @@ const pattern = new URLPattern({
   pathname: ":date",
 });
 
-const matchPattern = (url: URL) =>
-  Effect.andThen(
-    Effect.sync(() => pattern.exec(url)),
-    Schema.decodeUnknown(
-      Schema.Struct({
-        pathname: Schema.Struct({
-          groups: Schema.Struct({
-            date: Schema.String,
-          }),
-        }),
-      }),
-    ),
-  );
+const isoDatetimeToDate = z.codec(z.iso.datetime(), z.date(), {
+  decode: (isoString) => new Date(isoString),
+  encode: (date) => date.toISOString(),
+});
 
-const decodeDate = Schema.decodeUnknown(Schema.DateFromString);
+const PatternResult = z.object({
+  pathname: z.object({
+    groups: z.object({
+      date: isoDatetimeToDate,
+    }),
+  }),
+});
 
-export const checker: Factory<Checker> = {
-  id: `${pkg.name}/date`,
-  create: () =>
-    Effect.succeed({
-      checkMatch: flow(
-        Option.liftPredicate(({ url }) => pattern.test(url)),
-        Option.map(({ url }) =>
-          Effect.gen(function* () {
+const plugin: PluginFactory = {
+  id: pkg.name,
+  make: async () => ({
+    checkers: [
+      {
+        id: `${pkg.name}/date`,
+        make: async () => ({
+          checkMatch: async ({ url }) => {
+            const patternResult = pattern.exec(url);
+            if (!patternResult) return null;
+
             const {
               pathname: {
-                groups: { date },
+                groups: { date: expirationDate },
               },
-            } = yield* matchPattern(url);
-
-            const expirationDate = yield* decodeDate(date);
+            } = PatternResult.parse(patternResult);
 
             const isExpired = +expirationDate < Date.now();
 
             return {
-              title: date,
+              title: expirationDate.toISOString(),
               isExpired,
               expirationDate,
             };
-          }),
-        ),
-        Option.match({
-          onSome: Effect.map(Option.some),
-          onNone: () => Effect.succeed(Option.none()),
+          },
         }),
-      ),
-    }),
-};
-
-const plugin: PluginFactory = {
-  id: pkg.name,
-  create: () => Effect.succeed({ checkers: [checker] }),
+      },
+    ],
+  }),
 };
 
 export default plugin;

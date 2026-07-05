@@ -1,59 +1,28 @@
-import * as pkg from "#/package.json" with { type: "json" };
-import type { Checker } from "#/plugin";
-import { WrappedPlugin } from "#/plugin";
-import * as Effect from "effect/Effect";
-import { identity, pipe } from "effect/Function";
-import * as Stream from "effect/Stream";
-import { OptionsService } from "./options";
+import type { Checker, Factory } from "#/plugin";
+import * as t from "#/types";
 
-export class PluginChecker extends Effect.Service<PluginChecker>()(
-  `${pkg.name}/PluginChecker`,
-  {
-    effect: Effect.gen(function* () {
-      const checkers = yield* getAllCheckers();
-
-      return {
-        checkMatch: (url: URL) =>
-          pipe(
-            Stream.fromIterable(checkers),
-            Stream.mapEffect(checkMatchWithPlugin(url), {
-              concurrency: "unbounded",
-              unordered: true,
-            }),
-            Stream.filterMap(identity),
-            Stream.runHead,
-          ),
-      };
+export const makeAggregateChecker = async (
+  factories: readonly Factory<Checker>[],
+) => {
+  const instances = await Promise.all(
+    factories.map(async (factory) => {
+      const checker = await factory.make();
+      return { id: factory.id, value: checker };
     }),
-  },
-) {}
-
-const getAllCheckers = () =>
-  Effect.gen(function* () {
-    const options = yield* OptionsService;
-    return yield* Effect.all(
-      options.plugins
-        .flatMap((p) => p.checkers ?? [])
-        .map((c) =>
-          Effect.map(
-            c.create(),
-            (checker): WrappedPlugin<Checker> => ({
-              id: c.id,
-              plugin: checker,
-            }),
-          ),
-        ),
-    );
-  });
-
-const checkMatchWithPlugin = (url: URL) => (plugin: WrappedPlugin<Checker>) =>
-  pipe(
-    plugin.plugin.checkMatch({ url }),
-    Effect.mapError(
-      (cause) =>
-        new Error(
-          `Plugin ${plugin.id} failed to check match for URL ${url.toString()}`,
-          { cause },
-        ),
-    ),
   );
+
+  return (match: t.Match) => {
+    const { url } = match;
+    return Promise.any(
+      instances.map(async (inst): Promise<t.Result> => {
+        try {
+          const result = await inst.value.checkMatch({ url });
+          if (!result) throw new Error("No result for " + url.toString());
+          return { url, result, match };
+        } catch (error) {
+          throw new Error("Error in plugin " + inst.id, { cause: error });
+        }
+      }),
+    );
+  };
+};

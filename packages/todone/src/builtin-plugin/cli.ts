@@ -1,112 +1,100 @@
 import { Factory, Reporter } from "#/plugin";
 import chalk from "chalk";
 import dedent from "dedent";
-import * as Config from "effect/Config";
-import * as Console from "effect/Console";
-import * as Effect from "effect/Effect";
-import * as Option from "effect/Option";
-import * as Ref from "effect/Ref";
+import * as z from "zod";
 import { BUILTIN_PLUGIN_ID } from "./base";
 
-export const cliReporter: Factory<Reporter> = {
-  id: `${BUILTIN_PLUGIN_ID}/cli`,
-  create: () =>
-    Effect.gen(function* () {
-      const locale = yield* Config.withDefault(
-        Config.string("reporter.cli.locale"),
-        undefined,
-      );
+export const CliReporterConfig = z.object({
+  locale: z.string().optional(),
+  onlyExpired: z.boolean().optional().default(false),
+});
 
-      const onlyExpired = yield* Config.withDefault(
-        Config.boolean("reporter.cli.onlyExpired"),
-        false,
-      );
+export const cliReporter = (rawOptions: unknown): Factory<Reporter> => {
+  const { locale, onlyExpired } = CliReporterConfig.parse(rawOptions);
 
+  return {
+    id: `${BUILTIN_PLUGIN_ID}/cli`,
+    make: async () => {
       const dateFormatter = new Intl.DateTimeFormat(locale);
 
-      const filesRef = yield* Ref.make(0);
-      const matchesRef = yield* Ref.make(0);
-      const resultsRef = yield* Ref.make(0);
-      const expiredResultsRef = yield* Ref.make(0);
+      let filesCounter = 0;
+      let matchesCounter = 0;
+      let resultsCounter = 0;
+      let expiredResultsCounter = 0;
 
-      const headerLn = (str = "") => Console.log(`${str}`);
-      const infoLn = (str = "") => Console.log(`\t${str}`);
+      const headerLn = (str = "") => console.log(`${str}`);
+      const infoLn = (str = "") => console.log(`\t${str}`);
 
-      yield* Effect.addFinalizer(() =>
-        Effect.gen(function* () {
-          yield* Console.log(dedent`
-            Analysis complete:
-            ${yield* filesRef.get} files found
-            ${yield* matchesRef.get} matches found
-            ${yield* resultsRef.get} results found
-            ${yield* expiredResultsRef.get} expired results found
-          `);
-        }),
-      );
+      return {
+        info: async (message: string) => console.info(message),
+        debug: async (message: string) => console.debug(message),
 
-      const plugin: Reporter = {
-        info: (message: string) => Console.info(message),
-        debug: (message: string) => Console.debug(message),
+        reportFile: async () => {
+          filesCounter++;
+        },
 
-        reportFile: () => Ref.update(filesRef, (n) => n + 1),
+        reportMatch: async () => {
+          matchesCounter++;
+        },
 
-        reportMatch: () => Ref.update(matchesRef, (n) => n + 1),
+        reportResult: async ({
+          url,
+          result,
+          match: {
+            file,
+            position: { line, column },
+          },
+        }) => {
+          resultsCounter++;
 
-        reportResult: ({ url, result, matches }) =>
-          Effect.gen(function* () {
-            yield* Ref.update(resultsRef, (n) => n + 1);
+          if (result?.isExpired) expiredResultsCounter++;
+          else if (onlyExpired) return;
 
-            if (onlyExpired) {
-              const isExpired = Option.match(result, {
-                onSome: (result) => result.isExpired,
-                onNone: () => false,
-              });
-              if (!isExpired) return;
-            }
+          headerLn(
+            chalk.blueBright(file.localPath) +
+              ":" +
+              chalk.yellowBright(line) +
+              ":" +
+              chalk.yellowBright(column),
+          );
 
-            for (const {
-              file,
-              position: { line, column },
-            } of matches) {
-              yield* headerLn(
-                chalk.blueBright(file.localPath) +
-                  ":" +
-                  chalk.yellowBright(line) +
-                  ":" +
-                  chalk.yellowBright(column),
+          infoLn(chalk.bold(url));
+
+          if (result === null) {
+            infoLn(chalk.gray("No plugin responded"));
+          } else {
+            const { isExpired, expirationDate } = result;
+
+            infoLn(
+              isExpired
+                ? chalk.bgYellow.redBright("EXPIRED")
+                : chalk.blue("Not expired yet"),
+            );
+
+            if (expirationDate) {
+              infoLn(
+                [
+                  isExpired ? "expired" : "will expire",
+                  "on",
+                  dateFormatter.format(expirationDate),
+                ].join(" "),
               );
-              yield* infoLn(chalk.bold(url));
-
-              yield* Option.match(result, {
-                onNone: () => infoLn(chalk.gray("No plugin responded")),
-                onSome: ({ isExpired, expirationDate }) =>
-                  Effect.gen(function* () {
-                    yield* infoLn(
-                      isExpired
-                        ? chalk.bgYellow.redBright("EXPIRED")
-                        : chalk.blue("Not expired yet"),
-                    );
-
-                    if (expirationDate) {
-                      yield* infoLn(
-                        [
-                          isExpired ? "expired" : "will expire",
-                          "on",
-                          dateFormatter.format(expirationDate),
-                        ].join(" "),
-                      );
-                    }
-
-                    if (isExpired)
-                      yield* Ref.update(expiredResultsRef, (n) => n + 1);
-                  }),
-              });
-
-              yield* headerLn();
             }
-          }),
-      };
+          }
 
-      return plugin;
-    }),
+          headerLn();
+        },
+
+        async [Symbol.asyncDispose]() {
+          console.log(dedent`
+            Analysis complete:
+            ${filesCounter} files found
+            ${matchesCounter} matches found
+            ${resultsCounter} results found
+            ${expiredResultsCounter} expired results found
+          `);
+        },
+      };
+    },
+  };
 };

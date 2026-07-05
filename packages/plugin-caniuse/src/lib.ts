@@ -2,7 +2,10 @@ import browserslist from "browserslist";
 import * as db from "caniuse-lite";
 import { CaniuseFlags, UrlFlags } from "./flags";
 
-export const getBrowsers = (input: string | string[]) => {
+export const getBrowserslist = () =>
+  browserslist.loadConfig({ path: process.cwd() }) ?? browserslist.defaults;
+
+export const getBrowsers = (input: readonly string[]) => {
   const browsers = browserslist(input).map((browserString) => {
     const [browser, version] = browserString.split(" ", 2);
     return { browser, version };

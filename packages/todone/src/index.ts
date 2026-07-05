@@ -1,35 +1,38 @@
-import * as Effect from "effect/Effect";
-import { pipe } from "effect/Function";
-import * as Stream from "effect/Stream";
+import * as it from "@cprecioso/async-iterable-helpers";
 import { HydratedConfig } from "./lib/config/hydrate";
-import { OptionsService } from "./lib/core/options";
-import { Runner } from "./lib/core/runner";
+import { makeAggregateChecker } from "./lib/core/checker";
+import { makeFileMatcher } from "./lib/core/matcher";
 import { getFiles } from "./lib/files";
 
-export const run = ({
-  reporter,
+export const run = async ({
+  reporter: reporterFactory,
   keyword,
   plugins,
   ...config
-}: HydratedConfig) =>
-  pipe(
-    Effect.all([Runner, reporter.create()]),
-    Effect.map(([runner, reporter]) =>
-      pipe(
-        getFiles(config.globs, {
-          cwd: process.cwd(),
-          gitignore: config.gitignore,
-        }),
-        Stream.tap(reporter.reportFile),
+}: HydratedConfig) => {
+  await using reporter = await reporterFactory.make();
 
-        runner.getMatches,
-        Stream.tap(reporter.reportMatch),
+  const matcher = makeFileMatcher(keyword);
 
-        runner.getResults,
-        Stream.tap(reporter.reportResult),
-      ),
-    ),
-    Effect.provide(Runner.Default),
-    Effect.provideService(OptionsService, { keyword, plugins }),
-    Stream.unwrap,
-  );
+  const checkerFactories = plugins.flatMap((p) => p.checkers ?? []);
+  const checker = await makeAggregateChecker(checkerFactories);
+
+  const results = await it
+    .from(
+      getFiles(config.globs, {
+        cwd: process.cwd(),
+        gitignore: config.gitignore,
+      }),
+    )
+    .pipe(it.tap(reporter.reportFile))
+
+    .pipe(it.flatMap(matcher))
+    .pipe(it.tap(reporter.reportMatch))
+
+    .pipe(it.map(checker))
+    .pipe(it.tap(reporter.reportResult))
+
+    .sink(it.toArray());
+
+  return results;
+};

@@ -1,7 +1,6 @@
-import { Option } from "clipanion";
-import { EffectComand } from "../common";
+import { Command, Option } from "clipanion";
 
-export class GenerateSchemaCommand extends EffectComand {
+export class GenerateSchemaCommand extends Command {
   static paths = [["generate-schema"]];
 
   out = Option.String("-o,--out", {
@@ -10,5 +9,5 @@ export class GenerateSchemaCommand extends EffectComand {
       "Output file for the generated schema. If not specified or `-`, the schema will be printed to the console.",
   });
 
-  effect = async () => (await import("./effect")).default(this);
+  execute = async () => (await import("./impl")).default(this);
 }
