@@ -11,7 +11,7 @@ export const makeAggregateChecker = async (
     }),
   );
 
-  return (match: t.Match) => {
+  return (match: t.Match): Promise<t.Result> => {
     const { url } = match;
     return Promise.any(
       instances.map(async (inst): Promise<t.Result> => {
@@ -23,6 +23,7 @@ export const makeAggregateChecker = async (
           throw new Error("Error in plugin " + inst.id, { cause: error });
         }
       }),
-    );
+      // No checker responded for this URL; let reporters surface it.
+    ).catch(() => ({ url, result: null, match }));
   };
 };

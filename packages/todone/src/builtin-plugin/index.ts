@@ -4,12 +4,16 @@ import { BUILTIN_PLUGIN_ID } from "./base";
 import { cliReporter } from "./cli";
 import { jsonReporter } from "./json";
 
-export const BuiltinPluginConfig = z.object({
-  cli: z.object({
-    locale: z.string().optional(),
-    onlyExpired: z.boolean().optional().default(false),
-  }),
-});
+export const BuiltinPluginConfig = z
+  .object({
+    cli: z
+      .object({
+        locale: z.string().optional(),
+        onlyExpired: z.boolean().optional().default(false),
+      })
+      .prefault({}),
+  })
+  .prefault({});
 
 const plugin: PluginFactory = {
   id: BUILTIN_PLUGIN_ID,

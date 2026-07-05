@@ -68,7 +68,7 @@ export const jsonReporter: Factory<Reporter> = {
 
       reportFile: async (file) =>
         console.log(
-          outputItem.encode({ type: "file", location: file.localPath }),
+          outputItem.encode({ type: "file", location: file.fullPath }),
         ),
 
       reportMatch: async ({ url, file, position }) =>
@@ -76,7 +76,7 @@ export const jsonReporter: Factory<Reporter> = {
           outputItem.encode({
             type: "match",
             url,
-            location: file.localPath,
+            location: file.fullPath,
             ...position,
           }),
         ),
