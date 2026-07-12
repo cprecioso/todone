@@ -1,4 +1,4 @@
-import { ReporterFn } from "#/plugin";
+import type { Plugin } from "#/plugin";
 import chalk from "chalk";
 import dedent from "dedent";
 
@@ -12,86 +12,86 @@ export interface CliReporterOptions {
 export const cliReporter = ({
   locale,
   onlyExpired = false,
-}: CliReporterOptions = {}): ReporterFn => {
+}: CliReporterOptions = {}): Plugin => {
   const dateFormatter = new Intl.DateTimeFormat(locale);
 
-  return async () => {
-    let filesCounter = 0;
-    let matchesCounter = 0;
-    let resultsCounter = 0;
-    let expiredResultsCounter = 0;
+  let filesCounter = 0;
+  let matchesCounter = 0;
+  let resultsCounter = 0;
+  let expiredResultsCounter = 0;
 
-    const headerLn = (str = "") => console.log(`${str}`);
-    const infoLn = (str = "") => console.log(`\t${str}`);
+  const headerLn = (str = "") => console.log(`${str}`);
+  const infoLn = (str = "") => console.log(`\t${str}`);
 
-    return {
-      warn: async (message: string) => console.warn(message),
-      info: async (message: string) => console.info(message),
-      debug: async (message: string) => console.debug(message),
+  return {
+    name: "todone:reporter-cli",
 
-      reportFile: async () => {
-        filesCounter++;
+    warn: async (message: string) => console.warn(message),
+    info: async (message: string) => console.info(message),
+    debug: async (message: string) => console.debug(message),
+
+    reportFile: async () => {
+      filesCounter++;
+    },
+
+    reportMatch: async () => {
+      matchesCounter++;
+    },
+
+    reportResult: async ({
+      url,
+      result,
+      match: {
+        file,
+        position: { line, column },
       },
+    }) => {
+      if (result === null) return;
 
-      reportMatch: async () => {
-        matchesCounter++;
-      },
+      resultsCounter++;
 
-      reportResult: async ({
-        url,
-        result,
-        match: {
-          file,
-          position: { line, column },
-        },
-      }) => {
-        if (result === null) return;
+      if (result.isExpired) expiredResultsCounter++;
+      else if (onlyExpired) return;
 
-        resultsCounter++;
+      headerLn(
+        chalk.blueBright(file.localPath) +
+          ":" +
+          chalk.yellowBright(line) +
+          ":" +
+          chalk.yellowBright(column),
+      );
 
-        if (result.isExpired) expiredResultsCounter++;
-        else if (onlyExpired) return;
+      infoLn(chalk.bold(url));
 
-        headerLn(
-          chalk.blueBright(file.localPath) +
-            ":" +
-            chalk.yellowBright(line) +
-            ":" +
-            chalk.yellowBright(column),
-        );
+      const { isExpired, expirationDate } = result;
 
-        infoLn(chalk.bold(url));
+      infoLn(
+        isExpired
+          ? chalk.bgYellow.redBright("EXPIRED")
+          : chalk.blue("Not expired yet"),
+      );
 
-        const { isExpired, expirationDate } = result;
-
+      if (expirationDate) {
         infoLn(
-          isExpired
-            ? chalk.bgYellow.redBright("EXPIRED")
-            : chalk.blue("Not expired yet"),
+          [
+            isExpired ? "expired" : "will expire",
+            "on",
+            dateFormatter.format(expirationDate),
+          ].join(" "),
         );
+      }
 
-        if (expirationDate) {
-          infoLn(
-            [
-              isExpired ? "expired" : "will expire",
-              "on",
-              dateFormatter.format(expirationDate),
-            ].join(" "),
-          );
-        }
+      headerLn();
+    },
 
-        headerLn();
-      },
-
-      async [Symbol.asyncDispose]() {
-        console.log(dedent`
-          Analysis complete:
-            ${filesCounter} files found
-            ${matchesCounter} matches found
-            ${resultsCounter} results found
-            ${expiredResultsCounter} expired results found
-        `);
-      },
-    };
+    async [Symbol.asyncDispose]() {
+      console.log(dedent`
+        Analysis complete:
+          ${filesCounter} files found
+          ${matchesCounter} matches found
+          ${resultsCounter} results found
+          ${expiredResultsCounter} expired results found
+      `);
+    },
   };
 };

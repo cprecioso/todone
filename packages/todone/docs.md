@@ -65,6 +65,8 @@ Analysis complete:
 1 expired results found
 ```
 
+`todone run` (the default command) prints human-readable output; `--only-expired` hides results that haven't expired yet, and `--locale` controls how dates are formatted. Use `todone json` instead to emit NDJSON (one JSON object per line) for machine consumption.
+
 You can check more options by running `npx todone --help`.
 
 ## Configuration
@@ -78,9 +80,6 @@ import { defineConfig } from "todone/config";
 
 export default defineConfig({
   plugins: [caniusePlugin(), githubPlugin()],
-
-  // Optional: one or more reporters. Defaults to CLI output on a TTY, NDJSON otherwise.
-  reporters: [{ name: "cli", config: { onlyExpired: true } }, "json"],
 
   // Optional: what to do when no plugin handles a URL: "error" (default), "warn", or "ignore".
   unhandledUrls: "error",
@@ -96,4 +95,6 @@ Other settings: `keyword` (default `"@TODO"`), `globs` (default `["**/*"]`), and
 - {@link "@todone/plugin-figma"}
 - {@link "@todone/plugin-github"}
 
-You can also write your own: a plugin is just a function returning an object with a `name` and a `checkMatch` function. See the `Plugin` type in `todone/plugin`.
+You can also write your own: a plugin is just a function returning an object with a `name` and any of the optional hooks — `checkMatch` to check URLs, `reportFile`/`reportMatch`/`reportResult` and `warn`/`info`/`debug` to report output, and `Symbol.asyncDispose` to clean up when the run finishes. See the `Plugin` type in `todone/plugin`.
+
+Note that the programmatic `run()` API produces no output on its own: the CLI adds its own reporting plugin, so if you call `run()` directly, include a plugin implementing the reporting hooks in `plugins` if you want output (this also applies to the warning emitted by `unhandledUrls: "warn"`).
