@@ -14,6 +14,7 @@
     "packages/plugin-date": {},
     "packages/plugin-figma": {},
     "packages/plugin-github": {},
+    "packages/plugin-npm": {},
     "packages/todone": {}
   }
 }

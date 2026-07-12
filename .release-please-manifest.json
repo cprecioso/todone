@@ -4,5 +4,6 @@
   "packages/plugin-date": "0.4.2",
   "packages/plugin-figma": "0.4.2",
   "packages/plugin-github": "0.7.2",
+  "packages/plugin-npm": "0.0.0",
   "packages/todone": "1.0.1"
 }

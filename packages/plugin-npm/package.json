@@ -1,0 +1,49 @@
+{
+  "name": "@todone/plugin-npm",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A todone plugin that will alert you when an npm package publishes a version that satisfies a range",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/plugin-npm#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "packageManager": "yarn@4.17.1",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsdown --watch"
+  },
+  "peerDependencies": {
+    "todone": "workspace:^"
+  },
+  "dependencies": {
+    "semver": "^7.8.4",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@todone/internal-build": "workspace:^",
+    "@types/node": "^24.13.2",
+    "@types/semver": "^7.7.1",
+    "todone": "workspace:^",
+    "tsdown": "^0.22.3",
+    "typescript": "~6.0.3"
+  },
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  },
+  "sideEffects": false
+}

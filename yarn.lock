@@ -852,6 +852,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@todone/plugin-npm@workspace:^, @todone/plugin-npm@workspace:packages/plugin-npm":
+  version: 0.0.0-use.local
+  resolution: "@todone/plugin-npm@workspace:packages/plugin-npm"
+  dependencies:
+    "@todone/internal-build": "workspace:^"
+    "@types/node": "npm:^24.13.2"
+    "@types/semver": "npm:^7.7.1"
+    semver: "npm:^7.8.4"
+    todone: "workspace:^"
+    tsdown: "npm:^0.22.3"
+    typescript: "npm:~6.0.3"
+    zod: "npm:^4.4.3"
+  peerDependencies:
+    todone: "workspace:^"
+  languageName: unknown
+  linkType: soft
+
 "@todone/repo@workspace:.":
   version: 0.0.0-use.local
   resolution: "@todone/repo@workspace:."
@@ -882,6 +899,7 @@ __metadata:
     "@todone/plugin-date": "workspace:^"
     "@todone/plugin-figma": "workspace:^"
     "@todone/plugin-github": "workspace:^"
+    "@todone/plugin-npm": "workspace:^"
     "@types/node": "npm:^24.13.2"
     todone: "workspace:^"
   languageName: unknown
@@ -948,6 +966,13 @@ __metadata:
   dependencies:
     undici-types: "npm:~7.18.0"
   checksum: 10/2b8cb95ada191ecc788fef91d7cdb86dff24f6895b510e1fb495cc001832709fa8fc3e1eeb27d64bda52b3f74f9e91acf42431e98e3e6876de1e53acce7f7602
+  languageName: node
+  linkType: hard
+
+"@types/semver@npm:^7.7.1":
+  version: 7.7.1
+  resolution: "@types/semver@npm:7.7.1"
+  checksum: 10/8f09e7e6ca3ded67d78ba7a8f7535c8d9cf8ced83c52e7f3ac3c281fe8c689c3fe475d199d94390dc04fc681d51f2358b430bb7b2e21c62de24f2bee2c719068
   languageName: node
   linkType: hard
 
