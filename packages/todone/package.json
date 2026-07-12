@@ -22,13 +22,11 @@
     "#/package.json": "./package.json",
     "#/index": "./src/index.ts",
     "#/plugin": "./src/plugin.ts",
-    "#/builtin-plugin": "./src/builtin-plugin/index.ts",
     "#/types": "./src/types.ts",
     "#/lib/*": "./src/lib/*.ts"
   },
   "exports": {
     "./package.json": "./package.json",
-    "./config-schema.json": "./config-schema.json",
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
@@ -41,17 +39,20 @@
       "types": "./dist/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
+    "./reporters": {
+      "types": "./dist/reporters.d.ts",
+      "default": "./dist/reporters.js"
+    },
     "./types": {
       "types": "./dist/types.d.ts",
       "default": "./dist/types.js"
     }
   },
   "files": [
-    "config-schema.json",
     "dist"
   ],
   "scripts": {
-    "build": "tsdown && todone generate-schema --out config-schema.json",
+    "build": "tsdown",
     "check": "tsc --noEmit -p .",
     "dev": "tsdown --watch"
   },
