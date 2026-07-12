@@ -75,13 +75,12 @@ Configure `todone` with a `todone.config.ts` (or `.js`) file in your project roo
 import caniusePlugin from "@todone/plugin-caniuse";
 import githubPlugin from "@todone/plugin-github";
 import { defineConfig } from "todone/config";
-import { cliReporter } from "todone/reporters";
 
 export default defineConfig({
   plugins: [caniusePlugin(), githubPlugin()],
 
   // Optional: a reporter object. Defaults to CLI output on a TTY, NDJSON otherwise.
-  reporter: cliReporter({ onlyExpired: true }),
+  reporter: { name: "cli", config: { onlyExpired: true } },
 
   // Optional: what to do when no plugin handles a URL: "error" (default), "warn", or "ignore".
   unhandledUrls: "error",
