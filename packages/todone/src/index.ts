@@ -7,7 +7,7 @@ import { getFiles } from "./lib/files";
 export const run = async ({
   globs,
   gitignore,
-  reporter: reporterFn,
+  reporters: reporterFn,
   keyword,
   plugins,
   unhandledUrls,

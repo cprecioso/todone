@@ -1,8 +1,6 @@
 import * as z from "zod";
-import type { Plugin, ReporterFn } from "../plugins";
-import { ReporterSettingsSchema } from "../reporters";
-
-const ReporterFnSchema = z.custom<ReporterFn>();
+import type { Plugin } from "../plugins";
+import { ReportersSettingsSchema } from "../reporters";
 
 const PluginSchema = z.custom<Plugin>();
 
@@ -28,8 +26,8 @@ export const ConfigSchema = z.object({
   /** What to do when no plugin returns a result for a URL. */
   unhandledUrls: UnhandledUrlsSchema,
 
-  /** The reporter to emit results through. Defaults to CLI output on a TTY, NDJSON otherwise. */
-  reporter: ReporterSettingsSchema.prefault("auto"),
+  /** One or more reporters to emit results through. Defaults to CLI output on a TTY, NDJSON otherwise. */
+  reporters: ReportersSettingsSchema.prefault("auto"),
 
   /** The plugins to check TODO URLs with, already initialized by calling each plugin's factory. */
   plugins: z.array(PluginSchema).prefault([]),

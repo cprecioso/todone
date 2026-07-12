@@ -79,8 +79,8 @@ import { defineConfig } from "todone/config";
 export default defineConfig({
   plugins: [caniusePlugin(), githubPlugin()],
 
-  // Optional: a reporter object. Defaults to CLI output on a TTY, NDJSON otherwise.
-  reporter: { name: "cli", config: { onlyExpired: true } },
+  // Optional: one or more reporters. Defaults to CLI output on a TTY, NDJSON otherwise.
+  reporters: [{ name: "cli", config: { onlyExpired: true } }, "json"],
 
   // Optional: what to do when no plugin handles a URL: "error" (default), "warn", or "ignore".
   unhandledUrls: "error",
