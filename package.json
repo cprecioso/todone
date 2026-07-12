@@ -16,7 +16,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "yarn@4.17.0",
+  "packageManager": "yarn@4.17.1",
   "engines": {
     "node": ">=24"
   },
@@ -33,15 +33,15 @@
     "@todone/plugin-github": "workspace:^",
     "@yarnpkg/types": "^4.0.1",
     "husky": "^9.1.7",
-    "lint-staged": "^17.0.7",
-    "nx": "^23.0.0",
-    "prettier": "3.8.4",
+    "lint-staged": "^17.0.8",
+    "nx": "^23.0.1",
+    "prettier": "3.9.4",
     "prettier-plugin-organize-imports": "4.3.0",
     "prettier-plugin-pkg": "0.22.1",
     "prettier-plugin-sh": "0.18.1",
     "todone": "workspace:^",
     "typedoc": "^0.28.19",
-    "typedoc-plugin-dt-links": "^2.0.59",
+    "typedoc-plugin-dt-links": "^2.0.62",
     "typedoc-plugin-mdn-links": "^5.1.1",
     "typescript": "~6.0.3"
   },

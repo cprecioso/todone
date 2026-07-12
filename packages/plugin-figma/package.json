@@ -13,7 +13,7 @@
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@4.17.0",
+  "packageManager": "yarn@4.17.1",
   "exports": {
     "types": "./dist/index.d.ts",
     "default": "./dist/index.js"
@@ -36,7 +36,7 @@
     "@todone/internal-build": "workspace:^",
     "@types/node": "^24.13.2",
     "todone": "workspace:^",
-    "tsdown": "^0.22.2",
+    "tsdown": "^0.22.3",
     "typescript": "~6.0.3"
   },
   "publishConfig": {
