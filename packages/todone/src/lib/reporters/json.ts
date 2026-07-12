@@ -1,5 +1,6 @@
 import type { ReporterFn } from "#/plugin";
 import * as path from "node:path";
+import { EmptyObject } from "type-fest";
 import * as z from "zod";
 
 const stringToURLCodec = z.codec(z.url(), z.instanceof(URL), {
@@ -56,35 +57,39 @@ const ResultItem = z.object({
 const OutputItem = z.union([FileItem, MatchItem, ResultItem]);
 type OutputItem = z.infer<typeof OutputItem>;
 
-export const jsonReporter = (): ReporterFn => async () => {
-  const outputItem = jsonCodec(OutputItem);
+export type JsonReporterOptions = EmptyObject;
 
-  return {
-    warn: async (message: string) => console.warn(message),
-    info: async (message: string) => console.info(message),
-    debug: async (message: string) => console.debug(message),
+export const jsonReporter =
+  ({}: JsonReporterOptions = {}): ReporterFn =>
+  async () => {
+    const outputItem = jsonCodec(OutputItem);
 
-    reportFile: async (file) =>
-      console.log(
-        outputItem.encode({ type: "file", location: file.localPath }),
-      ),
+    return {
+      warn: async (message: string) => console.warn(message),
+      info: async (message: string) => console.info(message),
+      debug: async (message: string) => console.debug(message),
 
-    reportMatch: async ({ url, file, position }) =>
-      console.log(
-        outputItem.encode({
-          type: "match",
-          url,
-          location: file.localPath,
-          ...position,
-        }),
-      ),
+      reportFile: async (file) =>
+        console.log(
+          outputItem.encode({ type: "file", location: file.localPath }),
+        ),
 
-    reportResult: async ({ url, result }) => {
-      if (result) {
-        console.log(outputItem.encode({ type: "result", url, ...result }));
-      }
-    },
+      reportMatch: async ({ url, file, position }) =>
+        console.log(
+          outputItem.encode({
+            type: "match",
+            url,
+            location: file.localPath,
+            ...position,
+          }),
+        ),
 
-    async [Symbol.asyncDispose]() {},
+      reportResult: async ({ url, result }) => {
+        if (result) {
+          console.log(outputItem.encode({ type: "result", url, ...result }));
+        }
+      },
+
+      async [Symbol.asyncDispose]() {},
+    };
   };
-};

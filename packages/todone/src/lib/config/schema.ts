@@ -1,6 +1,6 @@
 import * as z from "zod";
 import type { Plugin, ReporterFn } from "../plugins";
-import { autoReporter } from "../reporters";
+import { ReporterSettingsSchema } from "../reporters";
 
 const ReporterFnSchema = z.custom<ReporterFn>();
 
@@ -29,7 +29,7 @@ export const ConfigSchema = z.object({
   unhandledUrls: UnhandledUrlsSchema,
 
   /** The reporter to emit results through. Defaults to CLI output on a TTY, NDJSON otherwise. */
-  reporter: ReporterFnSchema.prefault(() => autoReporter()),
+  reporter: ReporterSettingsSchema.prefault("auto"),
 
   /** The plugins to check TODO URLs with, already initialized by calling each plugin's factory. */
   plugins: z.array(PluginSchema).prefault([]),

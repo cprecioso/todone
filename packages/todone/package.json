@@ -39,10 +39,6 @@
       "types": "./dist/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./reporters": {
-      "types": "./dist/reporters.d.ts",
-      "default": "./dist/reporters.js"
-    },
     "./types": {
       "types": "./dist/types.d.ts",
       "default": "./dist/types.js"
