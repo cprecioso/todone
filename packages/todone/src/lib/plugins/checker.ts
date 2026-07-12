@@ -1,20 +1,32 @@
 /**
- * A Checker represents the implementation of a kind of check that can be run
- * against a TODO URL.
+ * A todone plugin: a named checker that can be run against a TODO URL.
  *
- * For example, a GitHub plugin might check if a URL points to a GitHub issue or
- * PR, and if so, whether that issue or PR is still open.
+ * Plugin packages follow the Vite convention: they default-export a factory
+ * function `(options?) => Plugin` that the user calls in their config file.
+ * The options are entirely up to the plugin; todone only ever sees the
+ * resulting object.
+ *
+ * For example, a GitHub plugin might check if a URL points to a GitHub issue
+ * or PR, and if so, whether that issue or PR is still open.
  */
-export interface Checker {
+export interface Plugin {
   /**
-   * An [Effect](https://effect.website/docs/getting-started/the-effect-type/)
-   * for checking if a URL should be considered as expired or not.
+   * A human-readable name for the plugin, used in error messages.
+   * Usually the package name.
+   */
+  name: string;
+
+  /**
+   * Check whether a URL should be considered as expired or not.
+   *
+   * Return `null` if this plugin doesn't handle the URL; throw only for real
+   * failures (network errors, missing credentials, malformed data).
    */
   checkMatch(options: { url: URL }): Promise<CheckerResult | null>;
 }
 
 /**
- * The result of running a {@link Checker}'s check against a URL, indicating whether the
+ * The result of running a {@link Plugin}'s check against a URL, indicating whether the
  * TODO is expired or not, and some metadata about the check.
  */
 export interface CheckerResult {

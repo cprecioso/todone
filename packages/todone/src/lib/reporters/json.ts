@@ -1,7 +1,6 @@
-import { Factory, Reporter } from "#/plugin";
+import { Reporter } from "#/plugin";
 import * as path from "node:path";
 import * as z from "zod";
-import { BUILTIN_PLUGIN_ID } from "./base";
 
 const stringToURLCodec = z.codec(z.url(), z.instanceof(URL), {
   decode: (urlString) => new URL(urlString),
@@ -57,37 +56,34 @@ const ResultItem = z.object({
 const OutputItem = z.union([FileItem, MatchItem, ResultItem]);
 type OutputItem = z.infer<typeof OutputItem>;
 
-export const jsonReporter: Factory<Reporter> = {
-  id: `${BUILTIN_PLUGIN_ID}/json`,
-  make: async () => {
-    const outputItem = jsonCodec(OutputItem);
+export const jsonReporter = (): Reporter => {
+  const outputItem = jsonCodec(OutputItem);
 
-    return {
-      info: async (message: string) => console.info(message),
-      debug: async (message: string) => console.debug(message),
+  return {
+    info: async (message: string) => console.info(message),
+    debug: async (message: string) => console.debug(message),
 
-      reportFile: async (file) =>
-        console.log(
-          outputItem.encode({ type: "file", location: file.localPath }),
-        ),
+    reportFile: async (file) =>
+      console.log(
+        outputItem.encode({ type: "file", location: file.localPath }),
+      ),
 
-      reportMatch: async ({ url, file, position }) =>
-        console.log(
-          outputItem.encode({
-            type: "match",
-            url,
-            location: file.localPath,
-            ...position,
-          }),
-        ),
+    reportMatch: async ({ url, file, position }) =>
+      console.log(
+        outputItem.encode({
+          type: "match",
+          url,
+          location: file.localPath,
+          ...position,
+        }),
+      ),
 
-      reportResult: async ({ url, result }) => {
-        if (result) {
-          console.log(outputItem.encode({ type: "result", url, ...result }));
-        }
-      },
+    reportResult: async ({ url, result }) => {
+      if (result) {
+        console.log(outputItem.encode({ type: "result", url, ...result }));
+      }
+    },
 
-      async [Symbol.asyncDispose]() {},
-    };
-  },
+    async [Symbol.asyncDispose]() {},
+  };
 };

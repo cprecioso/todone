@@ -1,4 +1,4 @@
-import { PluginFactory } from "todone/plugin";
+import type { Plugin } from "todone/plugin";
 import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
 import {
@@ -22,55 +22,54 @@ const PatternResult = z.object({
   }),
 });
 
-const plugin: PluginFactory = {
-  id: pkg.name,
-  make: async (rawOptions) => {
-    const browserslist = getBrowserslist();
+export interface CaniusePluginOptions {
+  /**
+   * Browserslist queries to check feature support against.
+   * Defaults to the project's browserslist config, or browserslist defaults.
+   */
+  browserslist?: string | readonly string[];
+}
 
-    return {
-      checkers: [
-        {
-          id: `${pkg.name}/caniuse-feature`,
+const caniusePlugin = (options: CaniusePluginOptions = {}): Plugin => {
+  const browserslist =
+    options.browserslist == null
+      ? getBrowserslist()
+      : typeof options.browserslist === "string"
+        ? [options.browserslist]
+        : options.browserslist;
 
-          make: async () => {
-            const browsers = getBrowsers(browserslist);
+  const browsers = getBrowsers(browserslist);
 
-            return {
-              checkMatch: async ({ url }) => {
-                const patternResult = pattern.exec(url);
-                if (!patternResult) return null;
+  return {
+    name: pkg.name,
+    checkMatch: async ({ url }) => {
+      const patternResult = pattern.exec(url);
+      if (!patternResult) return null;
 
-                const {
-                  pathname: {
-                    groups: { feature },
-                  },
-                } = PatternResult.parse(patternResult);
-
-                const featureInfo = getFeatureInfo(feature);
-
-                const enabledFlags = new Set(
-                  (url.hash.slice(1) || null)?.split(","),
-                );
-
-                const browserSupport = browsers
-                  .values()
-                  .map((browser) =>
-                    checkFeatureSupport(featureInfo, enabledFlags, browser),
-                  );
-
-                const isExpired = browserSupport.every((v) => Boolean(v));
-
-                return {
-                  title: featureInfo.title,
-                  isExpired,
-                };
-              },
-            };
-          },
+      const {
+        pathname: {
+          groups: { feature },
         },
-      ],
-    };
-  },
+      } = PatternResult.parse(patternResult);
+
+      const featureInfo = getFeatureInfo(feature);
+
+      const enabledFlags = new Set((url.hash.slice(1) || null)?.split(","));
+
+      const browserSupport = browsers
+        .values()
+        .map((browser) =>
+          checkFeatureSupport(featureInfo, enabledFlags, browser),
+        );
+
+      const isExpired = browserSupport.every((v) => Boolean(v));
+
+      return {
+        title: featureInfo.title,
+        isExpired,
+      };
+    },
+  };
 };
 
-export default plugin;
+export default caniusePlugin;

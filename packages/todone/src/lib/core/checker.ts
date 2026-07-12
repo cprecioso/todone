@@ -1,28 +1,43 @@
-import type { Checker, Factory } from "#/plugin";
+import type { Plugin } from "#/plugin";
 import * as t from "#/types";
 
-export const makeAggregateChecker = async (
-  factories: readonly Factory<Checker>[],
-) => {
-  const instances = await Promise.all(
-    factories.map(async (factory) => {
-      const checker = await factory.make();
-      return { id: factory.id, value: checker };
-    }),
-  );
+export class PluginError extends Error {
+  constructor(pluginName: string, url: URL, cause: unknown) {
+    super(`Plugin "${pluginName}" failed while checking ${url}`, { cause });
+    this.name = "PluginError";
+  }
+}
 
-  return (match: t.Match) => {
+/** Returned when no plugin recognized the URL. */
+export const UNHANDLED = Symbol("unhandled");
+
+export const makeAggregateChecker =
+  (plugins: readonly Plugin[]) =>
+  async (match: t.Match): Promise<t.Result | typeof UNHANDLED> => {
     const { url } = match;
-    return Promise.any(
-      instances.map(async (inst): Promise<t.Result> => {
-        try {
-          const result = await inst.value.checkMatch({ url });
-          if (!result) throw new Error("No result for " + url.toString());
-          return { url, result, match };
-        } catch (error) {
-          throw new Error("Error in plugin " + inst.id, { cause: error });
-        }
-      }),
+
+    const settled = await Promise.allSettled(
+      plugins.map((plugin) => plugin.checkMatch({ url })),
     );
+
+    const errors = settled.flatMap((outcome, i) =>
+      outcome.status === "rejected"
+        ? [new PluginError(plugins[i]!.name, url, outcome.reason)]
+        : [],
+    );
+    if (errors.length === 1) throw errors[0];
+    if (errors.length > 1) {
+      throw new AggregateError(
+        errors,
+        `Multiple plugins failed while checking ${url}`,
+      );
+    }
+
+    for (const outcome of settled) {
+      if (outcome.status === "fulfilled" && outcome.value != null) {
+        return { url, match, result: outcome.value };
+      }
+    }
+
+    return UNHANDLED;
   };
-};

@@ -1,15 +1,11 @@
 import { run } from "#/index";
-import { hydrateConfig } from "#/lib/config/hydrate";
 import { loadConfigFile } from "#/lib/config/load";
+import { resolveConfig } from "#/lib/config/resolve";
 import { RunCommand } from "./index";
 
-export default async ({ reporter: overrideReporter }: RunCommand) => {
+export default async (_command: RunCommand) => {
   const rawConfig = await loadConfigFile();
-  const rawConfigWithOverrides = {
-    ...rawConfig,
-    reporter: overrideReporter ?? rawConfig.reporter,
-  };
-  const config = await hydrateConfig(rawConfigWithOverrides);
+  const config = resolveConfig(rawConfig);
 
   const results = await run(config);
 

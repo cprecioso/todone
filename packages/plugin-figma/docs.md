@@ -2,9 +2,24 @@
 
 A {@link todone} plugin that will alert you when a comment in a Figma file has been resolved.
 
+## Setup
+
+Call the plugin factory in your `todone.config.ts`:
+
+```ts
+import figmaPlugin from "@todone/plugin-figma";
+import { defineConfig } from "todone/config";
+
+export default defineConfig({
+  plugins: [figmaPlugin({ token: process.env.FIGMA_TOKEN })],
+});
+```
+
 ## Options
 
-- `token`: The Figma API token to use for authentication. You can generate a personal access token from your Figma account settings. If using environment variables, set `FIGMA_TOKEN` to your token value.
+- `token`: The Figma API token to use for authentication. You can generate a personal access token from your Figma account settings. Defaults to the `FIGMA_TOKEN` environment variable.
+
+The Figma API always requires a token: without one the plugin emits a warning when created, and checking any Figma URL fails with an error.
 
 ## Usage
 
