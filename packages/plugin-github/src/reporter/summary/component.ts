@@ -8,12 +8,7 @@ import { filePermalink } from "../permalink";
 import { formatDate } from "../util/format";
 
 export type Column =
-  | "file"
-  | "url"
-  | "expired"
-  | "expirationDate"
-  | "issue"
-  | "action";
+  "file" | "url" | "expired" | "expirationDate" | "issue" | "action";
 
 const COLUMN_LABELS: Record<Column, string> = {
   file: "File",
