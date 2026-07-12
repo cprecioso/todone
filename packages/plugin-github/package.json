@@ -2,7 +2,7 @@
   "name": "@todone/plugin-github",
   "version": "0.7.2",
   "type": "module",
-  "description": "A todone plugin that will alert you when an GitHub issue or pull request has been resolved",
+  "description": "A todone plugin that will alert you when a GitHub issue or pull request has been resolved, or a release or tag has been published",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cprecioso/todone.git"

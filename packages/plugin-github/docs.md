@@ -1,6 +1,6 @@
 # @todone/plugin-github
 
-A {@link todone} plugin that will alert you when an GitHub issue or pull request has been resolved.
+A {@link todone} plugin that will alert you when a GitHub issue, pull request, or milestone has been resolved, or when a release or tag has been published.
 
 ## Setup
 
@@ -23,7 +23,7 @@ export default defineConfig({
 
 ## Usage
 
-Add a `@TODO` comment with a link to a GitHub issue or pull request:
+Add a `@TODO` comment with a link to a GitHub issue, pull request, or milestone:
 
 ```js
 /*
@@ -32,3 +32,16 @@ Add a `@TODO` comment with a link to a GitHub issue or pull request:
 */
 setTimeout(() => processQueue(), 0);
 ```
+
+The TODO expires when the issue, pull request, or milestone is closed.
+
+You can also link to a release or tag that doesn't exist yet:
+
+```js
+/*
+  @TODO https://github.com/org/repo/releases/tag/v2.0.0
+  Drop this polyfill once v2.0.0 ships.
+*/
+```
+
+The TODO expires as soon as the release is published (or the tag is pushed, for tags without a release).

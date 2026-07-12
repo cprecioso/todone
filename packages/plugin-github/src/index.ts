@@ -1,21 +1,37 @@
-import type { Plugin } from "todone/plugin";
+import type { CheckerResult, Plugin } from "todone/plugin";
 import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
 import { makeResourceFetchers } from "./api";
 
-const pattern = new URLPattern({
+const numberedPattern = new URLPattern({
   protocol: "http{s}?",
   hostname: "{www.}?github.com",
   pathname: "/:owner/:repo/:resource_kind(issues|pull|milestone)/:number",
 });
 
-const PatternResult = z.object({
+const NumberedPatternResult = z.object({
   pathname: z.object({
     groups: z.object({
       owner: z.string(),
       repo: z.string(),
       resource_kind: z.enum(["issues", "pull", "milestone"]),
       number: z.coerce.number().int().positive(),
+    }),
+  }),
+});
+
+const releasePattern = new URLPattern({
+  protocol: "http{s}?",
+  hostname: "{www.}?github.com",
+  pathname: "/:owner/:repo/releases/tag/:tag",
+});
+
+const ReleasePatternResult = z.object({
+  pathname: z.object({
+    groups: z.object({
+      owner: z.string(),
+      repo: z.string(),
+      tag: z.string().min(1).transform(decodeURIComponent),
     }),
   }),
 });
@@ -39,20 +55,40 @@ const githubPlugin = ({
 
   const resourceFetchers = makeResourceFetchers(token);
 
-  return {
-    name: pkg.name,
-    checkMatch: async ({ url }) => {
-      const patternResult = pattern.exec(url);
-      if (!patternResult) return null;
-
+  const matchUrl = (url: URL): (() => Promise<CheckerResult>) | null => {
+    const numberedResult = numberedPattern.exec(url);
+    if (numberedResult) {
       const {
         pathname: {
           groups: { owner, repo, resource_kind, number },
         },
-      } = PatternResult.parse(patternResult);
+      } = NumberedPatternResult.parse(numberedResult);
+
+      return () => resourceFetchers[resource_kind]({ owner, repo }, number);
+    }
+
+    const releaseResult = releasePattern.exec(url);
+    if (releaseResult) {
+      const {
+        pathname: {
+          groups: { owner, repo, tag },
+        },
+      } = ReleasePatternResult.parse(releaseResult);
+
+      return () => resourceFetchers.release({ owner, repo }, tag);
+    }
+
+    return null;
+  };
+
+  return {
+    name: pkg.name,
+    checkMatch: async ({ url }) => {
+      const fetchResource = matchUrl(url);
+      if (!fetchResource) return null;
 
       try {
-        return await resourceFetchers[resource_kind]({ owner, repo }, number);
+        return await fetchResource();
       } catch (error) {
         if (token) throw error;
         throw new Error(
