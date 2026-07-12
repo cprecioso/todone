@@ -13,10 +13,16 @@
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
-  "packageManager": "yarn@4.17.0",
+  "packageManager": "yarn@4.17.1",
   "exports": {
-    "types": "./dist/index.d.ts",
-    "default": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./reporters": {
+      "types": "./dist/reporters.d.ts",
+      "default": "./dist/reporters.js"
+    }
   },
   "files": [
     "dist"
@@ -47,7 +53,7 @@
     "@todone/internal-build": "workspace:^",
     "@types/mdast": "^4.0.4",
     "todone": "workspace:^",
-    "tsdown": "^0.22.2",
+    "tsdown": "^0.22.3",
     "typescript": "~6.0.3"
   },
   "publishConfig": {

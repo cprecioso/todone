@@ -1,15 +1,10 @@
 /// <reference types="node" />
 
+import datePlugin from "@todone/plugin-date";
+import githubPlugin from "@todone/plugin-github";
 import { defineConfig } from "todone/config";
 
 export default defineConfig({
   keyword: "*TODO",
-  plugins: {
-    "@todone/plugin-date": {},
-    "@todone/plugin-github": {
-      options: {
-        GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-      },
-    },
-  },
+  plugins: [datePlugin(), githubPlugin()],
 });

@@ -1,11 +1,7 @@
-import assert from "node:assert/strict";
-import { Octokit } from "octokit";
-import { PluginFactory } from "todone/plugin";
+import type { Plugin } from "todone/plugin";
 import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
 import { makeResourceFetchers } from "./api";
-import { makeCreateIssuesReporter } from "./reporter/create-issues";
-import { reportActionReporter } from "./reporter/report-action";
 
 const pattern = new URLPattern({
   protocol: "http{s}?",
@@ -24,53 +20,49 @@ const PatternResult = z.object({
   }),
 });
 
-export const GitHubPluginConfig = z
-  .object({
-    dryRun: z.boolean().default(false).meta({
-      description:
-        "When true, the create-issues reporter logs issue mutations instead of sending them to GitHub.",
-    }),
-  })
-  .prefault({});
+export interface GithubPluginOptions {
+  /** GitHub API token. Defaults to `process.env.GITHUB_TOKEN`. */
+  token?: string;
+}
 
-const plugin: PluginFactory = {
-  id: pkg.name,
-  jsonSchema: z.toJSONSchema(GitHubPluginConfig),
-  make: async (rawOptions) => {
-    const options = GitHubPluginConfig.parse(rawOptions);
+const githubPlugin = ({
+  token = process.env.GITHUB_TOKEN,
+}: GithubPluginOptions = {}): Plugin => {
+  if (!token) {
+    process.emitWarning(
+      "No GitHub token provided (`token` option or GITHUB_TOKEN env var). " +
+        "Public repositories will still work, but private repositories and " +
+        "higher rate limits require a token.",
+      { code: "TODONE_GITHUB_NO_TOKEN" },
+    );
+  }
 
-    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-    assert(GITHUB_TOKEN, "GITHUB_TOKEN environment variable is required.");
+  const resourceFetchers = makeResourceFetchers(token);
 
-    const resourceFetchers = makeResourceFetchers(GITHUB_TOKEN);
-    const client = new Octokit({ auth: GITHUB_TOKEN });
+  return {
+    name: pkg.name,
+    checkMatch: async ({ url }) => {
+      const patternResult = pattern.exec(url);
+      if (!patternResult) return null;
 
-    return {
-      checkers: [
-        {
-          id: `${pkg.name}/issues`,
-          make: async () => ({
-            checkMatch: async ({ url }) => {
-              const patternResult = pattern.exec(url);
-              if (!patternResult) return null;
-
-              const {
-                pathname: {
-                  groups: { owner, repo, resource_kind, number },
-                },
-              } = PatternResult.parse(patternResult);
-
-              return resourceFetchers[resource_kind]({ owner, repo }, number);
-            },
-          }),
+      const {
+        pathname: {
+          groups: { owner, repo, resource_kind, number },
         },
-      ],
-      reporters: [
-        reportActionReporter,
-        makeCreateIssuesReporter({ client, dryRun: options.dryRun }),
-      ],
-    };
-  },
+      } = PatternResult.parse(patternResult);
+
+      try {
+        return await resourceFetchers[resource_kind]({ owner, repo }, number);
+      } catch (error) {
+        if (token) throw error;
+        throw new Error(
+          `GitHub request for ${url} failed without authentication. ` +
+            `This URL may require a GITHUB_TOKEN (private repository or rate limit).`,
+          { cause: error },
+        );
+      }
+    },
+  };
 };
 
-export default plugin;
+export default githubPlugin;

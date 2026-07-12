@@ -67,13 +67,33 @@ Analysis complete:
 
 You can check more options by running `npx todone --help`.
 
-## Plugins
+## Configuration
 
-By default, `todone` comes bundled with the following plugins:
+Configure `todone` with a `todone.config.ts` (or `.js`) file in your project root:
+
+```ts
+import caniusePlugin from "@todone/plugin-caniuse";
+import githubPlugin from "@todone/plugin-github";
+import { defineConfig } from "todone/config";
+
+export default defineConfig({
+  plugins: [caniusePlugin(), githubPlugin()],
+
+  // Optional: one or more reporters. Defaults to CLI output on a TTY, NDJSON otherwise.
+  reporters: [{ name: "cli", config: { onlyExpired: true } }, "json"],
+
+  // Optional: what to do when no plugin handles a URL: "error" (default), "warn", or "ignore".
+  unhandledUrls: "error",
+});
+```
+
+Other settings: `keyword` (default `"@TODO"`), `globs` (default `["**/*"]`), and `gitignore` (default `true`).
+
+## Plugins
 
 - {@link "@todone/plugin-caniuse"}
 - {@link "@todone/plugin-date"}
 - {@link "@todone/plugin-figma"}
 - {@link "@todone/plugin-github"}
 
-We'll add a system to load plugins from a configuration file in the future.
+You can also write your own: a plugin is just a function returning an object with a `name` and a `checkMatch` function. See the `Plugin` type in `todone/plugin`.

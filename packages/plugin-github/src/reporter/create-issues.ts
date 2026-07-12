@@ -1,8 +1,7 @@
 import * as core from "@actions/core";
 import { Octokit } from "octokit";
-import { Factory, Reporter } from "todone/plugin";
+import type { ReporterFn } from "todone/plugin";
 import * as t from "todone/types";
-import * as pkg from "../../package.json" with { type: "json" };
 import { ActionContext, loadContext } from "./context";
 import { makeGitHubAPI } from "./issues/actions";
 import { generateIssue } from "./issues/generator";
@@ -11,22 +10,33 @@ import { RowData, writeSummary } from "./summary/component";
 import { groupResults } from "./util/result";
 
 export interface CreateIssuesReporterOptions {
-  client: Octokit;
+  /**
+   * GitHub API token used to read and mutate issues. Defaults to
+   * `process.env.GITHUB_TOKEN`.
+   */
+  token?: string;
   /** When true, issue mutations are logged but never sent to GitHub. */
-  dryRun: boolean;
+  dryRun?: boolean;
 }
 
 /**
  * Reporter that reconciles expired TODOs against the open `todone`-labeled
  * issues and creates/updates/closes them via the GitHub REST API, then writes a
- * job summary describing what happened. Honors the `dryRun` plugin option.
+ * job summary describing what happened. Honors the `dryRun` option.
  */
-export const makeCreateIssuesReporter = ({
-  client,
-  dryRun,
-}: CreateIssuesReporterOptions): Factory<Reporter> => ({
-  id: `${pkg.name}/create-issues`,
-  make: async () => {
+export const createIssuesReporter = ({
+  token = process.env.GITHUB_TOKEN,
+  dryRun = false,
+}: CreateIssuesReporterOptions = {}): ReporterFn => {
+  if (!token && !dryRun) {
+    throw new Error(
+      "A GitHub token is required to sync issues (`token` option or GITHUB_TOKEN env var).",
+    );
+  }
+
+  const client = new Octokit(token ? { auth: token } : {});
+
+  return async () => {
     const context = loadContext();
     const results: t.Result[] = [];
 
@@ -139,6 +149,7 @@ export const makeCreateIssuesReporter = ({
     };
 
     return {
+      warn: async (message) => core.warning(message),
       info: async (message) => core.info(message),
       debug: async (message) => core.debug(message),
 
@@ -155,5 +166,5 @@ export const makeCreateIssuesReporter = ({
         await runSync(context);
       },
     };
-  },
-});
+  };
+};

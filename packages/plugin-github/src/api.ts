@@ -5,7 +5,7 @@ const maybeDate = (date: string | null): Date | undefined =>
   (date && new Date(date)) || undefined;
 
 export const makeResourceFetchers = (githubToken?: string) => {
-  const client = new Octokit({ auth: githubToken });
+  const client = new Octokit(githubToken ? { auth: githubToken } : {});
 
   return {
     issues: async (repo, issue_number) => {

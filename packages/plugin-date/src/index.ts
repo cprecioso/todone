@@ -1,4 +1,4 @@
-import { PluginFactory } from "todone/plugin";
+import type { Plugin } from "todone/plugin";
 import * as z from "zod";
 import * as pkg from "../package.json" with { type: "json" };
 
@@ -21,35 +21,26 @@ const PatternResult = z.object({
   }),
 });
 
-const plugin: PluginFactory = {
-  id: pkg.name,
-  make: async () => ({
-    checkers: [
-      {
-        id: `${pkg.name}/date`,
-        make: async () => ({
-          checkMatch: async ({ url }) => {
-            const patternResult = pattern.exec(url);
-            if (!patternResult) return null;
+const datePlugin = (): Plugin => ({
+  name: pkg.name,
+  checkMatch: async ({ url }) => {
+    const patternResult = pattern.exec(url);
+    if (!patternResult) return null;
 
-            const {
-              pathname: {
-                groups: { date: expirationDate },
-              },
-            } = PatternResult.parse(patternResult);
-
-            const isExpired = +expirationDate < Date.now();
-
-            return {
-              title: expirationDate.toISOString(),
-              isExpired,
-              expirationDate,
-            };
-          },
-        }),
+    const {
+      pathname: {
+        groups: { date: expirationDate },
       },
-    ],
-  }),
-};
+    } = PatternResult.parse(patternResult);
 
-export default plugin;
+    const isExpired = +expirationDate < Date.now();
+
+    return {
+      title: expirationDate.toISOString(),
+      isExpired,
+      expirationDate,
+    };
+  },
+});
+
+export default datePlugin;

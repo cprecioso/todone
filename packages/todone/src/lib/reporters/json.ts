@@ -1,14 +1,14 @@
-import { Factory, Reporter } from "#/plugin";
+import type { ReporterFn } from "#/plugin";
 import * as path from "node:path";
+import { EmptyObject } from "type-fest";
 import * as z from "zod";
-import { BUILTIN_PLUGIN_ID } from "./base";
 
 const stringToURLCodec = z.codec(z.url(), z.instanceof(URL), {
   decode: (urlString) => new URL(urlString),
   encode: (url) => url.href,
 });
 
-const jsonCodec = <T extends z.core.$ZodType>(schema: T) =>
+const jsonCodec = <T extends z.ZodType>(schema: T) =>
   z.codec(z.string(), schema, {
     decode: (jsonString, ctx) => {
       try {
@@ -57,12 +57,15 @@ const ResultItem = z.object({
 const OutputItem = z.union([FileItem, MatchItem, ResultItem]);
 type OutputItem = z.infer<typeof OutputItem>;
 
-export const jsonReporter: Factory<Reporter> = {
-  id: `${BUILTIN_PLUGIN_ID}/json`,
-  make: async () => {
+export type JsonReporterOptions = EmptyObject;
+
+export const jsonReporter =
+  ({}: JsonReporterOptions = {}): ReporterFn =>
+  async () => {
     const outputItem = jsonCodec(OutputItem);
 
     return {
+      warn: async (message: string) => console.warn(message),
       info: async (message: string) => console.info(message),
       debug: async (message: string) => console.debug(message),
 
@@ -89,5 +92,4 @@ export const jsonReporter: Factory<Reporter> = {
 
       async [Symbol.asyncDispose]() {},
     };
-  },
-};
+  };
