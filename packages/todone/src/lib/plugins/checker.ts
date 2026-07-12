@@ -1,18 +1,13 @@
 /**
  * A todone plugin: a named checker that can be run against a TODO URL.
  *
- * Plugin packages follow the Vite convention: they default-export a factory
- * function `(options?) => Plugin` that the user calls in their config file.
- * The options are entirely up to the plugin; todone only ever sees the
- * resulting object.
- *
- * For example, a GitHub plugin might check if a URL points to a GitHub issue
- * or PR, and if so, whether that issue or PR is still open.
+ * For example, a GitHub plugin might check if a URL points to a GitHub issue or
+ * PR, and if so, whether that issue or PR is still open.
  */
 export interface Plugin {
   /**
-   * A human-readable name for the plugin, used in error messages.
-   * Usually the package name.
+   * A human-readable name for the plugin, used in error messages. Usually the
+   * package name.
    */
   name: string;
 

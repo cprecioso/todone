@@ -11,7 +11,7 @@ import githubPlugin from "@todone/plugin-github";
 import { defineConfig } from "todone/config";
 
 export default defineConfig({
-  plugins: [githubPlugin({ token: process.env.GITHUB_TOKEN })],
+  plugins: [githubPlugin()],
 });
 ```
 
@@ -19,7 +19,7 @@ export default defineConfig({
 
 - `token`: The GitHub API token to use for authentication. You can generate a personal access token from your GitHub account settings. Defaults to the `GITHUB_TOKEN` environment variable.
 
-Without a token, the plugin still works for public repositories (subject to GitHub's unauthenticated rate limits) and emits a warning when created. Checking a URL that requires authentication (e.g. a private repository) without a token fails with an error explaining that a token may be required.
+  Without a token, the plugin still works for public repositories (subject to GitHub's unauthenticated rate limits) and emits a warning when created. Checking a URL that requires authentication (e.g. a private repository) without a token fails with an error explaining that a token may be required.
 
 ## Usage
 

@@ -11,7 +11,7 @@ import figmaPlugin from "@todone/plugin-figma";
 import { defineConfig } from "todone/config";
 
 export default defineConfig({
-  plugins: [figmaPlugin({ token: process.env.FIGMA_TOKEN })],
+  plugins: [figmaPlugin()],
 });
 ```
 
