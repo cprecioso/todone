@@ -1,0 +1,4 @@
+{
+  "extends": "@todone/internal-build/tsconfig",
+  "include": ["src/**/*", "types/**/*"]
+}
