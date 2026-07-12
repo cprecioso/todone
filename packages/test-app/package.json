@@ -24,6 +24,7 @@
     "@todone/plugin-date": "workspace:^",
     "@todone/plugin-figma": "workspace:^",
     "@todone/plugin-github": "workspace:^",
+    "@todone/plugin-gitlab": "workspace:^",
     "@types/node": "^24.13.2",
     "todone": "workspace:^"
   },

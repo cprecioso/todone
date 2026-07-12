@@ -6,6 +6,7 @@
     { "path": "./packages/plugin-caniuse" },
     { "path": "./packages/plugin-date" },
     { "path": "./packages/plugin-figma" },
-    { "path": "./packages/plugin-github" }
+    { "path": "./packages/plugin-github" },
+    { "path": "./packages/plugin-gitlab" }
   ]
 }

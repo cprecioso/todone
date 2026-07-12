@@ -29,6 +29,10 @@
       "path": "packages/plugin-github",
     },
     {
+      "name": "📦 @todone/plugin-gitlab",
+      "path": "packages/plugin-gitlab",
+    },
+    {
       "name": "📦 @todone/test-app",
       "path": "packages/test-app",
     },

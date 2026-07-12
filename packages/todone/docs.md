@@ -96,5 +96,6 @@ Other settings: `keyword` (default `"@TODO"`), `globs` (default `["**/*"]`), and
 - {@link "@todone/plugin-date"}
 - {@link "@todone/plugin-figma"}
 - {@link "@todone/plugin-github"}
+- {@link "@todone/plugin-gitlab"}
 
 You can also write your own: a plugin is just a function returning an object with a `name` and a `checkMatch` function. See the `Plugin` type in `todone/plugin`.
