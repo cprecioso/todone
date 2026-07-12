@@ -178,13 +178,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jsr/std__internal@npm:^1.0.12":
-  version: 1.0.14
-  resolution: "@jsr/std__internal@npm:1.0.14::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__internal%2F1.0.14.tgz"
-  checksum: 10/d05f199dea6041b0dd2752e1db44ee71efa43bea324803219bad7e3cbfda75d353ba65a5f7e54b27313bf9385492a8347fb3e40c5e633bca592e948daec4a5f8
-  languageName: node
-  linkType: hard
-
 "@napi-rs/wasm-runtime@npm:0.2.4":
   version: 0.2.4
   resolution: "@napi-rs/wasm-runtime@npm:0.2.4"
@@ -770,24 +763,6 @@ __metadata:
   version: 4.0.0
   resolution: "@sindresorhus/merge-streams@npm:4.0.0"
   checksum: 10/16551c787f5328c8ef05fd9831ade64369ccc992df78deb635ec6c44af217d2f1b43f8728c348cdc4e00585ff2fad6e00d8155199cbf6b154acc45fe65cbf0aa
-  languageName: node
-  linkType: hard
-
-"@std/assert@jsr:^1.0.19":
-  version: 1.0.19
-  resolution: "@std/assert@jsr:1.0.19::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__assert%2F1.0.19.tgz"
-  dependencies:
-    "@jsr/std__internal": "npm:^1.0.12"
-  checksum: 10/0450a3720299a1c7e96d59c818f69165adcec75f022bd23b710bbbac2ec65d0edf991116defcde2b289a4f6626d5440f4e7da3cef6aaab1fa222d874e10ecb3d
-  languageName: node
-  linkType: hard
-
-"@std/assert@npm:@jsr/std__assert@^1.0.19":
-  version: 1.0.19
-  resolution: "@jsr/std__assert@npm:1.0.19::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__assert%2F1.0.19.tgz"
-  dependencies:
-    "@jsr/std__internal": "npm:^1.0.12"
-  checksum: 10/0450a3720299a1c7e96d59c818f69165adcec75f022bd23b710bbbac2ec65d0edf991116defcde2b289a4f6626d5440f4e7da3cef6aaab1fa222d874e10ecb3d
   languageName: node
   linkType: hard
 
@@ -2974,7 +2949,6 @@ __metadata:
   resolution: "todone@workspace:packages/todone"
   dependencies:
     "@cprecioso/async-iterable-helpers": "npm:^0.2.0"
-    "@std/assert": "jsr:^1.0.19"
     "@std/streams": "jsr:^1.1.1"
     "@todone/internal-build": "workspace:^"
     "@types/node": "npm:^24.13.2"
