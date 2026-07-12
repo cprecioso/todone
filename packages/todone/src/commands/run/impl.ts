@@ -1,11 +1,11 @@
 import { run } from "#/index";
 import { loadConfigFile } from "#/lib/config/load";
-import { resolveConfig } from "#/lib/config/resolve";
+import { ConfigSchema } from "../../lib/config/schema";
 import { RunCommand } from "./index";
 
-export default async (_command: RunCommand) => {
+export default async ({}: RunCommand) => {
   const rawConfig = await loadConfigFile();
-  const config = resolveConfig(rawConfig);
+  const config = ConfigSchema.parse(rawConfig);
 
   const results = await run(config);
 

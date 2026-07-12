@@ -12,10 +12,10 @@ const UnhandledUrlsSchema = z
   .enum(["ignore", "warn", "error"])
   .prefault("error");
 
-export interface Config extends z.infer<typeof Config> {}
-export interface ConfigInput extends z.input<typeof Config> {}
+export interface Config extends z.infer<typeof ConfigSchema> {}
+export interface ConfigInput extends z.input<typeof ConfigSchema> {}
 
-export const Config = z.object({
+export const ConfigSchema = z.object({
   /** The keyword to use for TODO comments. */
   keyword: z.string().prefault("@TODO"),
 
