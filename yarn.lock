@@ -852,6 +852,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@todone/plugin-linear@workspace:^, @todone/plugin-linear@workspace:packages/plugin-linear":
+  version: 0.0.0-use.local
+  resolution: "@todone/plugin-linear@workspace:packages/plugin-linear"
+  dependencies:
+    "@todone/internal-build": "workspace:^"
+    "@types/node": "npm:^24.13.2"
+    todone: "workspace:^"
+    tsdown: "npm:^0.22.3"
+    typescript: "npm:~6.0.3"
+    zod: "npm:^4.4.3"
+  peerDependencies:
+    todone: "workspace:^"
+  languageName: unknown
+  linkType: soft
+
 "@todone/repo@workspace:.":
   version: 0.0.0-use.local
   resolution: "@todone/repo@workspace:."
@@ -882,6 +897,7 @@ __metadata:
     "@todone/plugin-date": "workspace:^"
     "@todone/plugin-figma": "workspace:^"
     "@todone/plugin-github": "workspace:^"
+    "@todone/plugin-linear": "workspace:^"
     "@types/node": "npm:^24.13.2"
     todone: "workspace:^"
   languageName: unknown
