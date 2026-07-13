@@ -86,7 +86,5 @@ export const jsonReporter =
           console.log(outputItem.encode({ type: "result", url, ...result }));
         }
       },
-
-      async [Symbol.asyncDispose]() {},
     };
   };

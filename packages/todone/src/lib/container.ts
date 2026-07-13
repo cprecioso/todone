@@ -48,17 +48,14 @@ export class PluginContainer implements PluginContext {
     this.#plugins.forEach((plugin) => plugin.debug?.call(this, message));
 
   makeReporter = async (): Promise<Reporter> => {
-    await using stack = new AsyncDisposableStack();
     const reporters = await Promise.all(
       this.#plugins
         .filter(
           (plugin): plugin is SetRequired<Plugin, "makeReporter"> =>
             plugin.makeReporter != null,
         )
-        .map(async (plugin) => stack.use(await plugin.makeReporter.call(this))),
+        .map(async (plugin) => await plugin.makeReporter.call(this)),
     );
-
-    const newStack = stack.move();
 
     return {
       async file(file) {
@@ -76,13 +73,10 @@ export class PluginContainer implements PluginContext {
           reporters.map((reporter) => reporter.result?.call(this, result)),
         );
       },
-      async error(error) {
+      async end(error) {
         await Promise.all(
-          reporters.map((reporter) => reporter.error?.call(this, error)),
+          reporters.map((reporter) => reporter.end?.call(this, error)),
         );
-      },
-      async [Symbol.asyncDispose]() {
-        await newStack.disposeAsync();
       },
     };
   };

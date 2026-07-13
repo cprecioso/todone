@@ -21,11 +21,11 @@ export const run = async (
   { forcedReporter }: RunOptions = {},
 ) => {
   const container = new PluginContainer([cliLogger(), ...plugins]);
-  await using reporter = await (forcedReporter?.call(container) ??
+  const reporter = await (forcedReporter?.call(container) ??
     container.makeReporter());
 
   try {
-    return await it
+    const results = await it
       .from(getFiles(globs, { cwd: process.cwd(), gitignore: gitignore }))
       .pipe(it.tap(reporter.file?.bind(container) ?? noop))
 
@@ -36,8 +36,12 @@ export const run = async (
       .pipe(it.tap(reporter.result?.bind(container) ?? noop))
 
       .sink(it.toArray());
+
+    await reporter.end?.call(container);
+
+    return results;
   } catch (error) {
-    await reporter.error?.call(container, error);
+    await reporter.end?.call(container, error);
     throw error;
   }
 };

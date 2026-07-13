@@ -38,7 +38,6 @@ export const cliReporterPlugin = ({
   async makeReporter() {
     const dateFormatter = new Intl.DateTimeFormat(locale);
 
-    let errorsCounter = 0;
     let filesCounter = 0;
     let matchesCounter = 0;
     let resultsCounter = 0;
@@ -48,10 +47,6 @@ export const cliReporterPlugin = ({
     const infoLn = (str = "") => console.log(`\t${str}`);
 
     return {
-      async error() {
-        errorsCounter++;
-      },
-
       async file() {
         filesCounter++;
       },
@@ -126,15 +121,18 @@ export const cliReporterPlugin = ({
         headerLn();
       },
 
-      async [Symbol.asyncDispose]() {
-        console.log(dedent`
-        Analysis complete:
-          ${errorsCounter} errors
-          ${filesCounter} files found
-          ${matchesCounter} matches found
-          ${resultsCounter} results found
-          ${expiredResultsCounter} expired results found
-      `);
+      async end(error) {
+        if (error) {
+          console.error(`Error: ${error}`);
+        } else {
+          console.log(dedent`
+            Analysis complete:
+              ${filesCounter} files found
+              ${matchesCounter} matches found
+              ${resultsCounter} results found
+              ${expiredResultsCounter} expired results found
+          `);
+        }
       },
     };
   },

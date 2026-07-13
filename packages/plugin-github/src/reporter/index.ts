@@ -84,8 +84,8 @@ export const makeReporterPlugin = (
         async result(result) {
           results.push(result);
         },
-        async [Symbol.asyncDispose]() {
-          if (!summary) return;
+        async end(error) {
+          if (error || !summary) return;
 
           const { rows, columns } = await report(pluginCtx);
 

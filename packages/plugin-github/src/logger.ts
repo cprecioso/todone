@@ -51,11 +51,9 @@ export const makeLoggerPlugin = (): Plugin => ({
         );
       },
 
-      async error(error) {
-        core.error(String(error));
+      async end(error) {
+        if (error) core.error(String(error));
       },
-
-      async [Symbol.asyncDispose]() {},
     };
   },
 });

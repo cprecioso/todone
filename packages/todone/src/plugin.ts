@@ -42,11 +42,11 @@ export interface Plugin {
   makeReporter?(this: PluginContext): Promise<Reporter>;
 }
 
-export interface Reporter extends AsyncDisposable {
+export interface Reporter {
   file?(this: PluginContext, item: t.File): Promise<void>;
   match?(this: PluginContext, item: t.Match): Promise<void>;
   result?(this: PluginContext, item: t.Result): Promise<void>;
-  error?(this: PluginContext, error: unknown): Promise<void>;
+  end?(this: PluginContext, error?: unknown): Promise<void>;
 }
 
 /**
