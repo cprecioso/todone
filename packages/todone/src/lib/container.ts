@@ -31,9 +31,7 @@ export class PluginContainer implements PluginContext {
   readonly #plugins: readonly Plugin[];
 
   constructor(plugins: readonly PluginOption[]) {
-    this.#plugins =
-      // @ts-expect-error
-      plugins.flat(Infinity) as readonly Plugin[];
+    this.#plugins = (plugins as readonly Plugin[]).flat(Infinity);
   }
 
   warn = (message: string) =>
