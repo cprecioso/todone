@@ -1,14 +1,14 @@
 import { Command } from "clipanion";
 
 export class JsonCommand extends Command {
-  static paths = [["json"]];
+  static paths = [["run", "--json"]];
 
   static usage = Command.Usage({
     description: "Run todone and output NDJSON",
     details: `
-      Checks the TODOs in your code and prints one JSON object per line for machine consumption.
+      Checks the TODOs in your code and prints one JSON object per line for machine consumption. Reporting hooks from configured plugins are not run; all output comes from this command.
     `,
-    examples: [["Run with NDJSON output", "$0 json"]],
+    examples: [["Run with NDJSON output", "$0 run --json"]],
   });
 
   execute = async () => (await import("./impl")).default(this);

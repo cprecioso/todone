@@ -1,5 +1,4 @@
 import type { CheckerResult, Plugin } from "#/plugin";
-import * as t from "#/types";
 
 export class PluginError extends Error {
   constructor(pluginName: string, url: URL, cause: unknown) {
@@ -7,27 +6,8 @@ export class PluginError extends Error {
   }
 }
 
-export class UnhandledUrlError extends Error {
-  constructor(match: t.Match) {
-    const {
-      url,
-      file,
-      position: { line, column },
-    } = match;
-    super(
-      `No plugin returned a result for ${url} (${file.localPath}:${line}:${column}). ` +
-        `Add a plugin that handles this URL, or set \`unhandledUrls: "warn"\` or \`"ignore"\` in your todone config.`,
-    );
-  }
-}
-
-/** Thrown internally when a plugin didn't recognize a URL. */
-const UNHANDLED = Symbol("unhandled");
-
 type FanOutHook =
   "warn" | "info" | "debug" | "reportFile" | "reportMatch" | "reportResult";
-
-type CheckerPlugin = Plugin & Required<Pick<Plugin, "checkMatch">>;
 
 /**
  * Holds all the plugins for a run and knows how to dispatch each hook to
@@ -38,24 +18,22 @@ type CheckerPlugin = Plugin & Required<Pick<Plugin, "checkMatch">>;
  * Each hook mirrors the name and signature of its {@link Plugin} counterpart.
  */
 export class PluginContainer implements AsyncDisposable {
+  /** Thrown internally when a plugin didn't recognize a URL. */
+  static readonly #UNHANDLED = Symbol("unhandled");
+
   readonly #plugins: readonly Plugin[];
-  readonly #checkers: readonly CheckerPlugin[];
 
   constructor(plugins: readonly Plugin[]) {
     this.#plugins = plugins;
-    this.#checkers = plugins.filter(
-      (plugin): plugin is CheckerPlugin => plugin.checkMatch != null,
-    );
   }
 
   #fanOut<K extends FanOutHook>(name: K) {
-    type Item = Parameters<NonNullable<Plugin[K]>>[0];
-    return async (item: Item): Promise<void> => {
+    type Args = Parameters<NonNullable<Plugin[K]>>;
+    return async (...args: Args): Promise<void> => {
       await Promise.all(
         this.#plugins.map((plugin) =>
-          (plugin[name] as ((item: Item) => Promise<void>) | undefined)?.call(
-            plugin,
-            item,
+          (plugin[name] as ((...args: Args) => Promise<void>) | undefined)?.(
+            ...args,
           ),
         ),
       );
@@ -76,22 +54,28 @@ export class PluginContainer implements AsyncDisposable {
     url: URL;
   }): Promise<CheckerResult | null> =>
     await Promise.any(
-      this.#checkers.map((plugin) =>
-        plugin.checkMatch({ url }).then(
-          (result) => {
-            if (result === null) throw UNHANDLED;
-            return result;
-          },
-          (error) => {
-            throw new PluginError(plugin.name, url, error);
-          },
-        ),
+      this.#plugins.flatMap((plugin) =>
+        plugin.checkMatch == null
+          ? []
+          : [
+              plugin.checkMatch({ url }).then(
+                (result) => {
+                  if (result === null) throw PluginContainer.#UNHANDLED;
+                  return result;
+                },
+                (error) => {
+                  throw new PluginError(plugin.name, url, error);
+                },
+              ),
+            ],
       ),
     ).then(
       (result) => result,
       (error): null => {
         if (error instanceof AggregateError) {
-          const realErrors = error.errors.filter((e) => e !== UNHANDLED);
+          const realErrors = error.errors.filter(
+            (e) => e !== PluginContainer.#UNHANDLED,
+          );
           if (realErrors.length === 0) return null;
           else if (realErrors.length === 1) throw realErrors[0];
           else

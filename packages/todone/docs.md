@@ -65,7 +65,7 @@ Analysis complete:
 1 expired results found
 ```
 
-`todone run` (the default command) prints human-readable output; `--only-expired` hides results that haven't expired yet, and `--locale` controls how dates are formatted. Use `todone json` instead to emit NDJSON (one JSON object per line) for machine consumption.
+`todone run` (the default command) prints human-readable output; `--only-expired` hides results that haven't expired yet, and `--locale` controls how dates are formatted. Use `todone run --json` instead to emit NDJSON (one JSON object per line) for machine consumption, or `todone run --check` to print nothing and exit with code 1 when any TODO is expired.
 
 You can check more options by running `npx todone --help`.
 
@@ -96,5 +96,3 @@ Other settings: `keyword` (default `"@TODO"`), `globs` (default `["**/*"]`), and
 - {@link "@todone/plugin-github"}
 
 You can also write your own: a plugin is just a function returning an object with a `name` and any of the optional hooks — `checkMatch` to check URLs, `reportFile`/`reportMatch`/`reportResult` and `warn`/`info`/`debug` to report output, and `Symbol.asyncDispose` to clean up when the run finishes. See the `Plugin` type in `todone/plugin`.
-
-Note that the programmatic `run()` API produces no output on its own: the CLI adds its own reporting plugin, so if you call `run()` directly, include a plugin implementing the reporting hooks in `plugins` if you want output (this also applies to the warning emitted by `unhandledUrls: "warn"`).

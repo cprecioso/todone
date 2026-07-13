@@ -25,6 +25,6 @@ export const ConfigSchema = z.object({
   /** What to do when no plugin returns a result for a URL. */
   unhandledUrls: UnhandledUrlsSchema,
 
-  /** The plugins to run, already initialized by calling each plugin's factory. */
+  /** The plugins to run. */
   plugins: z.array(PluginSchema).prefault([]),
 });

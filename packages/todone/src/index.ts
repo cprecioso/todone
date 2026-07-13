@@ -1,9 +1,23 @@
 import * as it from "@cprecioso/async-iterable-helpers";
 import { Config } from "./lib/config/schema";
-import { PluginContainer, UnhandledUrlError } from "./lib/core/container";
+import { PluginContainer } from "./lib/core/container";
 import { makeFileMatcher } from "./lib/core/matcher";
 import { getFiles } from "./lib/files";
 import type * as t from "./types";
+
+class UnhandledUrlError extends Error {
+  constructor(match: t.Match) {
+    const {
+      url,
+      file,
+      position: { line, column },
+    } = match;
+    super(
+      `No plugin returned a result for ${url} (${file.localPath}:${line}:${column}). ` +
+        `Add a plugin that handles this URL, or set \`unhandledUrls: "warn"\` or \`"ignore"\` in your todone config.`,
+    );
+  }
+}
 
 export const run = async ({
   globs,
