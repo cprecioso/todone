@@ -43,13 +43,14 @@ export const makeGitHubAPI = ({
   return {
     fetchCurrentIssues: (limit: number): AsyncIterable<RemoteIssue> => {
       return it
-        .create(() =>
-          client.paginate(client.rest.issues.listForRepo, {
+        .from(
+          client.paginate.iterator(client.rest.issues.listForRepo, {
             ...repo,
             state: "open",
             labels: label,
           }),
         )
+        .pipe(it.flatMap((page) => page.data))
         .pipe(it.filter((issue) => !issue.pull_request))
         .pipe(it.take(limit));
     },
