@@ -8,7 +8,7 @@ export default async ({}: CheckCommand) => {
   const config = await loadConfigFile();
   const results = await run(
     { ...config, plugins: [cliReporterPlugin(), ...config.plugins] },
-    { forcedReporter: silentReporter },
+    { forcedReporter: silentReporter() },
   );
   return results.some((result) => result.result?.isExpired) ? 1 : 0;
 };

@@ -5,7 +5,7 @@ __metadata:
   version: 10
   cacheKey: 10
 
-"@actions/core@npm:3.0.1":
+"@actions/core@npm:^3.0.1":
   version: 3.0.1
   resolution: "@actions/core@npm:3.0.1"
   dependencies:
@@ -877,7 +877,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"
   dependencies:
-    "@actions/core": "npm:3.0.1"
+    "@actions/core": "npm:^3.0.1"
     "@cprecioso/async-iterable-helpers": "npm:^0.4.0"
     "@todone/internal-build": "workspace:^"
     "@types/mdast": "npm:^4.0.4"

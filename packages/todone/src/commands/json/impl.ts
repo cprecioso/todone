@@ -8,6 +8,6 @@ export default async ({}: JsonCommand) => {
   const config = await loadConfigFile();
   await run(
     { ...config, plugins: [cliReporterPlugin(), ...config.plugins] },
-    { forcedReporter: jsonReporter },
+    { forcedReporter: jsonReporter() },
   );
 };
