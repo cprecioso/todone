@@ -23,7 +23,6 @@
     "#/index": "./src/index.ts",
     "#/plugin": "./src/plugin.ts",
     "#/types": "./src/types.ts",
-    "#/lib/reporters": "./src/lib/reporters/index.ts",
     "#/lib/*": "./src/lib/*.ts"
   },
   "exports": {

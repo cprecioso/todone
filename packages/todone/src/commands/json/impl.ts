@@ -1,6 +1,6 @@
 import { run } from "#/index";
 import { loadConfigFile } from "#/lib/config/load";
-import { jsonReporter } from "#/lib/reporters";
+import { jsonReporter } from "#/lib/reporters/json";
 import { JsonCommand } from "./index";
 
 export default async ({}: JsonCommand) => {

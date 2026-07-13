@@ -17,9 +17,11 @@ type FanOutHook =
  *
  * Each hook mirrors the name and signature of its {@link Plugin} counterpart.
  */
-export class PluginContainer implements AsyncDisposable {
+export class PluginContainer implements Required<Plugin> {
   /** Thrown internally when a plugin didn't recognize a URL. */
   static readonly #UNHANDLED = Symbol("unhandled");
+
+  readonly name = "todone:plugin-container";
 
   readonly #plugins: readonly Plugin[];
 
@@ -66,24 +68,21 @@ export class PluginContainer implements AsyncDisposable {
             },
           ),
         )
-        .filter((check) => check != null),
-    ).then(
-      (result) => result,
-      (error): null => {
-        if (error instanceof AggregateError) {
-          const realErrors = error.errors.filter(
-            (e) => e !== PluginContainer.#UNHANDLED,
+        .filter((checkPromise) => checkPromise != null),
+    ).catch((error): null => {
+      if (error instanceof AggregateError) {
+        const realErrors = error.errors.filter(
+          (e) => e !== PluginContainer.#UNHANDLED,
+        );
+        if (realErrors.length === 0) return null;
+        else if (realErrors.length === 1) throw realErrors[0];
+        else
+          throw new AggregateError(
+            realErrors,
+            `Multiple plugins failed while checking ${url}`,
           );
-          if (realErrors.length === 0) return null;
-          else if (realErrors.length === 1) throw realErrors[0];
-          else
-            throw new AggregateError(
-              realErrors,
-              `Multiple plugins failed while checking ${url}`,
-            );
-        } else throw error;
-      },
-    );
+      } else throw error;
+    });
 
   async [Symbol.asyncDispose]() {
     await Promise.all(
