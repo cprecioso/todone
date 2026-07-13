@@ -39,14 +39,10 @@ export interface Plugin {
     options: { url: URL },
   ): Promise<CheckerResult | null>;
 
-  makeReporter?(this: PluginContext): Promise<Reporter>;
-}
-
-export interface Reporter {
-  file?(this: PluginContext, item: t.File): Promise<void>;
-  match?(this: PluginContext, item: t.Match): Promise<void>;
-  result?(this: PluginContext, item: t.Result): Promise<void>;
-  end?(this: PluginContext, error?: unknown): Promise<void>;
+  reportFile?(this: PluginContext, item: t.File): Promise<void>;
+  reportMatch?(this: PluginContext, item: t.Match): Promise<void>;
+  reportResult?(this: PluginContext, item: t.Result): Promise<void>;
+  reportEnd?(this: PluginContext, error?: unknown): Promise<void>;
 }
 
 /**

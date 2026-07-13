@@ -1,6 +1,6 @@
 import * as pkg from "#/package.json" with { type: "json" };
 import { Octokit } from "octokit";
-import type { Plugin, PluginContext } from "todone/plugin";
+import type { Plugin } from "todone/plugin";
 import * as t from "todone/types";
 import { GithubPluginOptions } from "../options";
 import { syncIssues } from "./issues/sync";
@@ -44,62 +44,42 @@ export const makeReporterPlugin = (
 
   const results: t.Result[] = [];
 
-  /**
-   * Syncs the issues, falling back to plain rows if the sync can't run or
-   * fails: a broken sync shouldn't cost us the summary too.
-   */
-  const report = async (
-    pluginCtx: PluginContext,
-  ): Promise<{
-    rows: RowData[];
-    columns: readonly Column[];
-  }> => {
-    if (createIssues) {
-      if (!context.repository) {
-        throw new Error(
-          "No GitHub repository configured (`context.repository` option or GITHUB_REPOSITORY env var). Can't perform GitHub issue sync.",
-        );
-      } else {
-        const rows = await syncIssues({
-          client,
-          context,
-          options: createIssues,
-          pluginCtx,
-          results,
-        });
-        return { rows, columns: ISSUE_COLUMNS };
-      }
-    }
-
-    return { rows: results.flatMap(toRows), columns: BASE_COLUMNS };
-  };
-
   return {
     name: `${pkg.name}:reporter`,
 
-    async makeReporter() {
-      const pluginCtx = this;
+    async reportResult(result) {
+      results.push(result);
+    },
 
-      return {
-        async result(result) {
-          results.push(result);
-        },
-        async end(error) {
-          if (error || !summary) return;
+    async reportEnd(error) {
+      if (error) return;
 
-          const { rows, columns } = await report(pluginCtx);
+      if (createIssues && !context.repository) {
+        throw new Error(
+          "No GitHub repository configured (`context.repository` option or GITHUB_REPOSITORY env var). Can't perform GitHub issue sync.",
+        );
+      }
 
-          try {
-            await writeSummary(context, {
-              heading: "TODOs found",
-              columns,
-              rows,
-            });
-          } catch (error) {
-            pluginCtx.warn(`Failed to write summary: ${error}`);
+      const { rows, columns } = createIssues
+        ? {
+            rows: await syncIssues({
+              client,
+              context,
+              options: createIssues,
+              pluginCtx: this,
+              results,
+            }),
+            columns: ISSUE_COLUMNS,
           }
-        },
-      };
+        : { rows: results.flatMap(toRows), columns: BASE_COLUMNS };
+
+      if (summary) {
+        await writeSummary(context, {
+          heading: "TODOs found",
+          columns,
+          rows,
+        });
+      }
     },
   };
 };

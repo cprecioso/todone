@@ -9,8 +9,8 @@ export default async ({ onlyExpired, locale, unhandledUrls }: RunCommand) => {
   await run({
     ...config,
     plugins: [
-      ...config.plugins,
       cliReporterPlugin({ onlyExpired, locale, unhandledUrls }),
+      ...config.plugins,
     ],
   });
 };

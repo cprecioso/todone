@@ -17,43 +17,39 @@ export const makeLoggerPlugin = (): Plugin => ({
     core.debug(message);
   },
 
-  async makeReporter() {
-    return {
-      async file(file) {
-        core.debug(`Found file: ${file.localPath}`);
-      },
+  async reportFile(file) {
+    core.debug(`Found file: ${file.localPath}`);
+  },
 
-      async match(match: t.Match) {
-        core.debug(
-          `Found match: ${match.url} at ${match.file.localPath}:${match.position.line}:${match.position.column}`,
-        );
-      },
+  async reportMatch(match: t.Match) {
+    core.debug(
+      `Found match: ${match.url} at ${match.file.localPath}:${match.position.line}:${match.position.column}`,
+    );
+  },
 
-      async result({ result, matches, url }: t.Result) {
-        const infoLines = result
-          ? [
-              result.title || "No title",
-              result.isExpired ? "Expired" : "Not expired",
-              result.expirationDate
-                ? formatDate(result.expirationDate)
-                : "No expiration date",
-            ]
-          : ["No plugin responded"];
+  async reportResult({ result, matches, url }: t.Result) {
+    const infoLines = result
+      ? [
+          result.title || "No title",
+          result.isExpired ? "Expired" : "Not expired",
+          result.expirationDate
+            ? formatDate(result.expirationDate)
+            : "No expiration date",
+        ]
+      : ["No plugin responded"];
 
-        const fileLines = matches.map(
-          ({ file, position: { line, column } }) =>
-            `${file.localPath}:${line}:${column}`,
-        );
+    const fileLines = matches.map(
+      ({ file, position: { line, column } }) =>
+        `${file.localPath}:${line}:${column}`,
+    );
 
-        core.info(
-          `Found: ${url}\n` +
-            [...infoLines, ...fileLines].map((line) => `\t${line}\n`).join(""),
-        );
-      },
+    core.info(
+      `Found: ${url}\n` +
+        [...infoLines, ...fileLines].map((line) => `\t${line}\n`).join(""),
+    );
+  },
 
-      async end(error) {
-        if (error) core.error(String(error));
-      },
-    };
+  async reportEnd(error) {
+    if (error) core.error(String(error));
   },
 });

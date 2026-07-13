@@ -1,10 +1,9 @@
-import type { PluginContext, Reporter } from "#/plugin";
+import type { Plugin } from "#/plugin";
 import type * as t from "#/types";
 import * as it from "@cprecioso/async-iterable-helpers";
 import { Config } from "./lib/config";
 import { PluginContainer } from "./lib/container";
 import { getFiles } from "./lib/files";
-import { cliLogger } from "./lib/logger";
 import { makeFileMatcher } from "./lib/matcher";
 
 export interface RunOptions {
@@ -13,35 +12,34 @@ export interface RunOptions {
    * The configured plugins are still used to check URLs and are still
    * disposed of at the end of the run.
    */
-  forcedReporter?: (this: PluginContext) => Promise<Reporter>;
+  forcedReporter?: Plugin;
 }
 
 export const run = async (
   { globs, gitignore, keyword, plugins }: Config,
   { forcedReporter }: RunOptions = {},
 ) => {
-  const container = new PluginContainer([cliLogger(), ...plugins]);
-  const reporter = await (forcedReporter?.call(container) ??
-    container.makeReporter());
+  const container = new PluginContainer(plugins);
+  const reporter = forcedReporter ?? container;
 
   try {
     const results = await it
       .from(getFiles(globs, { cwd: process.cwd(), gitignore: gitignore }))
-      .pipe(it.tap(reporter.file?.bind(container) ?? noop))
+      .pipe(it.tap(reporter.reportFile?.bind(container) ?? noop))
 
       .pipe(it.flatMap(makeFileMatcher(keyword)))
-      .pipe(it.tap(reporter.match?.bind(container) ?? noop))
+      .pipe(it.tap(reporter.reportMatch?.bind(container) ?? noop))
 
       .pipe(checkMatchesDeduping(container))
-      .pipe(it.tap(reporter.result?.bind(container) ?? noop))
+      .pipe(it.tap(reporter.reportResult?.bind(container) ?? noop))
 
       .sink(it.toArray());
 
-    await reporter.end?.call(container);
+    await reporter.reportEnd?.call(container);
 
     return results;
   } catch (error) {
-    await reporter.end?.call(container, error);
+    await reporter.reportEnd?.call(container, error);
     throw error;
   }
 };

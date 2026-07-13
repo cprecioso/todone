@@ -32,108 +32,110 @@ export const cliReporterPlugin = ({
   locale,
   onlyExpired = false,
   unhandledUrls = "error",
-}: CliReporterOptions = {}): Plugin => ({
-  name: "todone:reporter-cli",
+}: CliReporterOptions = {}): Plugin => {
+  const dateFormatter = new Intl.DateTimeFormat(locale);
 
-  async makeReporter() {
-    const dateFormatter = new Intl.DateTimeFormat(locale);
+  let filesCounter = 0;
+  let matchesCounter = 0;
+  let resultsCounter = 0;
+  let expiredResultsCounter = 0;
 
-    let filesCounter = 0;
-    let matchesCounter = 0;
-    let resultsCounter = 0;
-    let expiredResultsCounter = 0;
+  const headerLn = (str = "") => console.log(`${str}`);
+  const infoLn = (str = "") => console.log(`\t${str}`);
 
-    const headerLn = (str = "") => console.log(`${str}`);
-    const infoLn = (str = "") => console.log(`\t${str}`);
+  return {
+    name: "todone:cli-reporter",
 
-    return {
-      async file() {
-        filesCounter++;
-      },
+    warn: async (message: string) => console.warn(message),
+    info: async (message: string) => console.info(message),
+    debug: async (message: string) => console.debug(message),
 
-      async match() {
-        matchesCounter++;
-      },
+    async reportFile() {
+      filesCounter++;
+    },
 
-      async result({ result, matches, url }) {
-        {
-          const [firstMatch] = matches;
-          const {
-            file,
-            position: { line, column },
-          } = firstMatch;
+    async reportMatch() {
+      matchesCounter++;
+    },
 
-          if (result === null) {
-            switch (unhandledUrls) {
-              case "error":
-                throw new UnhandledUrlError(firstMatch);
-              case "warn":
-                this.warn(
-                  `no plugin handled ${url} (${file.localPath}:${line}:${column})`,
-                );
-              // fallthrough
-              case "ignore":
-                return;
-              default:
-                return unhandledUrls satisfies never;
-            }
-          }
-        }
-
-        resultsCounter++;
-
-        if (result.isExpired) expiredResultsCounter++;
-        else if (onlyExpired) return;
-
-        for (const {
+    async reportResult({ result, matches, url }) {
+      {
+        const [firstMatch] = matches;
+        const {
           file,
           position: { line, column },
-        } of matches) {
-          headerLn(
-            chalk.blueBright(file.localPath) +
-              ":" +
-              chalk.yellowBright(line) +
-              ":" +
-              chalk.yellowBright(column),
-          );
+        } = firstMatch;
+
+        if (result === null) {
+          switch (unhandledUrls) {
+            case "error":
+              throw new UnhandledUrlError(firstMatch);
+            case "warn":
+              this.warn(
+                `no plugin handled ${url} (${file.localPath}:${line}:${column})`,
+              );
+            // fallthrough
+            case "ignore":
+              return;
+            default:
+              return unhandledUrls satisfies never;
+          }
         }
+      }
 
-        infoLn(chalk.bold(url));
+      resultsCounter++;
 
-        const { isExpired, expirationDate } = result;
+      if (result.isExpired) expiredResultsCounter++;
+      else if (onlyExpired) return;
 
-        infoLn(
-          isExpired
-            ? chalk.bgYellow.redBright("EXPIRED")
-            : chalk.blue("Not expired yet"),
+      for (const {
+        file,
+        position: { line, column },
+      } of matches) {
+        headerLn(
+          chalk.blueBright(file.localPath) +
+            ":" +
+            chalk.yellowBright(line) +
+            ":" +
+            chalk.yellowBright(column),
         );
+      }
 
-        if (expirationDate) {
-          infoLn(
-            [
-              isExpired ? "expired" : "will expire",
-              "on",
-              dateFormatter.format(expirationDate),
-            ].join(" "),
-          );
-        }
+      infoLn(chalk.bold(url));
 
-        headerLn();
-      },
+      const { isExpired, expirationDate } = result;
 
-      async end(error) {
-        if (error) {
-          console.error(`Error: ${error}`);
-        } else {
-          console.log(dedent`
-            Analysis complete:
-              ${filesCounter} files found
-              ${matchesCounter} matches found
-              ${resultsCounter} results found
-              ${expiredResultsCounter} expired results found
-          `);
-        }
-      },
-    };
-  },
-});
+      infoLn(
+        isExpired
+          ? chalk.bgYellow.redBright("EXPIRED")
+          : chalk.blue("Not expired yet"),
+      );
+
+      if (expirationDate) {
+        infoLn(
+          [
+            isExpired ? "expired" : "will expire",
+            "on",
+            dateFormatter.format(expirationDate),
+          ].join(" "),
+        );
+      }
+
+      headerLn();
+    },
+
+    async reportEnd(error) {
+      if (error) {
+        console.error(`Error: ${error}`);
+      } else {
+        console.log(dedent`
+          Analysis complete:
+            ${filesCounter} files found
+            ${matchesCounter} matches found
+            ${resultsCounter} results found
+            ${expiredResultsCounter} expired results found
+        `);
+      }
+    },
+  };
+};

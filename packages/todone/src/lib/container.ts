@@ -3,10 +3,8 @@ import type {
   Plugin,
   PluginContext,
   PluginOption,
-  Reporter,
 } from "#/plugin";
 import type * as t from "#/types";
-import type { SetRequired } from "type-fest";
 
 export class PluginError extends Error {
   constructor(pluginName: string, url: URL, cause: unknown) {
@@ -47,38 +45,28 @@ export class PluginContainer implements PluginContext {
   debug = (message: string) =>
     this.#plugins.forEach((plugin) => plugin.debug?.call(this, message));
 
-  makeReporter = async (): Promise<Reporter> => {
-    const reporters = await Promise.all(
-      this.#plugins
-        .filter(
-          (plugin): plugin is SetRequired<Plugin, "makeReporter"> =>
-            plugin.makeReporter != null,
-        )
-        .map(async (plugin) => await plugin.makeReporter.call(this)),
+  reportFile = async (file: t.File) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportFile?.call(this, file)),
     );
+  };
 
-    return {
-      async file(file) {
-        await Promise.all(
-          reporters.map((reporter) => reporter.file?.call(this, file)),
-        );
-      },
-      async match(match) {
-        await Promise.all(
-          reporters.map((reporter) => reporter.match?.call(this, match)),
-        );
-      },
-      async result(result) {
-        await Promise.all(
-          reporters.map((reporter) => reporter.result?.call(this, result)),
-        );
-      },
-      async end(error) {
-        await Promise.all(
-          reporters.map((reporter) => reporter.end?.call(this, error)),
-        );
-      },
-    };
+  reportMatch = async (match: t.Match) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportMatch?.call(this, match)),
+    );
+  };
+
+  reportResult = async (result: t.Result) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportResult?.call(this, result)),
+    );
+  };
+
+  reportEnd = async (error?: unknown) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportEnd?.call(this, error)),
+    );
   };
 
   checkMatch = async ({ url }: { url: URL }): Promise<CheckerResult | null> => {
