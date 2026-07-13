@@ -1,4 +1,5 @@
 import type { CheckerResult, Plugin } from "#/plugin";
+import type * as t from "#/types";
 
 export class PluginError extends Error {
   constructor(pluginName: string, url: URL, cause: unknown) {
@@ -83,6 +84,16 @@ export class PluginContainer implements Required<Plugin> {
           );
       } else throw error;
     });
+
+  /**
+   * Check a {@link t.Match} against all plugins and bundle the outcome as a
+   * {@link t.Result}.
+   */
+  readonly check = async (match: t.Match): Promise<t.Result> => ({
+    url: match.url,
+    match,
+    result: await this.checkMatch({ url: match.url }),
+  });
 
   async [Symbol.asyncDispose]() {
     await Promise.all(

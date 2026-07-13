@@ -4,7 +4,6 @@ import { PluginContainer } from "./lib/core/container";
 import { makeFileMatcher } from "./lib/core/matcher";
 import { getFiles } from "./lib/files";
 import type { Plugin } from "./plugin";
-import type * as t from "./types";
 
 export interface RunOptions {
   /**
@@ -26,12 +25,6 @@ export const run = async (
 
   const reporter = forcedReporterContainer ?? container;
 
-  const check = async (match: t.Match): Promise<t.Result> => ({
-    url: match.url,
-    match,
-    result: await container.checkMatch({ url: match.url }),
-  });
-
   const results = await it
     .from(getFiles(globs, { cwd: process.cwd(), gitignore: gitignore }))
     .pipe(it.tap(reporter.reportFile))
@@ -39,7 +32,7 @@ export const run = async (
     .pipe(it.flatMap(makeFileMatcher(keyword)))
     .pipe(it.tap(reporter.reportMatch))
 
-    .pipe(it.map(check))
+    .pipe(it.map(container.check))
     .pipe(it.tap(reporter.reportResult))
 
     .sink(it.toArray());
