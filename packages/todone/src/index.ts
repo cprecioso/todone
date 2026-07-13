@@ -32,7 +32,7 @@ export const run = async (
     .pipe(it.flatMap(makeFileMatcher(keyword)))
     .pipe(it.tap(reporter.reportMatch))
 
-    .pipe(it.map(container.check))
+    .pipe(it.map(container.checkMatch))
     .pipe(it.tap(reporter.reportResult))
 
     .sink(it.toArray());

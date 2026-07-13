@@ -1,4 +1,4 @@
-import type { CheckerResult, Plugin } from "#/plugin";
+import type { Plugin } from "#/plugin";
 import type * as t from "#/types";
 
 export class PluginError extends Error {
@@ -12,13 +12,15 @@ type FanOutHook =
 
 /**
  * Holds all the plugins for a run and knows how to dispatch each hook to
- * them: {@link Plugin.checkMatch} races all checkers and settles on the first
- * one to recognize the URL, while the reporting hooks and disposal fan out to
- * every plugin implementing them.
+ * them: {@link PluginContainer.checkMatch} races all checkers and settles on
+ * the first one to recognize the URL, while the reporting hooks and disposal
+ * fan out to every plugin implementing them.
  *
- * Each hook mirrors the name and signature of its {@link Plugin} counterpart.
+ * The reporting hooks mirror the name and signature of their {@link Plugin}
+ * counterparts; `checkMatch` instead takes a whole {@link t.Match} and
+ * bundles the outcome as a {@link t.Result}.
  */
-export class PluginContainer implements Required<Plugin> {
+export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
   /** Thrown internally when a plugin didn't recognize a URL. */
   static readonly #UNHANDLED = Symbol("unhandled");
 
@@ -51,12 +53,10 @@ export class PluginContainer implements Required<Plugin> {
   readonly reportMatch = this.#fanOut("reportMatch");
   readonly reportResult = this.#fanOut("reportResult");
 
-  readonly checkMatch = async ({
-    url,
-  }: {
-    url: URL;
-  }): Promise<CheckerResult | null> =>
-    await Promise.any(
+  readonly checkMatch = async (match: t.Match): Promise<t.Result> => {
+    const { url } = match;
+
+    const result = await Promise.any(
       this.#plugins
         .map((plugin) =>
           plugin.checkMatch?.({ url }).then(
@@ -85,15 +85,8 @@ export class PluginContainer implements Required<Plugin> {
       } else throw error;
     });
 
-  /**
-   * Check a {@link t.Match} against all plugins and bundle the outcome as a
-   * {@link t.Result}.
-   */
-  readonly check = async (match: t.Match): Promise<t.Result> => ({
-    url: match.url,
-    match,
-    result: await this.checkMatch({ url: match.url }),
-  });
+    return { url, match, result };
+  };
 
   async [Symbol.asyncDispose]() {
     await Promise.all(
