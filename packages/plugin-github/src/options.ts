@@ -13,19 +13,19 @@ export const GithubPluginOptionsSchema = z.object({
     .prefault(() => process.env.GITHUB_TOKEN),
 
   /**
-   * The GitHub repository the run belongs to, in the `owner/repo` format. Used
-   * to link files and issues in the job summary, and as the repository to sync
-   * issues against.
+   * The pieces of GitHub context used to build file permalinks and issue
+   * links, and to pick the repository to sync issues against. Every field
+   * defaults to the standard GitHub Actions environment variable.
    */
   context: GitHubContextSchema.prefault({}),
 
   /**
-   *
+   * Options for the GitHub Actions toolkit (`@actions/core`) integrations.
    */
   actions: z
     .object({
       /**
-       * Log messages using the GitHub Actions toolkit, instead of `console.log`.
+       * Log messages and results using the GitHub Actions toolkit.
        *
        * Defaults to `true` when running inside GitHub Actions.
        */
@@ -48,8 +48,7 @@ export const GithubPluginOptionsSchema = z.object({
 
   /**
    * Reconcile expired TODOs against the open `todone`-labeled issues, creating,
-   * updating, and closing issues as needed. Requires a token, unless `dryRun`
-   * is set.
+   * updating, and closing issues as needed. Requires a token.
    *
    * Defaults to `false`.
    */

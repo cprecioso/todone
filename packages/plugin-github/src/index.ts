@@ -10,7 +10,7 @@ import { makeReporterPlugin } from "./reporter";
  *
  * It always checks whether the GitHub issue, pull request, or milestone a TODO
  * points at has been resolved. On top of that, it can report the run to GitHub
- * Actions ({@link GithubPluginOptions.summary}) and keep a set of issues in
+ * Actions ({@link GithubPluginOptions.actions}) and keep a set of issues in
  * sync with the expired TODOs ({@link GithubPluginOptions.createIssues}).
  */
 const githubPlugin = (

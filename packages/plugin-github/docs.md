@@ -15,25 +15,28 @@ export default defineConfig({
 });
 ```
 
-Out of the box, the plugin checks whether the GitHub issue, pull request, or milestone a TODO points at has been resolved. The `summary` and `createIssues` options turn on two extra features, both meant for GitHub Actions.
+Out of the box, the plugin checks whether the GitHub issue, pull request, or milestone a TODO points at has been resolved. The `actions` and `createIssues` options turn on extra features, all meant for GitHub Actions.
 
 ## Options
 
 - `token`: The GitHub API token to use for authentication. You can generate a personal access token from your GitHub account settings. Defaults to the `GITHUB_TOKEN` environment variable.
 
-  Without a token, the plugin still works for public repositories (subject to GitHub's unauthenticated rate limits) and emits a warning when created. Checking a URL that requires authentication (e.g. a private repository) without a token fails with an error explaining that a token may be required.
+  Without a token, the plugin still works for public repositories (subject to GitHub's unauthenticated rate limits) and emits a warning when created. Checking a URL that requires authentication (e.g. a private repository) without a token fails with an error explaining that a token may be required. `createIssues` requires a token; enabling it without one throws when the plugin is created.
 
-- `repository`: The repository the run belongs to, in the `owner/repo` format. Used to link files and issues in the job summary, and as the repository to sync issues against. Defaults to the `GITHUB_REPOSITORY` environment variable.
+- `context`: The pieces of GitHub context used to build file permalinks and issue links. Every field defaults to the standard GitHub Actions environment variable, so no configuration is needed in CI.
 
-  Without it, the job summary falls back to plain file locations, and the issue sync is skipped with a warning.
+  - `context.repository`: The repository the run belongs to, in the `owner/repo` format. Used to link files and issues in the job summary, and as the repository to sync issues against. Defaults to the `GITHUB_REPOSITORY` environment variable. Without it, the job summary falls back to plain file locations; if `createIssues` is enabled, the run fails with an error when the issue sync starts.
+  - `context.server`: The GitHub server to link against. Defaults to the `GITHUB_SERVER_URL` environment variable, or `https://github.com`.
+  - `context.sha`: The commit SHA to build file permalinks from. Defaults to the `GITHUB_SHA` environment variable. Without it, the job summary falls back to plain file locations.
 
-- `summary`: Log every analyzed item to the GitHub Actions log, and write a job summary of the results, using the Actions toolkit (`@actions/core`). Makes no GitHub REST API calls.
+- `actions`: Options for the GitHub Actions toolkit (`@actions/core`) integrations. Both default to `true` when running inside GitHub Actions (that is, when `GITHUB_ACTIONS` is set) and to `false` otherwise, so they work with no configuration in CI while staying quiet locally. Set them explicitly to force them on or off.
 
-  Defaults to `true` when running inside GitHub Actions (that is, when `GITHUB_ACTIONS` is set), and to `false` otherwise, so it works with no configuration in CI while staying quiet locally. Set it explicitly to force it on or off.
+  - `actions.logger`: Log every message and analyzed item using the Actions toolkit.
+  - `actions.summary`: Write a job summary of the results. Makes no GitHub REST API calls.
 
-- `createIssues` (default `false`): Reconcile expired TODOs against the open `todone`-labeled issues, creating, updating, and closing issues as needed. Requires a token, unless `dryRun` is set. When enabled, the job summary gains an issue and an action column describing what happened to each TODO.
+- `createIssues` (default `false`): Reconcile expired TODOs against the open `todone`-labeled issues, creating, updating, and closing issues as needed. Requires a token. When enabled, the job summary gains an issue and an action column describing what happened to each TODO. Pass `true`, or an object with options:
 
-- `dryRun` (default `false`): When `true`, issue mutations are logged but never sent to GitHub. Only meaningful together with `createIssues`.
+  - `createIssues.label` (default `"todone"`): Issues with this label are managed by the plugin.
 
 For example, to keep a set of issues in sync with your expired TODOs from a GitHub Actions workflow:
 
@@ -46,7 +49,7 @@ export default defineConfig({
 });
 ```
 
-File permalinks and issue links are built from the `repository` option and the standard GitHub Actions environment variables (`GITHUB_SERVER_URL`, `GITHUB_SHA`); when those are absent, the plugin falls back to plain file locations.
+File permalinks and issue links are built from the `context` options and their GitHub Actions environment variable defaults (`GITHUB_REPOSITORY`, `GITHUB_SERVER_URL`, `GITHUB_SHA`); when those are absent, the plugin falls back to plain file locations.
 
 ## Usage
 
