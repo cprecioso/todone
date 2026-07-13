@@ -3,12 +3,6 @@ import type { Plugin } from "../plugins";
 
 const PluginSchema = z.custom<Plugin>();
 
-export type UnhandledUrls = z.infer<typeof UnhandledUrlsSchema>;
-
-const UnhandledUrlsSchema = z
-  .enum(["ignore", "warn", "error"])
-  .prefault("error");
-
 export interface Config extends z.infer<typeof ConfigSchema> {}
 export interface ConfigInput extends z.input<typeof ConfigSchema> {}
 
@@ -21,9 +15,6 @@ export const ConfigSchema = z.object({
 
   /** The file patterns to include. */
   globs: z.array(z.string()).prefault(["**/*"]),
-
-  /** What to do when no plugin returns a result for a URL. */
-  unhandledUrls: UnhandledUrlsSchema,
 
   /** The plugins to run. */
   plugins: z.array(PluginSchema).prefault([]),

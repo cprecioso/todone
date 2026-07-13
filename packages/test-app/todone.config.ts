@@ -5,6 +5,5 @@ import { defineConfig } from "todone/config";
 
 export default defineConfig({
   globs: ["./input/**/*"],
-  unhandledUrls: "warn",
   plugins: [githubPlugin()],
 });

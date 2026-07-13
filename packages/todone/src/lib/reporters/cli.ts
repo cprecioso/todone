@@ -1,17 +1,37 @@
 import type { Plugin } from "#/plugin";
+import type * as t from "#/types";
 import chalk from "chalk";
 import dedent from "dedent";
+
+export type UnhandledUrls = "ignore" | "warn" | "error";
+
+class UnhandledUrlError extends Error {
+  constructor(match: t.Match) {
+    const {
+      url,
+      file,
+      position: { line, column },
+    } = match;
+    super(
+      `No plugin returned a result for ${url} (${file.localPath}:${line}:${column}). ` +
+        `Add a plugin that handles this URL, or pass \`--unhandled-urls warn\` or \`--unhandled-urls ignore\`.`,
+    );
+  }
+}
 
 export interface CliReporterOptions {
   /** The locale to format dates with. Defaults to the system locale. */
   locale?: string;
   /** Only print expired results. */
   onlyExpired?: boolean;
+  /** What to do when no plugin returns a result for a URL. */
+  unhandledUrls?: UnhandledUrls;
 }
 
 export const cliReporter = ({
   locale,
   onlyExpired = false,
+  unhandledUrls = "error",
 }: CliReporterOptions = {}): Plugin => {
   const dateFormatter = new Intl.DateTimeFormat(locale);
 
@@ -38,15 +58,27 @@ export const cliReporter = ({
       matchesCounter++;
     },
 
-    reportResult: async ({
-      url,
-      result,
-      match: {
+    reportResult: async ({ url, result, match }) => {
+      const {
         file,
         position: { line, column },
-      },
-    }) => {
-      if (result === null) return;
+      } = match;
+
+      if (result === null) {
+        switch (unhandledUrls) {
+          case "error":
+            throw new UnhandledUrlError(match);
+          case "warn":
+            console.warn(
+              `no plugin handled ${url} (${file.localPath}:${line}:${column})`,
+            );
+          // fallthrough
+          case "ignore":
+            return;
+          default:
+            return unhandledUrls satisfies never;
+        }
+      }
 
       resultsCounter++;
 

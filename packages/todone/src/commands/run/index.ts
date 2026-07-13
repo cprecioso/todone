@@ -1,4 +1,5 @@
 import { Command, Option } from "clipanion";
+import * as t from "typanion";
 
 export class RunCommand extends Command {
   static paths = [Command.Default, ["run"]];
@@ -10,6 +11,10 @@ export class RunCommand extends Command {
     examples: [
       ["Run with human-readable output", "$0 run"],
       ["Only show expired TODOs", "$0 run --only-expired"],
+      [
+        "Warn instead of failing when no plugin handles a URL",
+        "$0 run --unhandled-urls warn",
+      ],
     ],
   });
 
@@ -19,6 +24,12 @@ export class RunCommand extends Command {
 
   locale = Option.String("--locale", {
     description: "Locale used to format dates; defaults to the system locale",
+  });
+
+  unhandledUrls = Option.String("--unhandled-urls", "error", {
+    description:
+      'What to do when no plugin returns a result for a URL: "error" (default), "warn", or "ignore"',
+    validator: t.isEnum(["error", "warn", "ignore"] as const),
   });
 
   execute = async () => (await import("./impl")).default(this);

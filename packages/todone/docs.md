@@ -65,7 +65,7 @@ Analysis complete:
 1 expired results found
 ```
 
-`todone run` (the default command) prints human-readable output; `--only-expired` hides results that haven't expired yet, and `--locale` controls how dates are formatted. Use `todone run --json` instead to emit NDJSON (one JSON object per line) for machine consumption, or `todone run --check` to print nothing and exit with code 1 when any TODO is expired.
+`todone run` (the default command) prints human-readable output; `--only-expired` hides results that haven't expired yet, `--locale` controls how dates are formatted, and `--unhandled-urls` controls what happens when no plugin handles a URL (`error`, the default, `warn`, or `ignore`). Use `todone run --json` instead to emit NDJSON (one JSON object per line) for machine consumption, or `todone run --check` to print nothing and exit with code 1 when any TODO is expired.
 
 You can check more options by running `npx todone --help`.
 
@@ -80,9 +80,6 @@ import { defineConfig } from "todone/config";
 
 export default defineConfig({
   plugins: [caniusePlugin(), githubPlugin()],
-
-  // Optional: what to do when no plugin handles a URL: "error" (default), "warn", or "ignore".
-  unhandledUrls: "error",
 });
 ```
 
