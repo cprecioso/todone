@@ -1,6 +1,6 @@
+import * as it from "@cprecioso/async-iterable-helpers";
 import { Octokit } from "octokit";
 import { PluginContext } from "todone/plugin";
-
 import { GitHubContext } from "../context";
 import { CreateIssuesOptions } from "../options";
 import { IssueDefinition } from "./generator";
@@ -41,14 +41,17 @@ export const makeGitHubAPI = ({
   };
 
   return {
-    fetchCurrentIssues: async (limit = 100): Promise<RemoteIssue[]> => {
-      const issues = await client.paginate(client.rest.issues.listForRepo, {
-        ...repo,
-        state: "open",
-        labels: label,
-        per_page: Math.min(limit, 100),
-      });
-      return issues.slice(0, limit);
+    fetchCurrentIssues: (limit: number): AsyncIterable<RemoteIssue> => {
+      return it
+        .create(() =>
+          client.paginate(client.rest.issues.listForRepo, {
+            ...repo,
+            state: "open",
+            labels: label,
+          }),
+        )
+        .pipe(it.filter((issue) => !issue.pull_request))
+        .pipe(it.take(limit));
     },
 
     closeInvalid: async (number: number) => {

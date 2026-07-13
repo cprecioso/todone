@@ -1,6 +1,7 @@
-import { CheckerResult } from "todone/plugin";
-import { Match } from "todone/types";
-import { GroupedResult, isExpiredResult } from "../util/result";
+import type { CheckerResult } from "todone/plugin";
+import type * as t from "todone/types";
+import { CreateIssuesOptions } from "../options";
+import { isExpiredResult } from "../util/result";
 import { GitHubAPI, RemoteIssue } from "./actions";
 import { getIssueData } from "./issue-data";
 
@@ -13,13 +14,13 @@ export type SyncOutcome =
       type: "LocalOnly";
       url: string;
       result: CheckerResult;
-      matches: readonly Match[];
+      matches: readonly t.Match[];
     }
   | {
       type: "RemoteMatched";
       url: string;
       result: CheckerResult;
-      matches: readonly Match[];
+      matches: readonly t.Match[];
       issueNumber: number;
     }
   | {
@@ -35,21 +36,22 @@ export type SyncOutcome =
       type: "NotTriggered";
       url: string;
       result: CheckerResult | null;
-      matches: readonly Match[];
+      matches: readonly t.Match[];
     };
 
 export const reconcile = async (
   api: GitHubAPI,
-  results: readonly GroupedResult[],
+  options: CreateIssuesOptions,
+  results: readonly t.Result[],
 ): Promise<SyncOutcome[]> => {
-  const issues = await api.fetchCurrentIssues();
+  const issues = api.fetchCurrentIssues(options.limit);
 
   // Parse each issue body into its embedded todoUrl. Any failure
   // (malformed/missing zone, invalid JSON) marks the issue as invalid.
   const validIssues: { issue: RemoteIssue; todoUrl: string }[] = [];
   const invalidIssues: RemoteIssue[] = [];
 
-  for (const issue of issues) {
+  for await (const issue of issues) {
     const data = parseIssueBody(issue.body);
     if (data) {
       validIssues.push({ issue, todoUrl: data.todoUrl });

@@ -1,9 +1,9 @@
 import type * as t from "#/types";
 
 export interface PluginContext {
-  warn(this: void, message: string): Promise<void>;
-  info(this: void, message: string): Promise<void>;
-  debug(this: void, message: string): Promise<void>;
+  warn(this: void, message: string): void;
+  info(this: void, message: string): void;
+  debug(this: void, message: string): void;
 }
 
 export type PluginOption = Plugin | readonly PluginOption[];
@@ -24,6 +24,10 @@ export interface Plugin {
    */
   name: string;
 
+  warn?(this: PluginContext, message: string): void;
+  info?(this: PluginContext, message: string): void;
+  debug?(this: PluginContext, message: string): void;
+
   /**
    * Check whether a URL should be considered as expired or not.
    *
@@ -35,16 +39,14 @@ export interface Plugin {
     options: { url: URL },
   ): Promise<CheckerResult | null>;
 
-  warn?(this: PluginContext, message: string): Promise<void>;
-  info?(this: PluginContext, message: string): Promise<void>;
-  debug?(this: PluginContext, message: string): Promise<void>;
+  makeReporter?(this: PluginContext): Promise<Reporter>;
+}
 
-  reportFile?(this: PluginContext, item: t.File): Promise<void>;
-  reportMatch?(this: PluginContext, item: t.Match): Promise<void>;
-  reportResult?(this: PluginContext, item: t.Result): Promise<void>;
-
-  /** Called once when the run finishes (even if it failed). */
-  [Symbol.asyncDispose]?(this: PluginContext): PromiseLike<void>;
+export interface Reporter extends AsyncDisposable {
+  file?(this: PluginContext, item: t.File): Promise<void>;
+  match?(this: PluginContext, item: t.Match): Promise<void>;
+  result?(this: PluginContext, item: t.Result): Promise<void>;
+  error?(this: PluginContext, error: unknown): Promise<void>;
 }
 
 /**

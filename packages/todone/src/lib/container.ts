@@ -1,14 +1,18 @@
-import type { CheckerResult, Plugin, PluginOption } from "#/plugin";
+import type {
+  CheckerResult,
+  Plugin,
+  PluginContext,
+  PluginOption,
+  Reporter,
+} from "#/plugin";
 import type * as t from "#/types";
+import type { SetRequired } from "type-fest";
 
 export class PluginError extends Error {
   constructor(pluginName: string, url: URL, cause: unknown) {
     super(`Plugin "${pluginName}" failed while checking ${url}`, { cause });
   }
 }
-
-type FanOutHook =
-  "warn" | "info" | "debug" | "reportFile" | "reportMatch" | "reportResult";
 
 /**
  * Holds all the plugins for a run and knows how to dispatch each hook to
@@ -20,7 +24,7 @@ type FanOutHook =
  * counterparts; `checkMatch` instead takes a whole {@link t.Match} and
  * bundles the outcome as a {@link t.Result}.
  */
-export class PluginContainer implements Required<Plugin> {
+export class PluginContainer implements PluginContext {
   /** Thrown internally when a plugin didn't recognize a URL. */
   static readonly #UNHANDLED = Symbol("unhandled");
 
@@ -34,35 +38,56 @@ export class PluginContainer implements Required<Plugin> {
       plugins.flat(Infinity) as readonly Plugin[];
   }
 
-  #fanOut<K extends FanOutHook>(name: K) {
-    return async (
-      ...args: Parameters<NonNullable<Plugin[K]>>
-    ): Promise<void> => {
-      await Promise.all(
-        this.#plugins.map((plugin) =>
-          (plugin[name] as Plugin[K])?.call(
-            this,
-            // @ts-expect-error
-            ...args,
-          ),
-        ),
-      );
+  warn = (message: string) =>
+    this.#plugins.forEach((plugin) => plugin.warn?.call(this, message));
+
+  info = (message: string) =>
+    this.#plugins.forEach((plugin) => plugin.info?.call(this, message));
+
+  debug = (message: string) =>
+    this.#plugins.forEach((plugin) => plugin.debug?.call(this, message));
+
+  makeReporter = async (): Promise<Reporter> => {
+    await using stack = new AsyncDisposableStack();
+    const reporters = await Promise.all(
+      this.#plugins
+        .filter(
+          (plugin): plugin is SetRequired<Plugin, "makeReporter"> =>
+            plugin.makeReporter != null,
+        )
+        .map(async (plugin) => stack.use(await plugin.makeReporter.call(this))),
+    );
+
+    const newStack = stack.move();
+
+    return {
+      async file(file) {
+        await Promise.all(
+          reporters.map((reporter) => reporter.file?.call(this, file)),
+        );
+      },
+      async match(match) {
+        await Promise.all(
+          reporters.map((reporter) => reporter.match?.call(this, match)),
+        );
+      },
+      async result(result) {
+        await Promise.all(
+          reporters.map((reporter) => reporter.result?.call(this, result)),
+        );
+      },
+      async error(error) {
+        await Promise.all(
+          reporters.map((reporter) => reporter.error?.call(this, error)),
+        );
+      },
+      async [Symbol.asyncDispose]() {
+        await newStack.disposeAsync();
+      },
     };
-  }
+  };
 
-  readonly warn = this.#fanOut("warn");
-  readonly info = this.#fanOut("info");
-  readonly debug = this.#fanOut("debug");
-
-  readonly reportFile = this.#fanOut("reportFile");
-  readonly reportMatch = this.#fanOut("reportMatch");
-  readonly reportResult = this.#fanOut("reportResult");
-
-  readonly checkMatch = async (
-    match: t.Match,
-  ): Promise<CheckerResult | null> => {
-    const { url } = match;
-
+  checkMatch = async ({ url }: { url: URL }): Promise<CheckerResult | null> => {
     const result = await Promise.any(
       this.#plugins
         .map((plugin) =>
@@ -94,10 +119,4 @@ export class PluginContainer implements Required<Plugin> {
 
     return result;
   };
-
-  async [Symbol.asyncDispose]() {
-    await Promise.all(
-      this.#plugins.map((plugin) => plugin[Symbol.asyncDispose]?.call(this)),
-    );
-  }
 }

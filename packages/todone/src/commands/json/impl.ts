@@ -5,5 +5,5 @@ import { JsonCommand } from "./index";
 
 export default async ({}: JsonCommand) => {
   const config = await loadConfigFile();
-  await run(config, { forcedReporter: jsonReporter() });
+  await run(config, { forcedReporter: jsonReporter });
 };

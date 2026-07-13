@@ -4,7 +4,6 @@ import * as t from "todone/types";
 import { GitHubContext } from "../context";
 import { CreateIssuesOptions } from "../options";
 import { RowData } from "../summary/component";
-import { groupResults } from "../util/result";
 import { makeGitHubAPI } from "./actions";
 import { generateIssue } from "./generator";
 import { reconcile } from "./reconciler";
@@ -30,7 +29,7 @@ export const syncIssues = async ({
   results: readonly t.Result[];
 }): Promise<RowData[]> => {
   const api = makeGitHubAPI({ client, context, options, pluginCtx });
-  const outcomes = await reconcile(api, groupResults(results));
+  const outcomes = await reconcile(api, options, results);
 
   const rows: RowData[] = [];
 

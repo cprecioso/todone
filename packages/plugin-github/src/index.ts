@@ -3,7 +3,7 @@ import type { PluginOption } from "todone/plugin";
 import { makeCheckerPlugin } from "./checker";
 import { makeLoggerPlugin } from "./logger";
 import { GithubPluginOptionsInput, GithubPluginOptionsSchema } from "./options";
-import { makeReporterHooks } from "./reporter";
+import { makeReporterPlugin } from "./reporter";
 
 /**
  * A todone plugin for GitHub.
@@ -37,8 +37,8 @@ const githubPlugin = (
 
   return [
     makeCheckerPlugin(client),
-    makeLoggerPlugin(options),
-    makeReporterHooks(client, options),
+    options.actions.logger && makeLoggerPlugin(),
+    makeReporterPlugin(client, options),
   ].filter((v) => !!v);
 };
 

@@ -1,6 +1,6 @@
-import type { Plugin } from "#/plugin";
+import type { Reporter } from "#/plugin";
 
 /** A reporter that reports nothing. */
-export const silentReporter = (): Plugin => ({
-  name: "todone:reporter-silent",
+export const silentReporter = async (): Promise<Reporter> => ({
+  async [Symbol.asyncDispose]() {},
 });

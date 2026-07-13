@@ -26,6 +26,7 @@ export interface Match {
  * {@link Plugin}'s result for it.
  */
 export interface Result {
-  match: Match;
+  url: URL;
+  matches: Match[];
   result: CheckerResult | null;
 }

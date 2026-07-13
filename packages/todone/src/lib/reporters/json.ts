@@ -1,4 +1,4 @@
-import type { Plugin } from "#/plugin";
+import type { Reporter } from "#/plugin";
 import * as path from "node:path";
 import { EmptyObject } from "type-fest";
 import * as z from "zod";
@@ -59,33 +59,34 @@ type OutputItem = z.infer<typeof OutputItem>;
 
 export type JsonReporterOptions = EmptyObject;
 
-export const jsonReporter = ({}: JsonReporterOptions = {}): Plugin => {
-  const outputItem = jsonCodec(OutputItem);
+export const jsonReporter =
+  async ({}: JsonReporterOptions = {}): Promise<Reporter> => {
+    const outputItem = jsonCodec(OutputItem);
 
-  return {
-    name: "todone:reporter-json",
+    return {
+      async file(file) {
+        console.log(
+          outputItem.encode({ type: "file", location: file.fullPath }),
+        );
+      },
 
-    warn: async (message: string) => console.warn(message),
-    info: async (message: string) => console.info(message),
-    debug: async (message: string) => console.debug(message),
+      async match({ url, file, position }) {
+        console.log(
+          outputItem.encode({
+            type: "match",
+            url,
+            location: file.fullPath,
+            ...position,
+          }),
+        );
+      },
 
-    reportFile: async (file) =>
-      console.log(outputItem.encode({ type: "file", location: file.fullPath })),
+      async result({ url, result }) {
+        if (result) {
+          console.log(outputItem.encode({ type: "result", url, ...result }));
+        }
+      },
 
-    reportMatch: async ({ url, file, position }) =>
-      console.log(
-        outputItem.encode({
-          type: "match",
-          url,
-          location: file.fullPath,
-          ...position,
-        }),
-      ),
-
-    reportResult: async ({ match: { url }, result }) => {
-      if (result) {
-        console.log(outputItem.encode({ type: "result", url, ...result }));
-      }
-    },
+      async [Symbol.asyncDispose]() {},
+    };
   };
-};

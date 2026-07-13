@@ -1,5 +1,4 @@
 import * as pkg from "#/package.json" with { type: "json" };
-import * as core from "@actions/core";
 import { Octokit } from "octokit";
 import type { Plugin, PluginContext } from "todone/plugin";
 import * as t from "todone/types";
@@ -20,11 +19,12 @@ const ISSUE_COLUMNS = [
   "action",
 ] as const satisfies Column[];
 
-const toRow = ({ match, match: { url }, result }: t.Result): RowData => ({
-  match,
-  url: url.toString(),
-  result: result ?? undefined,
-});
+const toRows = ({ matches, url, result }: t.Result): RowData[] =>
+  matches.map((match) => ({
+    match,
+    url: url.toString(),
+    result: result ?? undefined,
+  }));
 
 /**
  * Builds the reporting hooks for the enabled features, using the GitHub
@@ -36,15 +36,10 @@ const toRow = ({ match, match: { url }, result }: t.Result): RowData => ({
  * job summary is written (if enabled), gaining the issue and action columns
  * when issue syncing is on.
  */
-export const makeReporterHooks = (
+export const makeReporterPlugin = (
   client: Octokit,
-  options: GithubPluginOptions,
+  { createIssues, actions: { summary }, context }: GithubPluginOptions,
 ): Plugin | false => {
-  const {
-    createIssues,
-    actions: { summary },
-    context,
-  } = options;
   if (!summary && !createIssues) return false;
 
   const results: t.Result[] = [];
@@ -65,45 +60,46 @@ export const makeReporterHooks = (
           "No GitHub repository configured (`context.repository` option or GITHUB_REPOSITORY env var). Can't perform GitHub issue sync.",
         );
       } else {
-        try {
-          const rows = await syncIssues({
-            client,
-            context,
-            options: createIssues,
-            pluginCtx,
-            results,
-          });
-          return { rows, columns: ISSUE_COLUMNS };
-        } catch (error) {
-          core.error(`Failed to sync issues: ${error}`);
-        }
+        const rows = await syncIssues({
+          client,
+          context,
+          options: createIssues,
+          pluginCtx,
+          results,
+        });
+        return { rows, columns: ISSUE_COLUMNS };
       }
     }
 
-    return { rows: results.map(toRow), columns: BASE_COLUMNS };
+    return { rows: results.flatMap(toRows), columns: BASE_COLUMNS };
   };
 
   return {
     name: `${pkg.name}:reporter`,
 
-    reportResult: async (result) => {
-      results.push(result);
-    },
+    async makeReporter() {
+      const pluginCtx = this;
 
-    // Runs when the run finishes, after every result has been accumulated.
-    async [Symbol.asyncDispose]() {
-      const { rows, columns } = await report(this);
-      if (!summary) return;
+      return {
+        async result(result) {
+          results.push(result);
+        },
+        async [Symbol.asyncDispose]() {
+          if (!summary) return;
 
-      try {
-        await writeSummary(context, {
-          heading: "TODOs found",
-          columns,
-          rows,
-        });
-      } catch (error) {
-        core.warning(`Failed to write summary: ${error}`);
-      }
+          const { rows, columns } = await report(pluginCtx);
+
+          try {
+            await writeSummary(context, {
+              heading: "TODOs found",
+              columns,
+              rows,
+            });
+          } catch (error) {
+            pluginCtx.warn(`Failed to write summary: ${error}`);
+          }
+        },
+      };
     },
   };
 };

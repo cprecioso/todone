@@ -27,7 +27,7 @@ export const findIssueData = (tree: mdast.Nodes): IssueData => {
   assert.equal(
     content.length,
     1,
-    `Expected exactly one zone with id "${zoneId}"`,
+    `Expected exactly one node within the zone with id "${zoneId}"`,
   );
   const comment = getComment(content[0]);
   return IssueData.parse(JSON.parse(comment));

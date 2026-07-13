@@ -7,7 +7,10 @@ const isGithubActionsEnv = process.env.GITHUB_ACTIONS === "true";
 
 export const GithubPluginOptionsSchema = z.object({
   /** GitHub API token. Defaults to `process.env.GITHUB_TOKEN`. */
-  token: z.string().optional().prefault(process.env.GITHUB_TOKEN),
+  token: z
+    .string()
+    .optional()
+    .prefault(() => process.env.GITHUB_TOKEN),
 
   /**
    * The GitHub repository the run belongs to, in the `owner/repo` format. Used
