@@ -1,34 +1,49 @@
+import * as z from "zod";
+
 /**
- * The pieces of GitHub Actions context the reporters need to build permalinks
+ * The pieces of GitHub context the reporting side needs to build permalinks
  * and issue links.
- *
- * These come from the standard environment variables GitHub Actions injects
- * (read directly from `process.env`, since plugin options only carry the
- * plugin's JSON config, not the runner environment). When running locally they
- * may be absent, in which case the reporters fall back to plain file locations.
  */
-export interface ActionContext {
-  /** Base URL of the GitHub server, e.g. `https://github.com`. */
-  serverUrl: string;
-  /** The `owner`/`repo` pair, if `GITHUB_REPOSITORY` is set. */
-  repo?: { owner: string; repo: string };
-  /** The commit SHA being analyzed, if `GITHUB_SHA` is set. */
-  sha?: string;
-}
+export const GitHubContextSchema = z.object({
+  /**
+   * The GitHub server to use.
+   *
+   * Defaults to `process.env.GITHUB_SERVER_URL` (already set on GitHub Actions).
+   */
+  server: z
+    .string()
+    .nonempty()
+    .optional()
+    .prefault(() => process.env.GITHUB_SERVER_URL || "https://github.com"),
 
-const fromEnv = (name: string) => process.env[name] || undefined;
+  /**
+   * The repository the run belongs to, in the `owner/repo` format. Used to
+   * link files and issues in the job summary, and as the repository to sync
+   * issues against.
+   *
+   * Defaults to `process.env.GITHUB_REPOSITORY` (already set on GitHub Actions).
+   */
+  repository: z
+    .string()
+    .nonempty()
+    .pipe(z.templateLiteral([z.string(), "/", z.string()]))
+    .transform((repository) => {
+      const [owner, repo] = repository.split("/", 2);
+      return { owner, repo };
+    })
+    .optional()
+    .prefault(() => process.env.GITHUB_REPOSITORY),
 
-export const loadContext = (): ActionContext => {
-  const serverUrl = fromEnv("GITHUB_SERVER_URL") ?? "https://github.com";
+  /**
+   * The SHA of the commit that triggered the run. Used to link files in the job summary.
+   *
+   * Defaults to `process.env.GITHUB_SHA` (already set on GitHub Actions).
+   */
+  sha: z
+    .string()
+    .nonempty()
+    .optional()
+    .prefault(() => process.env.GITHUB_SHA),
+});
 
-  let repo: ActionContext["repo"];
-  const repository = fromEnv("GITHUB_REPOSITORY");
-  if (repository) {
-    const [owner, name] = repository.split("/");
-    if (owner && name) repo = { owner, repo: name };
-  }
-
-  const sha = fromEnv("GITHUB_SHA");
-
-  return { serverUrl, repo, sha };
-};
+export interface GitHubContext extends z.infer<typeof GitHubContextSchema> {}

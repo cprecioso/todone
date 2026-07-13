@@ -3,7 +3,7 @@ import { toHtml } from "hast-util-to-html";
 import { h } from "hastscript";
 import { CheckerResult } from "todone/plugin";
 import { Match } from "todone/types";
-import { ActionContext } from "../context";
+import { GitHubContext } from "../context";
 import { filePermalink } from "../permalink";
 import { formatDate } from "../util/format";
 
@@ -34,7 +34,7 @@ export interface RowData {
 const link = (href: string, text: string) => toHtml(h("a", { href }, text));
 
 const renderCell = (
-  context: ActionContext,
+  context: GitHubContext,
   column: Column,
   row: RowData,
 ): string => {
@@ -61,10 +61,10 @@ const renderCell = (
 
     case "issue": {
       if (!row.issueNumber) return "";
-      if (!context.repo) return `#${row.issueNumber}`;
-      const { owner, repo } = context.repo;
+      if (!context.repository) return `#${row.issueNumber}`;
+      const { owner, repo } = context.repository;
       return link(
-        `${context.serverUrl}/${owner}/${repo}/issues/${row.issueNumber}`,
+        `${context.server}/${owner}/${repo}/issues/${row.issueNumber}`,
         `#${row.issueNumber}`,
       );
     }
@@ -85,7 +85,7 @@ export interface SummaryInput {
  * columns. Uses the Actions toolkit (`core.summary`).
  */
 export const writeSummary = async (
-  context: ActionContext,
+  context: GitHubContext,
   input: SummaryInput,
 ): Promise<void> => {
   const header = input.columns.map((column) => ({

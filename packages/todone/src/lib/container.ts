@@ -1,4 +1,4 @@
-import type { Plugin } from "#/plugin";
+import type { CheckerResult, Plugin, PluginOption } from "#/plugin";
 import type * as t from "#/types";
 
 export class PluginError extends Error {
@@ -20,7 +20,7 @@ type FanOutHook =
  * counterparts; `checkMatch` instead takes a whole {@link t.Match} and
  * bundles the outcome as a {@link t.Result}.
  */
-export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
+export class PluginContainer implements Required<Plugin> {
   /** Thrown internally when a plugin didn't recognize a URL. */
   static readonly #UNHANDLED = Symbol("unhandled");
 
@@ -28,16 +28,21 @@ export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
 
   readonly #plugins: readonly Plugin[];
 
-  constructor(plugins: readonly Plugin[]) {
-    this.#plugins = plugins;
+  constructor(plugins: readonly PluginOption[]) {
+    this.#plugins =
+      // @ts-expect-error
+      plugins.flat(Infinity) as readonly Plugin[];
   }
 
   #fanOut<K extends FanOutHook>(name: K) {
-    type Args = Parameters<NonNullable<Plugin[K]>>;
-    return async (...args: Args): Promise<void> => {
+    return async (
+      ...args: Parameters<NonNullable<Plugin[K]>>
+    ): Promise<void> => {
       await Promise.all(
         this.#plugins.map((plugin) =>
-          (plugin[name] as ((...args: Args) => Promise<void>) | undefined)?.(
+          (plugin[name] as Plugin[K])?.call(
+            this,
+            // @ts-expect-error
             ...args,
           ),
         ),
@@ -53,13 +58,15 @@ export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
   readonly reportMatch = this.#fanOut("reportMatch");
   readonly reportResult = this.#fanOut("reportResult");
 
-  readonly checkMatch = async (match: t.Match): Promise<t.Result> => {
+  readonly checkMatch = async (
+    match: t.Match,
+  ): Promise<CheckerResult | null> => {
     const { url } = match;
 
     const result = await Promise.any(
       this.#plugins
         .map((plugin) =>
-          plugin.checkMatch?.({ url }).then(
+          plugin.checkMatch?.call(this, { url }).then(
             (result) => {
               if (result === null) throw PluginContainer.#UNHANDLED;
               return result;
@@ -85,12 +92,12 @@ export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
       } else throw error;
     });
 
-    return { url, match, result };
+    return result;
   };
 
   async [Symbol.asyncDispose]() {
     await Promise.all(
-      this.#plugins.map((plugin) => plugin[Symbol.asyncDispose]?.()),
+      this.#plugins.map((plugin) => plugin[Symbol.asyncDispose]?.call(this)),
     );
   }
 }

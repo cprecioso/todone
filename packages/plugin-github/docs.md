@@ -15,36 +15,38 @@ export default defineConfig({
 });
 ```
 
+Out of the box, the plugin checks whether the GitHub issue, pull request, or milestone a TODO points at has been resolved. The `summary` and `createIssues` options turn on two extra features, both meant for GitHub Actions.
+
 ## Options
 
 - `token`: The GitHub API token to use for authentication. You can generate a personal access token from your GitHub account settings. Defaults to the `GITHUB_TOKEN` environment variable.
 
   Without a token, the plugin still works for public repositories (subject to GitHub's unauthenticated rate limits) and emits a warning when created. Checking a URL that requires authentication (e.g. a private repository) without a token fails with an error explaining that a token may be required.
 
-## Reporters
+- `repository`: The repository the run belongs to, in the `owner/repo` format. Used to link files and issues in the job summary, and as the repository to sync issues against. Defaults to the `GITHUB_REPOSITORY` environment variable.
 
-This package also ships two reporters, meant to run inside GitHub Actions. Import them from `@todone/plugin-github/reporters` and add them to the `reporters` config option:
+  Without it, the job summary falls back to plain file locations, and the issue sync is skipped with a warning.
+
+- `summary`: Log every analyzed item to the GitHub Actions log, and write a job summary of the results, using the Actions toolkit (`@actions/core`). Makes no GitHub REST API calls.
+
+  Defaults to `true` when running inside GitHub Actions (that is, when `GITHUB_ACTIONS` is set), and to `false` otherwise, so it works with no configuration in CI while staying quiet locally. Set it explicitly to force it on or off.
+
+- `createIssues` (default `false`): Reconcile expired TODOs against the open `todone`-labeled issues, creating, updating, and closing issues as needed. Requires a token, unless `dryRun` is set. When enabled, the job summary gains an issue and an action column describing what happened to each TODO.
+
+- `dryRun` (default `false`): When `true`, issue mutations are logged but never sent to GitHub. Only meaningful together with `createIssues`.
+
+For example, to keep a set of issues in sync with your expired TODOs from a GitHub Actions workflow:
 
 ```ts
 import githubPlugin from "@todone/plugin-github";
-import {
-  actionsReporter,
-  createIssuesReporter,
-} from "@todone/plugin-github/reporters";
 import { defineConfig } from "todone/config";
 
 export default defineConfig({
-  plugins: [githubPlugin()],
-  reporters: [actionsReporter(), createIssuesReporter()],
+  plugins: [githubPlugin({ createIssues: true })],
 });
 ```
 
-- `actionsReporter()`: Prints every analyzed item to the log and writes a job summary (via the GitHub Actions toolkit `@actions/core`). Local only; it makes no GitHub REST API calls.
-- `createIssuesReporter(options?)`: Reconciles expired TODOs against the open `todone`-labeled issues and creates, updates, or closes issues accordingly, then writes a job summary describing what happened. Options:
-  - `token`: The GitHub API token used to read and mutate issues. Defaults to the `GITHUB_TOKEN` environment variable. Required unless `dryRun` is set.
-  - `dryRun` (default `false`): When `true`, issue mutations are logged but never sent to GitHub.
-
-Both build file permalinks and issue links from the standard GitHub Actions environment variables (`GITHUB_SERVER_URL`, `GITHUB_REPOSITORY`, `GITHUB_SHA`); when those are absent they fall back to plain file locations.
+File permalinks and issue links are built from the `repository` option and the standard GitHub Actions environment variables (`GITHUB_SERVER_URL`, `GITHUB_SHA`); when those are absent, the plugin falls back to plain file locations.
 
 ## Usage
 

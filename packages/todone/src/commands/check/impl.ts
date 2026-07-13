@@ -1,6 +1,6 @@
 import { run } from "#/index";
-import { loadConfigFile } from "#/lib/config/load";
 import { silentReporter } from "#/lib/reporters/silent";
+import { loadConfigFile } from "../../lib/config";
 import { CheckCommand } from "./index";
 
 export default async ({}: CheckCommand) => {

@@ -82,7 +82,7 @@ export const jsonReporter = ({}: JsonReporterOptions = {}): Plugin => {
         }),
       ),
 
-    reportResult: async ({ url, result }) => {
+    reportResult: async ({ match: { url }, result }) => {
       if (result) {
         console.log(outputItem.encode({ type: "result", url, ...result }));
       }

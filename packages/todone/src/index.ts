@@ -1,9 +1,9 @@
+import type { Plugin } from "#/plugin";
 import * as it from "@cprecioso/async-iterable-helpers";
-import { Config } from "./lib/config/schema";
-import { PluginContainer } from "./lib/core/container";
-import { makeFileMatcher } from "./lib/core/matcher";
+import { Config } from "./lib/config";
+import { PluginContainer } from "./lib/container";
 import { getFiles } from "./lib/files";
-import type { Plugin } from "./plugin";
+import { makeFileMatcher } from "./lib/matcher";
 
 export interface RunOptions {
   /**
@@ -32,7 +32,12 @@ export const run = async (
     .pipe(it.flatMap(makeFileMatcher(keyword)))
     .pipe(it.tap(reporter.reportMatch))
 
-    .pipe(it.map(container.checkMatch))
+    .pipe(
+      it.map(async (match) => ({
+        match,
+        result: await container.checkMatch(match),
+      })),
+    )
     .pipe(it.tap(reporter.reportResult))
 
     .sink(it.toArray());

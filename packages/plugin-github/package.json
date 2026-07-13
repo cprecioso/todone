@@ -14,14 +14,13 @@
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
   "packageManager": "yarn@4.17.1",
+  "imports": {
+    "#/package.json": "./package.json"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./reporters": {
-      "types": "./dist/reporters.d.ts",
-      "default": "./dist/reporters.js"
     }
   },
   "files": [

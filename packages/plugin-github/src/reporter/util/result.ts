@@ -15,7 +15,11 @@ export interface GroupedResult {
 export const groupResults = (results: readonly t.Result[]): GroupedResult[] => {
   const byUrl = new Map<string, GroupedResult>();
 
-  for (const { url, result, match } of results) {
+  for (const {
+    result,
+    match,
+    match: { url },
+  } of results) {
     const key = url.toString();
     const existing = byUrl.get(key);
     if (existing) {

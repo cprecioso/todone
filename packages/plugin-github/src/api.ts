@@ -4,9 +4,7 @@ import { CheckerResult } from "todone/plugin";
 const maybeDate = (date: string | null): Date | undefined =>
   (date && new Date(date)) || undefined;
 
-export const makeResourceFetchers = (githubToken?: string) => {
-  const client = new Octokit(githubToken ? { auth: githubToken } : {});
-
+export const makeResourceFetchers = (client: Octokit) => {
   return {
     issues: async (repo, issue_number) => {
       const { data } = await client.rest.issues.get({ ...repo, issue_number });

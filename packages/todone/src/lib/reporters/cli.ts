@@ -58,7 +58,7 @@ export const cliReporter = ({
       matchesCounter++;
     },
 
-    reportResult: async ({ url, result, match }) => {
+    reportResult: async ({ result, match, match: { url } }) => {
       const {
         file,
         position: { line, column },

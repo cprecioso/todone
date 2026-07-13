@@ -3,7 +3,7 @@ import { h } from "hastscript";
 import { CheckerResult } from "todone/plugin";
 import { Match } from "todone/types";
 import { u } from "unist-builder";
-import { ActionContext } from "../context";
+import { GitHubContext } from "../context";
 import { filePermalink } from "../permalink";
 import { formatDate } from "../util/format";
 import * as md from "../util/markdown";
@@ -22,7 +22,7 @@ export interface ExpiredIssueInput {
 }
 
 export const generateIssue = (
-  context: ActionContext,
+  context: GitHubContext,
   { url, result, matches }: ExpiredIssueInput,
 ): IssueDefinition => {
   const urlString = url.toString();
@@ -56,7 +56,7 @@ export const generateIssue = (
             u("link", { url: urlString }, [
               u(
                 "text",
-                (!urlString.startsWith(context.serverUrl) && result.title) ||
+                (!urlString.startsWith(context.server) && result.title) ||
                   urlString,
               ),
             ]),
