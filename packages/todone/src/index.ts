@@ -4,21 +4,6 @@ import { PluginContainer } from "./lib/core/container";
 import { makeFileMatcher } from "./lib/core/matcher";
 import { getFiles } from "./lib/files";
 import type { Plugin } from "./plugin";
-import type * as t from "./types";
-
-class UnhandledUrlError extends Error {
-  constructor(match: t.Match) {
-    const {
-      url,
-      file,
-      position: { line, column },
-    } = match;
-    super(
-      `No plugin returned a result for ${url} (${file.localPath}:${line}:${column}). ` +
-        `Add a plugin that handles this URL, or set \`unhandledUrls: "warn"\` or \`"ignore"\` in your todone config.`,
-    );
-  }
-}
 
 export interface RunOptions {
   /**
@@ -30,7 +15,7 @@ export interface RunOptions {
 }
 
 export const run = async (
-  { globs, gitignore, keyword, plugins, unhandledUrls }: Config,
+  { globs, gitignore, keyword, plugins }: Config,
   { forcedReporter }: RunOptions = {},
 ) => {
   await using container = new PluginContainer(plugins);
@@ -40,28 +25,6 @@ export const run = async (
 
   const reporter = forcedReporterContainer ?? container;
 
-  const check = async (match: t.Match): Promise<t.Result> => {
-    const result = await container.checkMatch({ url: match.url });
-
-    if (result === null) {
-      switch (unhandledUrls) {
-        case "error":
-          throw new UnhandledUrlError(match);
-        case "warn":
-          await reporter.warn(
-            `no plugin handled ${match.url} (${match.file.localPath}:${match.position.line}:${match.position.column})`,
-          );
-        // fallthrough
-        case "ignore":
-          break;
-        default:
-          return unhandledUrls satisfies never;
-      }
-    }
-
-    return { url: match.url, match, result };
-  };
-
   const results = await it
     .from(getFiles(globs, { cwd: process.cwd(), gitignore: gitignore }))
     .pipe(it.tap(reporter.reportFile))
@@ -69,7 +32,7 @@ export const run = async (
     .pipe(it.flatMap(makeFileMatcher(keyword)))
     .pipe(it.tap(reporter.reportMatch))
 
-    .pipe(it.map(check))
+    .pipe(it.map(container.checkMatch))
     .pipe(it.tap(reporter.reportResult))
 
     .sink(it.toArray());
