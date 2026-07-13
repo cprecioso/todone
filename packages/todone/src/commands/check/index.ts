@@ -5,9 +5,8 @@ export class CheckCommand extends Command {
 
   static usage = Command.Usage({
     description: "Run todone and only report through the exit code",
-    details: `
-      Checks the TODOs in your code without printing anything. Exits with code 1 if any TODO is expired, 0 otherwise. Reporting hooks from configured plugins are not run.
-    `,
+    details:
+      "Checks the TODOs in your code without printing anything. Exits with code 1 if any TODO is expired, 0 otherwise. Reporting hooks from configured plugins are not run.",
     examples: [["Run with exit-code-only output", "$0 run --check"]],
   });
 

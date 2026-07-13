@@ -54,21 +54,19 @@ export class PluginContainer implements AsyncDisposable {
     url: URL;
   }): Promise<CheckerResult | null> =>
     await Promise.any(
-      this.#plugins.flatMap((plugin) =>
-        plugin.checkMatch == null
-          ? []
-          : [
-              plugin.checkMatch({ url }).then(
-                (result) => {
-                  if (result === null) throw PluginContainer.#UNHANDLED;
-                  return result;
-                },
-                (error) => {
-                  throw new PluginError(plugin.name, url, error);
-                },
-              ),
-            ],
-      ),
+      this.#plugins
+        .map((plugin) =>
+          plugin.checkMatch?.({ url }).then(
+            (result) => {
+              if (result === null) throw PluginContainer.#UNHANDLED;
+              return result;
+            },
+            (error) => {
+              throw new PluginError(plugin.name, url, error);
+            },
+          ),
+        )
+        .filter((check) => check != null),
     ).then(
       (result) => result,
       (error): null => {

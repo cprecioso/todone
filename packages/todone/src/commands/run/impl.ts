@@ -1,6 +1,6 @@
 import { run } from "#/index";
 import { loadConfigFile } from "#/lib/config/load";
-import { cliReporter } from "../../lib/reporters";
+import { cliReporter } from "#/lib/reporters";
 import { RunCommand } from "./index";
 
 export default async ({ onlyExpired, locale }: RunCommand) => {
@@ -10,5 +10,4 @@ export default async ({ onlyExpired, locale }: RunCommand) => {
     ...config,
     plugins: [...config.plugins, cliReporter({ onlyExpired, locale })],
   });
-  return 0;
 };
