@@ -1,4 +1,4 @@
-import type { ReporterFn } from "#/plugin";
+import type { Plugin } from "#/plugin";
 import * as path from "node:path";
 import { EmptyObject } from "type-fest";
 import * as z from "zod";
@@ -59,37 +59,33 @@ type OutputItem = z.infer<typeof OutputItem>;
 
 export type JsonReporterOptions = EmptyObject;
 
-export const jsonReporter =
-  ({}: JsonReporterOptions = {}): ReporterFn =>
-  async () => {
-    const outputItem = jsonCodec(OutputItem);
+export const jsonReporter = ({}: JsonReporterOptions = {}): Plugin => {
+  const outputItem = jsonCodec(OutputItem);
 
-    return {
-      warn: async (message: string) => console.warn(message),
-      info: async (message: string) => console.info(message),
-      debug: async (message: string) => console.debug(message),
+  return {
+    name: "todone:reporter-json",
 
-      reportFile: async (file) =>
-        console.log(
-          outputItem.encode({ type: "file", location: file.fullPath }),
-        ),
+    warn: async (message: string) => console.warn(message),
+    info: async (message: string) => console.info(message),
+    debug: async (message: string) => console.debug(message),
 
-      reportMatch: async ({ url, file, position }) =>
-        console.log(
-          outputItem.encode({
-            type: "match",
-            url,
-            location: file.fullPath,
-            ...position,
-          }),
-        ),
+    reportFile: async (file) =>
+      console.log(outputItem.encode({ type: "file", location: file.fullPath })),
 
-      reportResult: async ({ url, result }) => {
-        if (result) {
-          console.log(outputItem.encode({ type: "result", url, ...result }));
-        }
-      },
+    reportMatch: async ({ url, file, position }) =>
+      console.log(
+        outputItem.encode({
+          type: "match",
+          url,
+          location: file.fullPath,
+          ...position,
+        }),
+      ),
 
-      async [Symbol.asyncDispose]() {},
-    };
+    reportResult: async ({ url, result }) => {
+      if (result) {
+        console.log(outputItem.encode({ type: "result", url, ...result }));
+      }
+    },
   };
+};
