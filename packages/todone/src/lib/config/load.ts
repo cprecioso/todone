@@ -1,4 +1,5 @@
 import { loadConfig } from "c12";
+import { ConfigSchema } from "./schema";
 
 export const loadConfigFile = async (path?: string) => {
   const { config } = await loadConfig({
@@ -6,5 +7,5 @@ export const loadConfigFile = async (path?: string) => {
     rcFile: false,
     cwd: path,
   });
-  return config;
+  return ConfigSchema.parse(config);
 };

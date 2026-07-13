@@ -1,14 +1,16 @@
 import { run } from "#/index";
 import { loadConfigFile } from "#/lib/config/load";
-import { ConfigSchema } from "../../lib/config/schema";
+import { cliReporter } from "#/lib/reporters/cli";
 import { RunCommand } from "./index";
 
-export default async ({}: RunCommand) => {
-  const rawConfig = await loadConfigFile();
-  const config = ConfigSchema.parse(rawConfig);
+export default async ({ onlyExpired, locale, unhandledUrls }: RunCommand) => {
+  const config = await loadConfigFile();
 
-  const results = await run(config);
-
-  const exitCode = results.some((result) => result.result?.isExpired) ? 1 : 0;
-  return exitCode;
+  await run({
+    ...config,
+    plugins: [
+      ...config.plugins,
+      cliReporter({ onlyExpired, locale, unhandledUrls }),
+    ],
+  });
 };

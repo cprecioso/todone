@@ -27,3 +27,5 @@ const foo = () => newImplementation();
 /** @deprecated */
 const deprecatedFoo = () => oldImplementation();
 ```
+
+You can also pass a full ISO 8601 datetime, like `date:2023-10-01T09:30:00Z`.

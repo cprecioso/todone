@@ -1,5 +1,5 @@
 import { File } from "./files";
-import { CheckerResult } from "./plugins/checker";
+import type { CheckerResult } from "./plugins";
 
 /** A position in a file */
 export interface Position {
