@@ -1,6 +1,5 @@
 import type { CheckerResult } from "todone/plugin";
 import type * as t from "todone/types";
-import { CreateIssuesOptions } from "../options";
 import { isExpiredResult } from "../util/result";
 import { GitHubAPI, RemoteIssue } from "./actions";
 import { getIssueData } from "./issue-data";
@@ -41,10 +40,9 @@ export type SyncOutcome =
 
 export const reconcile = async (
   api: GitHubAPI,
-  options: CreateIssuesOptions,
   results: readonly t.Result[],
 ): Promise<SyncOutcome[]> => {
-  const issues = api.fetchCurrentIssues(options.limit);
+  const issues = api.fetchCurrentIssues();
 
   // Parse each issue body into its embedded todoUrl. Any failure
   // (malformed/missing zone, invalid JSON) marks the issue as invalid.

@@ -29,7 +29,7 @@ export const syncIssues = async ({
   results: readonly t.Result[];
 }): Promise<RowData[]> => {
   const api = makeGitHubAPI({ client, context, options, pluginCtx });
-  const outcomes = await reconcile(api, options, results);
+  const outcomes = await reconcile(api, results);
 
   const rows: RowData[] = [];
 

@@ -16,5 +16,5 @@ export const filePermalink = (
   const { owner, repo } = context.repository;
   const lineSuffix = line ? `#L${line}` : "";
 
-  return `${context.server}/${owner}/${repo}/blob/${context.sha}/${file.localPath}${lineSuffix}`;
+  return `${context.server}/${owner}/${repo}/blob/${context.sha}/${encodeURIComponent(file.localPath)}${lineSuffix}`;
 };
