@@ -1,9 +1,10 @@
+import type { Plugin } from "#/plugin";
+import type * as t from "#/types";
 import * as it from "@cprecioso/async-iterable-helpers";
-import { Config } from "./lib/config/schema";
-import { PluginContainer } from "./lib/core/container";
-import { makeFileMatcher } from "./lib/core/matcher";
+import { Config } from "./lib/config";
+import { PluginContainer } from "./lib/container";
 import { getFiles } from "./lib/files";
-import type { Plugin } from "./plugin";
+import { makeFileMatcher } from "./lib/matcher";
 
 export interface RunOptions {
   /**
@@ -18,24 +19,55 @@ export const run = async (
   { globs, gitignore, keyword, plugins }: Config,
   { forcedReporter }: RunOptions = {},
 ) => {
-  await using container = new PluginContainer(plugins);
-  await using forcedReporterContainer = forcedReporter
-    ? new PluginContainer([forcedReporter])
-    : null;
+  const container = new PluginContainer(plugins);
+  const reporter = forcedReporter ?? container;
 
-  const reporter = forcedReporterContainer ?? container;
+  try {
+    const results = await it
+      .from(getFiles(globs, { cwd: process.cwd(), gitignore: gitignore }))
+      .pipe(it.tap(reporter.reportFile?.bind(container) ?? noop))
 
-  const results = await it
-    .from(getFiles(globs, { cwd: process.cwd(), gitignore: gitignore }))
-    .pipe(it.tap(reporter.reportFile))
+      .pipe(it.flatMap(makeFileMatcher(keyword)))
+      .pipe(it.tap(reporter.reportMatch?.bind(container) ?? noop))
 
-    .pipe(it.flatMap(makeFileMatcher(keyword)))
-    .pipe(it.tap(reporter.reportMatch))
+      .pipe(checkMatchesDeduping(container))
+      .pipe(it.tap(reporter.reportResult?.bind(container) ?? noop))
 
-    .pipe(it.map(container.checkMatch))
-    .pipe(it.tap(reporter.reportResult))
+      .sink(it.toArray());
 
-    .sink(it.toArray());
+    await reporter.reportEnd?.call(container);
 
-  return results;
+    return results;
+  } catch (error) {
+    await reporter.reportEnd?.call(container, error);
+    throw error;
+  }
 };
+
+const noop = async () => {};
+
+function checkMatchesDeduping(
+  container: PluginContainer,
+): it.PipeFn<t.Match, t.Result> {
+  return async function* (matches) {
+    const resultsByUrl = new Map<string, t.Result>();
+
+    for await (const match of matches) {
+      const url = match.url.toString();
+      const result = resultsByUrl.get(url);
+
+      if (result) {
+        result.matches.push(match);
+      } else {
+        const pluginResult = await container.checkMatch({ url: match.url });
+        resultsByUrl.set(url, {
+          url: match.url,
+          matches: [match],
+          result: pluginResult,
+        });
+      }
+    }
+
+    yield* resultsByUrl.values();
+  };
+}

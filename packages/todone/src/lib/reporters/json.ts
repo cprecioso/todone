@@ -63,16 +63,13 @@ export const jsonReporter = ({}: JsonReporterOptions = {}): Plugin => {
   const outputItem = jsonCodec(OutputItem);
 
   return {
-    name: "todone:reporter-json",
+    name: "todone:json-reporter",
 
-    warn: async (message: string) => console.warn(message),
-    info: async (message: string) => console.info(message),
-    debug: async (message: string) => console.debug(message),
+    async reportFile(file) {
+      console.log(outputItem.encode({ type: "file", location: file.fullPath }));
+    },
 
-    reportFile: async (file) =>
-      console.log(outputItem.encode({ type: "file", location: file.fullPath })),
-
-    reportMatch: async ({ url, file, position }) =>
+    async reportMatch({ url, file, position }) {
       console.log(
         outputItem.encode({
           type: "match",
@@ -80,9 +77,10 @@ export const jsonReporter = ({}: JsonReporterOptions = {}): Plugin => {
           location: file.fullPath,
           ...position,
         }),
-      ),
+      );
+    },
 
-    reportResult: async ({ url, result }) => {
+    async reportResult({ url, result }) {
       if (result) {
         console.log(outputItem.encode({ type: "result", url, ...result }));
       }

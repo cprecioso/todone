@@ -1,7 +1,8 @@
+import { loadConfig } from "c12";
 import * as z from "zod";
-import type { Plugin } from "../plugins";
+import { PluginOption } from "../plugin";
 
-const PluginSchema = z.custom<Plugin>();
+const PluginOptionSchema = z.custom<PluginOption>();
 
 export interface Config extends z.infer<typeof ConfigSchema> {}
 export interface ConfigInput extends z.input<typeof ConfigSchema> {}
@@ -17,5 +18,14 @@ export const ConfigSchema = z.object({
   globs: z.array(z.string()).prefault(["**/*"]),
 
   /** The plugins to run. */
-  plugins: z.array(PluginSchema).prefault([]),
+  plugins: z.array(PluginOptionSchema).prefault([]),
 });
+
+export const loadConfigFile = async (path?: string) => {
+  const { config } = await loadConfig({
+    name: "todone",
+    rcFile: false,
+    cwd: path,
+  });
+  return ConfigSchema.parse(config);
+};

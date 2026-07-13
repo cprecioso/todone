@@ -1,34 +1,22 @@
-import type { Plugin } from "todone/plugin";
-import * as z from "zod";
-import * as pkg from "../package.json" with { type: "json" };
-import { makeResourceFetchers } from "./api";
+import { Octokit } from "octokit";
+import type { PluginOption } from "todone/plugin";
+import { makeCheckerPlugin } from "./checker";
+import { GithubPluginOptionsInput, GithubPluginOptionsSchema } from "./options";
 
-const pattern = new URLPattern({
-  protocol: "http{s}?",
-  hostname: "{www.}?github.com",
-  pathname: "/:owner/:repo/:resource_kind(issues|pull|milestone)/:number",
-});
+/**
+ * A todone plugin for GitHub.
+ *
+ * It always checks whether the GitHub issue, pull request, or milestone a TODO
+ * points at has been resolved. On top of that, it can report the run to GitHub
+ * Actions ({@link GithubPluginOptions.summary}) and keep a set of issues in
+ * sync with the expired TODOs ({@link GithubPluginOptions.createIssues}).
+ */
+const githubPlugin = (
+  inputOptions: GithubPluginOptionsInput = {},
+): PluginOption => {
+  const options = GithubPluginOptionsSchema.parse(inputOptions);
 
-const PatternResult = z.object({
-  pathname: z.object({
-    groups: z.object({
-      owner: z.string(),
-      repo: z.string(),
-      resource_kind: z.enum(["issues", "pull", "milestone"]),
-      number: z.coerce.number().int().positive(),
-    }),
-  }),
-});
-
-export interface GithubPluginOptions {
-  /** GitHub API token. Defaults to `process.env.GITHUB_TOKEN`. */
-  token?: string;
-}
-
-const githubPlugin = ({
-  token = process.env.GITHUB_TOKEN,
-}: GithubPluginOptions = {}): Plugin => {
-  if (!token) {
+  if (!options.token) {
     process.emitWarning(
       "No GitHub token provided (`token` option or GITHUB_TOKEN env var). " +
         "Public repositories will still work, but private repositories and " +
@@ -37,32 +25,9 @@ const githubPlugin = ({
     );
   }
 
-  const resourceFetchers = makeResourceFetchers(token);
+  const client = new Octokit(options.token ? { auth: options.token } : {});
 
-  return {
-    name: pkg.name,
-    checkMatch: async ({ url }) => {
-      const patternResult = pattern.exec(url);
-      if (!patternResult) return null;
-
-      const {
-        pathname: {
-          groups: { owner, repo, resource_kind, number },
-        },
-      } = PatternResult.parse(patternResult);
-
-      try {
-        return await resourceFetchers[resource_kind]({ owner, repo }, number);
-      } catch (error) {
-        if (token) throw error;
-        throw new Error(
-          `GitHub request for ${url} failed without authentication. ` +
-            `This URL may require a GITHUB_TOKEN (private repository or rate limit).`,
-          { cause: error },
-        );
-      }
-    },
-  };
+  return [makeCheckerPlugin(client)];
 };
 
 export default githubPlugin;

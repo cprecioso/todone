@@ -28,7 +28,7 @@ export interface CliReporterOptions {
   unhandledUrls?: UnhandledUrls;
 }
 
-export const cliReporter = ({
+export const cliReporterPlugin = ({
   locale,
   onlyExpired = false,
   unhandledUrls = "error",
@@ -44,39 +44,42 @@ export const cliReporter = ({
   const infoLn = (str = "") => console.log(`\t${str}`);
 
   return {
-    name: "todone:reporter-cli",
+    name: "todone:cli-reporter",
 
     warn: async (message: string) => console.warn(message),
     info: async (message: string) => console.info(message),
     debug: async (message: string) => console.debug(message),
 
-    reportFile: async () => {
+    async reportFile() {
       filesCounter++;
     },
 
-    reportMatch: async () => {
+    async reportMatch() {
       matchesCounter++;
     },
 
-    reportResult: async ({ url, result, match }) => {
-      const {
-        file,
-        position: { line, column },
-      } = match;
+    async reportResult({ result, matches, url }) {
+      {
+        const [firstMatch] = matches;
+        const {
+          file,
+          position: { line, column },
+        } = firstMatch;
 
-      if (result === null) {
-        switch (unhandledUrls) {
-          case "error":
-            throw new UnhandledUrlError(match);
-          case "warn":
-            console.warn(
-              `no plugin handled ${url} (${file.localPath}:${line}:${column})`,
-            );
-          // fallthrough
-          case "ignore":
-            return;
-          default:
-            return unhandledUrls satisfies never;
+        if (result === null) {
+          switch (unhandledUrls) {
+            case "error":
+              throw new UnhandledUrlError(firstMatch);
+            case "warn":
+              this.warn(
+                `no plugin handled ${url} (${file.localPath}:${line}:${column})`,
+              );
+            // fallthrough
+            case "ignore":
+              return;
+            default:
+              return unhandledUrls satisfies never;
+          }
         }
       }
 
@@ -85,13 +88,18 @@ export const cliReporter = ({
       if (result.isExpired) expiredResultsCounter++;
       else if (onlyExpired) return;
 
-      headerLn(
-        chalk.blueBright(file.localPath) +
-          ":" +
-          chalk.yellowBright(line) +
-          ":" +
-          chalk.yellowBright(column),
-      );
+      for (const {
+        file,
+        position: { line, column },
+      } of matches) {
+        headerLn(
+          chalk.blueBright(file.localPath) +
+            ":" +
+            chalk.yellowBright(line) +
+            ":" +
+            chalk.yellowBright(column),
+        );
+      }
 
       infoLn(chalk.bold(url));
 
@@ -116,14 +124,18 @@ export const cliReporter = ({
       headerLn();
     },
 
-    async [Symbol.asyncDispose]() {
-      console.log(dedent`
-        Analysis complete:
-          ${filesCounter} files found
-          ${matchesCounter} matches found
-          ${resultsCounter} results found
-          ${expiredResultsCounter} expired results found
-      `);
+    async reportEnd(error) {
+      if (error) {
+        console.error(`Error: ${error}`);
+      } else {
+        console.log(dedent`
+          Analysis complete:
+            ${filesCounter} files found
+            ${matchesCounter} matches found
+            ${resultsCounter} results found
+            ${expiredResultsCounter} expired results found
+        `);
+      }
     },
   };
 };

@@ -1,8 +1,9 @@
+import * as t from "#/types";
 import { globbyStream } from "globby";
 import * as path from "node:path";
 
 /** An object representing a file and its contents */
-export class File {
+export class File implements t.File {
   static make(cwd: string, localPath: string) {
     const fullPath = path.resolve(cwd, localPath);
     const relativePath = path.relative(cwd, fullPath);

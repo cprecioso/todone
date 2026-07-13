@@ -1,4 +1,9 @@
-import type { Plugin } from "#/plugin";
+import type {
+  CheckerResult,
+  Plugin,
+  PluginContext,
+  PluginOption,
+} from "#/plugin";
 import type * as t from "#/types";
 
 export class PluginError extends Error {
@@ -6,9 +11,6 @@ export class PluginError extends Error {
     super(`Plugin "${pluginName}" failed while checking ${url}`, { cause });
   }
 }
-
-type FanOutHook =
-  "warn" | "info" | "debug" | "reportFile" | "reportMatch" | "reportResult";
 
 /**
  * Holds all the plugins for a run and knows how to dispatch each hook to
@@ -20,7 +22,7 @@ type FanOutHook =
  * counterparts; `checkMatch` instead takes a whole {@link t.Match} and
  * bundles the outcome as a {@link t.Result}.
  */
-export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
+export class PluginContainer implements PluginContext {
   /** Thrown internally when a plugin didn't recognize a URL. */
   static readonly #UNHANDLED = Symbol("unhandled");
 
@@ -28,38 +30,48 @@ export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
 
   readonly #plugins: readonly Plugin[];
 
-  constructor(plugins: readonly Plugin[]) {
-    this.#plugins = plugins;
+  constructor(plugins: readonly PluginOption[]) {
+    this.#plugins = (plugins as readonly Plugin[]).flat(Infinity);
   }
 
-  #fanOut<K extends FanOutHook>(name: K) {
-    type Args = Parameters<NonNullable<Plugin[K]>>;
-    return async (...args: Args): Promise<void> => {
-      await Promise.all(
-        this.#plugins.map((plugin) =>
-          (plugin[name] as ((...args: Args) => Promise<void>) | undefined)?.(
-            ...args,
-          ),
-        ),
-      );
-    };
-  }
+  warn = (message: string) =>
+    this.#plugins.forEach((plugin) => plugin.warn?.call(this, message));
 
-  readonly warn = this.#fanOut("warn");
-  readonly info = this.#fanOut("info");
-  readonly debug = this.#fanOut("debug");
+  info = (message: string) =>
+    this.#plugins.forEach((plugin) => plugin.info?.call(this, message));
 
-  readonly reportFile = this.#fanOut("reportFile");
-  readonly reportMatch = this.#fanOut("reportMatch");
-  readonly reportResult = this.#fanOut("reportResult");
+  debug = (message: string) =>
+    this.#plugins.forEach((plugin) => plugin.debug?.call(this, message));
 
-  readonly checkMatch = async (match: t.Match): Promise<t.Result> => {
-    const { url } = match;
+  reportFile = async (file: t.File) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportFile?.call(this, file)),
+    );
+  };
 
+  reportMatch = async (match: t.Match) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportMatch?.call(this, match)),
+    );
+  };
+
+  reportResult = async (result: t.Result) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportResult?.call(this, result)),
+    );
+  };
+
+  reportEnd = async (error?: unknown) => {
+    await Promise.all(
+      this.#plugins.map((plugin) => plugin.reportEnd?.call(this, error)),
+    );
+  };
+
+  checkMatch = async ({ url }: { url: URL }): Promise<CheckerResult | null> => {
     const result = await Promise.any(
       this.#plugins
         .map((plugin) =>
-          plugin.checkMatch?.({ url }).then(
+          plugin.checkMatch?.call(this, { url }).then(
             (result) => {
               if (result === null) throw PluginContainer.#UNHANDLED;
               return result;
@@ -85,12 +97,6 @@ export class PluginContainer implements Required<Omit<Plugin, "checkMatch">> {
       } else throw error;
     });
 
-    return { url, match, result };
+    return result;
   };
-
-  async [Symbol.asyncDispose]() {
-    await Promise.all(
-      this.#plugins.map((plugin) => plugin[Symbol.asyncDispose]?.()),
-    );
-  }
 }
