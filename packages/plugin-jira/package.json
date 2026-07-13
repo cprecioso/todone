@@ -1,0 +1,47 @@
+{
+  "name": "@todone/plugin-jira",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A todone plugin that will alert you when a Jira issue has been resolved",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cprecioso/todone.git"
+  },
+  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/plugin-jira#readme",
+  "bugs": {
+    "url": "https://github.com/cprecioso/todone/issues"
+  },
+  "author": "Carlos Precioso <npm@precioso.design>",
+  "license": "ISC",
+  "packageManager": "yarn@4.17.1",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "check": "tsc --noEmit -p .",
+    "dev": "tsdown --watch"
+  },
+  "peerDependencies": {
+    "todone": "workspace:^"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@todone/internal-build": "workspace:^",
+    "@types/node": "^24.13.2",
+    "todone": "workspace:^",
+    "tsdown": "^0.22.3",
+    "typescript": "~6.0.3"
+  },
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  },
+  "sideEffects": false
+}
