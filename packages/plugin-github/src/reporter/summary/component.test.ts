@@ -2,6 +2,7 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterAll, beforeEach, expect, it, vi } from "vitest";
+import type { GitHubContext } from "../context";
 import { writeSummary } from "./component";
 
 // The real @actions/core summary writer is used; it appends to the file that
@@ -53,7 +54,11 @@ it("writes a job summary table with every column kind", async () => {
         url: "test:fresh",
         result: { title: "Fresh", isExpired: false },
       },
-      { url: "test:orphaned", issueNumber: 7, actionMessage: "Closed (completed)" },
+      {
+        url: "test:orphaned",
+        issueNumber: 7,
+        actionMessage: "Closed (completed)",
+      },
     ],
   });
 
@@ -70,11 +75,13 @@ it("writes a job summary table with every column kind", async () => {
 });
 
 it("renders plain locations and issue numbers without repo context", async () => {
+  // `repository`/`sha` are runtime-optional (env-derived) despite the
+  // non-optional static type, so cast to exercise the no-context path.
   const context = {
     server: "https://github.com",
     repository: undefined,
     sha: undefined,
-  };
+  } as unknown as GitHubContext;
 
   await writeSummary(context, {
     heading: "TODOs found",

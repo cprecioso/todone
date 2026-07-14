@@ -38,13 +38,14 @@ describe("makeLoggerPlugin", () => {
   it("logs files and matches as debug lines", async () => {
     const plugin = makeLoggerPlugin();
 
-    await plugin.reportFile!.call(ctx, { localPath: "a.txt", fullPath: "/a.txt" });
+    await plugin.reportFile!.call(ctx, {
+      localPath: "a.txt",
+      fullPath: "/a.txt",
+    });
     expect(core.debug).toHaveBeenCalledWith("Found file: a.txt");
 
     await plugin.reportMatch!.call(ctx, match);
-    expect(core.debug).toHaveBeenCalledWith(
-      "Found match: test:x at a.txt:3:7",
-    );
+    expect(core.debug).toHaveBeenCalledWith("Found match: test:x at a.txt:3:7");
   });
 
   it("logs handled results with their status and location", async () => {

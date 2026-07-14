@@ -1,0 +1,58 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`todone run > hides unexpired results with --only-expired 1`] = `
+"input/example.txt:1:11
+input/example.txt:4:8
+	fixture:expired-1?date
+	EXPIRED
+	expired on 1/2/2000
+
+Analysis complete:
+  1 files found
+  3 matches found
+  2 results found
+  1 expired results found
+"
+`;
+
+exports[`todone run > prints locations, statuses, dates, and a summary 1`] = `
+"input/example.txt:1:11
+input/example.txt:4:8
+	fixture:expired-1?date
+	EXPIRED
+	expired on 1/2/2000
+
+input/example.txt:3:1
+	fixture:fresh-1
+	Not expired yet
+
+Analysis complete:
+  1 files found
+  3 matches found
+  2 results found
+  1 expired results found
+"
+`;
+
+exports[`todone run > treats a custom keyword literally 1`] = `
+"input/example.txt:1:20
+	fixture:expired-star
+	EXPIRED
+
+Analysis complete:
+  1 files found
+  1 matches found
+  1 results found
+  1 expired results found
+"
+`;
+
+exports[`todone run --json > emits NDJSON for files, matches, and handled results 1`] = `
+"{"type":"file","location":"<FIXTURE>/input/example.txt"}
+{"type":"match","url":"fixture:expired-1?date","location":"<FIXTURE>/input/example.txt","line":1,"column":11}
+{"type":"match","url":"fixture:fresh-1","location":"<FIXTURE>/input/example.txt","line":3,"column":1}
+{"type":"match","url":"fixture:expired-1?date","location":"<FIXTURE>/input/example.txt","line":4,"column":8}
+{"type":"result","url":"fixture:expired-1?date","title":"Fixture expired-1","isExpired":true,"expirationDate":"2000-01-02T00:00:00.000Z"}
+{"type":"result","url":"fixture:fresh-1","title":"Fixture fresh-1","isExpired":false}
+"
+`;

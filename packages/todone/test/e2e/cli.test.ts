@@ -78,14 +78,21 @@ describe("todone run --json", () => {
 });
 
 describe("todone run --check", () => {
-  it("exits 1 when an expired TODO exists, printing nothing", SLOW, async () => {
-    const dir = fixtureDir("basic");
-    const { stdout, stderr, exitCode } = await runCli(dir, ["run", "--check"]);
+  it(
+    "exits 1 when an expired TODO exists, printing nothing",
+    SLOW,
+    async () => {
+      const dir = fixtureDir("basic");
+      const { stdout, stderr, exitCode } = await runCli(dir, [
+        "run",
+        "--check",
+      ]);
 
-    expect(stdout).toBe("");
-    expect(stderr).toBe("");
-    expect(exitCode).toBe(1);
-  });
+      expect(stdout).toBe("");
+      expect(stderr).toBe("");
+      expect(exitCode).toBe(1);
+    },
+  );
 
   it("exits 0 when nothing is expired", SLOW, async () => {
     const dir = fixtureDir("check-fresh");

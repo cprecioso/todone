@@ -141,7 +141,10 @@ describe("githubPlugin issue syncing", () => {
       http.get(`${api}/repos/octo/repo/issues`, () => HttpResponse.json([])),
       http.post(`${api}/repos/octo/repo/issues`, async ({ request }) => {
         created.push(await request.json());
-        return HttpResponse.json({ number: 99, title: "created" }, { status: 201 });
+        return HttpResponse.json(
+          { number: 99, title: "created" },
+          { status: 201 },
+        );
       }),
     );
 

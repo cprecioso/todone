@@ -25,7 +25,9 @@ describe("figmaPlugin URL matching", () => {
   });
 
   it("ignores deeper file paths", async () => {
-    await expect(check("https://figma.com/file/abc/extra#1")).resolves.toBeNull();
+    await expect(
+      check("https://figma.com/file/abc/extra#1"),
+    ).resolves.toBeNull();
   });
 });
 

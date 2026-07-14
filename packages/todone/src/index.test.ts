@@ -1,7 +1,6 @@
 import { run } from "#/index";
 import { PluginError } from "#/lib/container";
 import type { Plugin } from "#/plugin";
-import type * as t from "#/types";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";

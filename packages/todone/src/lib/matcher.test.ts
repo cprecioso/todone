@@ -49,7 +49,9 @@ describe("makeFileMatcher", () => {
   });
 
   it("tracks line numbers across lines", async () => {
-    const file = await makeFile("first\n\n@TODO test:third\ntext @TODO test:fourth\n");
+    const file = await makeFile(
+      "first\n\n@TODO test:third\ntext @TODO test:fourth\n",
+    );
     const matches = await collect(makeFileMatcher("@TODO")(file));
 
     expect(matches.map((m) => m.position)).toEqual([

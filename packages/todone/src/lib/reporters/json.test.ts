@@ -8,7 +8,9 @@ beforeEach(() => {
 });
 
 const lines = () =>
-  log.mock.calls.map(([line]) => JSON.parse(line as string) as unknown);
+  (log.mock.calls as unknown[][]).map(
+    ([line]) => JSON.parse(line as string) as unknown,
+  );
 
 const ctx = { warn: vi.fn(), info: vi.fn(), debug: vi.fn() };
 
@@ -26,9 +28,7 @@ describe("jsonReporter", () => {
 
     await reporter.reportFile!.call(ctx, file);
 
-    expect(lines()).toEqual([
-      { type: "file", location: "/fixture/input.txt" },
-    ]);
+    expect(lines()).toEqual([{ type: "file", location: "/fixture/input.txt" }]);
   });
 
   it("rejects files whose path is not absolute", async () => {
@@ -36,7 +36,10 @@ describe("jsonReporter", () => {
 
     await expect(
       Promise.resolve(
-        reporter.reportFile!.call(ctx, { localPath: "x.txt", fullPath: "x.txt" }),
+        reporter.reportFile!.call(ctx, {
+          localPath: "x.txt",
+          fullPath: "x.txt",
+        }),
       ),
     ).rejects.toThrow();
   });

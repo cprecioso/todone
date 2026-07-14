@@ -1,19 +1,22 @@
 import type { Match } from "todone/types";
 import { describe, expect, it } from "vitest";
+import type { GitHubContext } from "../context";
 import { generateIssue } from "./generator";
 import { getIssueData } from "./issue-data";
 
-const fullContext = {
+const fullContext: GitHubContext = {
   server: "https://github.com",
   repository: { owner: "octo", repo: "repo" },
   sha: "abc123",
 };
 
+// `repository`/`sha` are runtime-optional (env-derived) despite the
+// non-optional static type, so cast to exercise the no-context path.
 const bareContext = {
   server: "https://github.com",
   repository: undefined,
   sha: undefined,
-};
+} as unknown as GitHubContext;
 
 const matchAt = (localPath: string, line: number, column: number): Match => ({
   url: new URL("https://github.com/octo/repo/issues/5"),

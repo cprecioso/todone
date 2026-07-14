@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
+import type { GitHubContext } from "./context";
 import { filePermalink } from "./permalink";
 
-const context = {
+const context: GitHubContext = {
   server: "https://github.com",
   repository: { owner: "octo", repo: "repo" },
   sha: "abc123",
@@ -23,10 +24,21 @@ describe("filePermalink", () => {
   });
 
   it("returns undefined without a repository or SHA", () => {
+    // `repository`/`sha` are runtime-optional (env-derived) despite the
+    // non-optional static type, so cast to exercise the guard.
     expect(
-      filePermalink({ ...context, repository: undefined }, file, 1),
+      filePermalink(
+        { ...context, repository: undefined } as unknown as GitHubContext,
+        file,
+        1,
+      ),
     ).toBeUndefined();
-    expect(filePermalink({ ...context, sha: undefined }, file, 1)) //
-      .toBeUndefined();
+    expect(
+      filePermalink(
+        { ...context, sha: undefined } as unknown as GitHubContext,
+        file,
+        1,
+      ),
+    ).toBeUndefined();
   });
 });

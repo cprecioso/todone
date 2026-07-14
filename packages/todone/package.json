@@ -81,7 +81,9 @@
   "nx": {
     "targets": {
       "test": {
-        "dependsOn": ["build"]
+        "dependsOn": [
+          "build"
+        ]
       }
     }
   }

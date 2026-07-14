@@ -3,11 +3,12 @@ import type { PluginContext } from "#/plugin";
 import type * as t from "#/types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const makeContext = () => ({
-  warn: vi.fn(),
-  info: vi.fn(),
-  debug: vi.fn(),
-}) satisfies PluginContext;
+const makeContext = () =>
+  ({
+    warn: vi.fn(),
+    info: vi.fn(),
+    debug: vi.fn(),
+  }) satisfies PluginContext;
 
 const makeResult = (
   url: string,
@@ -32,7 +33,7 @@ beforeEach(() => {
   error = vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
-const logged = () => log.mock.calls.map(([line]) => line);
+const logged = () => (log.mock.calls as unknown[][]).map(([line]) => line);
 
 describe("cliReporterPlugin unhandled URLs", () => {
   const unhandled = makeResult("test:mystery", null, [[3, 7]]);
