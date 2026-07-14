@@ -1,0 +1,2 @@
+A starred keyword: *TODO fixture:expired-star
+An unstarred keyword that must not match: @TODO fixture:ignored

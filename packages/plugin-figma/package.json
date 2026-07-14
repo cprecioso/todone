@@ -24,7 +24,8 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "test": "vitest run"
   },
   "peerDependencies": {
     "todone": "workspace:^"
@@ -35,9 +36,11 @@
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
     "@types/node": "^24.13.2",
+    "msw": "^2.14.0",
     "todone": "workspace:^",
     "tsdown": "^0.22.3",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "provenance": true,

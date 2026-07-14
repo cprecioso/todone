@@ -28,10 +28,6 @@
       "name": "📦 @todone/plugin-github",
       "path": "packages/plugin-github",
     },
-    {
-      "name": "📦 @todone/test-app",
-      "path": "packages/test-app",
-    },
   ],
   "settings": {
     "js/ts.tsdk.path": "node_modules/typescript/lib",

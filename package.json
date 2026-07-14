@@ -31,6 +31,7 @@
   "devDependencies": {
     "@todone/plugin-date": "workspace:^",
     "@todone/plugin-github": "workspace:^",
+    "@vitest/coverage-v8": "^4.1.10",
     "@yarnpkg/types": "^4.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.8",
@@ -43,7 +44,8 @@
     "typedoc": "^0.28.19",
     "typedoc-plugin-dt-links": "^2.0.62",
     "typedoc-plugin-mdn-links": "^5.1.1",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   },
   "nx": {
     "implicitDependencies": [
