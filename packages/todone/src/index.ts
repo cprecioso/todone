@@ -16,15 +16,17 @@ export interface RunOptions {
 }
 
 export const run = async (
-  { globs, gitignore, keyword, plugins }: Config,
+  config: Config,
   { forcedReporter }: RunOptions = {},
 ) => {
+  const { keyword, plugins } = config;
+
   const container = new PluginContainer(plugins);
   const reporter = forcedReporter ?? container;
 
   try {
     const results = await it
-      .from(getFiles(globs, { cwd: process.cwd(), gitignore: gitignore }))
+      .from(getFiles(process.cwd(), config))
       .pipe(it.tap(reporter.reportFile?.bind(container) ?? noop))
 
       .pipe(it.flatMap(makeFileMatcher(keyword)))

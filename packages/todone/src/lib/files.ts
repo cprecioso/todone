@@ -1,6 +1,8 @@
 import * as t from "#/types";
+import * as it from "@cprecioso/async-iterable-helpers";
 import { globbyStream } from "globby";
 import * as path from "node:path";
+import { Config } from "./config";
 
 /** An object representing a file and its contents */
 export class File implements t.File {
@@ -16,34 +18,18 @@ export class File implements t.File {
   ) {}
 }
 
-export interface GetFilesOptions {
-  /**
-   * Working directory to resolve globs against.
-   *
-   * @default process.cwd()
-   */
-  cwd: string;
-
-  /**
-   * Whether to respect `.gitignore` files.
-   *
-   * @default true
-   */
-  gitignore: boolean;
-}
-
-export async function* getFiles(
-  globs: readonly string[],
-  { cwd, gitignore }: GetFilesOptions,
-) {
-  for await (const file of globbyStream(globs, {
-    cwd,
-    onlyFiles: true,
-    globstar: true,
-    gitignore,
-    expandDirectories: true,
-    dot: true,
-  })) {
-    yield File.make(cwd, file);
-  }
+export function getFiles(cwd: string, config: Config) {
+  return it
+    .from(
+      globbyStream(config.include.patterns, {
+        cwd,
+        onlyFiles: true,
+        globstar: true,
+        gitignore: config.exclude.gitignore,
+        expandDirectories: true,
+        dot: true,
+        ignore: config.exclude.patterns,
+      }),
+    )
+    .pipe(it.map((file) => File.make(cwd, file)));
 }
