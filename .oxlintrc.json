@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "oxc",
+    "import",
+    "jsdoc",
+    "node",
+    "promise",
+    "vitest"
+  ],
+  "options": {
+    "typeAware": true,
+    "maxWarnings": 0,
+    "denyWarnings": true,
+    "reportUnusedDisableDirectives": "error"
+  },
+  "categories": { "correctness": "error" },
+  "rules": {
+    "import/namespace": "off"
+  },
+  "env": {
+    "builtin": true,
+    "node": true,
+    "es2025": true,
+    "vitest": true
+  }
+}
