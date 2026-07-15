@@ -27,8 +27,7 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch",
-    "test": "vitest run"
+    "dev": "tsdown --watch"
   },
   "peerDependencies": {
     "tsdown": "^0.22.3",
