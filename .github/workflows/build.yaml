@@ -24,6 +24,7 @@ jobs:
           folder=$(pwd)/out
           mkdir -p $folder
           yarn workspaces foreach --all --no-private pack --out $folder/%s-%v.tgz
+
       - uses: actions/upload-artifact@v7
         with:
           name: packages
