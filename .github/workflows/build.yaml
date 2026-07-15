@@ -33,9 +33,3 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ./docs
-
-      - name: Publish to pkg.pr.new
-        # Preview releases are only useful for pull requests, not for the
-        # throwaway branches a merge queue builds.
-        if: github.event_name != 'merge_group'
-        run: yarn dlx pkg-pr-new publish --yarn $(yarn workspaces list --no-private --json | jq -r '.location')

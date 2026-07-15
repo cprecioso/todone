@@ -1,0 +1,31 @@
+name: Check merge queue
+
+on:
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+
+  conventional-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: jdx/mise-action@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          cache: "yarn"
+      - run: yarn install --immutable
+
+      # Merges are squash-only, so the commits in the merge group are exactly
+      # the titles that will land on the default branch. Check them so every
+      # commit stays conventional (and release-please can pick it up).
+      - name: Check commit titles are conventional commits
+        run: yarn commitlint --from "${{ github.event.merge_group.base_sha }}" --to "${{ github.event.merge_group.head_sha }}" --verbose

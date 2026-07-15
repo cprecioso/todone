@@ -1,0 +1,34 @@
+name: Check PR
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+
+  preview-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          cache: "yarn"
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: packages
+          path: ./tarballs
+
+      # Preview releases are only useful for pull requests, so they live here
+      # rather than in the shared build workflow. pkg.pr.new uploads the
+      # tarballs the build already packed, as-is.
+      - name: Publish to pkg.pr.new
+        run: yarn dlx pkg-pr-new publish "./tarballs/*.tgz"
