@@ -4,7 +4,7 @@ import { loadConfigFile } from "../../lib/config";
 import { cliReporterPlugin } from "../../lib/reporters/cli";
 import { CheckCommand } from "./index";
 
-export default async ({}: CheckCommand) => {
+export default async (_: CheckCommand) => {
   const config = await loadConfigFile();
   const results = await run(
     { ...config, plugins: [cliReporterPlugin(), ...config.plugins] },

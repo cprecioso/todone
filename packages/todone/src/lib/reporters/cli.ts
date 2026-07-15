@@ -126,7 +126,8 @@ export const cliReporterPlugin = ({
 
     async reportEnd(error) {
       if (error) {
-        console.error(`Error: ${error}`);
+        // oxlint-disable-next-line typescript/no-base-to-string
+        console.error(`Error: ${String(error)}`);
       } else {
         console.log(dedent`
           Analysis complete:
