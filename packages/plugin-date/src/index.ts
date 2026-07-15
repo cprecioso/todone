@@ -8,14 +8,10 @@ const pattern = new URLPattern({
   pathname: ":date",
 });
 
-const isoToDate = z.codec(
-  z.union([z.iso.datetime(), z.iso.date()]),
-  z.date(),
-  {
-    decode: (isoString) => new Date(isoString),
-    encode: (date) => date.toISOString(),
-  },
-);
+const isoToDate = z.codec(z.union([z.iso.datetime(), z.iso.date()]), z.date(), {
+  decode: (isoString) => new Date(isoString),
+  encode: (date) => date.toISOString(),
+});
 
 const PatternResult = z.object({
   pathname: z.object({
