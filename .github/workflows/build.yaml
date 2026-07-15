@@ -33,3 +33,6 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ./docs
+
+      - name: Publish to pkg.pr.new
+        run: yarn dlx pkg-pr-new publish --yarn $(yarn workspaces list --no-private --json | jq -r '.location')
