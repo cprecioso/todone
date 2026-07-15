@@ -1,3 +1,6 @@
+import * as attw from "@arethetypeswrong/core";
+import * as publint from "publint";
+import * as publintUtils from "publint/utils";
 import type { UserConfig } from "tsdown";
 
 export const defaultConfig = ({ entries = ["index"] } = {}) =>
@@ -15,5 +18,17 @@ export const defaultConfig = ({ entries = ["index"] } = {}) =>
     sourcemap: true,
     dts: {
       sourcemap: true,
+    },
+
+    publint: {
+      enabled: true,
+      module: [publint, publintUtils],
+      strict: true,
+    },
+    attw: {
+      enabled: true,
+      module: attw,
+      profile: "esm-only",
+      level: "error",
     },
   }) satisfies UserConfig;
