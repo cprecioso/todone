@@ -45,25 +45,33 @@ export class PluginContainer implements PluginContext {
 
   reportFile = async (file: t.File) => {
     await Promise.all(
-      this.#plugins.map((plugin) => plugin.reportFile?.call(this, file)),
+      this.#plugins.map(
+        async (plugin) => await plugin.reportFile?.call(this, file),
+      ),
     );
   };
 
   reportMatch = async (match: t.Match) => {
     await Promise.all(
-      this.#plugins.map((plugin) => plugin.reportMatch?.call(this, match)),
+      this.#plugins.map(
+        async (plugin) => await plugin.reportMatch?.call(this, match),
+      ),
     );
   };
 
   reportResult = async (result: t.Result) => {
     await Promise.all(
-      this.#plugins.map((plugin) => plugin.reportResult?.call(this, result)),
+      this.#plugins.map(
+        async (plugin) => await plugin.reportResult?.call(this, result),
+      ),
     );
   };
 
   reportEnd = async (error?: unknown) => {
     await Promise.all(
-      this.#plugins.map((plugin) => plugin.reportEnd?.call(this, error)),
+      this.#plugins.map(
+        async (plugin) => await plugin.reportEnd?.call(this, error),
+      ),
     );
   };
 

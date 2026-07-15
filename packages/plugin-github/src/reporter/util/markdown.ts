@@ -44,7 +44,7 @@ export const createZone = <const InNodes extends readonly t.Nodes[]>(
 
 export const findZone = (tree: t.Nodes, id: string) => {
   let found: t.Nodes[] | undefined;
-  zone(tree, id, (start, between, end) => {
+  zone(tree, id, (_start, between, _end) => {
     found ??= between;
   });
   return found;

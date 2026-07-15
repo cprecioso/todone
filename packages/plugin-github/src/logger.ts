@@ -50,6 +50,7 @@ export const makeLoggerPlugin = (): Plugin => ({
   },
 
   async reportEnd(error) {
+    // oxlint-disable-next-line typescript/no-base-to-string
     if (error) core.error(String(error));
   },
 });
