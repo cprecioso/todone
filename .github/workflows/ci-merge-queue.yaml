@@ -24,8 +24,5 @@ jobs:
           cache: "yarn"
       - run: yarn install --immutable
 
-      # Merges are squash-only, so the commits in the merge group are exactly
-      # the titles that will land on the default branch. Check them so every
-      # commit stays conventional (and release-please can pick it up).
       - name: Check commit titles are conventional commits
         run: yarn commitlint --from "${{ github.event.merge_group.base_sha }}" --to "${{ github.event.merge_group.head_sha }}" --verbose

@@ -3,16 +3,13 @@ name: Build and check code
 on:
   workflow_dispatch:
     inputs:
-      publish-preview:
+      publish-preview: &publish-preview
         description: Publish a preview release to pkg.pr.new
         type: boolean
         default: false
   workflow_call:
     inputs:
-      publish-preview:
-        description: Publish a preview release to pkg.pr.new
-        type: boolean
-        default: false
+      publish-preview: *publish-preview
 
 jobs:
   build:
@@ -44,7 +41,6 @@ jobs:
         with:
           path: ./docs
 
-      # Preview releases are only useful for pull requests, so callers opt in.
       - name: Publish to pkg.pr.new
         if: ${{ inputs.publish-preview }}
         run: yarn dlx pkg-pr-new publish --yarn $(yarn workspaces list --no-private --json | jq -r '.location')
