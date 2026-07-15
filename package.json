@@ -26,7 +26,9 @@
   "scripts": {
     "build-docs": "typedoc",
     "dev-docs": "nx watch --includeDependentProjects -p=. -- nx build-docs",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "lint:dependencies": "yarn dedupe --check",
+    "lint:format": "prettier --check ."
   },
   "devDependencies": {
     "@todone/plugin-date": "workspace:^",
@@ -52,7 +54,6 @@
       "*"
     ],
     "targets": {
-      "build": {},
       "build-docs": {
         "dependsOn": [
           "^build"
@@ -69,10 +70,10 @@
         "cache": false,
         "continuous": true
       },
-      "publish": {
+      "lint": {
         "dependsOn": [
-          "build",
-          "check"
+          "lint:format",
+          "lint:dependencies"
         ],
         "cache": false
       }
