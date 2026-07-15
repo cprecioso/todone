@@ -52,7 +52,6 @@
       "*"
     ],
     "targets": {
-      "build": {},
       "build-docs": {
         "dependsOn": [
           "^build"
@@ -73,13 +72,6 @@
         "dependsOn": [
           "lint:format",
           "lint:dependencies"
-        ],
-        "cache": false
-      },
-      "publish": {
-        "dependsOn": [
-          "build",
-          "check"
         ],
         "cache": false
       }
