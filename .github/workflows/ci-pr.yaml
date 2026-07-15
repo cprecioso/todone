@@ -10,22 +10,5 @@ concurrency:
 jobs:
   build:
     uses: ./.github/workflows/build.yaml
-
-  # Preview releases are only useful for pull requests, so they live here
-  # rather than in the shared build workflow.
-  preview-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4
-
-      - uses: actions/setup-node@v6
-        with:
-          cache: "yarn"
-      - run: yarn install --immutable
-
-      - name: Build packages
-        run: yarn nx run-many -t build
-
-      - name: Publish to pkg.pr.new
-        run: yarn dlx pkg-pr-new publish --yarn $(yarn workspaces list --no-private --json | jq -r '.location')
+    with:
+      publish-preview: true
