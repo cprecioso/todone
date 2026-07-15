@@ -1,0 +1,34 @@
+name: Conventional commit
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  pull-requests: read
+
+jobs:
+  validate:
+    name: Validate that the PR title is a conventional commit
+    runs-on: ubuntu-latest
+    steps:
+      # The PR title becomes the commit title when the PR is squash-merged, so
+      # this keeps every commit that lands on the default branch conventional
+      # (and lets release-please pick it up).
+      #
+      # There is nothing to validate for a merge_group event, but the job still
+      # needs to run and succeed so it can be a required status check without
+      # stalling the merge queue.
+      - uses: amannn/action-semantic-pull-request@v6
+        if: github.event_name == 'pull_request_target'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
