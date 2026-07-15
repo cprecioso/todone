@@ -4,7 +4,11 @@ import datePlugin from "./index";
 const check = (url: string) => {
   const plugin = datePlugin();
   return plugin.checkMatch!.call(
-    { warn: vi.fn(), info: vi.fn(), debug: vi.fn() },
+    {
+      warn: vi.fn<(message: string) => void>(),
+      info: vi.fn<(message: string) => void>(),
+      debug: vi.fn<(message: string) => void>(),
+    },
     { url: new URL(url) },
   );
 };
@@ -59,6 +63,6 @@ describe("datePlugin", () => {
   });
 
   it("throws on a malformed date", async () => {
-    await expect(check("date:not-a-date")).rejects.toThrow();
+    await expect(check("date:not-a-date")).rejects.toThrow(/Invalid/);
   });
 });

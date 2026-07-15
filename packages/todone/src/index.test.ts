@@ -27,16 +27,17 @@ const baseConfig = {
 /** A reporter that records every hook invocation in order. */
 const makeCapturingReporter = () => {
   const events: unknown[][] = [];
+  const checkMatch = vi.fn<NonNullable<Plugin["checkMatch"]>>(async () => null);
   const reporter: Plugin = {
     name: "capturing-reporter",
-    checkMatch: vi.fn(async () => null),
+    checkMatch,
     reportFile: async (file) => void events.push(["file", file.localPath]),
     reportMatch: async (match) => void events.push(["match", match.url.href]),
     reportResult: async (result) =>
       void events.push(["result", result.url.href]),
     reportEnd: async (error) => void events.push(["end", error]),
   };
-  return { events, reporter };
+  return { events, reporter, checkMatch };
 };
 
 describe("run", () => {
@@ -47,10 +48,12 @@ describe("run", () => {
     );
     await fs.writeFile(path.join(dir, "b.txt"), "@TODO test:one\n");
 
-    const checkMatch = vi.fn(async ({ url }: { url: URL }) => ({
-      title: url.href,
-      isExpired: url.href === "test:one",
-    }));
+    const checkMatch = vi.fn<NonNullable<Plugin["checkMatch"]>>(
+      async ({ url }) => ({
+        title: url.href,
+        isExpired: url.href === "test:one",
+      }),
+    );
 
     const results = await run({
       ...baseConfig,
@@ -87,12 +90,16 @@ describe("run", () => {
   it("routes reporting to the forced reporter but URL checks to the configured plugins", async () => {
     await fs.writeFile(path.join(dir, "a.txt"), "@TODO test:one\n");
 
-    const configuredCheck = vi.fn(async () => ({
-      title: "found",
-      isExpired: false,
-    }));
-    const configuredReportFile = vi.fn(async () => {});
-    const { events, reporter } = makeCapturingReporter();
+    const configuredCheck = vi.fn<NonNullable<Plugin["checkMatch"]>>(
+      async () => ({
+        title: "found",
+        isExpired: false,
+      }),
+    );
+    const configuredReportFile = vi.fn<NonNullable<Plugin["reportFile"]>>(
+      async () => {},
+    );
+    const { events, reporter, checkMatch } = makeCapturingReporter();
 
     const results = await run(
       {
@@ -114,7 +121,7 @@ describe("run", () => {
 
     // ...but reporting goes only to the forced reporter.
     expect(configuredReportFile).not.toHaveBeenCalled();
-    expect(reporter.checkMatch).not.toHaveBeenCalled();
+    expect(checkMatch).not.toHaveBeenCalled();
     expect(events).toEqual([
       ["file", "a.txt"],
       ["match", "test:one"],

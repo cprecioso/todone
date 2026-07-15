@@ -5,9 +5,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const makeContext = () =>
   ({
-    warn: vi.fn(),
-    info: vi.fn(),
-    debug: vi.fn(),
+    warn: vi.fn<(message: string) => void>(),
+    info: vi.fn<(message: string) => void>(),
+    debug: vi.fn<(message: string) => void>(),
   }) satisfies PluginContext;
 
 const makeResult = (

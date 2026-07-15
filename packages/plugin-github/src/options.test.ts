@@ -73,8 +73,8 @@ describe("GithubPluginOptionsSchema", () => {
   it("rejects a repository that is not in owner/repo form", async () => {
     const schema = await importSchema();
 
-    expect(() =>
-      schema.parse({ context: { repository: "no-slash" } }),
-    ).toThrow();
+    expect(() => schema.parse({ context: { repository: "no-slash" } })).toThrow(
+      /Invalid/,
+    );
   });
 });

@@ -123,8 +123,12 @@ describe("PluginContainer plugin handling", () => {
   });
 
   it("fans reporting hooks out to every plugin", async () => {
-    const reportFileA = vi.fn(async () => {});
-    const reportFileB = vi.fn(async () => {});
+    const reportFileA = vi.fn<NonNullable<Plugin["reportFile"]>>(
+      async () => {},
+    );
+    const reportFileB = vi.fn<NonNullable<Plugin["reportFile"]>>(
+      async () => {},
+    );
     const container = new PluginContainer([
       { name: "a", reportFile: reportFileA },
       { name: "b", reportFile: reportFileB },
@@ -138,8 +142,8 @@ describe("PluginContainer plugin handling", () => {
   });
 
   it("fans context logging out to every plugin", () => {
-    const warnA = vi.fn();
-    const warnB = vi.fn();
+    const warnA = vi.fn<NonNullable<Plugin["warn"]>>();
+    const warnB = vi.fn<NonNullable<Plugin["warn"]>>();
     const container = new PluginContainer([
       { name: "a", warn: warnA },
       { name: "b", warn: warnB },
@@ -152,7 +156,7 @@ describe("PluginContainer plugin handling", () => {
   });
 
   it("lets a plugin reach the shared context through `this`", async () => {
-    const warn = vi.fn();
+    const warn = vi.fn<NonNullable<Plugin["warn"]>>();
     const container = new PluginContainer([
       { name: "logger", warn },
       {

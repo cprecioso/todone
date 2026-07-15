@@ -58,7 +58,7 @@ describe("checkFeatureSupport", () => {
         browser: "netscape",
         version: "4",
       }),
-    ).toThrow();
+    ).toThrow(/Cannot read properties of undefined/);
   });
 });
 

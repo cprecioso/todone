@@ -12,7 +12,11 @@ const lines = () =>
     ([line]) => JSON.parse(line as string) as unknown,
   );
 
-const ctx = { warn: vi.fn(), info: vi.fn(), debug: vi.fn() };
+const ctx = {
+  warn: vi.fn<(message: string) => void>(),
+  info: vi.fn<(message: string) => void>(),
+  debug: vi.fn<(message: string) => void>(),
+};
 
 const file: t.File = { localPath: "input.txt", fullPath: "/fixture/input.txt" };
 
@@ -41,7 +45,7 @@ describe("jsonReporter", () => {
           fullPath: "x.txt",
         }),
       ),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/Expected an absolute path/);
   });
 
   it("emits matches with the URL as a string and the 1-based position", async () => {

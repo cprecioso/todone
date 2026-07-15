@@ -2,6 +2,8 @@ import type { Octokit } from "octokit";
 import { describe, expect, it, vi } from "vitest";
 import { makeResourceFetchers } from "./api";
 
+type ApiCall = () => Promise<{ data: unknown }>;
+
 const repo = { owner: "octo", repo: "repo" };
 
 const clientWith = (overrides: {
@@ -12,10 +14,12 @@ const clientWith = (overrides: {
   ({
     rest: {
       issues: {
-        get: vi.fn(async () => ({ data: overrides.issue })),
-        getMilestone: vi.fn(async () => ({ data: overrides.milestone })),
+        get: vi.fn<ApiCall>(async () => ({ data: overrides.issue })),
+        getMilestone: vi.fn<ApiCall>(async () => ({
+          data: overrides.milestone,
+        })),
       },
-      pulls: { get: vi.fn(async () => ({ data: overrides.pull })) },
+      pulls: { get: vi.fn<ApiCall>(async () => ({ data: overrides.pull })) },
     },
   }) as unknown as Octokit;
 

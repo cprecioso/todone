@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import figmaPlugin from "./index";
 
-const context = () => ({ warn: vi.fn(), info: vi.fn(), debug: vi.fn() });
+const context = () => ({
+  warn: vi.fn<(message: string) => void>(),
+  info: vi.fn<(message: string) => void>(),
+  debug: vi.fn<(message: string) => void>(),
+});
 
 const check = (url: string) =>
   figmaPlugin({ token: "test-token" }).checkMatch!.call(context(), {

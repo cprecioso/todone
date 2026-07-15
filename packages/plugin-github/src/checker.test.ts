@@ -2,13 +2,15 @@ import type { Octokit } from "octokit";
 import { describe, expect, it, vi } from "vitest";
 import { makeCheckerPlugin } from "./checker";
 
+type ApiCall = (params: Record<string, unknown>) => Promise<{ data: unknown }>;
+
 const makeFakeClient = () => ({
   rest: {
     issues: {
-      get: vi.fn(async () => ({
+      get: vi.fn<ApiCall>(async () => ({
         data: { title: "An issue", state: "open", closed_at: null },
       })),
-      getMilestone: vi.fn(async () => ({
+      getMilestone: vi.fn<ApiCall>(async () => ({
         data: {
           title: "A milestone",
           state: "open",
@@ -18,14 +20,18 @@ const makeFakeClient = () => ({
       })),
     },
     pulls: {
-      get: vi.fn(async () => ({
+      get: vi.fn<ApiCall>(async () => ({
         data: { title: "A pull request", state: "open", closed_at: null },
       })),
     },
   },
 });
 
-const context = () => ({ warn: vi.fn(), info: vi.fn(), debug: vi.fn() });
+const context = () => ({
+  warn: vi.fn<(message: string) => void>(),
+  info: vi.fn<(message: string) => void>(),
+  debug: vi.fn<(message: string) => void>(),
+});
 
 const check = (client: ReturnType<typeof makeFakeClient>, url: string) =>
   makeCheckerPlugin(client as unknown as Octokit).checkMatch!.call(context(), {
@@ -104,6 +110,6 @@ describe("checker URL rejection", () => {
 
     await expect(
       check(client, "https://github.com/octo/repo/issues/abc"),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/Invalid/);
   });
 });

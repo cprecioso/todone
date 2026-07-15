@@ -39,7 +39,7 @@ describe("issue data zone", () => {
       u("root", [...md.createZone("todone", [md.createComment("not json")])]),
     );
 
-    expect(() => getIssueData(body)).toThrow();
+    expect(() => getIssueData(body)).toThrow(/JSON/);
   });
 
   it("throws when the payload is missing the todoUrl", () => {
@@ -47,6 +47,6 @@ describe("issue data zone", () => {
       u("root", [...md.createZone("todone", [md.createComment("{}")])]),
     );
 
-    expect(() => getIssueData(body)).toThrow();
+    expect(() => getIssueData(body)).toThrow(/todoUrl/);
   });
 });

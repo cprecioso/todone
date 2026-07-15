@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import caniusePlugin from "./index";
 
-const context = () => ({ warn: vi.fn(), info: vi.fn(), debug: vi.fn() });
+const context = () => ({
+  warn: vi.fn<(message: string) => void>(),
+  info: vi.fn<(message: string) => void>(),
+  debug: vi.fn<(message: string) => void>(),
+});
 
 const check = (url: string, browserslist: string | readonly string[]) =>
   caniusePlugin({ browserslist }).checkMatch!.call(context(), {
@@ -30,7 +34,7 @@ describe("caniusePlugin URL matching", () => {
   it("throws for an unknown feature slug", async () => {
     await expect(
       check("https://caniuse.com/definitely-not-a-feature", "chrome 100"),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/Cannot read properties of undefined/);
   });
 });
 

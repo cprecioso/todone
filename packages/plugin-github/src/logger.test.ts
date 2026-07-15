@@ -2,10 +2,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { makeLoggerPlugin } from "./logger";
 
 vi.mock("@actions/core", () => ({
-  warning: vi.fn(),
-  info: vi.fn(),
-  debug: vi.fn(),
-  error: vi.fn(),
+  warning: vi.fn<(message: string) => void>(),
+  info: vi.fn<(message: string) => void>(),
+  debug: vi.fn<(message: string) => void>(),
+  error: vi.fn<(message: string) => void>(),
 }));
 
 const core = vi.mocked(await import("@actions/core"));
@@ -14,7 +14,11 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-const ctx = { warn: vi.fn(), info: vi.fn(), debug: vi.fn() };
+const ctx = {
+  warn: vi.fn<(message: string) => void>(),
+  info: vi.fn<(message: string) => void>(),
+  debug: vi.fn<(message: string) => void>(),
+};
 
 const match = {
   url: new URL("test:x"),
@@ -26,9 +30,9 @@ describe("makeLoggerPlugin", () => {
   it("routes context logging to the Actions toolkit", async () => {
     const plugin = makeLoggerPlugin();
 
-    await plugin.warn!.call(ctx, "careful");
-    await plugin.info!.call(ctx, "fyi");
-    await plugin.debug!.call(ctx, "verbose");
+    plugin.warn!.call(ctx, "careful");
+    plugin.info!.call(ctx, "fyi");
+    plugin.debug!.call(ctx, "verbose");
 
     expect(core.warning).toHaveBeenCalledExactlyOnceWith("careful");
     expect(core.info).toHaveBeenCalledExactlyOnceWith("fyi");

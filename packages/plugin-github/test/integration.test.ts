@@ -118,7 +118,11 @@ describe("githubPlugin through the todone pipeline", () => {
 
     await expect(
       checker!.checkMatch!.call(
-        { warn: vi.fn(), info: vi.fn(), debug: vi.fn() },
+        {
+          warn: vi.fn<(message: string) => void>(),
+          info: vi.fn<(message: string) => void>(),
+          debug: vi.fn<(message: string) => void>(),
+        },
         { url: new URL("https://github.com/octo/repo/issues/404") },
       ),
     ).rejects.toThrow(/Not Found/);

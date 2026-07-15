@@ -31,8 +31,12 @@ describe("ConfigSchema", () => {
   });
 
   it("rejects values of the wrong type", () => {
-    expect(() => ConfigSchema.parse({ keyword: 123 })).toThrow();
-    expect(() => ConfigSchema.parse({ globs: "**/*" })).toThrow();
+    expect(() => ConfigSchema.parse({ keyword: 123 })).toThrow(
+      /expected string/i,
+    );
+    expect(() => ConfigSchema.parse({ globs: "**/*" })).toThrow(
+      /expected array/i,
+    );
   });
 });
 
