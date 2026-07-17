@@ -21,7 +21,8 @@
   "exports": {
     "./tsconfig": "./tsconfig.base.json",
     "./tsdown": "./dist/tsdown.js",
-    "./typedoc": "./dist/typedoc.js"
+    "./typedoc": "./dist/typedoc.js",
+    "./vitest": "./dist/vitest.js"
   },
   "scripts": {
     "build": "tsdown",
@@ -30,7 +31,8 @@
   },
   "peerDependencies": {
     "tsdown": "^0.22.4",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   },
   "dependencies": {
     "@arethetypeswrong/core": "^0.18.5",
@@ -41,7 +43,8 @@
   "devDependencies": {
     "@types/node": "^24.13.3",
     "tsdown": "^0.22.4",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   },
   "sideEffects": false
 }

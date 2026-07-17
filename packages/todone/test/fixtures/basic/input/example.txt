@@ -1,0 +1,4 @@
+Some text @TODO fixture:expired-1?date more text
+Nothing on this line
+@TODO fixture:fresh-1
+Repeat @TODO fixture:expired-1?date

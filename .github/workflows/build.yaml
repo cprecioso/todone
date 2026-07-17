@@ -24,7 +24,7 @@ jobs:
       - run: yarn install --immutable
 
       - name: Build and check
-        run: yarn nx run-many -t lint,build,check,build-docs
+        run: yarn nx run-many -t lint,build,check,build-docs,test
 
       - name: Pack packages
         run: |

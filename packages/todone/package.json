@@ -50,7 +50,8 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "test": "vitest run"
   },
   "dependencies": {
     "@cprecioso/async-iterable-helpers": "^0.4.0",
@@ -69,11 +70,21 @@
     "@types/node": "^24.13.3",
     "tsdown": "^0.22.4",
     "type-fest": "^5.8.0",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "provenance": true,
     "access": "public"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "nx": {
+    "targets": {
+      "test": {
+        "dependsOn": [
+          "build"
+        ]
+      }
+    }
+  }
 }
