@@ -48,9 +48,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arethetypeswrong/core@npm:^0.18.4":
-  version: 0.18.4
-  resolution: "@arethetypeswrong/core@npm:0.18.4"
+"@arethetypeswrong/core@npm:^0.18.5":
+  version: 0.18.5
+  resolution: "@arethetypeswrong/core@npm:0.18.5"
   dependencies:
     "@andrewbranch/untar.js": "npm:^1.0.3"
     "@loaderkit/resolve": "npm:^1.0.2"
@@ -60,7 +60,7 @@ __metadata:
     semver: "npm:^7.5.4"
     typescript: "npm:5.6.1-rc"
     validate-npm-package-name: "npm:^5.0.0"
-  checksum: 10/c4ba9fc03cece747b8f955061141cd169879dfdc7bdacbe79c45d5bc1c9cc1086889be8373796b442ff436cb45271205ffef4aad6f2a9fae7dbd0f247a6db538
+  checksum: 10/9cbb7156327005463a0eb7ce6117ffa17ad48a18448548eefb88b94ebd6553e22d4f576253c4f91cc76f409933c36733b4802b22718189802d8d0c8da823116e
   languageName: node
   linkType: hard
 
@@ -996,10 +996,54 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reteps/dockerfmt@npm:^0.5.1":
-  version: 0.5.2
-  resolution: "@reteps/dockerfmt@npm:0.5.2"
-  checksum: 10/402290057eb259b9f00f80c8c67ef514aab9ea4b50d6342715f7fd432f1371720e71bd7ef652bd08605a46f982e6391a4b37f79e063243e3b202d604fa32c3e4
+"@reteps/dockerfmt-darwin-arm64@npm:0.5.4":
+  version: 0.5.4
+  resolution: "@reteps/dockerfmt-darwin-arm64@npm:0.5.4"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@reteps/dockerfmt-darwin-x64@npm:0.5.4":
+  version: 0.5.4
+  resolution: "@reteps/dockerfmt-darwin-x64@npm:0.5.4"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@reteps/dockerfmt-linux-arm64@npm:0.5.4":
+  version: 0.5.4
+  resolution: "@reteps/dockerfmt-linux-arm64@npm:0.5.4"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@reteps/dockerfmt-linux-x64@npm:0.5.4":
+  version: 0.5.4
+  resolution: "@reteps/dockerfmt-linux-x64@npm:0.5.4"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@reteps/dockerfmt@npm:^0.5.4":
+  version: 0.5.4
+  resolution: "@reteps/dockerfmt@npm:0.5.4"
+  dependencies:
+    "@reteps/dockerfmt-darwin-arm64": "npm:0.5.4"
+    "@reteps/dockerfmt-darwin-x64": "npm:0.5.4"
+    "@reteps/dockerfmt-linux-arm64": "npm:0.5.4"
+    "@reteps/dockerfmt-linux-x64": "npm:0.5.4"
+  dependenciesMeta:
+    "@reteps/dockerfmt-darwin-arm64":
+      optional: true
+    "@reteps/dockerfmt-darwin-x64":
+      optional: true
+    "@reteps/dockerfmt-linux-arm64":
+      optional: true
+    "@reteps/dockerfmt-linux-x64":
+      optional: true
+  bin:
+    dockerfmt: dist/launcher.js
+  checksum: 10/a9d76dd030a5f4b0e5903d95481154dd2234597b11f7d7f4f8ce5342700eaa3f1b7c1ddf449ea0cef1c14f63ff19e6d4b09b68b87ecc1624ec7a9471184caf45
   languageName: node
   linkType: hard
 
@@ -1200,7 +1244,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@todone/internal-build@workspace:packages/internal-build"
   dependencies:
-    "@arethetypeswrong/core": "npm:^0.18.4"
+    "@arethetypeswrong/core": "npm:^0.18.5"
     "@types/node": "npm:^24.13.3"
     publint: "npm:^0.3.21"
     tsdown: "npm:^0.22.4"
@@ -1301,10 +1345,10 @@ __metadata:
     nx: "npm:^23.0.1"
     oxlint: "npm:^1.73.0"
     oxlint-tsgolint: "npm:^0.24.0"
-    prettier: "npm:3.9.4"
+    prettier: "npm:3.9.5"
     prettier-plugin-organize-imports: "npm:4.3.0"
     prettier-plugin-pkg: "npm:0.22.1"
-    prettier-plugin-sh: "npm:0.18.1"
+    prettier-plugin-sh: "npm:0.19.0"
     todone: "workspace:^"
     typedoc: "npm:^0.28.20"
     typedoc-plugin-dt-links: "npm:^2.0.62"
@@ -4193,24 +4237,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-sh@npm:0.18.1":
-  version: 0.18.1
-  resolution: "prettier-plugin-sh@npm:0.18.1"
+"prettier-plugin-sh@npm:0.19.0":
+  version: 0.19.0
+  resolution: "prettier-plugin-sh@npm:0.19.0"
   dependencies:
-    "@reteps/dockerfmt": "npm:^0.5.1"
-    sh-syntax: "npm:^0.5.8"
+    "@reteps/dockerfmt": "npm:^0.5.4"
+    sh-syntax: "npm:^0.6.0"
   peerDependencies:
     prettier: ^3.6.0
-  checksum: 10/e4ffbff5c5c4821589ca3921596041b7d94ea6bd51593d8271680ce1d337ff6563623c37e326b799e08a8085184d1125a6369cccbc1106361aaee789565f3052
+  checksum: 10/ebb247e0e6f75fda3dac9a055b303e8bdabf4c0c57b5fc9b9b691eae8b4957525c0a20060c0fae18e569a21aea7ac0e59648f2e1b1b5d7539a24919b2a6ddca9
   languageName: node
   linkType: hard
 
-"prettier@npm:3.9.4":
-  version: 3.9.4
-  resolution: "prettier@npm:3.9.4"
+"prettier@npm:3.9.5":
+  version: 3.9.5
+  resolution: "prettier@npm:3.9.5"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10/4a0dc4389d442f5aca0beb12778c90b6ceb9831940b01a1df5eba9150b5ce96fa52eda9074a10a370e732adc03e2f645597dfd8b7e3f1e94dee28df01004a0fd
+  checksum: 10/b6587f1582ba653ce5207ee227aff646500e5098646931088f176d1ab090b1f47d5a333f1facd634e9aa7dcb15c45940e2cec13a5962534cf0200617517b67b6
   languageName: node
   linkType: hard
 
@@ -4490,12 +4534,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sh-syntax@npm:^0.5.8":
-  version: 0.5.8
-  resolution: "sh-syntax@npm:0.5.8"
-  dependencies:
-    tslib: "npm:^2.8.1"
-  checksum: 10/cbc046244b81a997f988f7f2244f953756332720c82054c22d4680d4eee5dc3c5058c9bd84c13b3e9c320ba25970a99e24be465cf265f41ef7cb4c4030cab6d1
+"sh-syntax@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "sh-syntax@npm:0.6.0"
+  checksum: 10/ad2ddff06374a6e422741d286a5e7012222b0d16f23df6842c7e06af3a01390dab53821e953b33671d816e961a9af32fdd61feb8ddf882b50f3d3d08a81a913e
   languageName: node
   linkType: hard
 
@@ -4811,7 +4853,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.8.1, tslib@npm:^2.4.0, tslib@npm:^2.8.1":
+"tslib@npm:2.8.1, tslib@npm:^2.4.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7

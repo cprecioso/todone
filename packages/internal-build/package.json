@@ -33,7 +33,7 @@
     "typescript": "~6.0.3"
   },
   "dependencies": {
-    "@arethetypeswrong/core": "^0.18.4",
+    "@arethetypeswrong/core": "^0.18.5",
     "publint": "^0.3.21",
     "type-fest": "^5.8.0",
     "typedoc": "^0.28.20"
