@@ -64,8 +64,8 @@ describe("makeFileMatcher", () => {
     const file = await makeFile("*TODO test:starred\nxTODO test:regex-dot\n");
     const matches = await collect(makeFileMatcher("*TODO")(file));
 
-    // `*` must be treated literally: it matches line 1 but must not act as a
-    // quantifier that would also match `xTODO` on line 2.
+    // `*` must be treated literally: without `RegExp.escape`, building the
+    // matcher regex would throw a SyntaxError ("nothing to repeat").
     expect(matches.map((m) => m.url.href)).toEqual(["test:starred"]);
   });
 
