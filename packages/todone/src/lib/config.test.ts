@@ -16,15 +16,17 @@ describe("loadConfigFile", () => {
   it("loads and validates a todone.config.ts file", async () => {
     await fs.writeFile(
       path.join(dir, "todone.config.ts"),
-      `export default { keyword: "@FIXME", globs: ["input/**"] };\n`,
+      `export default { keyword: "@FIXME", include: ["input/**"] };\n`,
     );
 
     const config = await loadConfigFile(dir);
 
-    expect(config.keyword).toBe("@FIXME");
-    expect(config.globs).toEqual(["input/**"]);
-    expect(config.gitignore).toBe(true);
-    expect(config.plugins).toEqual([]);
+    expect(config).toEqual({
+      keyword: "@FIXME",
+      include: { patterns: ["input/**"] },
+      exclude: { gitignore: true, patterns: ["node_modules/**", ".git/**"] },
+      plugins: [],
+    });
   });
 
   it("returns the defaults when no config file exists", async () => {
@@ -32,8 +34,8 @@ describe("loadConfigFile", () => {
 
     expect(config).toEqual({
       keyword: "@TODO",
-      gitignore: true,
-      globs: ["**/*"],
+      include: { patterns: ["**/*"] },
+      exclude: { gitignore: true, patterns: ["node_modules/**", ".git/**"] },
       plugins: [],
     });
   });

@@ -1,4 +1,5 @@
 import { run } from "#/index";
+import { ConfigSchema } from "#/lib/config";
 import { PluginError } from "#/lib/container";
 import type { Plugin } from "#/plugin";
 import * as fs from "node:fs/promises";
@@ -18,11 +19,11 @@ afterEach(async () => {
   await fs.rm(dir, { recursive: true, force: true });
 });
 
-const baseConfig = {
+const baseConfig = ConfigSchema.decode({
   keyword: "@TODO",
-  gitignore: false,
-  globs: ["**/*"],
-};
+  include: ["**/*"],
+  exclude: { gitignore: false },
+});
 
 /** A reporter that records every hook invocation in order. */
 const makeCapturingReporter = () => {

@@ -2,6 +2,7 @@ import * as t from "#/types";
 import * as it from "@cprecioso/async-iterable-helpers";
 import { globbyStream } from "globby";
 import * as path from "node:path";
+import type { ReadonlyDeep } from "type-fest";
 import { Config } from "./config";
 
 /** An object representing a file and its contents */
@@ -18,7 +19,10 @@ export class File implements t.File {
   ) {}
 }
 
-export function getFiles(cwd: string, config: Config) {
+export function getFiles(
+  cwd: string,
+  config: ReadonlyDeep<Pick<Config, "include" | "exclude">>,
+) {
   return it
     .from(
       globbyStream(config.include.patterns, {
@@ -28,7 +32,7 @@ export function getFiles(cwd: string, config: Config) {
         gitignore: config.exclude.gitignore,
         expandDirectories: true,
         dot: true,
-        ignore: config.exclude.patterns,
+        ignore: [...config.exclude.patterns],
       }),
     )
     .pipe(it.map((file) => File.make(cwd, file)));
