@@ -1,5 +1,7 @@
-export default {
-  globs: ["input/**"],
+import { defineConfig } from "todone/config";
+
+export default defineConfig({
+  include: ["input/**"],
   plugins: [
     {
       name: "fixture-plugin",
@@ -12,4 +14,4 @@ export default {
       },
     },
   ],
-};
+});

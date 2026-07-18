@@ -148,8 +148,8 @@ describe("gitignore handling", () => {
     await fs.writeFile(
       path.join(dir, "todone.config.ts"),
       `export default {
-        gitignore: ${gitignore},
-        globs: ["input/**"],
+        include: ["input/**"],
+        exclude: { gitignore: ${gitignore} },
         plugins: [
           {
             name: "fixture-plugin",

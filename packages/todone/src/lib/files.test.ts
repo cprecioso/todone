@@ -44,7 +44,10 @@ describe("getFiles", () => {
 
   const localPaths = async (globs: readonly string[], gitignore: boolean) => {
     const paths: string[] = [];
-    for await (const file of getFiles(globs, { cwd: dir, gitignore })) {
+    for await (const file of getFiles(dir, {
+      include: { patterns: globs },
+      exclude: { gitignore, patterns: [] },
+    })) {
       expect(file.fullPath).toBe(path.join(dir, file.localPath));
       paths.push(file.localPath);
     }

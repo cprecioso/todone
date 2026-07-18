@@ -25,8 +25,8 @@ it("resolves date: TODOs through the full todone pipeline", async () => {
 
   const results = await run({
     keyword: "@TODO",
-    gitignore: false,
-    globs: ["**/*"],
+    include: ["**/*"],
+    exclude: { gitignore: false },
     plugins: [datePlugin()],
   });
 

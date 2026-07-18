@@ -1,4 +1,5 @@
 import { run } from "#/index";
+import type { ConfigInput } from "#/lib/config";
 import { PluginError } from "#/lib/container";
 import type { Plugin } from "#/plugin";
 import * as fs from "node:fs/promises";
@@ -20,9 +21,9 @@ afterEach(async () => {
 
 const baseConfig = {
   keyword: "@TODO",
-  gitignore: false,
-  globs: ["**/*"],
-};
+  include: ["**/*"],
+  exclude: { gitignore: false },
+} satisfies ConfigInput;
 
 /** A reporter that records every hook invocation in order. */
 const makeCapturingReporter = () => {

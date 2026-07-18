@@ -1,7 +1,9 @@
+import { defineConfig } from "todone/config";
+
 // Self-contained on purpose: no imports, so this fixture needs neither the
 // built `todone` package nor any plugin package to be resolvable.
-export default {
-  globs: ["input/**"],
+export default defineConfig({
+  include: ["input/**"],
   plugins: [
     {
       name: "fixture-plugin",
@@ -17,4 +19,4 @@ export default {
       },
     },
   ],
-};
+});
