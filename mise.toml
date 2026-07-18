@@ -2,6 +2,7 @@
 node = "24"
 "npm:corepack" = "latest"
 "npm:npm" = "latest"
+zizmor = "latest"
 
 [shell_alias]
 "nx" = "yarn run -TB nx"

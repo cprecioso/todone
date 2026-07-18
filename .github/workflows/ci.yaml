@@ -44,7 +44,9 @@ jobs:
 
       - name: Publish to pkg.pr.new
         if: ${{ inputs.publish-preview }}
-        run: yarn dlx pkg-pr-new publish --yarn $(yarn workspaces list --no-private --json | jq -r '.location')
+        run:
+          # zizmor: ignore[use-trusted-publishing]
+          yarn dlx pkg-pr-new publish --yarn $(yarn workspaces list --no-private --json | jq -r '.location')
 
   zizmor:
     name: Run zizmor
