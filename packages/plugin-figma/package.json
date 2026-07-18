@@ -5,11 +5,11 @@
   "description": "A todone plugin that will alert you when a comment in a Figma file has been resolved",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cprecioso/todone.git"
+    "url": "git+https://github.com/todone-run/todone.git",
+    "directory": "packages/plugin-figma"
   },
-  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/plugin-figma#readme",
   "bugs": {
-    "url": "https://github.com/cprecioso/todone/issues"
+    "url": "https://github.com/todone-run/todone/issues"
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",

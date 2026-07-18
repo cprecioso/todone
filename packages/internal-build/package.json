@@ -5,11 +5,11 @@
   "description": "Internal build configurations for todone",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cprecioso/todone.git"
+    "url": "git+https://github.com/todone-run/todone.git",
+    "directory": "packages/internal-build"
   },
-  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/internal-build#readme",
   "bugs": {
-    "url": "https://github.com/cprecioso/todone/issues"
+    "url": "https://github.com/todone-run/todone/issues"
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",

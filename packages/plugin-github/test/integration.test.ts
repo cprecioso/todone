@@ -41,7 +41,7 @@ describe("githubPlugin through the todone pipeline", () => {
     const authHeaders: (string | null)[] = [];
 
     server.use(
-      http.get(`${api}/repos/cprecioso/todone/issues/1`, ({ request }) => {
+      http.get(`${api}/repos/todone-run/todone/issues/1`, ({ request }) => {
         authHeaders.push(request.headers.get("authorization"));
         return HttpResponse.json({
           title: "A closed issue",
@@ -62,7 +62,7 @@ describe("githubPlugin through the todone pipeline", () => {
     await fs.writeFile(
       path.join(dir, "hello.ts"),
       [
-        "// @TODO https://github.com/cprecioso/todone/issues/1",
+        "// @TODO https://github.com/todone-run/todone/issues/1",
         "// @TODO https://github.com/actions/runner/issues/3600",
         "// @TODO https://sgithub.com/actions/runner/issues/3600",
         "",
@@ -84,7 +84,7 @@ describe("githubPlugin through the todone pipeline", () => {
     const byUrl = new Map(results.map((result) => [result.url.href, result]));
 
     expect(
-      byUrl.get("https://github.com/cprecioso/todone/issues/1")!.result,
+      byUrl.get("https://github.com/todone-run/todone/issues/1")!.result,
     ).toEqual({
       title: "A closed issue",
       isExpired: true,
