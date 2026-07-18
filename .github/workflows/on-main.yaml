@@ -9,13 +9,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  pull-requests: write
+  pages: write
+  id-token: write
+  security-events: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
