@@ -1,4 +1,4 @@
-name: Publish release
+name: Publish
 
 on:
   workflow_dispatch:
@@ -6,7 +6,9 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yaml
+    uses: ./.github/workflows/ci.yaml
+    with:
+      publish-preview: true
 
   publish-packages:
     needs: build
@@ -22,10 +24,12 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
 
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: packages
           path: ./tarballs
@@ -47,4 +51,4 @@ jobs:
       pages: write
 
     steps:
-      - uses: actions/deploy-pages@v5
+      - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v3.0.2-node.24

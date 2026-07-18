@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: googleapis/release-please-action@v5
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
 
     outputs:
@@ -27,5 +27,5 @@ jobs:
   publish:
     needs: release
     if: fromJson(needs.release.outputs.releases_created)
-    uses: ./.github/workflows/publish.yaml
+    uses: ./.github/workflows/cd.yaml
     secrets: inherit
