@@ -1,5 +1,61 @@
 # @todone/plugin-caniuse
 
+## [2.0.0](https://github.com/todone-run/todone/compare/plugin-caniuse-v1.0.1...plugin-caniuse-v2.0.0) (2026-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* redesign plugin system around pre-initialized plugin objects ([#49](https://github.com/todone-run/todone/issues/49))
+* migrate back off Effect ([#48](https://github.com/todone-run/todone/issues/48))
+* rework plugin types
+* rework plugin loading
+* merge core and types into main package
+* rework plugin system
+* simplify plugin types
+* migrate to Effect
+* upgrade to node 24
+* browserslist now uses explicit config instead of checking the file
+* improve File's types
+
+### Features
+
+* browserslist now uses explicit config instead of checking the file ([d0e69ab](https://github.com/todone-run/todone/commit/d0e69ab38aa7cd0a38857fd132f5d52acf11505d))
+* merge core and types into main package ([8e4d745](https://github.com/todone-run/todone/commit/8e4d745ebe6dca28a8c7995d64690c6666356f94))
+* migrate back off Effect ([#48](https://github.com/todone-run/todone/issues/48)) ([dfa317c](https://github.com/todone-run/todone/commit/dfa317c0799a086652be57f96e12654fb1fe30cf))
+* redesign plugin system around pre-initialized plugin objects ([#49](https://github.com/todone-run/todone/issues/49)) ([8a15dcd](https://github.com/todone-run/todone/commit/8a15dcd57ad308d8826a6aefdf32f2e9c5e908ed))
+* rework plugin loading ([dcca7a9](https://github.com/todone-run/todone/commit/dcca7a9773a8b58b85e7b69931c9ea90f21b221d))
+* upgrade to node 24 ([ab81303](https://github.com/todone-run/todone/commit/ab81303ed712570b64d54394a0442395abf7b827))
+* use native URLPattern ([17894f4](https://github.com/todone-run/todone/commit/17894f49d30b8325cc57c02f49fe163c6a6c59d8))
+* use workspace:^ ranges ([4a517ac](https://github.com/todone-run/todone/commit/4a517ac0c90e45585032ba521600b1222c5fbb62))
+
+
+### Bug Fixes
+
+* rework plugin types ([b1aad1f](https://github.com/todone-run/todone/commit/b1aad1f3e13533d22f5c8911dde24b54e4973abf))
+* update package URLs ([#76](https://github.com/todone-run/todone/issues/76)) ([4dac6a1](https://github.com/todone-run/todone/commit/4dac6a19a0f0a684793066c36358a538aae7014f))
+
+
+### Miscellaneous Chores
+
+* rework plugin system ([21201c6](https://github.com/todone-run/todone/commit/21201c6371e624920820a463fc8a37f594df8be0))
+* simplify plugin types ([7c411ba](https://github.com/todone-run/todone/commit/7c411ba947f08a788336cf774cd00d9f0c1ff1af))
+
+
+### Code Refactoring
+
+* improve File's types ([f2de18e](https://github.com/todone-run/todone/commit/f2de18e8193cafae271433a088cb681e19ef0072))
+* migrate to Effect ([8844e25](https://github.com/todone-run/todone/commit/8844e2515fcf3b3f49b3880bef151f32b10bca84))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+    * todone bumped to 2.0.0
+  * peerDependencies
+    * todone bumped to 2.0.0
+
 ## [1.0.1](https://github.com/cprecioso/todone/compare/plugin-caniuse-v1.0.0...plugin-caniuse-v1.0.1) (2025-08-03)
 
 

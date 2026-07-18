@@ -1,5 +1,36 @@
 # @todone/internal-build
 
+## [2.0.0](https://github.com/todone-run/todone/compare/internal-build-v1.0.1...internal-build-v2.0.0) (2026-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate back off Effect ([#48](https://github.com/todone-run/todone/issues/48))
+* merge core and types into main package
+* migrate to Effect
+* upgrade to node 24
+
+### Features
+
+* merge core and types into main package ([8e4d745](https://github.com/todone-run/todone/commit/8e4d745ebe6dca28a8c7995d64690c6666356f94))
+* migrate back off Effect ([#48](https://github.com/todone-run/todone/issues/48)) ([dfa317c](https://github.com/todone-run/todone/commit/dfa317c0799a086652be57f96e12654fb1fe30cf))
+* upgrade to node 24 ([ab81303](https://github.com/todone-run/todone/commit/ab81303ed712570b64d54394a0442395abf7b827))
+
+
+### Bug Fixes
+
+* update package URLs ([#76](https://github.com/todone-run/todone/issues/76)) ([4dac6a1](https://github.com/todone-run/todone/commit/4dac6a19a0f0a684793066c36358a538aae7014f))
+
+
+### Performance Improvements
+
+* use native iterable handling ([7f1e14a](https://github.com/todone-run/todone/commit/7f1e14acaf0b4ac70f08b7a4f6f872c087c6321b))
+
+
+### Code Refactoring
+
+* migrate to Effect ([8844e25](https://github.com/todone-run/todone/commit/8844e2515fcf3b3f49b3880bef151f32b10bca84))
+
 ## [1.0.1](https://github.com/cprecioso/todone/compare/internal-build-v1.0.0...internal-build-v1.0.1) (2025-08-03)
 
 
