@@ -30,3 +30,8 @@ jobs:
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: echo "$PR_TITLE" | yarn commitlint --verbose
+
+  pass:
+    runs-on: ubuntu-latest
+    needs: [build, conventional-commits]
+    steps: []

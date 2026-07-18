@@ -26,3 +26,8 @@ jobs:
           BASE_SHA: ${{ github.event.merge_group.base_sha }}
           HEAD_SHA: ${{ github.event.merge_group.head_sha }}
         run: yarn commitlint --from "$BASE_SHA" --to "$HEAD_SHA" --verbose
+
+  pass:
+    runs-on: ubuntu-latest
+    needs: [build, conventional-commits]
+    steps: []
