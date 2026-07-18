@@ -1,5 +1,3 @@
 rules:
-  secrets-inherit:
-    disable: true
   excessive-permissions:
     disable: true
