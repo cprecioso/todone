@@ -1,5 +1,63 @@
 # @todone/plugin-github
 
+## [0.8.0](https://github.com/todone-run/todone/compare/plugin-github-v0.7.2...plugin-github-v0.8.0) (2026-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* improve glob configuration, exclude .git by default ([#63](https://github.com/todone-run/todone/issues/63))
+* rework plugins ([#62](https://github.com/todone-run/todone/issues/62))
+* redesign plugin system around pre-initialized plugin objects ([#49](https://github.com/todone-run/todone/issues/49))
+* migrate back off Effect ([#48](https://github.com/todone-run/todone/issues/48))
+* rework plugin types
+* rework plugin loading
+* merge core and types into main package
+* rework plugin system
+* simplify plugin types
+* migrate to Effect
+
+### Features
+
+* add support for milestone URLs ([1c01e2d](https://github.com/todone-run/todone/commit/1c01e2de947a5b519f54ceaf3fcba7a084b9a07c))
+* allow github checker to work without tokens ([a86a872](https://github.com/todone-run/todone/commit/a86a8726cd4a551d93928bd2241dff58d0af6844))
+* improve glob configuration, exclude .git by default ([#63](https://github.com/todone-run/todone/issues/63)) ([721f9e8](https://github.com/todone-run/todone/commit/721f9e84b029a364252d4bf4a7f349e897a85cf8))
+* merge core and types into main package ([8e4d745](https://github.com/todone-run/todone/commit/8e4d745ebe6dca28a8c7995d64690c6666356f94))
+* migrate back off Effect ([#48](https://github.com/todone-run/todone/issues/48)) ([dfa317c](https://github.com/todone-run/todone/commit/dfa317c0799a086652be57f96e12654fb1fe30cf))
+* **plugin-github:** add github-report-action and github-create-issues reporters ([#44](https://github.com/todone-run/todone/issues/44)) ([81e9b3b](https://github.com/todone-run/todone/commit/81e9b3bab38efdcf75fd7389731bb8813bd76e7a))
+* redesign plugin system around pre-initialized plugin objects ([#49](https://github.com/todone-run/todone/issues/49)) ([8a15dcd](https://github.com/todone-run/todone/commit/8a15dcd57ad308d8826a6aefdf32f2e9c5e908ed))
+* rework plugin loading ([dcca7a9](https://github.com/todone-run/todone/commit/dcca7a9773a8b58b85e7b69931c9ea90f21b221d))
+* use native URLPattern ([17894f4](https://github.com/todone-run/todone/commit/17894f49d30b8325cc57c02f49fe163c6a6c59d8))
+* use workspace:^ ranges ([4a517ac](https://github.com/todone-run/todone/commit/4a517ac0c90e45585032ba521600b1222c5fbb62))
+
+
+### Bug Fixes
+
+* remove unneeded auth strategy ([a739a5a](https://github.com/todone-run/todone/commit/a739a5a2a9d7bf6b1c96b8099e83dc73a3126984))
+* rework plugin types ([b1aad1f](https://github.com/todone-run/todone/commit/b1aad1f3e13533d22f5c8911dde24b54e4973abf))
+* rework plugins ([#62](https://github.com/todone-run/todone/issues/62)) ([94308d1](https://github.com/todone-run/todone/commit/94308d13769257514c5ed600ac3b97f675c056a9))
+* update package URLs ([#76](https://github.com/todone-run/todone/issues/76)) ([4dac6a1](https://github.com/todone-run/todone/commit/4dac6a19a0f0a684793066c36358a538aae7014f))
+
+
+### Miscellaneous Chores
+
+* rework plugin system ([21201c6](https://github.com/todone-run/todone/commit/21201c6371e624920820a463fc8a37f594df8be0))
+* simplify plugin types ([7c411ba](https://github.com/todone-run/todone/commit/7c411ba947f08a788336cf774cd00d9f0c1ff1af))
+
+
+### Code Refactoring
+
+* migrate to Effect ([8844e25](https://github.com/todone-run/todone/commit/8844e2515fcf3b3f49b3880bef151f32b10bca84))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @todone/internal-build bumped to 2.0.0
+    * todone bumped to 2.0.0
+  * peerDependencies
+    * todone bumped to 2.0.0
+
 ## [0.7.2](https://github.com/cprecioso/todone/compare/plugin-github-v0.7.1...plugin-github-v0.7.2) (2025-08-03)
 
 
