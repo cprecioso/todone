@@ -27,5 +27,5 @@ jobs:
   publish:
     needs: release
     if: fromJson(needs.release.outputs.releases_created)
-    uses: ./.github/workflows/cd.yaml
+    uses: ./.github/workflows/publish.yaml
     secrets: inherit
