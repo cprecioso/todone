@@ -2,14 +2,13 @@ name: Continuous Integration
 
 on:
   workflow_dispatch:
-    inputs:
-      publish-preview: &publish-preview
+    inputs: &workflow-inputs
+      publish-preview:
         description: Publish a preview release to pkg.pr.new
         type: boolean
         default: false
   workflow_call:
-    inputs:
-      publish-preview: *publish-preview
+    inputs: *workflow-inputs
 
 jobs:
   build:
