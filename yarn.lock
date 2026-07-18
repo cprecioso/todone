@@ -512,13 +512,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jsr/std__bytes@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "@jsr/std__bytes@npm:1.0.6::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__bytes%2F1.0.6.tgz"
-  checksum: 10/b0d2d637dce5d0cf474e02d3c36c8ddbf1119c1ddb88b6b3ba71b1ed1f7f77fbef4bb58d18303e17d04756aac9b295a88c4e9f853dd00cf8bf8d5da9d43c03ba
-  languageName: node
-  linkType: hard
-
 "@loaderkit/resolve@npm:^1.0.2":
   version: 1.0.6
   resolution: "@loaderkit/resolve@npm:1.0.6"
@@ -1409,15 +1402,6 @@ __metadata:
   version: 1.1.0
   resolution: "@standard-schema/spec@npm:1.1.0"
   checksum: 10/a209615c9e8b2ea535d7db0a5f6aa0f962fd4ab73ee86a46c100fb78116964af1f55a27c1794d4801e534a196794223daa25ff5135021e03c7828aa3d95e1763
-  languageName: node
-  linkType: hard
-
-"@std/streams@jsr:^1.1.1, @std/streams@npm:@jsr/std__streams@^1.1.1":
-  version: 1.1.1
-  resolution: "@jsr/std__streams@npm:1.1.1::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__streams%2F1.1.1.tgz"
-  dependencies:
-    "@jsr/std__bytes": "npm:^1.0.6"
-  checksum: 10/610a1f0ee6e34a0694963e52a70bffcdaef890371fce7186858ae8e663c317a94fefe91c8e70436bf255d046dabf71e7136fc1cc5d39e6cebdb368cdd7841a1c
   languageName: node
   linkType: hard
 
@@ -5703,7 +5687,6 @@ __metadata:
   resolution: "todone@workspace:packages/todone"
   dependencies:
     "@cprecioso/async-iterable-helpers": "npm:^0.4.0"
-    "@std/streams": "jsr:^1.1.1"
     "@todone/internal-build": "workspace:^"
     "@types/node": "npm:^24.13.3"
     c12: "npm:^4.0.0-beta.5"
