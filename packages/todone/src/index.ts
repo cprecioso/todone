@@ -29,7 +29,7 @@ export const run = async (
       .from(getFiles(process.cwd(), config))
       .pipe(it.tap(reporter.reportFile?.bind(container) ?? noop))
 
-      .pipe(it.flatMap(makeFileMatcher(config.keyword)))
+      .pipe(it.flatMap(makeFileMatcher(config.keyword.pattern)))
       .pipe(it.tap(reporter.reportMatch?.bind(container) ?? noop))
 
       .pipe(checkMatchesDeduping(container))

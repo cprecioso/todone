@@ -14,7 +14,14 @@ const globs = shorthands(z.string().array(), [
 
 export const ConfigSchema = z.object({
   /** The keyword to use for TODO comments. */
-  keyword: z.string().prefault("@TODO"),
+  keyword: shorthands(z.object({ pattern: z.string() }), [
+    shorthands(
+      z.object({ string: z.string(), allowColon: z.boolean().prefault(true) }),
+      [z.string().transform((keyword) => ({ string: keyword }))],
+    ).transform(({ string, allowColon }) => ({
+      pattern: RegExp.escape(string) + (allowColon ? ":?" : ""),
+    })),
+  ]).prefault("@TODO"),
 
   /** The files to include. */
   include: shorthands(

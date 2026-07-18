@@ -6,8 +6,8 @@ import { Readable } from "node:stream";
 /**
  * Finds and returns matches from a file.
  */
-export const makeFileMatcher = (keyword: string) => {
-  const re = new RegExp(`${RegExp.escape(keyword)}\\s+?(\\S+)`, "dgu");
+export const makeFileMatcher = (keywordPattern: string) => {
+  const re = new RegExp(`${keywordPattern}\\s+?(\\S+)`, "dgu");
 
   return async function* (file: t.File): AsyncIterable<t.Match> {
     const lines$ = (
