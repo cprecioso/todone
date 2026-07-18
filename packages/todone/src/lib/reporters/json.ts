@@ -1,6 +1,5 @@
 import type { Plugin } from "#/plugin";
 import * as path from "node:path";
-import { EmptyObject } from "type-fest";
 import * as z from "zod";
 
 const stringToURLCodec = z.codec(z.url(), z.instanceof(URL), {
@@ -57,9 +56,7 @@ const ResultItem = z.object({
 const OutputItem = z.union([FileItem, MatchItem, ResultItem]);
 type OutputItem = z.infer<typeof OutputItem>;
 
-export type JsonReporterOptions = EmptyObject;
-
-export const jsonReporter = ({}: JsonReporterOptions = {}): Plugin => {
+export const jsonReporter = (): Plugin => {
   const outputItem = jsonCodec(OutputItem);
 
   return {

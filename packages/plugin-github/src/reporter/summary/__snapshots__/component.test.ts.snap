@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`writes a job summary table with every column kind 1`] = `
+"<h1>TODOs found</h1>
+<table><tr><th>File</th><th>URL</th><th>Expired</th><th>Expiration Date</th><th>Issue</th><th>Action</th></tr><tr><td><a href="https://github.com/octo/repo/blob/abc123/src%2Fmain.ts#L3">src/main.ts</a></td><td><a href="test:expired">test:expired</a></td><td>❗</td><td>2020-05-06</td><td><a href="https://github.com/octo/repo/issues/42">#42</a></td><td>Created</td></tr><tr><td><a href="https://github.com/octo/repo/blob/abc123/src%2Fother.ts#L1">src/other.ts</a></td><td><a href="test:fresh">test:fresh</a></td><td>⌛</td><td>No expiration date</td><td><td></tr><tr><td><td><a href="test:orphaned">test:orphaned</a></td><td><td><td><a href="https://github.com/octo/repo/issues/7">#7</a></td><td>Closed (completed)</td></tr></table>
+"
+`;

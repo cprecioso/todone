@@ -26,7 +26,7 @@ const iterateExports = function* (
   }
 
   for (const [key, value] of Object.entries(exportsField)) {
-    if (key.startsWith("./")) {
+    if (key === "." || key.startsWith("./")) {
       yield* iterateExports(value);
     }
     if (exportConditions.has(key)) {
@@ -34,8 +34,6 @@ const iterateExports = function* (
       return;
     }
   }
-
-  return [];
 };
 
 const inspectPackageJson = function* (pkgJson: PackageJson) {

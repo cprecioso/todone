@@ -26,7 +26,7 @@ jobs:
       - run: yarn install --immutable
 
       - name: Build action
-        run: yarn nx run @todone/repo:build
+        run: yarn nx run-many -t build
 
       - name: Run todone
         env:

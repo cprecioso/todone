@@ -5,11 +5,11 @@
   "description": "A todone plugin that will alert you when a feature is supported by your target browsers",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cprecioso/todone.git"
+    "url": "git+https://github.com/todone-run/todone.git",
+    "directory": "packages/plugin-caniuse"
   },
-  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/plugin-caniuse#readme",
   "bugs": {
-    "url": "https://github.com/cprecioso/todone/issues"
+    "url": "https://github.com/todone-run/todone/issues"
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
@@ -27,23 +27,25 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "test": "vitest run"
   },
   "peerDependencies": {
     "todone": "workspace:^"
   },
   "dependencies": {
-    "browserslist": "^4.28.4",
-    "caniuse-lite": "^1.0.30001800",
+    "browserslist": "^4.28.5",
+    "caniuse-lite": "^1.0.30001803",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
     "@types/caniuse-lite": "^1.0.5",
-    "@types/node": "^24.13.2",
+    "@types/node": "^24.13.3",
     "todone": "workspace:^",
-    "tsdown": "^0.22.3",
-    "typescript": "~6.0.3"
+    "tsdown": "^0.22.4",
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "provenance": true,

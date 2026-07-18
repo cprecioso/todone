@@ -1,1 +1,1 @@
-Visit the docs at <https://cprecioso.github.io/todone/modules/_todone_plugin-date.html>
+Visit the docs at <https://todone.run/modules/_todone_plugin-date.html>

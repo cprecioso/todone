@@ -5,11 +5,11 @@
   "description": "A todone plugin that will alert you when an GitHub issue or pull request has been resolved",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cprecioso/todone.git"
+    "url": "git+https://github.com/todone-run/todone.git",
+    "directory": "packages/plugin-github"
   },
-  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/plugin-github#readme",
   "bugs": {
-    "url": "https://github.com/cprecioso/todone/issues"
+    "url": "https://github.com/todone-run/todone/issues"
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",
@@ -29,7 +29,8 @@
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p .",
-    "dev": "tsdown --watch"
+    "dev": "tsdown --watch",
+    "test": "vitest run"
   },
   "peerDependencies": {
     "todone": "workspace:^"
@@ -52,9 +53,11 @@
   "devDependencies": {
     "@todone/internal-build": "workspace:^",
     "@types/mdast": "^4.0.4",
+    "msw": "^2.15.0",
     "todone": "workspace:^",
-    "tsdown": "^0.22.3",
-    "typescript": "~6.0.3"
+    "tsdown": "^0.22.4",
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "provenance": true,
