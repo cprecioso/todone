@@ -11,13 +11,13 @@ permissions:
   security-events: write
 
 jobs:
-  build:
+  ci:
     uses: ./.github/workflows/ci.yaml
     with:
       publish-preview: true
 
   publish-packages:
-    needs: build
+    needs: ci
 
     runs-on: ubuntu-latest
 
@@ -47,7 +47,7 @@ jobs:
           done
 
   publish-docs:
-    needs: build
+    needs: ci
 
     runs-on: ubuntu-latest
 
