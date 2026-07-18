@@ -1,4 +1,4 @@
-name: Todone
+name: Run Todone
 
 on:
   workflow_dispatch:
@@ -13,14 +13,21 @@ env:
   # Remove when GitHub Actions supports Node 24 without a workaround
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build-run:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: jdx/mise-action@v4
 
-      - uses: actions/setup-node@v6
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           cache: "yarn"
       - run: yarn install --immutable

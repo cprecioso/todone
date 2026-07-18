@@ -1,0 +1,42 @@
+name: Check PR
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yaml
+    with:
+      publish-preview: true
+
+  conventional-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          cache: "yarn"
+      - run: yarn install --immutable
+
+      - name: Check PR title is a conventional commit
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: echo "$PR_TITLE" | yarn commitlint --verbose
+
+  pass:
+    runs-on: ubuntu-latest
+    needs: [ci, conventional-commits]
+    steps:
+      - run: exit 0
