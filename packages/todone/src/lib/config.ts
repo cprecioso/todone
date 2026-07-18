@@ -65,5 +65,5 @@ export const loadConfigFile = async (path?: string) => {
     rcFile: false,
     cwd: path,
   });
-  return ConfigSchema.strict().parse(config);
+  return config;
 };

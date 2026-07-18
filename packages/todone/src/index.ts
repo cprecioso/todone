@@ -1,7 +1,7 @@
 import type { Plugin } from "#/plugin";
 import type * as t from "#/types";
 import * as it from "@cprecioso/async-iterable-helpers";
-import { Config } from "./lib/config";
+import { ConfigInput, ConfigSchema } from "./lib/config";
 import { PluginContainer } from "./lib/container";
 import { getFiles } from "./lib/files";
 import { makeFileMatcher } from "./lib/matcher";
@@ -16,12 +16,12 @@ export interface RunOptions {
 }
 
 export const run = async (
-  config: Config,
+  rawConfig: ConfigInput,
   { forcedReporter }: RunOptions = {},
 ) => {
-  const { keyword, plugins } = config;
+  const config = ConfigSchema.strict().decode(rawConfig);
 
-  const container = new PluginContainer(plugins);
+  const container = new PluginContainer(config.plugins);
   const reporter = forcedReporter ?? container;
 
   try {
@@ -29,7 +29,7 @@ export const run = async (
       .from(getFiles(process.cwd(), config))
       .pipe(it.tap(reporter.reportFile?.bind(container) ?? noop))
 
-      .pipe(it.flatMap(makeFileMatcher(keyword)))
+      .pipe(it.flatMap(makeFileMatcher(config.keyword)))
       .pipe(it.tap(reporter.reportMatch?.bind(container) ?? noop))
 
       .pipe(checkMatchesDeduping(container))
