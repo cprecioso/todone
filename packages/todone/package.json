@@ -5,11 +5,12 @@
   "description": "Never forget to follow up on your code's TODOs, maintain code quality, and pay back your technical debt.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cprecioso/todone.git"
+    "url": "git+https://github.com/todone-run/todone.git",
+    "directory": "packages/todone"
   },
-  "homepage": "https://github.com/cprecioso/todone/tree/main/packages/todone#readme",
+  "homepage": "https://todone.run/",
   "bugs": {
-    "url": "https://github.com/cprecioso/todone/issues"
+    "url": "https://github.com/todone-run/todone/issues"
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",

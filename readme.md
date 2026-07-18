@@ -1,1 +1,1 @@
-Visit the docs at <https://cprecioso.github.io/todone/>
+Visit the docs at <https://todone.run/>

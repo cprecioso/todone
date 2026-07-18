@@ -4,11 +4,10 @@
   "description": "todone monorepo",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cprecioso/todone.git"
+    "url": "git+https://github.com/todone-run/todone.git"
   },
-  "homepage": "https://github.com/cprecioso/todone#readme",
   "bugs": {
-    "url": "https://github.com/cprecioso/todone/issues"
+    "url": "https://github.com/todone-run/todone/issues"
   },
   "author": "Carlos Precioso <npm@precioso.design>",
   "license": "ISC",

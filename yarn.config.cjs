@@ -7,7 +7,8 @@ const FIELDS_TO_COPY = [
   "type",
   "author",
   "license",
-  "repository",
+  "repository.type",
+  "repository.url",
   "bugs",
   "packageManager",
 ];
@@ -20,8 +21,9 @@ module.exports = defineConfig({
     // Copy fields from the root workspace
     for (const workspace of Yarn.workspaces()) {
       if (workspace.cwd === ".") continue;
+      workspace.set("repository.directory", workspace.cwd);
       for (const field of FIELDS_TO_COPY) {
-        workspace.set(field, root.manifest[field]);
+        workspace.set(field, getByKey(root.manifest, field));
       }
     }
 
@@ -80,3 +82,12 @@ module.exports = defineConfig({
     }
   },
 });
+
+function getByKey(/** @type {any} */ obj, /** @type {string} */ keyPath) {
+  const keys = keyPath.split(".");
+  for (const key of keys) {
+    if (obj == null) return undefined;
+    obj = obj[key];
+  }
+  return obj;
+}
