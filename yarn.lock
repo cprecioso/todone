@@ -1526,6 +1526,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": "npm:^21.2.1"
     "@commitlint/config-conventional": "npm:^21.2.0"
+    "@commitlint/types": "npm:^21.2.0"
     "@todone/plugin-date": "workspace:^"
     "@todone/plugin-github": "workspace:^"
     "@vitest/coverage-v8": "npm:^4.1.10"
