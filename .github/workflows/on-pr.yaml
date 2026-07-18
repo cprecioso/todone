@@ -34,4 +34,5 @@ jobs:
   pass:
     runs-on: ubuntu-latest
     needs: [build, conventional-commits]
-    steps: []
+    steps:
+      - run: exit 0
