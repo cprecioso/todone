@@ -71,8 +71,8 @@ describe("githubPlugin through the todone pipeline", () => {
 
     const results = await run({
       keyword: "@TODO",
-      include: { patterns: ["**/*"] },
-      exclude: { gitignore: false, patterns: [] },
+      include: ["**/*"],
+      exclude: { gitignore: false },
       plugins: [
         githubPlugin({
           token: "test-token",
@@ -159,8 +159,8 @@ describe("githubPlugin issue syncing", () => {
 
     await run({
       keyword: "@TODO",
-      include: { patterns: ["**/*"] },
-      exclude: { gitignore: false, patterns: [] },
+      include: ["**/*"],
+      exclude: { gitignore: false },
       plugins: [
         githubPlugin({
           token: "test-token",
