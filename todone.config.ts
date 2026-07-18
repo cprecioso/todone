@@ -12,5 +12,5 @@ export default defineConfig({
     "!**/__snapshots__/**",
     "!packages/*/test/**",
   ],
-  plugins: [datePlugin(), githubPlugin()],
+  plugins: [datePlugin(), githubPlugin({ createIssues: true })],
 });
