@@ -1475,6 +1475,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@todone/plugin-forgejo@workspace:packages/plugin-forgejo":
+  version: 0.0.0-use.local
+  resolution: "@todone/plugin-forgejo@workspace:packages/plugin-forgejo"
+  dependencies:
+    "@todone/internal-build": "workspace:^"
+    todone: "workspace:^"
+    tsdown: "npm:^0.22.3"
+    typescript: "npm:~6.0.3"
+    zod: "npm:^4.4.3"
+  peerDependencies:
+    todone: "workspace:^"
+  languageName: unknown
+  linkType: soft
+
 "@todone/plugin-github@workspace:^, @todone/plugin-github@workspace:packages/plugin-github":
   version: 0.0.0-use.local
   resolution: "@todone/plugin-github@workspace:packages/plugin-github"

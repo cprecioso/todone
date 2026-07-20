@@ -13,6 +13,7 @@
     "packages/plugin-caniuse": {},
     "packages/plugin-date": {},
     "packages/plugin-figma": {},
+    "packages/plugin-forgejo": {},
     "packages/plugin-github": {},
     "packages/todone": {}
   }
